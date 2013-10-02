@@ -2,7 +2,7 @@ package SisIYA_Config;
 
 $sisiya_server	= 'sisiyad.ics-group.com.tr';
 
-$sisiya_base_dir	= '/ev/erdalmutlu/sisiya/sisiya/sisiya_check_perl';
+$sisiya_base_dir	= '/ev/erdalmutlu/git/sisiya/sisiya_check_perl';
 $sisiya_local_conf	= "$sisiya_base_dir/SisIYA_Config_local.pl";
 $sisiya_common_dir	= "$sisiya_base_dir/common";
 $sisiya_special_dir	= "$sisiya_base_dir/special";

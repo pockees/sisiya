@@ -97,7 +97,7 @@ foreach my $f (@scripts) {
 	chomp($s = `$SisIYA_Config::sisiya_common_dir/$f`);
 	$statusid = $? >> 8;
 	$serviceid = get_serviceid($s);	
-	print "statusid = $statusid serviceid = $serviceid message=$s\n";
+	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
 	$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
 }
 
@@ -111,7 +111,7 @@ foreach my $f (@scripts) {
 	chomp($s = `$SisIYA_Config::sisiya_systems_dir/$f`);
 	$statusid = $? >> 8;
 	$serviceid = get_serviceid($s);	
-	print "statusid = $statusid serviceid = $serviceid message=$s\n";
+	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
 	$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
 }
 

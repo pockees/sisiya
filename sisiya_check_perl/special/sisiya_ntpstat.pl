@@ -33,32 +33,82 @@ our $ntpstat_prog = '/usr/bin/ntpstat';
 our $ntpq_prog = '/usr/bin/ntpq';
 #### end of the default values
 ################################################################################
+sub get_synchronized_peer
+{
+	###############################################################################
+	# ntpq -np
+	###############################################################################
+	# remote           refid      st t when poll reach   delay   offset  jitter
+	#==============================================================================
+	# 141.82.49.100   .INIT.          16 u    - 1024    0    0.000    0.000   0.000
+	# 141.82.49.102   .INIT.          16 u    - 1024    0    0.000    0.000   0.000
+	#*130.149.17.8    .GPS.            1 u  226 1024  377   61.753    6.097   0.745
+	# 192.53.103.108  .INIT.          16 u    - 1024    0    0.000    0.000   0.000
+	#+192.53.103.104  .PTB.            1 u  445 1024  373   78.638   -4.048   0.671
+	###############################################################################
+	###############################################################################
+	# ntpstat 
+	###############################################################################
+	# synchronised to NTP server (10.10.14.1) at stratum 3 
+	#    time correct to within 78 ms
+	#       polling server every 1024 s
+	#
+	###############################################################################
+	if(grep(/NTP/, @_)) {
+		if(index($_[0], '(') != -1) {
+			my @a = split(/\(/, $_[0]);
+			if(index($a[1], ')') != -1) {
+				@a = split(/\)/, $a[1]);
+				return $a[0];
+			}
+		}	
+	}
+	else {
+		foreach(my $i = 0; $i < @_; $i++) {
+			if(substr($_[$i], 0, 1) eq '*') {
+				my @a = split(/ /, $_[$i]);
+				@a = split(/\*/, $a[0]);
+				return $a[1];
+			}
+		}	
+	}
+	return '';
+}
+
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
 }
+
 ################################################################################
 my $message_str = '';
 my $statusid = $SisIYA_Config::statusids{'error'};
-
-#system("$ntpstat_prog 2>/dev/null");
-# bitshift by 8 or divide by 256
-#my $retcode = $? >>=8;
-##my $retcode = $? / 256;
 my @a = `$ntpstat_prog 2>/dev/null`;
 my $retcode = $? >>=8;
-print STDERR "retcode = $retcode \n";
-foreach(@a) {
-	print STDERR "$_\n";
-}
+
 if($retcode == 0) {
+	#######################################################       
+	# ntpstat 
+	#######################################################       
+	# synchronised to NTP server (10.10.14.1) at stratum 3 
+	#    time correct to within 78 ms
+	#       polling server every 1024 s
+	#
+	#######################################################       
 	# but it should not be synchronized to its local clock
 	$statusid = $SisIYA_Config::statusids{'ok'};
 	$message_str = "OK: The system clock is synchronized.";
 }
 elsif($retcode == 1) {
+	#######################################################       
+	# ntpstat 
+	#######################################################       
+	# unsynchronised
+	#  time server re-starting
+	#   polling server every 64 s
+	#######################################################       
 	$message_str = "ERROR: The system clock is not synchronized!";
 }
 elsif($retcode == 2) {
@@ -67,25 +117,16 @@ elsif($retcode == 2) {
 elsif($retcode == 127) {
 	@a = `$ntpq_prog -np 2>&1`;
 	$retcode = $? >>=8;
-	print STDERR "2 retcode = $retcode \n";
-	foreach(@a) {
-		print STDERR "$_";
-	}
 	if(grep(/Connection refused/, @a)) {
 		print STDERR "Connection refused\n";
 		$message_str = "ERROR: The system clock is not synchronized! The ntp daemon is not running!";
 	}
 	else {
 		if($retcode == 0) {
-			my $n = @a;
-			chomp(my $x = $a[$n-1]);
-			print STDERR "n=$n\n";
-			print STDERR "last line =$x\n";
-			if(substr($x, 0, 1) eq '*') {
-				my @b = split(/ /, $x);
-				@b = split(/\*/, $b[0]);
+			my $p = get_synchronized_peer(@a);
+			if($p ne '') {
 				$statusid = $SisIYA_Config::statusids{'ok'};
-				$message_str = "OK: The system clock is synchronized to $b[1].";
+				$message_str = "OK: The system clock is synchronized to $p.";
 			}
 			else {
 				$statusid = $SisIYA_Config::statusids{'warning'};
