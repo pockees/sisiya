@@ -1,0 +1,29 @@
+### service id
+serviceid=$serviceid_process_count  
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_process_count is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+process_count_error=1000
+process_count_warning=800
+### end of the default values
+##########################################################################
+#  <count>123</count>
+### If there is no module conf file then exit with warning.
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+n=`ps -ef | wc -l`
+if test $n -ge $process_count_error ; then
+	statusid=$status_error
+	message_str="ERROR: There are $n (>= ${process_count_error}) running process!"
+elif test $n -ge $process_count_warning ; then
+	statusid=$status_warning
+	message_str="WARNING: There are $n (>= ${process_count_warning}) running process!"
+else
+	statusid=$status_ok
+	message_str="OK: There are $n running process."
+fi

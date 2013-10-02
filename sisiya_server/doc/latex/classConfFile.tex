@@ -1,0 +1,141 @@
+\section{Conf\-File Class Reference}
+\label{classConfFile}\index{ConfFile@{ConfFile}}
+{\tt \#include $<$Conf\-File.hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Conf\-File} ()
+\begin{CompactList}\small\item\em Default constructor. \item\end{CompactList}\item 
+{\bf Conf\-File} (const char $\ast$file\-Name)
+\begin{CompactList}\small\item\em Constructor. \item\end{CompactList}\item 
+{\bf Conf\-File} (const string file\-Name)
+\begin{CompactList}\small\item\em Constructor. \item\end{CompactList}\item 
+{\bf $\sim$Conf\-File} ()\label{classConfFile_a3}
+
+\begin{CompactList}\small\item\em Destructor. \item\end{CompactList}\item 
+double {\bf get\-Double} (const char $\ast$key)\label{classConfFile_a4}
+
+\item 
+double {\bf get\-Double} (const string key)\label{classConfFile_a5}
+
+\item 
+float {\bf get\-Float} (const char $\ast$key)\label{classConfFile_a6}
+
+\item 
+float {\bf get\-Float} (const string key)\label{classConfFile_a7}
+
+\item 
+int {\bf get\-Int} (const char $\ast$key)\label{classConfFile_a8}
+
+\item 
+int {\bf get\-Int} (const string key)\label{classConfFile_a9}
+
+\item 
+const string {\bf get\-String} (const char $\ast$key)\label{classConfFile_a10}
+
+\item 
+const string {\bf get\-String} (const string key)\label{classConfFile_a11}
+
+\item 
+void {\bf set\-Default} (const char $\ast$key, int value)\label{classConfFile_a12}
+
+\item 
+void {\bf set\-Default} (string key, int value)\label{classConfFile_a13}
+
+\item 
+void {\bf set\-Default} (const char $\ast$key, const char $\ast$value)\label{classConfFile_a14}
+
+\item 
+void {\bf set\-Default} (const string \&key, const string \&value)\label{classConfFile_a15}
+
+\item 
+void {\bf set\-File\-Name} (const char $\ast$file\-Name)\label{classConfFile_a16}
+
+\end{CompactItemize}
+\subsection*{Static Public Attributes}
+\begin{CompactItemize}
+\item 
+const int {\bf int\-Not\-Found} = INT\_\-MIN\label{classConfFile_s0}
+
+\end{CompactItemize}
+\subsection*{Private Member Functions}
+\begin{CompactItemize}
+\item 
+void {\bf extract\-Key\-Value} (const char $\ast$str, string \&key, string \&value)\label{classConfFile_d0}
+
+\item 
+void {\bf extract\-Key\-Values} (void)
+\item 
+string {\bf get\-Key\-Value} (const string key)
+\item 
+bool {\bf is\-Line\-Comment\-Or\-Empty} (const char $\ast$line, const char ch)
+\item 
+{\bf Conf\-File} (const {\bf Conf\-File} \&)\label{classConfFile_d4}
+
+\item 
+void {\bf operator=} (const {\bf Conf\-File} \&)\label{classConfFile_d5}
+
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+ifstream $\ast$ {\bf file}\label{classConfFile_r0}
+
+\item 
+map$<$ string, string $>$ {\bf conf\-Options\-Map}\label{classConfFile_r1}
+
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Conf\-File is a class which represents a configuration file. The data in this file is of the form key=value. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{ConfFile@{Conf\-File}!ConfFile@{ConfFile}}
+\index{ConfFile@{ConfFile}!ConfFile@{Conf\-File}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Conf\-File::Conf\-File ()}\label{classConfFile_a0}
+
+
+Default constructor. 
+
+The default constructor. \index{ConfFile@{Conf\-File}!ConfFile@{ConfFile}}
+\index{ConfFile@{ConfFile}!ConfFile@{Conf\-File}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Conf\-File::Conf\-File (const char $\ast$ {\em file\-Name})}\label{classConfFile_a1}
+
+
+Constructor. 
+
+Constructor with a parameter: file\-Name \index{ConfFile@{Conf\-File}!ConfFile@{ConfFile}}
+\index{ConfFile@{ConfFile}!ConfFile@{Conf\-File}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Conf\-File::Conf\-File (const string {\em file\-Name})}\label{classConfFile_a2}
+
+
+Constructor. 
+
+Constructor with a parameter: file\-Name 
+
+\subsection{Member Function Documentation}
+\index{ConfFile@{Conf\-File}!extractKeyValues@{extractKeyValues}}
+\index{extractKeyValues@{extractKeyValues}!ConfFile@{Conf\-File}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Conf\-File::extract\-Key\-Values (void)\hspace{0.3cm}{\tt  [private]}}\label{classConfFile_d1}
+
+
+Extracts all key/value pairs from the file. The format is key=value. \index{ConfFile@{Conf\-File}!getKeyValue@{getKeyValue}}
+\index{getKeyValue@{getKeyValue}!ConfFile@{Conf\-File}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}string Conf\-File::get\-Key\-Value (const string {\em key})\hspace{0.3cm}{\tt  [private]}}\label{classConfFile_d2}
+
+
+Search for the key and return its value as string. If not found return an empty string. \index{ConfFile@{Conf\-File}!isLineCommentOrEmpty@{isLineCommentOrEmpty}}
+\index{isLineCommentOrEmpty@{isLineCommentOrEmpty}!ConfFile@{Conf\-File}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}bool Conf\-File::is\-Line\-Comment\-Or\-Empty (const char $\ast$ {\em line}, const char {\em ch})\hspace{0.3cm}{\tt  [private]}}\label{classConfFile_d3}
+
+
+Check if the line a comment or empty is. Comment char is '\#'. 
+
+The documentation for this class was generated from the following files:\begin{CompactItemize}
+\item 
+include/Conf\-File.hpp\item 
+src/Conf\-File.cpp\end{CompactItemize}

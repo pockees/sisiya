@@ -1,0 +1,332 @@
+BuildRoot:/tmp/emutlu_rpm_buildroot
+Summary: SisIYA a system monitoring tool.
+Name: sisiya
+Version: 0.2.0
+Release: 7
+#Obsoletes: $Version-$Release
+Source0: sisiya-%{version}.tar.gz
+#Source1: http://download.sourceforge.net/sisiya/sisiya-%{version}.tar.gz
+Copyright: GPL
+Vendor: Erdal Mutlu
+Group: System Environment/Daemons
+Packager: Erdal Mutlu <emutlu@users.sourceforge.net>
+Url: http://sisiya.sourceforge.net
+%description
+SisIYA a system monitoring and administration tool is a tool for
+monitoring the various networked systems, such as Linux/UNIX, MacOS X and
+Windows servers, network switches, routers and other networked devices.
+It is based on the client/server architecture. It has its own protocol
+of communication. The idea is to inform the system administrators or
+operators about the systems in use, about their current status (INFO, OK, WARNING, ERROR).
+Mostly client systems send messages to a central server, who
+places them in a database. But, there are also cases where the server self
+collects some data from clients. At the same time, there is a web interface
+to the data stored in the database system, which show the status of the monitored systems.
+The project uses at the moment C, Bash, Java and Php. But I plan to
+rewrite the C and Java part of it in C++. The supported DBs at the moment are
+MySQL and PostgreSQL.
+
+%package server
+Summary : The SisIYA server.
+Group: System Environment/Daemons
+#Requires: mysql, gawk 
+Requires: postgresql-libs, gawk 
+%description server
+The SisIYA server.
+SisIYA a system monitoring and administration tool is a tool for
+monitoring the various networked systems, such as Linux/UNIX, MacOS X and
+Windows servers, network switches, routers and other networked devices.
+It is based on the client/server architecture. It has its own protocol
+of communication. The idea is to inform the system administrators or
+operators about the systems in use, about their current status (INFO, OK, WARNING, ERROR).
+Mostly client systems send messages to a central server, who
+places them in a database. But, there are also cases where the server self
+collects some data from clients. At the same time, there is a web interface
+to the data stored in the database system, which show the status of the monitored systems.
+The project uses at the moment C, Bash, Java and Php. But I plan to
+rewrite the C and Java part of it in C++. The supported DBs at the moment are
+MySQL and PostgreSQL.
+
+
+%package server-checks
+Summary: The SisIYA check programs that are run from a central server. This is normally the server where SisIYA daemon runs.
+Group: System Environment/Daemons
+Requires: sisiya-client >= 0.3.0, gawk
+%description server-checks
+The SisIYA check programs that are run from a central server. This is normally the server where SisIYA daemon runs.
+
+%package client
+Summary: The SisIYA client programs and checks.
+Group: System Environment/Tools
+%description client
+The SisIYA client programs and checks.
+
+%package client-systems
+Summary: The systems directory for SisIYA client programs and checks.
+Group: System Environment/Tools
+Requires: sisiya-client >= 0.3.0, gawk
+%description client-systems
+The systems directory for SisIYA client programs and checks. This package is site dependent.
+In other words, the systems directory contains directories with hostnames, which contain special 
+checks for that particular host. Every site has its own set of hostnames/checks in the systems directory.
+
+
+%package php 
+Summary: The SisIYA php script and images for viewing the data from DB.
+Group: System Environment/Tools
+Requires: httpd, php, php-pgsql
+%description php
+The SisIYA php script and images for viewing the data from DB. You need this
+package on the server on which the Apache with php is running.
+
+%package dbscripts 
+Summary: The SisIYA scripts for creating the necessery tables and inserting the default values.
+Group: System Environment/Tools
+#Requires: mysqld, gawk
+Requires: postgresql-server, postgresql, gawk
+%description dbscripts
+The SisIYA scripts for creating the necessery tables and inserting the default values.
+You need these scripts on the server on which the database systems is running.
+
+%
+%prep
+%setup -q
+
+%build
+### configure
+./bootstrap create
+### the default is --with-pgsql
+#./configure --with-pgsql
+./configure --with-mysql
+#./configure
+make
+exit 0
+
+%install
+rm -rf $RPM_BUILD_ROOT/$name-$version
+make "install_root=$RPM_BUILD_ROOT" install
+
+%pre
+
+%post server
+chkconfig --add sisiyad
+#chkconfig --add sisiyaqd
+service sisiyad start > /dev/null 
+#service sisiyaqd start > /dev/null 
+
+
+%preun server
+#service sisiyaqd stop > /dev/null 2>&1
+service sisiyad stop > /dev/null 2>&1
+#chkconfig --del sisiyaqd
+chkconfig --del sisiyad
+
+%post server-checks
+crontab_file=/etc/crontab
+if [ ! -f $crontab_file ]; then
+	echo "Crontab file $crontab_file does not exist!"
+	exit 1
+fi
+crontab_str="0-59/5 * * * * root /usr/local/sisiya_server_checks"
+for str in "sisiya_check_airport.sh" "sisiya_check_apc.sh" "sisiya_check_dbs.sh" "sisiya_check_ftp.sh" "sisiya_check_http.sh" "sisiya_check_ping.sh" "sisiya_check_printer.sh" "sisiya_check_smb.sh" "sisiya_check_smtp.sh" "sisiya_check_ssh.sh" "sisiya_check_switch.sh" "sisiya_check_ups.sh"
+do
+	if !  `cat $crontab_file | grep -v "^#" | grep "sisiya_server_checks" | grep "$str" > /dev/null ` ; then
+		echo "$crontab_str/$str /usr/local/sisiya_server_checks/sisiya_server_checks.conf" >> $crontab_file
+	fi
+done
+
+crontab_str="0-59/10 * * * * root /usr/local/sisiya_server_checks"
+#for str in "sisiya_check_server_postgresql.sh"
+for str in "sisiya_check_server_mysql.sh"
+do
+	if !  `cat $crontab_file | grep -v "^#" | grep "sisiya_server_checks" | grep "$str" > /dev/null ` ; then
+		echo "$crontab_str/$str /usr/local/sisiya_server_checks/sisiya_server_checks.conf" >> $crontab_file
+	fi
+done
+
+%preun server-checks
+crontab_file=/etc/crontab
+if test ! -f $crontab_file ; then
+	echo "Crontab file $crontab_file does not exist!"
+	exit 1
+fi
+                                                                                                                             
+tmp_file=`mktemp -q tmp_XXXXXXXX`
+if test -z "$tmp_file" ; then
+	echo "Error creating tmp_file"
+	exit 1
+fi
+
+if `cat $crontab_file | grep -v "^#" | grep "sisiya_server_checks" > /dev/null ` ; then
+	sed -e '/^0-59\/5 \* \* \* \* root \/usr\/local\/sisiya_server_checks\//d' $crontab_file > $tmp_file
+	cp $crontab_file ${crontab_file}.`date +%Y%m%d%H%M%S`
+	mv $tmp_file $crontab_file
+	chmod 644 $crontab_file
+fi
+### final check
+if test ! -f $crontab_file ; then
+	echo "Crontab file $crontab_file does not exist!"
+	exit 1
+fi
+
+
+%post client
+crontab_file=/etc/crontab
+if test ! -f $crontab_file ; then
+	echo "Crontab file $crontab_file does not exist!"
+	exit 1
+fi
+crontab_str="0-59/5 * * * * root /usr/local/sisiya_check/bin/sisiya_all.sh /usr/local/sisiya_check/sisiya_client.conf"
+                                                                                                                             
+if !  `cat $crontab_file | grep -v "^#" | grep "sisiya_check" | grep "sisiya_all.sh" > /dev/null ` ; then
+	echo "$crontab_str" >> $crontab_file
+fi
+
+%preun client
+crontab_file=/etc/crontab
+if test ! -f $crontab_file ; then
+	echo "Crontab file $crontab_file does not exist!"
+	exit 1
+fi
+                                                                                                                             
+tmp_file=`mktemp -q tmp_XXXXXXXX`
+if test -z "$tmp_file" ; then
+	echo "Error creating tmp_file"
+	exit 1
+fi
+
+crontab_str="0-59/5 * * * * root /usr/local/sisiya_check/bin/sisiya_all.sh /usr/local/sisiya_check/sisiya_client.conf"
+                                                                                                                             
+if `cat $crontab_file | grep -v "^#" | grep "sisiya_check" | grep "sisiya_all.sh" > /dev/null ` ; then
+	sed -e '/^0-59\/5 \* \* \* \* root \/usr\/local\/sisiya_check\/bin\/sisiya_all\.sh/d' $crontab_file > $tmp_file
+	cp $crontab_file ${crontab_file}.`date +%Y%m%d%H%M%S`
+	mv $tmp_file $crontab_file
+	chmod 644 $crontab_file
+fi
+### final check
+if test ! -f $crontab_file ; then
+	echo "Crontab file $crontab_file does not exist!"
+	exit 1
+fi
+
+%post client-systems
+chown root:root -R  /usr/local/sisiya_check/systems 
+%clean 
+rm -rf $RPM_BUILD_ROOT
+
+%post php
+cd /var/www/html/sisiya/images && ./make_links.sh links.txt link
+
+%preun php
+cd /var/www/html/sisiya/images && ./make_links.sh links.txt unlink
+
+### there is no main package
+#%files
+
+%files server
+%defattr(-,root,root)
+%attr(0644,root,root) %doc README NEWS ChangeLog AUTHORS INSTALL TODO
+%attr(0600,root,root) %config(noreplace) /etc/sisiyad.conf
+#%attr(0600,root,root) %config(noreplace) /etc/sisiyaqd.conf
+%attr(0700,root,root) /etc/init.d/sisiyad
+#%attr(0700,root,root) /etc/init.d/sisiyaqd
+%attr(0700,root,root) /usr/sbin/sisiyad
+#%attr(0700,root,root) /usr/sbin/sisiyaqd
+%attr(0644,root,root) /usr/share/man/man5/sisiyad.conf.5.gz
+#%attr(0644,root,root) /usr/share/man/man5/sisiyaqd.conf.5.gz
+%attr(0644,root,root) /usr/share/man/man8/sisiyad.8.gz
+#%attr(0644,root,root) /usr/share/man/man8/sisiyaqd.8.gz
+
+%files server-checks 
+%attr(0644,root,root) %doc README NEWS ChangeLog AUTHORS INSTALL TODO
+%attr(0700,root,root) %dir /usr/local/sisiya_server_checks
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/airport_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/apc_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/class_path
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/ftp_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/http_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/ping_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/printer_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/sisiya_server_checks.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/smb_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/smtp_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/ssh_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/switch_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/ups_systems.conf
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_server_checks/*.properties
+%attr(0600,root,root) /usr/local/sisiya_server_checks/*.class
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_airport.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_airport_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_apc.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_apc_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_dbs.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ftp.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ftp_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_http
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_http.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_http_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ping.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ping_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_printer.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_printer_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_smtp
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_smtp.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_smtp_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_smb.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_smb_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ssh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ssh.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ssh_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_switch.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_switch_system.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_system_mysql.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_system_postgresql.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ups.sh
+%attr(0700,root,root) /usr/local/sisiya_server_checks/sisiya_check_ups_system.sh
+
+%files client
+%defattr(-,root,root)
+%attr(0644,root,root) %doc README NEWS ChangeLog AUTHORS INSTALL TODO
+%dir %attr(0700,root,root) /usr/local/sisiya_check
+%dir %attr(0700,root,root) /usr/local/sisiya_check/bin
+%dir %attr(0700,root,root) /usr/local/sisiya_check/common
+%dir %attr(0700,root,root) /usr/local/sisiya_check/special
+%attr(0600,root,root) %config(noreplace) /usr/local/sisiya_check/sisiya_client.conf
+%attr(0700,root,root) /usr/local/sisiya_check/bin/sisiyac
+%attr(0700,root,root) /usr/local/sisiya_check/bin/*.sh
+%attr(0700,root,root) /usr/local/sisiya_check/common/sisiya_*.sh
+%attr(0700,root,root) /usr/local/sisiya_check/special/sisiya_*.sh
+
+%files client-systems
+%defattr(-,root,root)
+%dir %attr(0700,root,root) /usr/local/sisiya_check/systems
+/usr/local/sisiya_check/systems/*
+
+%files php
+%defattr(-,root,root)
+%attr(0644,root,root) %doc README NEWS ChangeLog AUTHORS INSTALL TODO
+%dir %attr(0755,root,root) /var/www/html/sisiya
+%attr(0644,root,root) /var/www/html/sisiya/*.php
+%dir %attr(0755,root,root) /var/www/html/sisiya/images
+%attr(0700,root,root) /var/www/html/sisiya/images/make_links.sh
+%attr(0600,root,root) /var/www/html/sisiya/images/links.txt
+%attr(0644,root,root) /var/www/html/sisiya/images/*.ico
+%attr(0644,root,root) /var/www/html/sisiya/images/*.gif
+%attr(0644,root,root) /var/www/html/sisiya/images/*.png
+
+%files dbscripts
+%defattr(-,root,root)
+%dir %attr(0700,root,root) /usr/local/sisiya_dbscripts
+%attr(0700,root,root) /usr/local/sisiya_dbscripts/dbscript.sh
+%attr(0700,root,root) /usr/local/sisiya_dbscripts/exec_MySQL.sh
+%attr(0700,root,root) /usr/local/sisiya_dbscripts/exec_PostgreSQL.sh
+%attr(0700,root,root) /usr/local/sisiya_dbscripts/make_history_archive_PostgreSQL.sh
+%attr(0700,root,root) /usr/local/sisiya_dbscripts/make_history_archive_MySQL.sh
+%attr(0600,root,root) /usr/local/sisiya_dbscripts/INSTALL
+%attr(0600,root,root) /usr/local/sisiya_dbscripts/README
+%attr(0600,root,root) /usr/local/sisiya_dbscripts/Makefile
+%attr(0600,root,root) /usr/local/sisiya_dbscripts/db_MySQL.conf
+%attr(0600,root,root) /usr/local/sisiya_dbscripts/db_PostgreSQL.conf
+%attr(0600,root,root) /usr/local/sisiya_dbscripts/create_tables.sql
+%attr(0600,root,root) /usr/local/sisiya_dbscripts/drop_tables.sql
+%attr(0600,root,root) /usr/local/sisiya_dbscripts/populate_db.sql

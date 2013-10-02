@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+<record><system_name>server1.example.org</system_name><isactive>f</isactive><virtual_host>www.example.org</virtual_host><index_file>/index.html</index_file><https_port>443</https_port><username></username><password></password></record>
+</systems>

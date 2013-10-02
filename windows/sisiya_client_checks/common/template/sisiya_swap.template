@@ -1,0 +1,60 @@
+### service id
+$serviceid=$serviceid_swap
+if(! $serviceid_swap) {
+	Write-Output "Error : serviceid_swap is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+	exit
+}
+############################################################################################################
+### the default values
+$warning_percent=30
+$error_percent=50
+### end of the default values
+############################################################################################################
+### If there is a module conf file then override these default values
+if([System.IO.File]::Exists($module_conf_file) -eq $True) {
+#if(test-path $module_conf_file -eq $True) {
+	. $module_conf_file
+}
+###############################################################################################################################################
+$message_str=""
+
+### get page file
+$pf=Get-WmiObject -Class Win32_PageFileUsage
+
+### get RAM
+$a=Get-WmiObject -Class Win32_ComputerSystem
+$total_ram=$a.TotalPhysicalMemory / 1MB
+$total_ram="{0:N0}" -f $total_ram
+$rams=Get-WmiObject -Class Win32_PhysicalMemory | where{$_.MemoryType -eq 0}
+$ram_str="RAM: total=" + $total_ram + "MB"
+$i=1
+foreach($ram in $rams) {
+	#$ram_str=$ram_str + "capacity=" + $ram.Capacity / 1MB + " speed=" + $ram.Speed + " status=" + $ram.Status + " model=" + $ram.Model + " type=" + $ram.MemoryType + " bank label=" + $ram.BankLabel + " name=" + $ram.Name
+	if($i -gt 1) {
+		$ram_str=$ram_str + ","
+	}
+	$ram_capacity=$ram.Capacity / 1MB
+	$ram_capacity="{0:N0}" -f $ram_capacity
+	$ram_str=$ram_str + " " + $i + ": capacity=" + $ram_capacity + "MB speed=" + $ram.Speed 
+	$i=$i+1
+}
+
+$total_swap=$pf.AllocatedBaseSize
+$used_swap=$pf.CurrentUsage
+$free_swap=$total_swap - $used_swap
+$used_percent=100 * $used_swap / $total_swap 
+$info_str="SWAP: total="+$total_swap + "MB used=" + $used_swap + "MB free=" + $free_swap + "MB. " + $ram_str
+
+if($used_percent -ge $error_percent) {
+	$statusid=$status_error
+	$message_str="ERROR: Swap usage is " + $used_percent + "% (>=" + $error_percent + ")!"  
+}
+elseif($used_percent -ge $warning_percent) {
+	$statusid=$status_warning
+	$message_str="WARNING: Swap usage is " + $used_percent + "% (>=" + $warning_percent + ")!"  
+}
+else {
+	$statusid=$status_ok
+	$message_str="OK: Swap usage is " + $used_percent + "%."  
+}
+$message_str=$message_str + " " + $info_str

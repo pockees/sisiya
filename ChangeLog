@@ -1,0 +1,193 @@
+0.5:
+Release 1
+- sisiya client check scripts on Linux/UNIX systems have now a lock file to prevent running it when the previous script is not finished
+- modified sisiya_isuptodate to be used with yum, zypper and pacman
+- modified sisiya_acpi_temperature check to use acpi command when the /proc/acpi/thermal_zone directory does not exist
+- modified sisiya_acpi_battery check to use acpi command when the /proc/acpi/battery directory does not exist
+- added isuptodate check for Linux yum based systems
+- added server checks for vmware systems.
+- added support for configuring remote checks from the web interface. 
+- added auto update support for MS Windows client checks.
+- changed the SisIYA message format from a character seperated string to XML message.
+- change the statusid's to be able to add truble ticket like system to the SisIYA, which is going to be integrated soon. 
+- added support for adding and/or replacing system images and changed the structure of the images folder.
+- added network discovery support for network device view.
+- added network device view to web GUI.
+- added dashboard to the web GUI.
+- added autodiscovery support.
+- rewrite of the web GUI. Instead of a single php scirpt, which does everything, now we have banch of php scripts doing specific tasks.
+0.4:
+Release 29
+- added server checks for sensors (temperature, humidity etc).
+- added check for LSI Logic MegaRAID controllers used Dell servers using megacli utility.
+- added CA BrightStore check for media pool scratch set on MS Windows systems.
+- added SisIYA client checks for ACPI checking battery and temperature for MS Windows and Linux systems.
+- added SisIYA_Client_GUI: a taskbar icon program, which shows the latest results for a Windows system.
+- addapted SisIYA common client checks for OpenBSD, NetBSD, FreeBSD and openSolaris
+- added ntpstat check for MS Windows systems.
+- added MS Exchange mail queue check.
+- added MS Exchange MAPI connectivity check.
+Release 28
+- added MS Exchange service health check.
+- added sisiya_url to the sisiyaconf.php and updated sisiya_rss.php to use this variable.
+- added CA BrightStore check for backup jobs using the ca_qmgr utility.
+- added UPS check for CS121 SNMP web adapter equiped UPS systems.
+- added sisiya_system_info_prtconf.sh script to get server info on UNIX systems with prtconf. 
+- added sisiya_system_info_hpasm.sh script to get server info on HP systems with hpasmcli. 
+- made some minor modifications on the client check scripts to run on AIX.
+- added SisIYA system name to the imap_systems.conf file
+- added SisIYA system name to the smtp_systems.conf file
+- added SisIYA system name to the switch_systems.conf file
+- added RAID level, stripe size etc info in the check for HP Smart Array controllers using hpacucli utility for MS Windows. 
+- added check for the running status of MS Windows services, which are set be auto started.
+- added NSIS installer script for MS Windows systems.
+- added antivirus status check for MS Windows systems.
+- added check for programs that must be always running for MS Windows systems.
+- added load check for MS Windows systems.
+- added swap check for MS Windows systems.
+- added uptodate check for MS Windows systems.
+- added file system check for MS Windows systems.
+- added event log check for MS Windows systems.
+- added system check for MS Windows systems.
+- added SisIYA client checks for MS Windows systems, which use powershell.
+- removed the not used host_name parameter from sisiya_send_message2.sh script.
+- added check for VMware.
+- added SisIYASendMessage.java: a program for sending messages to the SisIYA server.
+- changed serviceid_smbd to serviceid_smb in the sisiya_check_smb_system.sh script.
+- added filesystem type parameter to the file system check script.
+- added RAID level, stripe size etc info in the check for HP Smart Array controllers using hpacucli utility. 
+- fixed a bug in sisiyac1.c, which truncated the message's last character.
+- added check for LSI Logic MegaRAID controllers using megarc utility.
+- added CPU status check script for HP systems using hpasmcli.
+- added RAM status check script for HP systems using hpasmcli.
+- added SisIYA system name to printer_systems.conf file.
+Release 26
+- added check for HP Smart Array controllers using hpacucli utility.
+- added check script for HP ProLiant servers with Integrated Lights-Out 2 module, which checks for fan speeds, temperatures etc using hpasmcli utility.
+- improved ntpstat script when the system does not have the ntpstat command and the ntpq does not return proper return codes.
+- added script to check number of mails in a mail queue.
+- added script to check software RAID devices.
+- added script to check EDI on Baan (Infor).
+- fixed the wget timeout problem by adding --tries=1 option in sisiya_check_http_system.sh
+- added SisIYA system name to the telnet_systems.conf file
+Release 24
+- added SNMP trap support. A script, which gets called from the snmptrapd and sends messages to SisIYA.
+- added sisiya check script for monitoring online Baan users. 
+- changed the SisIYA's administration web interface.
+- changed language support file format, so that every language has its own file.
+- changed DOCTYPE from HTML 4.01 Transitional to XHTML 1.0 Strict
+- added stylesheet for the web interface
+- added Baan jobs script. It checks the status of the Baan jobs.
+- added SMART check for SMART enabled disks. At the moment it checks the disk's temperature and displays disk infos.
+- added default Apache configuration file sisiya.conf
+- changed all bash source command to "." (dot) command.
+- changed all == in test to = in the if and while tests
+- added user and password support for sisiya_check_http script
+- added ntpq command to sisiya_ntpstat check script
+- added a PHP script to generate an XML file for client applications
+- added onerror option to sisiya_listening_socket check
+- added a server check for DNS servers
+- sisiya_check_printer_system.sh : changed the status from warning to OK, when the device status is running(2) and printer status is other(1). This seems
+to be a standby state for a printer.
+- bugfix: sisiya_adm.php could not send a message if there was no previous message(s)
+- corrected a typo in sisiya_established_connections.sh
+Release 23
+- added a script which generates RSS XML file
+- removed password field from Users form. The password is set seperately in the Change Password form.
+- bugfix: sisiya_established_connections status was warning when there were warning and error at the same time and error message didn't appeare at all
+- added timeout option to some checks (ssh, http, https, smtp, telnet)
+- removed die on DB execute command in the dbclass.php
+- added alert time to the alert messages in the sisiay_alerts.php
+- bugfix: sisiya_users check, it tried to write into a dead terminal and hang
+Release 22
+- records from systemhistorystatus and systemhistorystatusall are moved to systemhistorystatusYYYYMM tables. This increases performance and
+keeps the size of systemhistorystatus table from growing too much. sisiya_update_systemservice.php,make_history_archive_MySQL.sh and 
+make_history_archive_PostgreSQL.sh are replaced with sisiya_updatedb.php.
+- added onerror option to established connections check, so that one can specify to have warning for a broken conection, instead of error
+- added check for Dell PowerEdge RAID controllers using afacli utility
+- rewrote the HTTP check to use wget
+- added check for DiskSuite metadevices
+- added Jabber alert type
+- changed sisiya_alrts.php and sisiya_adm.php to include Jabber alert type
+- added check for RAID using linttylog command
+- added HDD temperature check, which uses hddtemp command
+- added update support to the RPM packages. Now one can use rpm -Fvh package_name to properly update SisIYA packages. 
+- changed 1024 limit for the message size
+- added language support to the web interface
+Release 21
+- added server check for HTTPS systems
+- moved all code that handles SisIYA client connections and updates the DB into a class called SisIYAServer
+- fixed a bug in the sisiya_check_dbs.sh script. Removed the check for SISIYACheckDB.properties file. it is automatically generated.
+Release 20
+- changed EDB_DRIVERS_DIR to EDBC_DRIVERS_DIR
+- changed sisiya-client package name to sisiya-client-checks
+- added str column to the systemservice table, so that we can add description to every service per system
+- redirected stderr to dev null in the sisiya_listening_socket.sh script
+- changed the setFileName function in the ConfFile class to have bool as return value
+- migrated the repository from cvs to subversion
+- added sisiya_established_connections script to check the established connections
+- added a second fork in the daemon_init function, so that the daemon cannot automatically acquire a controlling
+terminal if it opens a terminal device in the feature. This is not going to be the case for the SisIYA daemon anyway.
+- added DB_MAX_CONCURRENT_CONNECTIONS configuration parameter in the sisiyad.conf file. This parameter is used by
+the sisiyad_thread daemon to control the number of concurrent connections to the database system. The sisiyad_thread
+daemon is a rewrite of the sisiyad using POSIX threads.
+Release 19
+- fixed the problem of setting default valuse in the ConfFile.cpp, when it is called for more than onece
+- fixed the problem with handling the SIGHUP, which is used to reconfigure the SisIYA daemon
+- replaced setlongjmp and longjmp with corresponding sigsetjmp and siglongjmp, so the set of blocked signals could be restored later on
+- added expire option to the ping server check scripts
+- minor corrections of info strings in the sisiya_check_smtp and the smtp_systems.conf files
+- added POP3 check
+- added IMAP check
+- added expire to smtp server check scripts
+- fixed the bug  when the SisIYA daemon recieved the SIGTERM signal and could not exit normally
+- fixed a bug in the sisiya_mysql_table_status.sh check related the the place of the i integer variable decleration
+Release 18
+- removed the sorting of systems via statusid in the systems overview page, so that they stay on their alphabetical positions
+- added sisiya_mysql_table_status check for checking the status of MySQL tables
+- fixed typo (warning_status must be status_warning) in the sisiya_netbackup_robots check 
+- changed the behavior of the sisiyac client program when the message length is greater than MAX_STR to truncate the message instead of just exiting
+- added version information to the SisIYA daemon to be printed in the syslog
+- added input validation for the recieved messages in the SisIYA daemon
+- in the service history for a system php GUI changed the select statement to use recievetime instead of sendtime 
+Release 17
+- added an interface for sending messages to the SisIYA server
+- fixed the problem with sisiya_users.sh script
+- SisIYA server compiles using atoconf/automake now
+Release 15
+- added SO_REUSEADDR socket option to the SisIYA daemon.
+- added ipconntrack script
+- replaced sisiya_httpd_count and sisiya_httpsd_count checks with sisiya_progs_count.
+- added ntpstat check
+- added check for listening sockets
+0.4.0-5:
+- chnaged sisiya_check directory to sisiya_checks
+- changed the installation directory for the sisiya packages from /usr/local to /opt
+- edbc is included in SisIYA as a subpackage
+- implemented alerts (e-mail)
+- added check for Sun Cluster
+- swaped send and recieve times in the service history form
+- recieve timestamp instead of send timestamp is recorded in the systemstatus and systemservicestatus tables
+- added access for /usr/local/sisiya_check/bin directory and the progs
+- changed /bin/sh to /bin/bash
+- include systeminfo and infos tables for adding information such as systag,description etc. for the systems
+- dropped some collumns from the systems table which are going to be represented as infos in the systeminfo table
+- fixed the bug in sisiya_fs about the state check of the ext file systems
+- added a dmesg check
+- added a check for daemon child runtime
+0.3.0-2:
+- added check for Oracle hitratios
+- there is a new package edbc, which is a database connectivity for C++ applications
+- the sisiyad is now a C++ program, which uses EDBC for its database connections
+- small corrections and improvents in the sisiya.php and sisiya_adm.php
+- added checks for Veritas NetBackup, such as checks for the drive and robot status, jobs etc
+- improved sisiya_systems.sh script, now one can specify error and warning times as dday:hours:minutes
+- added ups system check, which includes check for temperature
+- added output load check to the APC PDU systems
+- improved printer check script
+- added ftp server check script
+- added a echo_sisiya_date function in the sisiya_functions.sh and checnged all scripts to use this function
+- added exclude_list and exceptions_list in the sisiya_fs.sh, so that one can exclude mount points from checking and
+give exceptions for the error and warning percent values per mount point
+- added requires for sisiya-client for sisiya-server-checks package, because it needs the sisiya_client.conf file
+- added check for NetBackup scratch pool

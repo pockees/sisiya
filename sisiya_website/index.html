@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="description" content="SisIYA system and network monitoring" />
+<meta name="description" content="SisIYA system and network monitoring" />
+<meta name="keywords" content="system monitoring,network monitoring,snmp traps,web based,free" />
+<meta name="keywords" content="system monitoring,network monitoring,snmp traps,web based,free" />
+<link rel="stylesheet" type="text/css" href="style/style.css" />
+<title>SisIYA Homepage</title>
+</head>
+<body>
+<h3>SisIYA Homepage</h3>
+
+<table class="header">
+<tr class="header">
+<td><a href="docs/">Documentation</a></td>
+<td><a href="downloads/">Downloads</a></td>
+<td><a href="faq/">FAQ</a></td>
+<td><a href="http://sisiya.sisiya.net">Live demo</a></td>
+<td><a href="mailing_lists.html">Mailing Lists</a></td>
+<td><a href="screenshots/">Screenshots</a></td>
+<td><a href="http://sisiya.svn.sourceforge.net/viewvc/sisiya/">Subversion</a></td>
+</tr>
+</table>
+
+<p>
+SisIYA is an open source (GPL) system monitoring tool. It is a simple yet very powerfull tool. 
+With SisIYA you can monitor your Linux, UNIX, MacOS X, Windows, network and power switches, wireless access points, printers, UPS, 
+and any SNMP enabled systems. SisIYA checks and monitors for FTP, HTTP, IMAP, POP3, SMTP etc services.
+Extending SisIYA with new checks is a very simple task. One need only to write a script or a program to 
+check the status of something (system. service etc), then it is a trivial task to send this information to the SisIYA. 
+Let computers do the job for us!
+</p>
+<!--
+<p>
+The main developement of SisIYA is done on Linux. 
+</p>
+-->	
+<!--
+		<img src="images/sisiya.jpg" alt="SisIYA (A system monitoring and administration tool)"><br>
+-->
+
+<p>
+SisIYA news: 
+</p>	
+<p>
+<ins><div class="date">25.12.2009</div></ins> 
+SisIYA
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=621886">0.4-28</a>
+is released.
+<ins><ul>
+<li>Added MS Exchange service health check.</li>
+<li>Added sisiya_url to the sisiyaconf.php and updated sisiya_rss.php to use this variable.</li>
+<li>Added CA BrightStore check for backup jobs using the ca_qmgr utility.</li>
+<li>Added UPS check for CS121 SNMP web adapter equiped UPS systems.</li>
+<li>Added sisiya_system_info_prtconf.sh script to get server info on UNIX systems with prtconf.</li>
+<li>Added sisiya_system_info_hpasm.sh script to get server info on HP systems with hpasmcli.</li>
+<li>Made some minor modifications on the client check scripts to run on AIX.</li>
+<li>Added SisIYA system name to the imap_systems.conf file.</li>
+<li>Added SisIYA system name to the smtp_systems.conf file.</li>
+<li>Added SisIYA system name to the switch_systems.conf file.</li>
+<li>Added RAID level, stripe size etc info in the check for HP Smart Array controllers using hpacucli utility for MS Windows.</li>
+<li>Added check for the running status of MS Windows services, which are set be auto started.</li>
+<li>Added NSIS installer script for MS Windows systems.</li>
+<li>Added antivirus status check for MS Windows systems.</li>
+<li>Added check for programs that must be always running for MS Windows systems.</li>
+<li>Added load check for MS Windows systems.</li>
+<li>Added swap check for MS Windows systems.</li>
+<li>Added uptodate check for MS Windows systems.</li>
+<li>Added file system check for MS Windows systems.</li>
+<li>Added event log check for MS Windows systems.</li>
+<li>Added system check for MS Windows systems.</li>
+<li>Added SisIYA client checks for MS Windows systems, which use powershell.</li>
+<li>Removed the not used host_name parameter from sisiya_send_message2.sh script.</li>
+<li>Added check for VMware.</li>
+<li>Added SisIYASendMessage.java: a program for sending messages to the SisIYA server.</li>
+<li>Changed serviceid_smbd to serviceid_smb in the sisiya_check_smb_system.sh script.</li>
+<li>Added filesystem type parameter to the file system check script.</li>
+<li>Added RAID level, stripe size etc info in the check for HP Smart Array controllers using hpacucli utility.</li>
+<li>Fixed a bug in sisiyac1.c, which truncated the message's last character.</li>
+<li>Added check for LSI Logic MegaRAID controllers using megarc utility.</li>
+<li>Added CPU status check script for HP systems using hpasmcli.</li>
+<li>Added RAM status check script for HP systems using hpasmcli.</li>
+<li>Added SisIYA system name to printer_systems.conf file.</li>
+</ul></ins>
+</p>	
+<p>
+<ins><div class="date">08.10.2009</div></ins> 
+SisIYA
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=621886">0.4-26</a>
+is released.
+<ins><ul>
+<li>Added check for HP Smart Array controllers using hpasmcli utility.</li>
+<li>Added check script for HP ProLiant servers with Integrated Lights-Out 2 module, which checks for fan speeds, temperatures etc.</li>
+<li>Improved ntpstat script when the system does not have the ntpstat command and the ntpq does not return proper return codes.</li>
+<li>Added script to check number of mails in a mail queue.</li>
+<li>Added script to check software RAID devices.</li>
+<li>Added script to check EDI on Baan (Infor).</li>
+<li>Fixed the wget timeout problem by adding --tries=1 option in sisiya_check_http_system.sh.</li>
+<li>Added SisIYA system name to the telnet_systems.conf file.</li>
+</ul></ins>
+</p>	
+<p>
+<ins><div class="date">25.08.2008</div></ins> 
+SisIYA
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=621886">0.4-24</a>
+is released.
+</p>	
+<p>
+<ins><div class="date">07.11.2006</div></ins> 
+SisIYA 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=461668">0.4-23</a>
+is released.
+</p>	
+<p>
+<ins><div class="date">29.08.2006</div></ins> 
+SisIYA 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=443228">0.4-22</a>
+is released.
+</p>	
+<p>
+<ins><div class="date">31.05.2006</div></ins> 
+SisIYA 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=421285">0.4-21</a>
+is released.
+</p>
+<p>
+<ins><div class="date">26.05.2006</div></ins> 
+SisIYA 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=420045">0.4-20</a>
+is released.
+</p>
+<p>
+<ins><div class="date">01.03.2006</div></ins>
+SisIYA 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=397668">0.4-19</a>
+is released.
+</p>
+<p>
+<ins><div class="date">28.11.2005</div></ins>
+SisIYA 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=115771&amp;package_id=125621&amp;release_id=374299">0.4-18</a>
+is released.
+</p>
+
+<p>
+<a href="http://sourceforge.net/projects/sisiya"><img src="http://sourceforge.net/sflogo.php?group_id=115771&amp;type=1" width="88" height="31" alt="SourceForge.net Logo" /></a>
+</p>
+</body></html>

@@ -1,0 +1,28 @@
+OBJS=systype.o misc.o sisiyac.o mesg.o sisiyac1.o
+GCC=gcc -Wall
+RM=rm -f
+OS=$(shell uname -s)
+
+ifeq ($(OS),SunOS)
+	LDFLAGS=-lsocket -lnsl
+endif
+ifeq ($(OS),Linux)
+        LDFLAGS=
+endif
+
+sisiyac: $(OBJS) misc.h misc.c systype.h systype.c inet.h sisiyac1.h sisiyac1.c mesg.h mesg.c smt.h inet.h
+	$(GCC) $(LDFLAGS) $(OBJS) -o sisiyac
+misc.o: misc.h misc.h
+	$(GCC) -c misc.c
+mesg.o: mesg.h mesg.h
+	$(GCC) -c mesg.c
+systype.o: systype.c systype.h 
+	$(GCC) -c systype.c
+sisiyac1.o: sisiyac1.c sisiyac1.h misc.c inet.h systype.h systype.c mesg.h mesg.c
+	$(GCC) -c sisiyac1.c
+sisiyac.o: sisiyac.c systype.h systype.c misc.h inet.h
+	$(GCC) -c sisiyac.c 
+
+clean:
+	$(RM) $(OBJS)
+         

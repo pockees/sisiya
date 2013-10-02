@@ -1,0 +1,16 @@
+#!/bin/sh
+
+home=/home/emutlu/eDB/examples
+#J2EE_HOME=/usr/lib/java
+JDK_HOME=/usr/lib/java
+JDBC_MySQL=/usr/lib/jdbc/mysql/mysql-connector-java-3.1.8-bin.jar
+JDBC_PostgreSQL=/usr/share/java/pg74.215.jdbc3.jar
+JDBC_Oracle=/usr/lib/jdbc/classes12.zip
+
+##############################################################
+#CLASSPATH=$home:$JDBC_MySQL:$JDBC_PostgreSQL:$JDBC_Oracle:$J2EE_HOME:$SISIYAREPORT
+CLASSPATH=$home:$JDBC_PostgreSQL:$JDBC_MySQL
+##############################################################
+
+export CLASSPATH
+export JDK_HOME

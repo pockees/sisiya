@@ -1,0 +1,171 @@
+0) Write documentation. -- Started
+0.3) Change installation directory from /usr to /opt -- OK
+0.5) The php scripts show a one day after the starttime value in the systemhistory(all) OK
+1) Make rpm for SisIYA. --- OK
+2) Write an administration interface for the SisIYA DB. --- OK
+3) Include expire time for the services. -- OK
+4) Seperate the DB connection and insert functions from the
+   server code. Use shared libraries (.so). Use eDBC and rewrite the sisiyad in C++. -- OK
+5) Consider using ODBC. --- No need any more.
+6) Use multithreding instead of usual fork/execute model. Started
+7) Write checks for network devices (switch, routers etc.). Consider
+   using SNMP for this purpose. -- Started
+8) Write checks for Oracle, PostgreSQL and MySQL database systems.
+9) Write checks for availabilty (connection) of SSH(OK), Telnet, FTP(OK), HTTP(OK), HTTPS, IMAP, POP3
+   LDAP, DNS, SMTP, SMB(OK), DHCPD etc. -- Started 
+10) Write checks for Windows clients. --- OK
+11) Write the Windows client as a service. --- OK
+12) Consider Internationalization. -- Started
+13) Find a method for updating the systemservice table. -- Done in the admin interface. Consider writing a script which is
+    going to be run periodically.
+14) Write an option to print the parameter values for sisiyad. Consider using SIGUSR1
+    signal for this purpuse. -- Done: It writes its config options to syslog.
+15) Consider grouping systems so that one can define groups (systems grouped by network, by location,
+    by usage : shop systems, dbs etc.), assign systems to groups and change
+    the php scripts to select from the available groups. OK
+16) Put default .conf files for common sisiya_checks.
+17) In order to optimize select/inserts create the needed indexes for the tables.
+18) Create a constrain that the system ID must be greater than 0.
+19) Optimize server checks to collect all messages first in a file and send them together to to the sisisyad. --- OK
+20) Check for Veritas NetBackup : job status (bpdbjobs -summary) -- OK
+21) Check for Veritas NetBackup : if the debug is active (existence of dirs in the /usr/openv/netbackup/logs/ directory)--OK
+22) Check for Veritas NetBackup : backup & restore exit status -- OK
+23) Check for Veritas NetBackup : number of tapes in the SCRATCH pool - available tapes -- OK
+24) Check for Veritas NetBackup : info about start/stop of backup & restore jobs -- OK
+25) Check for Veritas NetBackup : UP/DOWN status of the tape drives -- OK
+26) Check for Veritas NetBackup : catalog backups
+27) Check for Veritas NetBackup : mediaid missmatch
+28) Check for Veritas NetBackup : library consistency (vmcheckxxx) -- OK
+29) Check for Veritas NetBackup : disk_full_notify
+30) Check for Oracle : hit ratio & other performance checks -- OK
+31) Check for Oracle : alert log check
+32) Check for Oracle : tablespace --- OK
+33) Check for Veritas NetBackup : check client connectivity with netbackup's ping utility
+34) Change the configure & Makefiles so that the configuration options given to the configure effect spec file, 
+sisiyad start/stop script etc.
+35) Check for UPS. -- OK
+36) Change the sisiya_users.sh so that one can specify error_users and warning_users list.
+37) Correct the sisiya_check_printer_system.sh for the printer status codes. -- OK
+38) Correct the sisiya_cpu.sh.
+39) Add output check for APC PDUs. -- OK
+40) Write a check which gets the firmware and rom versions from a switch and checks them with the vendors website.
+41) Add options into the sisisya_system.sh so that one can specify warning and error values on mount point basis. -- OK 
+42) Write ftp check. -- OK
+43) Change sisiya_check_ftp.sh, sisiya_check_smb.sh and etc so that the username and password parameters are not
+    passed as a parameters to the sisiya_check_X_system.sh scripts, but written in a tmp file and the file name is passed.
+44) Correct the date_str in sisiya_check_ scripts. Write a echo_sisiya_date function in sisiya_functions.sh. -- OK
+45) Write a script which is going to update the systemservice table on regular basis.
+46) Implement expire time functionality for services. -- OK
+47) Implement a generic system info, so that one can add as much info to a system as needed. -- OK
+48) Implement a mode where users can log in and group their systems. -- OK
+49) Remove sisiya_check_system_dbtype.sh scripts from the cvs. -- OK
+50) Replace time function in the sisiyad, which is used to measure start/stop times with the new POSIX time function (clock_gettime ?).
+51) Rewrite signal handling for sisiyad with sigaction etc. -- OK
+52) Add sisiya_functions.php to cvs. -- OK
+53) Implement general preferences for valid user.
+54) Implement a method of changing or not changing the place of systems in the GUI when the status is changed.
+55) Implement a method of send e-mail for the valid user when the overall status have changed. -- OK
+56) Implement color preferences. As a loged in user, I would like to change some colors etc. 
+	There is a need for user preferences.  General preferences for a logedin user.
+57) Implement effects global status per user. -- OK
+58) Seperate SisIYA package version. -- OK
+59) Write a postfix special check (mailq, dropped deffered ...).
+60) Write a HTTP over SSL server check script.
+61) Write check for link test for the ethernet devices (dmesg contains messages like: tg3: eth0: Link is down.). -- OK
+62) Remove sisiya_cpp.spec from cvs and add sisiya.spec.old to cvs. -- OK
+63) Add SisIYA.gif in the sisiya_ui/images to cvs. -- OK
+64) Remove all vendor depended images from sisiya_ui/images directory and from cvs. -- OK
+65) Remove edbc.spec from cvs. -- OK
+66) Make a sisiya-client and sisiya-client-systems packages for Solaris. --OK
+67) Make a sisiya-check package for MacOS X.
+68) Fix a bug which occurs when the client connects to SisIYA daemon, stays connected without writing anything to the socket (or without writing end of line character). -- OK ; Added ReadTimeout on the socket. -- OK
+69) Remove sisiya_http(s)d_count checks form CVS and add sisiya_progs_count check to CVS. -- OK
+70) Rewrite ftp http checks to use wget. -- Started
+71) Add checks in scripts for the variables that are defined elsewhere.
+72) Write a check for monitoring the number of connections to MySQL database system.
+73) Fix the problem when the conf file does not exist. Because that the process first becomes daemon and than
+set conf file name, file names must be specified by full path name. The problem is if(file->bad()) evaluates to false
+one must use if(!file->is_open()) instead
+74) Rename sisiya-client to sisiya-client-checks -- OK
+75) Remove dependency that sisiya-server-checks has to sisiya-client package (sisiya-client.conf).
+76) Create a table with system id, service id, str which is going to be used for describing the service and possible actions that needs to be taken
+in case of warning or error. Implement an web interface for entering this info. -- OK
+77) Add another column in the services table which is going to be a detailed description of the service.
+79) Localize the web interface. Started (Use TMX XML standard)
+80) Localize client checks. 
+81) Localize server checks. 
+82) Change the archiving of the systemhistorystatusall to be done monthly: systemstatusYYYYMM -- OK
+83) Write a script to check RAID devices (DiskSuite metadevices) -- OK
+84) Write a script to check Linux RAID devices -- Started (afacli -- OK, ...)
+85) Add alert type for Jabber -- OK
+86) Check the send status of the Jabber message and if there was an error, do not update the DB, so that the script could resend the message later on. -- OK
+87) Add timeout option to sisiya_check_* progs
+88) A not reachable system should not prevent a script (http/s,sshd ...) for checking other systems.
+89) Reorganize source code directory, so that one can have a general lib directory and each major program have its own directory (sisiya_server, sisiya_heartbeat etc). Also, convert all code from C to C++.
+90) Write a script to export database information of a running SisIYA system and a script which could be used to restore it.
+91) Fix the bug in sisiya_alert.php : The script does not send E-Mail alerts when there is no record for the user in the 
+    userproperties table.
+92) For compatability change all occurence of "==" in test statemnet in bash scripts to "=". -- OK
+93) For compatability change all "source" statements in bash scripts to ".". -- OK
+94) For improved compatability change all direct calls to the mktemp command to maketemp function call, which in turn 
+    will call mktemp diffently for differen platforms.
+95) For compatability change echo -n to just echo and then use tr "\n" " " command.
+96) Integrate changes made for HP-UX systemes into SisIYA scripts.
+98) Every system should have its own configuration file.
+99) Cleanup after unsuccessful http (wget) check attempt. wget leaves tmp files under /tmp directory
+100) Include a sample sisiya.conf for Apache. -- OK
+101) Fix sisiya_users : who -d reports dead processes, but it should be cleared somehow
+102) Separate the language.txt file into lang_tr.txt, lang_en.txt etc.
+103) Write disk usage check script using powershell for MS Windows. -- OK
+104) Write system uptime check script using powershell for MS Windows. -- OK
+105) Write a check for services, that must be automaticaly started for MS Windows systems. -- OK
+106) Write swap usage check script using powershell for MS Windows. -- OK
+107) Write CPU load check script using powershell for MS Windows. -- OK
+108) Write progs check script using powershell for MS Windows. -- OK
+109) Write MS Exchange check scripts using powershell for MS Windows.
+110) Write MS SQL check scripts using powershell for MS Windows.
+111) Write RAID check script for HP Smart Array controllers using hpacucli and powershell for MS Windows. --OK
+112) Write ILO2 check scripts for HP systems using hpasmcli and powershell for MS Windows.
+113) Write system update status check script using powershell for MS Windows. -- OK
+114) Write antivirus status check script using powershell for MS Windows. -- Started
+115) Write Vmware status check script for Linux.
+116) Write listening socket script for MS Windows systems.
+117) Write defrag anylizer script for MS Windows systems.
+118) Write RAM, fan, temperature etc checks for MS Windows systems, using the HP's hpasm utility.
+119) Write printer and queue status check script for MS Windows print server.
+120) Write script to check whether a MS Windows systems need rebooting.
+121) Parse the message, so that the HTML validator validator.w3.org is happy about chars like < (&gt) .
+122) Write volume group checks using lsvg, lspv etc on AIX.
+123) Prevent generation of temp files in the MS Windows client program, when there is no SisIYA server connection.
+124) Make an advirtisment movie and add to youtube.
+125) Write a wizard for entering a keystr and translating it. At least English must be translated.
+126) Write a dashboard for SisIYA GUI:
+	Total number of systems -OK
+	- a pie chart
+	Total number of services -OK
+	- a pie chart
+
+	Top 10 services
+	- list of services with % up/down
+
+	Last 24 hours of the above
+	- Graph
+
+	Last week & last month
+
+	Max number of Error,Warning and OK services
+	- 24 hours
+	- last week
+	- last month 
+127) Add a new statusid (no report and unavailable). For this change the sisiyad and related scripts and php GUI.-OK
+128) Change the SisIYA message format from a field separated format to XML.
+129) Write and integrate a trouble ticket system into SisIYA like OTRS or integrate OTRS. 
+130) Write a switch view for SisIYA GUI. - OK
+131) Write a topology view for SisIYA GUI.
+132) Get antivirus definition, antimalware definition and engine definition versions for Microsoft Forefrom from the registry
+	\\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft Forefront\Client Security\1.0\AM\SiginutureUpdates\
+	ASSignitureVersion 	: Antispyware
+	AVSignitureVersion 	: Antivirus
+	EngineVersion		: Engine
+133) Write a check for MySQL connections eg max_connections.
+134) Write dependency list for a service. If a specified service has a problem, define a list of services which are going to be effected by this problematic service.

@@ -1,0 +1,61 @@
+CC=g++
+RM=rm -f
+#WARNINGS=-Wall -Wshadow -Woverloaded-virtual -Wsign-promo -Wfloat-equal -Wold-style-cast -Weffc++
+WARNINGS=-Wall -Wshadow -Woverloaded-virtual -Wsign-promo -Wfloat-equal
+OPT=$(WARNINGS) -rdynamic -DHAVE_VARARGS_H -DHAVE_UNISTD_H -DLINUX -DHAVE_CONFIG_H
+DEBUG=-ggdb -DDEBUG
+#DEBUG=
+###
+MISC_INC_DIR=../src
+
+INC_DIR=./include
+SRC_DIR=./src
+
+EDBC_DIR=../edbc
+EDBC_INC=$(EDBC_DIR)/include
+EDBC_UTILS_INC=$(EDBC_DIR)/utils/include
+EDBC_UTILS_SRC=$(EDBC_DIR)/utils/src
+
+ALL_LIB=$(EDBC_DIR)/lib 
+ALL_LFLAGS=-ldl -ledbc
+ALL_INC=-I$(EDBC_INC) -I$(EDBC_UTILS_INC) -I$(INC_DIR) -I../src
+ALL_OBJS=trim.o esignal.o UpperLowerCase.o Semaphore.o misc.o ConfFile.o SisIYAServer.o sisiyad.o
+
+all: sisiyad
+
+sisiyad: $(ALL_OBJS)
+#	$(CC) $(DEBUG) $(OPT) $(ALL_INC) $(ALL_OBJS) -L$(ALL_LIB) $(ALL_LFLAGS) -o sisiyad -lpthread
+	$(CC) -o sisiyad $(DEBUG) $(OPT) $(ALL_INC) -L$(ALL_LIB) $(ALL_OBJS) $(ALL_LFLAGS)
+	rm -f *.o
+
+sisiyad.o: $(SRC_DIR)/sisiyad.cpp
+#sisiyad.o: 
+	$(CC) $(DEBUG) $(OPT) $(ALL_INC) -c $(SRC_DIR)/sisiyad.cpp -o sisiyad.o
+
+SisIYAServer.o: $(INC_DIR)/SisIYAServer.hpp
+	$(CC) $(DEBUG) $(OPT) -I$(INC_DIR) -I$(MISC_INC_DIR) -I$(EDBC_INC) -I$(EDBC_UTILS_INC) -c $(SRC_DIR)/SisIYAServer.cpp -o SisIYAServer.o
+
+ConfFile.o: $(INC_DIR)/ConfFile.hpp
+	$(CC) $(DEBUG) $(OPT) -I$(INC_DIR) -I$(EDBC_UTILS_INC) -c $(SRC_DIR)/ConfFile.cpp -o ConfFile.o
+
+parseURL.o: $(EDBC_UTILS_SRC)/parseURL.cpp
+	$(CC) $(DEBUG) $(OPT) -I$(EDBC_UTILS_INC) -c $(EDBC_UTILS_SRC)/parseURL.cpp -o parseURL.o
+
+trim.o: $(EDBC_UTILS_SRC)/trim.cpp
+	$(CC) $(DEBUG) $(OPT) -I$(EDBC_UTILS_INC) -c $(EDBC_UTILS_SRC)/trim.cpp -o trim.o
+
+UpperLowerCase.o: $(EDBC_UTILS_SRC)/UpperLowerCase.cpp
+	$(CC) $(DEBUG) $(OPT) -I$(EDBC_UTILS_INC) -c $(EDBC_UTILS_SRC)/UpperLowerCase.cpp -o UpperLowerCase.o
+
+Semaphore.o: $(INC_DIR)/Semaphore.hpp
+	$(CC) $(DEBUG) $(OPT) -I$(INC_DIR) -c $(SRC_DIR)/Semaphore.cpp -o Semaphore.o
+
+esignal.o: $(INC_DIR)/esignal.hpp
+	$(CC) $(DEBUG) $(OPT) -I$(INC_DIR) -c $(SRC_DIR)/esignal.cpp -o esignal.o
+misc.o: ../src/misc.c ../src/misc.h
+	$(CC) $(DEBUG) $(OPT) -I$(MISC_INC_DIR) -c ../src/misc.c -o misc.o
+clean:
+	$(RM) *.o
+install:
+	install -m 600 sisiyad.conf $(install_root)/etc
+	install -m 700 sisiyad $(install_root)/usr/sbin

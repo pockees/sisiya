@@ -1,0 +1,275 @@
+#!/bin/bash
+#
+#    Copyright (C) 2003 - 2010  Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#
+#######################################################################################
+if test $# -lt 2 ; then
+	echo "Usage : $0 sisiya_client.conf expire"
+	echo "Usage : $0 sisiya_client.conf expire output_file"
+	echo "The expire parameter must be given in minutes."
+	exit 1
+fi
+
+client_conf_file=$1
+expire=$2
+output_file=""
+if test $# -eq 3 ; then
+	output_file=$3
+	if test ! -f $output_file ; then
+		echo "File $output_file does not exist! Exiting..."
+		exit 1
+	fi
+fi
+
+if test ! -f $client_conf_file ; then
+	echo "$0 : SisIYA client configuration file $client_conf_file does not exist!"
+	exit 1
+fi
+
+script_name=`basename $0`
+sisiya_osname=`uname -s`
+### source the config file
+. $client_conf_file
+###
+module_conf_file="${sisiya_host_dir}/`echo $script_name | awk -F. '{print $1}'`.conf"
+
+if test ! -f $sisiya_functions ; then
+	echo "$0 : SisIYA functions file $sisiya_functions does not exist!"
+	exit 1
+fi
+### source the functions file
+. $sisiya_functions
+### Solaris does not allow to change the PATH for root
+if test "$sisiya_osname" = "SunOS" ; then
+	PATH=$PATH:/usr/local/bin
+	export PATH
+fi
+#######################################################################################
+#################################################################################
+### Check for temperature
+#################################################################################
+### service id
+serviceid=$serviceid_battery 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_battery is not defined! Exiting..."
+	exit 1
+fi
+
+##########################################################################
+service_name="Battery"
+##########################################################################
+
+#######################################################################################
+#######################################################################################
+### default values
+# the thermal zone ACPI directory in the proc filesystem 
+proc_acpi_dir="/proc/acpi"
+acpi_prog="/usr/bin/acpi"
+#######################################################################################
+### end of the default values
+##########################################################################
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	source $module_conf_file
+fi
+
+##########################################################################
+### cat /proc/acpi/battery/C1BE/info
+#present:                 yes
+#design capacity:         2086 mAh
+#last full capacity:      2086 mAh
+#battery technology:      rechargeable
+#design voltage:          14400 mV
+#design capacity warning: 105 mAh
+#design capacity low:     21 mAh
+#capacity granularity 1:  100 mAh
+#capacity granularity 2:  100 mAh
+#model number:            Primary
+#serial number:           45119 2007/05/09
+#battery type:            LIon
+#OEM info:                Hewlett-Packard
+##########################################################################
+### cat /proc/acpi/battery/C1BE/state
+#present:                 yes
+#capacity state:          ok
+#charging state:          discharging
+#present rate:            2264 mA
+#remaining capacity:      1965 mAh
+#present voltage:         15344 mV
+##########################################################################
+
+##########################################################################
+# Since kernel 2.6.20.7, ACPI modules are all modularized to avoid ACPI issues that were reported on some machines.
+# https://wiki.archlinux.org/index.php/ACPI_modules
+# acpi -i
+# Battery 0: Full, 100%
+# Battery 0: design capacity 5405 mAh, last full capacity 5441 mAh = 100%
+#
+# acpi -i
+# Battery 0: Discharging, 97%, 04:11:04 remaining
+# Battery 0: design capacity 5405 mAh, last full capacity 5441 mAh = 100%
+#
+#########
+# acpi -V
+#
+# Battery 0: Full, 100%
+# Battery 0: design capacity 5405 mAh, last full capacity 5441 mAh = 100%
+# Adapter 0: on-line
+# Thermal 0: ok, 25.0 degrees C
+# Thermal 0: trip point 0 switches to mode critical at temperature 107.0 degrees C
+# Cooling 0: LCD 15 of 15
+# Cooling 1: Processor 0 of 10
+# Cooling 2: Processor 0 of 10
+# Cooling 3: Processor 0 of 10
+# Cooling 4: Processor 0 of 10
+##########################################################################
+
+#
+tmp_file=`maketemp /tmp/tmp_${script_name}.XXXXXX`
+tmp_info_file=`maketemp /tmp/tmp_info_${script_name}.XXXXXX`
+tmp_ok_file=`maketemp /tmp/tmp_ok_${script_name}.XXXXXX`
+tmp_warning_file=`maketemp /tmp/tmp_warning_${script_name}.XXXXXX`
+tmp_error_file=`maketemp /tmp/tmp_error_${script_name}.XXXXXX`
+
+use_acpi()
+{
+	#$acpi_prog -i | tr "\n" " " >> $tmp_info_file
+	#declare -i i=0
+	$acpi_prog -b | while read line
+	do
+		battery_name=`echo $line 	| cut -d ":" -f 1 `
+		state_info=`echo $line 		| sed -e "s/${battery_name}://" `
+		battery_info=`$acpi_prog -i	| grep "${battery_name}:"	| tail -n 1`
+		#echo "battery_info=[$battery_info]"	 	
+		#echo "state_info=[$state_info]"	 	
+		capacity_state=`echo $line	| cut -d ":" -f 2		| cut -d "," -f 1 | awk '{print $1}'`
+		#echo "capacity_state=[$capacity_state]"
+		if test "$capacity_state" != "Full" ; then
+			echo "OK: The capacity state of the battery $battery_name is ${capacity_state}. $state_info" 	>> $tmp_ok_file
+		else
+			echo "OK: The battery $battery_name is charged. $state_info" >> $tmp_ok_file
+		fi
+		echo "INFO: $battery_name battery details: ${battery_info}." 	>> $tmp_info_file
+		
+	done
+}
+
+use_proc()
+{
+	declare -i i=0 j
+	cd $battery_dir 
+	for d in *
+	do
+		battery_name="$d"
+		info_str=`cat ${d}/info | grep "^present" | cut -d ":" -f 2 | tr -d " "`
+		if test "$info_str" = "yes" ; then
+			battery_name="$d"
+			battery_info=`cat ${d}/info | tr  "\n" ";"`
+			capacity_state=`cat ${d}/state | grep "^capacity state" | cut -d ":" -f 2 | tr -d " "`
+			charging_state=`cat ${d}/state | grep "^charging state" | cut -d ":" -f 2 | tr -d " "`
+			design_capacity=`cat ${d}/info | grep "^design capacity:" | cut -d ":" -f 2 | awk '{print $1}'`
+			remaining_capacity=`cat ${d}/state | grep "^remaining capacity:" | cut -d ":" -f 2 | awk '{print $1}'`
+			charged_percent=`echo "scale=2; 100 * $remaining_capacity / $design_capacity" | bc` 
+#echo "design_capacity=[$design_capacity] remaining_capacity=[$remaining_capacity] charged_percent=[$charged_percent]"
+			if test "$capacity_state" = "ok" ; then
+				echo "OK: The capacity state of the battery $battery_name is Ok." >> $tmp_ok_file
+			else
+				echo "ERROR: The capacity state of the battery $battery_name is $capacity_state (!= ok)!" >> $tmp_error_file
+			fi
+			case "$charging_state" in
+				"charging")
+					echo "OK: The charging state of the battery $battery_name is charging (${charged_percent}%). Running on AC power." >> $tmp_ok_file
+				;;
+				"charged")
+					echo "OK: The battery $battery_name is charged (${charged_percent}%). Running on AC power." >> $tmp_ok_file
+				;;
+				"discharging")
+					### check the capacity here
+					unit_str=`cat ${d}/state 	   | grep "^remaining capacity" | cut -d ":" -f 2 | awk '{print $2}'`
+					design_capacity_low=`cat ${d}/info | grep "^design capacity low" | cut -d ":" -f 2 | awk '{print $1}'`
+					design_capacity_warning=`cat ${d}/info | grep "^design capacity warning" | cut -d ":" -f 2 | awk '{print $1}'`
+					#echo "remaining_capacity=[$remaining_capacity] design_capacity_warning=[$design_capacity_warning] design_capacity_low=[$design_capacity_low]"
+					if test $remaining_capacity -le $design_capacity_low ; then
+						echo "ERROR: Running out of battery $battery_name (${charged_percent}%) (Remaining capacity is $remaining_capacity $unit_str <= $design_capacity_low)!" >> $tmp_error_file
+					elif test $remaining_capacity -le $design_capacity_warning ; then
+						echo "WARNING: Running out of battery $battery_name (${charged_percent}%) (Remaining capacity is $remaining_capacity $unit_str <= $design_capacity_low)!" >> $tmp_warning_file
+					else
+						echo "OK: Running on battery $battery_name (${charged_percent}%) (Remaining capacity is $remaining_capacity $unit_str)." >> $tmp_ok_file
+					fi
+				;;
+				*)
+					echo "ERROR: The charging state of the battery $battery_name (${charged_percent}%) is $charging_state (!= charging)!" >> $tmp_error_file
+				;;
+			esac
+			
+			echo "INFO: $battery_name battery details: ${battery_info}." >> $tmp_info_file
+		fi
+	done
+	if test -d "${proc_acpi_dir}/ac_adapter" ; then
+		if test -f "${proc_acpi_dir}/ac_adapter/state" ; then
+			state_str=`cat ${proc_acpi_dir}/ac_adapter/state | grep "^state" | cut -d ":" -f 2 | tr -d " "`	
+			echo "INFO: AC adapter state is ${state_str}." >> $tmp_info_str
+		fi
+	fi
+}
+
+battery_dir="${proc_acpi_dir}/battery"
+if test ! -d "$battery_dir" ; then
+	if test ! -f $acpi_prog ; then
+		echo "ERROR: both program $acpi_prog and battery ACPI proc directory $battery_dir does not exist! " >> $tmp_error_file
+	else	
+		use_acpi
+	fi
+else
+	use_proc
+fi
+
+statusid=$status_ok
+message_str=""
+if test -s $tmp_error_file ; then
+	statusid=$status_error
+	message_str=`cat $tmp_error_file | tr "\n" " "` 
+fi
+if test -s $tmp_warning_file ; then
+	message_str="$message_str`cat $tmp_warning_file | tr "\n" " "`" 
+	if test $statusid -lt $status_warning ; then
+		statusid=$status_warning
+	fi 
+fi
+if test -s $tmp_ok_file ; then
+	message_str="$message_str`cat $tmp_ok_file | tr "\n" " "`"
+fi
+if test -s $tmp_info_file ; then
+	message_str="$message_str`cat $tmp_info_file | tr "\n" " "`"
+fi
+
+### clean up
+for f in $tmp_file $tmp_ok_file $tmp_warning_file $tmp_error_file $tmp_info_file
+do
+	rm -f $f
+done
+
+###################################################################################################
+#echo "sisiya_hostname=$sisiya_hostname serviceid=$serviceid statusid=$statusid expire=$expire msg=$message_str datamsg=data_message_str"
+if test -z "$output_file" ; then
+	${send_message_prog} $client_conf_file $sisiya_hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	exit $?
+else
+	echo "$sisiya_hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>" >> $output_file
+fi
+###################################################################################################

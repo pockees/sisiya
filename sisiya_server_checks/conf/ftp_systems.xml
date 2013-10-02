@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+	<record><system_name>server1.example.org</system_name><isactive>f</isactive><hostname>server1.example.org</hostname><ftp_file>ftp_file_name</ftp_file><ftp_mode>active</ftp_mode><transfer_mode>binary</transfer_mode><user>erdal</user><password>mutlu</password></record>
+</systems>

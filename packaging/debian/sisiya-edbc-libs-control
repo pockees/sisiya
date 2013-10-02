@@ -1,0 +1,16 @@
+Package: sisiya-edbc-libs
+Version: __VERSION__
+Section: system-tools 
+Priority: optional
+Architecture: all
+Essential: no
+Depends: perl, bc
+Pre-Depends:  
+Recommends: 
+Suggests: 
+Installed-Size: 1024
+Maintainer: Erdal Mutlu <erdal@sisiya.org>
+Conflicts: 
+Replaces: 
+Provides:
+Description: This package contains the SisIYA EDBC headers and libraries.

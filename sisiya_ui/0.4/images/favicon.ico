@@ -1,0 +1,25 @@
+/*  GIMP icon image format -- S. Kimball, P. Mattis  */
+/*  Image name: favicon  */
+
+
+#define favicon_width 16
+#define favicon_height 16
+static char *favicon_bits [] = 
+{
+  "................",
+  ".aaaaaaaaaaaaac.",
+  ".adddddddddddac.",
+  ".adddddddddddac.",
+  ".addddddddaadac.",
+  ".adddddddaaddac.",
+  ".adddcddbabddac.",
+  ".addbadcaadddac.",
+  ".addaadaaddddac.",
+  ".adddaaadddddac.",
+  ".adddaabdddddac.",
+  ".adddcbddddddac.",
+  ".adddddddddddac.",
+  ".aaaaaaaaaaaaac.",
+  ".eeeeeeeeeeeeef.",
+  "................"
+};

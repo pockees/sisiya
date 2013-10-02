@@ -1,0 +1,303 @@
+.div_login_content
+{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	top:20px;
+	width:100%;
+	/*border: medium #336699 double;*/
+}
+
+a.icon:link	{text-decoration: none; color: #00f} /* unvisited link */
+a.icon:visited	{text-decoration: none; color: #00f} /* visited link */
+a.icon:hover	{text-decoration: none; color: #0af} /* mouse over link */
+a.icon:active	{text-decoration: none; color: #00f} /* selected link */
+
+.div_login_content_left
+{
+	width: 175px;
+	height: 220px;
+}
+
+.div_login_content_right
+{
+	left: 180px;
+}
+
+table.login {
+	/*margin: auto;*/
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	border: thin solid #abd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+}
+
+table.login 		td 	{ border: thin solid #ccc; color: black; }
+table.login td.label		{ background-color: #abd; }
+
+caption.login {
+	margin: auto;
+	background-color: #abd;
+	/*text-transform: uppercase;*/
+	text-align:center;  
+	/*font: bold 12pt Verdana;*/
+}
+
+.picture_button_unselected
+{
+	background-image:url('../images/sisiya/none16.gif');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_set_image
+{
+	background-image:url('../images/sisiya/icon_photo_disabled.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_change_image
+{
+	background-image:url('../images/sisiya/icon_photo.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_refresh
+{
+	background-image:url('../images/sisiya/icon_refresh.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_discover
+{
+	background-image:url('../images/sisiya/icon_search.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+
+.picture_button_search
+{
+	background-image:url('../images/sisiya/icon_search.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_selected
+{
+	background-image:url('../images/sisiya/ok.gif');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_add
+{
+	background-image:url('../images/sisiya/icon_add.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_send
+{
+	background-image:url('../images/sisiya/icon_send_big.png');
+	border:0px;
+	height: 64px; 
+	width: 64px;
+	background-color:transparent;
+}
+
+
+.picture_button_switch_view
+{
+	background-image:url('../images/sisiya/icon_switch_view.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_dashboard
+{
+	background-image:url('../images/sisiya/icon_dashboard.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_updateall
+{
+	background-image:url('../images/sisiya/icon_updateall.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_update
+{
+	background-image:url('../images/sisiya/icon_update.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_clear
+{
+	background-image:url('../images/sisiya/icon_clear.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_settings
+{
+	background-image:url('../images/sisiya/icon_settings.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_upload
+{
+	background-image:url('../images/sisiya/icon_upload.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_download
+{
+	background-image:url('../images/sisiya/icon_download.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_rss
+{
+	background-image:url('../images/sisiya/icon_rss.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_login
+{
+	background-image:url('../images/sisiya/icon_login.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_monitoring
+{
+	background-image:url('../images/sisiya/icon_monitoring.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_logout
+{
+	background-image:url('../images/sisiya/icon_logout.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_password
+{
+	background-image:url('../images/sisiya/icon_password.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_delete
+{
+	background-image:url('../images/sisiya/icon_delete.png');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_unlocked
+{
+	background-image:url('../images/sisiya/unlocked.gif');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button_locked
+{
+	background-image:url('../images/sisiya/locked.gif');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+
+.picture_button_import
+{
+	background-image:url('../images/sisiya/import.gif');
+	border:0px;
+	height: 16px; 
+	width: 16px;
+	background-color:transparent;
+}
+
+.picture_button
+{
+	border:0px;
+	height: 24px; 
+	width: 24px;
+	background-color:transparent;
+	text-align: center;
+}

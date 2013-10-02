@@ -1,0 +1,72 @@
+### service id
+serviceid=$serviceid_hddtemp
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_hddtemp is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+number_of_disks=1
+disk_name[0]="/dev/sda"
+disk_warning[0]=31
+disk_error[0]=34
+### end of the default values
+##########################################################################
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+tmp_ok_file=`maketemp /tmp/tmp_ok_${script_name}.XXXXXX`
+tmp_warning_file=`maketemp /tmp/tmp_warning_${script_name}.XXXXXX`
+tmp_error_file=`maketemp /tmp/tmp_error_${script_name}.XXXXXX`
+
+str=`hddtemp ${disk_name[$i]} 2>/dev/null | grep "${disk_name[$i]}"`
+if test $? -ne 127 ; then
+	declare -i i=0
+	while test $i -lt $number_of_disks
+	do
+		str=`hddtemp ${disk_name[$i]} 2>/dev/null | grep "${disk_name[$i]}"`
+		retcode=$?
+		if test $retcode -eq 0 ; then
+			temp=`echo "$str"	| awk -F° '{print $1}' | awk -F: '{print $3}' | awk '{print $1}'`
+			model=`echo "$str"	| awk -F° '{print $1}' | awk -F: '{print $2}'`
+			if test $temp -ge ${disk_error[$i]} ; then
+				echo "ERROR: $temp C >= ${disk_error[$i]} C on ${disk_name[$i]}$model!" >> $tmp_error_file
+			elif test $temp -ge ${disk_warning[$i]} ; then
+				echo "WARNING: $temp C >= ${disk_warning[$i]} C on ${disk_name[$i]}$model!" >> $tmp_warning_file
+			else
+				echo "OK: $temp C on ${disk_name[$i]}$model." >> $tmp_ok_file
+			fi
+		else
+			echo "ERROR: $str" >> $tmp_error_file
+		fi
+		i=i+1
+	done
+else
+	echo "ERROR: Could find the hddtemp command!" >> $tmp_error_file
+fi
+statusid=$status_ok
+message_str=""
+if test -s $tmp_error_file ; then
+	message_str=`cat $tmp_error_file` 
+	statusid=$status_error
+fi
+
+if test -s $tmp_warning_file ; then
+	message_str="$message_str`cat $tmp_warning_file`" 
+	if test $statusid -lt $status_warning ; then
+		statusid=$status_warning
+	fi 
+fi
+
+if test -s $tmp_ok_file ; then
+	message_str="$message_str`cat $tmp_ok_file`"
+fi
+
+for f in $tmp_ok_file $tmp_warning_file $tmp_error_file
+do
+	rm -f $f
+done
+

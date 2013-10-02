@@ -1,0 +1,30 @@
+/* blue grades - root level; text properties for states: normal, hover, click */
+.TM0i0 {
+	font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;;
+	color: #FFFFFF;
+	font-size: 11px;
+	font-weight: normal;
+	font-style: normal;
+	text-decoration: none;
+	padding: 3px;
+}
+
+/* blue grades - root level; box properties for states: normal, hover, click */
+.TM0o0 {
+	background: #3C76B2;
+	border: 1px solid #2B547F;
+	border-color: transparent #2B547F transparent #2B547F;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+}
+
+/* blue grades - root level; box properties for states: normal, hover, click */
+.TM0o1 {
+	background: #4D99E6;
+	border: 1px solid #2B547F;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+}
+

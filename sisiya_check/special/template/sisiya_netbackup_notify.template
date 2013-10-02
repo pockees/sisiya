@@ -1,0 +1,83 @@
+### service id
+serviceid=$serviceid_netbackup_notify  
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_netbackup_notify is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+### end of the default values
+##########################################################################
+
+### If there is a module conf file then override these default values
+module_conf_file=${sisiya_host_dir}/`echo $script_name | awk -F. '{ print $1 }'`.conf
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+case $n in
+	1)
+		### start notify
+		status=""
+		statusid=$status_info
+		case "$schedule_type" in
+			"FULL")
+				message_str="Full"
+			;;
+			"INCR")
+				message_str="Differential incremental"
+			;;
+			"CINC")
+				message_str="Cumulative incremental"
+			;;
+			*)
+				message_str="$schedule_type"
+			;;
+		esac
+		message_str="INFO: $message_str backup started on $client_name - policy $policy_name schedule ${schedule_name}."
+	;;
+	2)
+		### end notify
+		case "$schedule_type" in
+			"FULL")
+				message_str="Full"
+			;;
+			"INCR")
+				message_str="Differential incremental"
+			;;
+			"CINC")
+				message_str="Cumulative incremental"
+			;;
+			*)
+				message_str="$schedule_type"
+			;;
+		esac
+		case "$status" in
+			"0")
+				statusid=$status_ok
+				message_str="OK: $message_str backup successfuly finished on $client_name - policy $policy_name schedule ${schedule_name}."
+			;;
+			"1")
+				statusid=$status_warning
+				message_str="WARNING: $message_str backup partial successfully finished on $client_name - policy $policy_name schedule ${schedule_name}!"
+			;;
+			*)
+				statusid=$status_error
+				message_str="ERROR: $message_str $schedule_type backup failed with status=$status on $client_name - policy $policy_name schedule ${schedule_name}!"
+			;;
+		esac
+	;;
+	3)
+		statusid=$status_ok
+		message_str="OK: Backup successfully finished on $client_name by $backup_prog_name on image ${backup_image_name}."
+	;;
+	4)
+		statusid=$status_error
+		message_str="OK: The $diskfull_prog_name could not write $diskfull_file in the $diskfull_path directory!"
+	;;
+	*)
+		statusid=$status_error
+		message_str="ERROR: Unknown option n=$n is given to the SisIYA check script!"
+	;;
+
+esac

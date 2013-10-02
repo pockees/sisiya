@@ -1,0 +1,2 @@
+all:
+	g++ -Wall -lpq  postgresql_test.cpp  -o postgresql_test

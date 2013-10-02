@@ -1,0 +1,117 @@
+### service id
+serviceid=$serviceid_raid
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_raid is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+# temperature values are in Celcius
+controler_name=afa0
+temperature_warning=35
+temperature_error=38
+### end of the default values
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+### make afacli happy, when it is run via cronjob
+export TERM=xterm
+
+tmp_log_file=`maketemp /tmp/tmp_info_${script_name}.XXXXXX`
+tmp_script_file=`maketemp /tmp/tmp_info_${script_name}.XXXXXX`
+tmp_info_file=`maketemp /tmp/tmp_info_${script_name}.XXXXXX`
+tmp_ok_file=`maketemp /tmp/tmp_ok_${script_name}.XXXXXX`
+tmp_warning_file=`maketemp /tmp/tmp_warning_${script_name}.XXXXXX`
+tmp_error_file=`maketemp /tmp/tmp_error_${script_name}.XXXXXX`
+for f in $tmp_ok_file $tmp_warning_file $tmp_error_file $tmp_info_file $tmp_log_file $tmp_script_file
+do
+	rm -f $f
+	touch $f
+done
+
+which afacli > /dev/null 2>&1
+if test $? -ne 0 ; then
+	echo -n "WARNING: afacli command not found! " >> $tmp_warning_file
+else
+	### check RAIDs
+	echo "open $controler_name"		> $tmp_script_file
+	echo "logfile start \"$tmp_log_file\""	>> $tmp_script_file
+	echo "container list"			>> $tmp_script_file
+	echo "logfile end"			>> $tmp_script_file
+	echo "close"				>> $tmp_script_file
+	echo "exit"				>> $tmp_script_file
+	(echo "@$tmp_script_file") | afacli > /dev/null
+	if test -s $tmp_log_file ; then
+		cat $tmp_log_file | grep "^ [0-9]" | while read line
+		do
+			str=`echo $line | grep "Valid"`
+			if test -z "$str" ; then
+				echo -n "ERROR: $line "  	>> $tmp_error_file
+			else
+				echo -n "OK: $line "  		>> $tmp_ok_file
+			fi
+			
+		done
+	else
+		echo -n "ERROR: There was a problem executing afacli command! "  	>> $tmp_error_file
+	fi
+
+	### check temperature
+	echo "open $controler_name"		> $tmp_script_file
+	echo "logfile start \"$tmp_log_file\""	>> $tmp_script_file
+	echo "enclosure show temperature"	>> $tmp_script_file
+	echo "logfile end"			>> $tmp_script_file
+	echo "close"				>> $tmp_script_file
+	echo "exit"				>> $tmp_script_file
+	(echo "@$tmp_script_file") | afacli > /dev/null
+	if test -s $tmp_log_file ; then
+		cat $tmp_log_file | grep "^ [0-9]" | while read line
+		do
+			id=`echo $line | awk '{print $2}'`
+			sensor=`echo $line | awk '{print $3}'`
+			current=`echo $line | awk '{print $4}'`
+			ctemp=`echo "($current-32)*5/9" | bc`
+			if test $ctemp -ge $temperature_error ; then
+				echo -n "ERROR: $ctemp C (>=${temperature_error}) on $id sensor $sensor "  	>> $tmp_error_file
+			elif test $ctemp -ge $temperature_warning ; then
+				echo -n "WARNING: $ctemp C (>=${temperature_warning}) on $id sensor $sensor "  	>> $tmp_warning_file
+			else
+				echo -n "OK: $ctemp C on $id sensor $sensor "  		>> $tmp_ok_file
+			fi
+			
+		done
+	else
+		echo -n "ERROR: There was a problem executing afacli command! "  	>> $tmp_error_file
+	fi
+
+fi
+
+statusid=$status_ok
+message_str=""
+if test -s $tmp_error_file ; then
+	message_str=`cat $tmp_error_file` 
+	statusid=$status_error
+fi
+
+if test -s $tmp_warning_file ; then
+	message_str="$message_str`cat $tmp_warning_file`" 
+	if test $statusid -lt $status_warning ; then
+		statusid=$status_warning
+	fi 
+fi
+
+if test -s $tmp_ok_file ; then
+	message_str="$message_str`cat $tmp_ok_file`"
+fi
+
+if test -s $tmp_info_file ; then
+	message_str="$message_str`cat $tmp_info_file`"
+fi
+
+for f in $tmp_ok_file $tmp_warning_file $tmp_error_file $tmp_info_file $tmp_log_file $tmp_script_file
+do
+	rm -f $f
+done

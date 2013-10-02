@@ -1,0 +1,146 @@
+#################################################################################
+### Check for RAM's
+#################################################################################
+### service id
+serviceid=$serviceid_ram
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_ram is not defined! Exiting..."
+	exit 1
+fi
+
+##########################################################################
+service_name="RAM"
+##########################################################################
+
+#######################################################################################
+#######################################################################################
+### This script uses the hp-health tools (hpasmcli) for checking various HP serevers'
+### components, such as temperature, fans etc.
+#######################################################################################
+#######################################################################################
+### HP management CLI for Linux
+### default values
+hpasmcli_prog=/sbin/hpasmcli
+### end of the default values
+##########################################################################
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	source $module_conf_file
+fi
+
+##############################################################################################
+### Sample output of the hpasmcli -s "show dimm" command :
+#DIMM Configuration
+#------------------
+#Cartridge #:                  0
+#Module #:                     1
+#Present:                      Yes
+#Form Factor:                  fh
+#Memory Type:                  14h
+#Size:                         1024 MB
+#Speed:                        667 MHz
+#Supports Lock Step:           No
+#Configured for Lock Step:     No
+#Status:                       Ok
+#
+#Cartridge #:                  0
+#Module #:                     2
+#Present:                      Yes
+#Form Factor:                  fh
+#Memory Type:                  14h
+#Size:                         1024 MB
+#Speed:                        667 MHz
+#Supports Lock Step:           No
+#Configured for Lock Step:     No
+#Status:                       Ok
+#
+##
+#cat a.txt |grep "^Cartridge" -A 9 |grep -v "^--"
+# number of cartidges: cat a.txt |grep "^Cartridge" |cut -d ":" -f 2|tr -d " "|sort|uniq|wc -l
+##############################################################################################
+
+tmp_file=`maketemp /tmp/tmp_${script_name}.XXXXXX`
+tmp_file2=`maketemp /tmp/tmp_${script_name}.XXXXXX`
+tmp_info_file=`maketemp /tmp/tmp_info_${script_name}.XXXXXX`
+tmp_ok_file=`maketemp /tmp/tmp_ok_${script_name}.XXXXXX`
+tmp_warning_file=`maketemp /tmp/tmp_warning_${script_name}.XXXXXX`
+tmp_error_file=`maketemp /tmp/tmp_error_${script_name}.XXXXXX`
+
+declare -i i=1
+
+cmd_str="show dimm"
+$hpasmcli_prog -s "$cmd_str" > $tmp_file
+retcode=$?
+if test $retcode -eq 0 ; then
+	##########################################################################################################################################################################################
+	#Cartridge #:    0 |Processor #: 1 |Module #:       2 |Present:        Yes |Form Factor:    fh |Memory Type:    5h |Size:           8192 MB |Speed:          1333 MHz |Status:         N/A |                
+	#Cartridge #:    0 |Processor #: 1 |Module #:       4 |Present:        Yes |Form Factor:    fh |Memory Type:    5h |Size:           8192 MB |Speed:          1333 MHz |Status:         N/A |                
+	#Cartridge #:    0 |Processor #: 1 |Module #:       6 |Present:        Yes |Form Factor:    fh |Memory Type:    5h |Size:           8192 MB |Speed:          1333 MHz |Status:         N/A |                
+	#Cartridge #:    0 |Processor #: 2 |Module #:       2 |Present:        Yes |Form Factor:    fh |Memory Type:    5h |Size:           8192 MB |Speed:          1333 MHz |Status:         N/A |                
+	#Cartridge #:    0 |Processor #: 2 |Module #:       4 |Present:        Yes |Form Factor:    fh |Memory Type:    5h |Size:           8192 MB |Speed:          1333 MHz |Status:         N/A |
+	#Cartridge #:    0 |Processor #: 2 |Module #:       6 |Present:        Yes |Form Factor:    fh |Memory Type:    5h |Size:           8192 MB |Speed:          1333 MHz |Status:         N/A |
+	##########################################################################################################################################################################################
+
+	### skip the first 3 rows and process only non empty lines
+	#awk ' NR > 3 && NF > 0 {if($0 ~ /^Cartridge/) {printf "\n"};  printf "%s |",$0 } END {printf "\n"}' $tmp_file > $tmp_file2
+	awk ' NR > 1 && NF > 0 {if($0 ~ /^Cartridge/) {printf "\n"};  printf "%s |",$0 } END {printf "\n"}' $tmp_file | grep "^Cartridge" > $tmp_file2
+	cat $tmp_file2 | while read line
+	do
+		if test -z "$line" ; then
+			continue
+		fi
+		#cartridge_str=`echo $line	| cut -d "|" -f 1 | cut -d ":" -f 2 | tr -d " "`
+		#module_str=`echo $line		| cut -d "|" -f 2 | cut -d ":" -f 2 | tr -d " "`
+		#is_present=`echo $line		| cut -d "|" -f 3 | cut -d ":" -f 2 | tr -d " "`
+		#memory_type=`echo $line  	| cut -d "|" -f 5 | cut -d ":" -f 2 | tr -d " "`
+		#memory_size=`echo $line  	| cut -d "|" -f 6 | cut -d ":" -f 2 | tr -d " "`
+		#memory_speed=`echo $line  	| cut -d "|" -f 7 | cut -d ":" -f 2 | tr -d " "`
+		#memory_status=`echo $line  	| cut -d "|" -f 10 | cut -d ":" -f 2 | tr -d " "`
+		is_present=`echo "$line" | sed -e "s/Present/\n/" | tail -n 1 | cut -d "|" -f 1 | cut -d ":" -f 2 | tr -d " "`
+		if test "$is_present" = "Yes" ; then
+			### check status
+			memory_status=`echo "$line" | sed -e "s/Status/\n/" | tail -n 1 | cut -d "|" -f 1 | cut -d ":" -f 2 | tr -d " " | tr -d "/"`
+			if test "$memory_status" = "Ok" ; then
+				#echo "OK: The status of RAM (Type=${memory_type}, size=${memory_size}, speed=${memory_speed}) in cartridge=$cartridge_str and module=$module_str is OK." >> $tmp_ok_file
+				echo "OK: $line" | sed -e "s/  //g" | tr "|" "," >> $tmp_ok_file
+			else
+				#echo "ERROR: The status of RAM (Type=${memory_type}, size=${memory_size}, speed=${memory_speed}) in cartridge=$cartridge_str and module=$module_str is ${memory_status}!." >> $tmp_error_file
+				#echo "memory_status=[$memory_status]"
+				if test "$memory_status" = "NA" ; then
+					echo "INFO: $line" | sed -e "s/  //g" | tr "|" "," >> $tmp_info_file
+				else
+					echo "ERROR: $line" | sed -e "s/  //g" | tr "|" "," >> $tmp_error_file
+				fi
+			fi
+		else
+			cartridge_str=`echo "$line" 	| sed -e "s/Status/\n/" | tail -n 1 | cut -d "|" -f 1 | cut -d ":" -f 2 | tr -d " "`
+			module_str=`echo "$line" 	| sed -e "s/Status/\n/" | tail -n 1 | cut -d "|" -f 1 | cut -d ":" -f 2 | tr -d " "`
+			echo "INFO: Not RAM in cartridge=$cartridge_str and module=$module_str." >> $tmp_info_file
+		fi
+	done
+else
+	echo "ERROR: Error executing hpasmcli command! retcode=$retcode" >> $tmp_error_file
+fi
+
+statusid=$status_info
+message_str=""
+if test -s $tmp_error_file ; then
+	statusid=$status_error
+	message_str=`cat $tmp_error_file | tr "\n" " "` 
+fi
+
+if test -s $tmp_ok_file ; then
+	statusid=$status_ok
+	message_str="$message_str`cat $tmp_ok_file | tr "\n" " "`"
+fi
+
+if test -s $tmp_ok_info ; then
+	message_str="$message_str`cat $tmp_info_file | tr "\n" " "`"
+fi
+
+
+### clean up
+for f in $tmp_file $tmp_file2 $tmp_info_file $tmp_ok_file $tmp_warning_file $tmp_error_file
+do
+	rm -f $f
+done

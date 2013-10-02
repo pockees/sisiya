@@ -1,0 +1,143 @@
+#!/bin/bash
+#
+# This is the SisIYA server start/stop script
+#
+#    Copyright (C) 2003  Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#
+#
+# chkconfig: 345 99 10
+# description: This is the SisIYA server. It collects messages sent from SisIYA clients
+#              and stores them in a database systems. 
+# processname: sisiyad
+# pidfile: /var/run/sisiyad.pid
+# config: /etc/sisiyad.conf
+#
+#######################################################################################
+##############################
+sisiya_edbc_drivers_dir=/opt/sisiya_edbc/lib
+prog_dir=/usr/sbin
+prog=sisiyad
+sisiyad_conf=/etc/${prog}.conf
+lock_file=/var/lock/subsys/$prog
+pid_file=/var/run/${prog}.pid
+##############################
+### The above variables could be changed in the SisIYA's options file : /etc/sysconfig/sisiyad
+if test -f /etc/sysconfig/sisiyad ; then
+	. /etc/sysconfig/sisiyad
+fi
+
+# Source function library
+if test -f /etc/init.d/functions ; then
+	. /etc/init.d/functions
+fi
+###. /etc/profile
+
+
+sisiyad_prog=${prog_dir}/$prog
+if test ! -x $sisiyad_prog ; then
+	echo "The $sisiyad_prog does not exist or is not executable!"
+	exit 1
+fi
+
+if test ! -f $sisiyad_conf ; then
+	echo "Configuration file $sisiyad_conf for $prog does not exist!"
+	exit 1
+fi
+
+OPTIONS=$sisiyad_conf
+
+start()
+{
+	### export the EDBC drivers
+	export EDBC_DRIVERS_DIR=$sisiya_edbc_drivers_dir
+
+	echo -n $"Starting $prog: "
+	if test -e $pid_file && test -e /proc/`cat $pid_file` ; then
+		echo -n $"already running with pid="`cat $pid_file` 
+		failure $"already running with pid="`cat $pid_file` 
+		echo
+		return 1
+	fi
+	if test -n "`cat /etc/issue.net | grep -i suse`" ; then
+		$prog $OPTIONS
+	else	
+		daemon $prog $OPTIONS
+	fi
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch $lock_file
+	return $RETVAL
+}
+
+stop()
+{
+	echo -n $"Stopping $prog: "
+	killproc $prog
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f $lock_file $pid_file
+	return $retcode
+}
+
+reload()
+{
+	echo -n $"Reloading $prog: "
+	killproc $prog -HUP
+	retcode=$?
+	echo
+	return $retcode
+}
+
+showconf()
+{
+ 	echo -n "Configuration information for $prog is send to syslog "
+	killproc $prog -USR1
+	retocde=$?
+	echo
+	return $retcode
+}
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+	;;
+	stop)
+		stop
+
+	;;
+	reload)
+		reload
+	;;
+	restart)
+		stop
+		start
+	;;
+	status)
+        	status $prog
+		retcode=$?
+	;;
+	showconf)
+		showconf
+	;;
+	*)
+		echo "Usage : $0 {start|stop|restart|reload|status|showconf}"
+	;;
+esac
+
+exit $retcode

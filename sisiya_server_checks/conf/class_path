@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+#    Copyright (C) 2003  Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#
+#################################################################################
+SISIYA_CONF=/opt/sisiya-server-checks/conf
+SISIYA_LIB=/opt/sisiya-server-checks/lib
+#J2EE_HOME=/usr/lib/java
+#JDK_HOME=/usr/lib/java
+JRE_HOME=/opt/java/jre
+#JDBC_MySQL=/usr/lib/jdbc/mysql-connector-java-3.0.6-stable-bin.jar
+JDBC_MySQL=/usr/lib/jdbc/mysql-connector-java-3.1.11-bin.jar
+#JDBC_PostgreSQL=/usr/lib/jdbc/pgjdbc2.jar
+JDBC_PostgreSQL=/usr/lib/jdbc/pg74.216.jdbc2.jar
+#JDBC_Oracle=/usr/lib/jdbc/classes12.zip
+JDBC_Oracle=/usr/lib/jdbc/ojdbc14.jar
+JDBC_MSSQL=/usr/lib/jdbc/jtds-1.2.5.jar
+
+##############################################################
+#CLASSPATH=$home:$JDBC_MySQL:$JDBC_PostgreSQL:$JDBC_Oracle:$J2EE_HOME:$SISIYAREPORT
+CLASSPATH=$SISIYA_CONF:$SISIYA_LIB:$JRE_HOME:$JDBC_MySQL:$JDBC_PostgreSQL:$JDBC_Oracle:$JDBC_MSSQL
+##############################################################
+
+export CLASSPATH
+#export JDK_HOME

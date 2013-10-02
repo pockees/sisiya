@@ -1,0 +1,11 @@
+OBJS=sisiyad_postgresql
+CFLAGS=-g -Wall
+GCC=gcc 
+RM=rm -f
+
+sisiyad_postgresql: sisiyad_postgresql.c 
+	$(GCC) $(CFLAGS) sisiyad_postgresql.c -o sisiyad_postgresql -lpq
+
+clean:
+	$(RM) $(OBJS)
+         

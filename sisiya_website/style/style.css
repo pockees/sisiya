@@ -1,0 +1,79 @@
+body {
+	padding-left: 0em;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: black;
+	background-color: #ffffff;
+}
+img {border-style: none;} 
+/*
+a {	text-decoration: none
+	color: black }
+*/
+a:link {text-decoration: none; color: #00aaff}     /* unvisited link */
+a:visited {text-decoration: none; color: #00aaff}  /* visited link */
+a:hover {text-decoration: none; color: #0000ff}   /* mouse over link */
+a:active {text-decoration: none; color: #000000}   /* selected link */
+
+table.header {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border-style: none;
+	border-collapse: collapse; *//* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 5em;*/ *//*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	/*caption-side: top;*/ /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.header 		td { color: black; }
+table.header tr.header	td { background-color: #abf; text-align: center; }
+table.header tr.subheader	td { background-color: #ddd; text-align: center; }
+table.header tr.row 	td { background-color: white; }
+table.header tr.footer	td { background-color: #ddd; }
+table.header a:link {text-decoration: none; color: black}     /* unvisited link */
+table.header a:visited {text-decoration: none; color: black}  /* visited link */
+table.header a:hover {text-decoration: none; color: blue}   /* mouse over link */
+table.header a:active {text-decoration: none; color: black}   /* selected link */
+
+
+table.downloads {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border-style: none;
+	border-collapse: collapse; *//* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 5em;*/ *//*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	/*caption-side: top;*/ /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.downloads 		td { color: black; }
+table.downloads tr.header	td { background-color: #ddd; text-align: left;	font-weight: bold;}
+table.downloads tr.subheader	td { background-color: #eee; text-align: left; font-weight: bold; }
+table.downloads tr.row 	td { background-color: white; }
+table.downloads tr.footer	td { background-color: #ddd; }
+/*
+table.downloads a:link {text-decoration: none; color: black}     /* unvisited link */
+table.downloads a:visited {text-decoration: none; color: black}  /* visited link */
+table.downloads a:hover {text-decoration: none; color: blue}   /* mouse over link */
+table.downloads a:active {text-decoration: none; color: black}   /* selected link */
+*/
+div.date {
+  /*background: #eee;*/
+  background: #aee;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  float: left;
+  text-align: center;
+  margin: 1px 1px 1px 1px;
+  line-height: 1.1em;
+  padding: 2px;
+  width: 6em;
+  font-size: 10px;
+  white-space: nowrap;
+  color: #777;
+}

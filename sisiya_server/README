@@ -1,0 +1,29 @@
+The new XML message format:
+------------------------------------------------------------------------
+- SisIYA server accepts SisIYA messages in the form of XML file:
+	<?xml version="1.0" encoding="utf-8"?>
+	<sisiya_messages>
+		<timestamp>send timestamp of the form: YYYYMMDDHHMMSS </timestamp>
+		<system>
+			<name>system name</name>
+			<message>
+				<serviceid>serviceid</serviceid>
+				<statusid>statusid</statusid>
+				<expire>expire in minutes</expire>
+				<data>
+					<msg></msg> => this part (the message) is going to be shown on the web GUI
+					<datamsg>
+						<x></x>  --\ 
+						<y></y>     }=> These are used for grahics, statistics etc purposes. Example : for the ping service <responcetime>100</responcetime> <packetlost</packetlost>
+						<z></z>  --/
+							Every service (ping uses responce times and packet lost percentages; filesystem service could use disk capacity, usage percentage and etc) 
+							has its own type of information stored within XML tags and interpreted correspondingly.
+					<datamsg>
+				</data>
+			</message>
+		</system>
+		<system>
+		...
+		</system>
+		... more systems
+	</sisiya_messages>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+<record><system_name>server1.example.org</system_name><isactive>f</isactive><hostname>server1.example.org</hostname><share>homes</share><username>user1</username><password>passwrod</password></record>
+</systems>

@@ -1,0 +1,2 @@
+#### SisIYA : Generate the RSS xml file
+* * * * * root php -q /var/www/html/sisiya/sisiya_rss.php > /var/www/html/sisiya/sisiya_rss.xml

@@ -1,0 +1,261 @@
+~sisiya.records.status.info~ ~Info record in the status table~ ~Info~ ~Bilgi~
+~sisiya.records.status.ok~ ~OK record in the status table~ ~OK~ ~Sorun yok~
+~sisiya.records.status.warning~ ~Warning record in the status table~ ~Warning~ ~Uyarı~
+~sisiya.records.status.error~ ~Error record in the status table~ ~Error~ ~Hata~
+~sisiya.records.infos.info~ ~Info record in the status table~ ~Info~ ~Bilgi~
+~sisiya.records.infos.ok~ ~OK record in the status table~ ~OK~ ~Sorun yok~
+~sisiya.records.infos.warning~ ~Warning record in the status table~ ~Warning~ ~Uyarı~
+~sisiya.records.infos.error~ ~Error record in the status table~ ~Error~ ~Hata~
+~sisiya.records.infos.description~ ~Description record in the infos table~ ~Description~ ~Tanımlama~
+~sisiya.records.infos.vendor~ ~Vendor record in the infos table~ ~Vendor~ ~Üretici~
+~sisiya.records.infos.model~ ~Model record in the infos table~ ~Model~ ~Model~
+~sisiya.records.infos.cpu~ ~CPU record in the infos table~ ~CPU~ ~Merkezi İşlemci~
+~sisiya.records.infos.hd~ ~HD record in the infos table~ ~HD~ ~HD~
+~sisiya.records.infos.ram~ ~RAM record in the infos table~ ~RAM~ ~RAM~
+~sisiya.records.infos.size~ ~Size record in the infos table~ ~Size~ ~Buyut~
+~sisiya.records.infos.system_tag~ ~System tag record in the infos table~ ~System tag~ ~Sistem Etiketi~
+~sisiya.records.infos.bios_version~ ~BIOS version record in the infos table~ ~BIOS version~ ~BIOS Sürümü~
+~sisiya.records.infos.backplane_version~ ~Backplane version record in the infos table~ ~Backplane version~ ~Arka Panel Sürümü~
+~sisiya.records.infos.raid_controller~ ~RAID controller record in the infos table~ ~RAID Controller~ ~RAID Kartı~
+~sisiya.records.infos.raid_level~ ~RAID level record in the infos table~ ~RAID level~ ~RAID Seviyesi~
+~sisiya.records.infos.serial_number~ ~Serial number record in the infos table~ ~Serial number~ ~Seri Numarası~
+~sisiya.records.infos.inventory_number~ ~Inventory number record in the infos table~ ~Inventory number~ ~Demirbaş Numarası~
+~sisiya.records.infos.os~ ~Operating system record in the infos table~ ~Operating System~ ~İşletim Sistemi~
+~sisiya.records.infos.support_number~ ~Support number record in the infos table~ ~Support number~ ~Destek Numarası~
+~sisiya.records.infos.prom~ ~PROM record in the infos table~ ~PROM~ ~PROM~
+~sisiya.records.infos.cluster~ ~Cluster record in the infos table~ ~Cluster~ ~Küme~
+~sisiya.records.infos.hostid~ ~Host ID record in the infos table~ ~Host ID~ ~Sistem Numarası~
+~sisiya.records.infos.scsi_adapter~ ~SCSI adapter record in the infos table~ ~SCSI Adapter~ ~SCSI Kartı~
+~sisiya.records.infos.support_type~ ~Support type record in the infos table~ ~Support Type~ ~Destek Tipi~
+~sisiya.records.locations.server_room~ ~Server Room location record in the locations table~ ~Server Room~ ~Sistem Odası~
+~sisiya.records.locations.server_center~ ~Server Center location record in the locations table~ ~Server Center~ ~Sistem Merkezi~
+~sisiya.records.locations.home~ ~Home location record in the locations table~ ~Home~ ~Ev~
+~sisiya.records.languages.english~ ~English~ ~English~ ~İngilizce~
+~sisiya.records.languages.turkish~ ~Turkish~ ~Turkish~ ~Türkçe~
+~sisiya.records.properties.jabber_id~ ~Jabber ID~ ~Jabber ID~ ~Jabber Kimliği~
+~sisiya_admin.alerttypes.label.id~ ~ID label on the alerttypes page~ ~ID~ ~No~
+~sisiya_admin.alerttypes.label.keystr~ ~Alert Type label on the alerttypes page~ ~Alert Type~ ~Uyarı Türü~
+~sisiya.records.alerttypes.email~ ~E-Mail record in the alerttypes table~ ~E-Mail~ ~E-Posta~
+~sisiya.records.alerttypes.sms~ ~SMS record in the alerttypes table~ ~SMS~ ~Kısa mesaj SMS~
+~sisiya.records.alerttypes.jabber~ ~Jabber record in the alerttypes table~ ~Jabber~ ~Jabber~
+~sisiya.records.services.system~ ~System service in the services table~ ~System~ ~Sistem~
+~sisiya.records.services.filesystem~ ~File system service in the services table~ ~File System~ ~Dosya sistemi~
+~sisiya.records.services.cpu~ ~CPU service in the services table~ ~CPU~ ~Merkezi İşlemci~
+~sisiya.records.services.swap~ ~Swap service in the services table~ ~Swap~ ~Swap~
+~sisiya.records.services.load~ ~Load service in the services table~ ~Load~ ~Yük~
+~sisiya.records.services.smtp~ ~SMTP service in the services table~ ~SMTP~ ~SMTP~
+~sisiya.records.services.smb~ ~SMB service in the services table~ ~SMB~ ~SMB~
+~sisiya.records.services.nmb~ ~NMB service in the services table~ ~NMB~ ~NMB~
+~sisiya.records.services.postgresql~ ~PostgreSQL service in the services table~ ~PostgreSQL~ ~PostgreSQL~
+~sisiya.records.services.mysql~ ~MySQL service in the services table~ ~MySQL~ ~MySQL~
+~sisiya.records.services.oracle~ ~Oracle service in the services table~ ~Oracle~ ~Oracle~
+~sisiya.records.services.imap~ ~IMAP service in the services table~ ~IMAP~ ~IMAP~
+~sisiya.records.services.pop3~ ~POP3 service in the services table~ ~POP3~ ~POP3~
+~sisiya.records.services.lotus~ ~Lotus service in the services table~ ~Lotus~ ~Lotus~
+~sisiya.records.services.printer~ ~Printer service in the services table~ ~Printer~ ~Yazıcı~
+~sisiya.records.services.ftp~ ~FTP service in the services table~ ~FTP~ ~FTP~
+~sisiya.records.services.squid~ ~Squid service in the services table~ ~Squid proxy~ ~Squid Vekil Suncusu~
+~sisiya.records.services.dns~ ~DNS service in the services table~ ~DNS~ ~DNS İsim suncusu~
+~sisiya.records.services.nfs~ ~NFS service in the services table~ ~NFS~ ~NFS~
+~sisiya.records.services.dhcpd~ ~DHCPD service in the services table~ ~DHCPD~ ~DHCPD~
+~sisiya.records.services.http~ ~HTTP service in the services table~ ~HTTP~ ~HTTP~
+~sisiya.records.services.https~ ~HTTPS service in the services table~ ~HTTPS~ ~HTTPS~
+~sisiya.records.services.ping~ ~Ping service in the services table~ ~Ping~ ~Ping~
+~sisiya.records.services.telnet~ ~Telnet service in the services table~ ~Telnet~ ~Telnet~
+~sisiya.records.services.postfix~ ~Postfix service in the services table~ ~Postfix~ ~Postfix~
+~sisiya.records.services.xinetd~ ~Xinetd service in the services table~ ~Xinetd~ ~Xinetd~
+~sisiya.records.services.sshd~ ~SSHD service in the services table~ ~SSHD~ ~SSHD~
+~sisiya.records.services.xfs~ ~Xfs service in the services table~ ~Xfs~ ~Xfs~
+~sisiya.records.services.kdm~ ~Kdm service in the services table~ ~Kdm~ ~Kdm~
+~sisiya.records.services.portmap~ ~Portmap service in the services table~ ~Portmap~ ~Portmap~
+~sisiya.records.services.atalkd~ ~Atalkd service in the services table~ ~Atalkd~ ~Atalkd~
+~sisiya.records.services.afpd~ ~Afpd service in the services table~ ~Afpd~ ~Afpd~
+~sisiya.records.services.papd~ ~Papd service in the services table~ ~Papd~ ~Papd~
+~sisiya.records.services.ram~ ~RAM service in the services table~ ~RAM~ ~RAM~
+~sisiya.records.services.nmbd~ ~Nmbd service in the services table~ ~Nmbd~ ~Nmbd~
+~sisiya.records.services.solstice_disksuite~ ~Solstice Disk Suite service in the services table~ ~Solstice Disk Suite~ ~Solstice Disk Suite~
+~sisiya.records.services.rpcstatd~ ~rpcstatd service in the services table~ ~rpcstatd~ ~rpcstatd~
+~sisiya.records.services.rpcrquotad~ ~rpcrquotad service in the services table~ ~rpcrquotad~ ~rpcrquotad~
+~sisiya.records.services.rpcmountd~ ~rpcmountd service in the services table~ ~rpcmountd~ ~rpcmountd~
+~sisiya.records.services.nfsd~ ~nfsd service in the services table~ ~nfsd~ ~nfsd~
+~sisiya.records.services.lockd~ ~lockd service in the services table~ ~lockd~ ~lockd~
+~sisiya.records.services.rpciod~ ~rpciod service in the services table~ ~rpciod~ ~rpciod~
+~sisiya.records.services.slapd~ ~slapd service in the services table~ ~slapd~ ~slapd~
+~sisiya.records.services.sun_cluster~ ~Sun Cluster service in the services table~ ~Sun Cluster~ ~Sun cluster~
+~sisiya.records.services.inetd~ ~inetd service in the services table~ ~inetd~ ~inetd~
+~sisiya.records.services.users~ ~Users service in the services table~ ~Users~ ~Kullanıcılar~
+~sisiya.records.services.veritas_volume_manager~ ~Veritas Volume Manager service in the services table~ ~Veritas Volume Manager~ ~Veritas Volume Manager~
+~sisiya.records.services.netstat~ ~netstat service in the services table~ ~netstat~ ~netstat~
+~sisiya.records.services.progs~ ~Programs service in the services table~ ~Programs~ ~Programlar~
+~sisiya.records.services.progs_count~ ~Program count service in the services table~ ~Program Count~ ~Program Sayısı~
+~sisiya.records.services.ssh_attack~ ~SSH attack service in the services table~ ~SSH attack~ ~SSH saldırısı~
+~sisiya.records.services.oracle_tablespace~ ~Oracle Tablespace service in the services table~ ~Oracle Tablespace~ ~Oracle tablo alanı~
+~sisiya.records.services.domino_webaccount~ ~Domino Web account service in the services table~ ~Domino Web Account~ ~Domino web hesabı~
+~sisiya.records.services.netbackup_jobs~ ~Netbackup Jobs service in the services table~ ~Netbackup Jobs~ ~Netbackup İşleri~
+~sisiya.records.services.netbackup_debug~ ~Netbackup Debug service in the services table~ ~netbackup_debug~ ~Netbackup Hata~
+~sisiya.records.services.netbackup_drives~ ~Netbackup Drives service in the services table~ ~Netbackup Drives~ ~Netbackup Teypleri~
+~sisiya.records.services.netbackup_clients~ ~Netbackup Clients service in the services table~ ~Netbackup Clients~ ~Netbackup İstemcileri~
+~sisiya.records.services.netbackup_library~ ~Netbackup Library service in the services table~ ~Netbackup Library~ ~Netbackup Kütüphanesi~
+~sisiya.records.services.oracle_hitratios~ ~Oracle Hitratios service in the services table~ ~Oracle Hitratios~ ~Oracle İsabet Oranları~
+~sisiya.records.services.netbackup_robots~ ~Netbackup Robots service in the services table~ ~Netbackup Robots~ ~Netbackup Robotları~
+~sisiya.records.services.netbackup_scratch~ ~Netbackup Scratch service in the services table~ ~Netbackup Scratch~ ~Netbackup Kullanılabilir Havuz~
+~sisiya.records.services.netbackup_notify~ ~Netbackup Notify service in the services table~ ~Netbackup Notify~ ~Netbackup Bildirimleri~
+~sisiya.records.services.temperature~ ~Temperature service in the services table~ ~Temperature~ ~Sıcaklık~
+~sisiya.records.services.ups_battery~ ~UPS Battery service in the services table~ ~UPS Battery~ ~UPS Pili~
+~sisiya.records.services.ups_status~ ~UPS Status service in the services table~ ~UPS Status~ ~KGK Durumu~
+~sisiya.records.services.ups_output~ ~UPS Output service in the services table~ ~UPS Output~ ~KGK Çıkışı~
+~sisiya.records.services.ups_timeonbattery~ ~UPS time on battery service in the services table~ ~UPS Time on Battery~ ~KGK Pilden Geçen Süre~
+~sisiya.records.services.pdu_output~ ~PDU Output service in the services table~ ~PDU Output~ ~PDU Çıkışı~
+~sisiya.records.services.battery~ ~Battery service in the services table~ ~Battery~ ~Pil~
+~sisiya.records.services.printer_pagecounts~ ~Printer page counts service in the services table~ ~Printer Page Counts~ ~Yazıcı Sayfa Sayısı~
+~sisiya.records.services.batchjob_notify~ ~Batchjob Notify service in the services table~ ~Batchjob Notify~ ~Arkaplan Program Bildirimleri~
+~sisiya.records.services.netbackup_media~ ~Netbackup Media service in the services table~ ~Netbackup Media~ ~Netbackup Kartuşları~
+~sisiya.records.services.daemon_children~ ~Daemon children service in the services table~ ~Daemon Children~ ~Servisin Alt Programları~
+~sisiya.records.services.dmesg~ ~dmesg service in the services table~ ~dmesg~ ~System Günlüğü~
+~sisiya.records.services.test~ ~Test service in the services table~ ~Test~ ~Test~
+~sisiya.records.services.listening_socket~ ~Listening socket service in the services table~ ~Listening Socket~ ~Dinlenmekte Olan Socketler~
+~sisiya.records.services.ntpstat~ ~ntpstat service in the services table~ ~Time~ ~Saat~
+~sisiya.records.services.ipconntrack~ ~ipconntrack service in the services table~ ~IP Connection Tracking~ ~IP Bağlantı Takibi~
+~sisiya.records.services.mysql_table_status~ ~MySQL table tatus service in the services table~ ~MySQL Table Status~ ~MySQL Dablo Durumları~
+~sisiya.records.services.established_connections~ ~Established onnections service in the services table~ ~Established Connections~ ~Kurulmuş Bağlantılar~
+~sisiya.records.services.hddtemp~ ~HD temperature service in the services table~ ~HD Temperature~ ~Disk Sıcaklığı~
+~sisiya.records.services.raid~ ~RAID service in the services table~ ~RAID~ ~RAID~
+~sisiya.records.services.fanspeed~ ~Fan speed service in the services table~ ~Fan Speed~ ~Pervane Hızları~
+~sisiya.records.services.baan_jobs~ ~Baan jobs service in the services table~ ~Baan Jobs~ ~Baan İşleri~
+~sisiya.records.services.baan_warehouse~ ~Baan Warehouse service in the services table~ ~Baan Warehouse~ ~Baan Deporalı~
+~sisiya.records.services.lpstat~ ~lpstat service in the services table~ ~lpstat~ ~lpstat~
+~sisiya.records.services.smart~ ~SMART service in the services table~ ~SMART~ ~SMART~
+~sisiya.records.services.mssql~ ~MSSQL service in the services table~ ~MSSQL~ ~MSSQL~
+~sisiya.records.services.linestatus~ ~Line status service in the services table~ ~Line Status~ ~Hattın Durumu~
+~sisiya.records.services.portstatus~ ~Port status service in the services table~ ~Port Status~ ~Bağlantı Noktası Durumu~
+~sisiya.records.services.snmptrap~ ~SNMP Trap service in the services table~ ~SNMP Trap~ ~SNMP Tuzağı~
+~sisiya.records.services.softraid~ ~Software RAID service in the services table~ ~Software RAID~ ~Yazılım RAID~
+~sisiya.records.services.mailq~ ~Mailq service in the services table~ ~Mail Queue~ ~E-Posta Kuyruğu~
+~sisiya.records.services.powersupply~ ~Power supply service in the services table~ ~Powersupply~ ~Güç Kaynağı~
+~sisiya.records.services.vmware~ ~Vmware service in the services table~ ~VMware~ ~VMware~
+~sisiya.records.services.mswindows_eventlog~ ~MS Windows Event log service in the services table~ ~MS Windows Eventlog~ ~MS Windows Olay Günlüğü~
+~sisiya.records.services.isuptodate~ ~Is uptodate service in the services table~ ~Is Uptodate?~ ~Güncell mi?~
+~sisiya.records.services.antivirus~ ~Antivirus service in the services table~ ~Antivirus~ ~Antivirüs~
+~sisiya.records.services.services~ ~Services service in the services table~ ~Services~ ~Servisler~
+~sisiya.records.services.brightstore_jobs~ ~Brightstore Jobs service in the services table~ ~Brightstore Jobs~ ~Brightstore Yedek İşleri~
+~sisiya.records.services.brightstore_devices~ ~Brightstore Devices service in the services table~ ~Brightstore Devices~ ~Brightstore Aygıtları~
+~sisiya.records.services.brightstore_scratch~ ~Brightstore Scratch service in the services table~ ~Brightstore Scratch~ ~Brightstore Kullanılabilir Havuz~
+~sisiya.records.services.msexchange_servicehealth~ ~MS Exchange Service Health service in the services table~ ~MS Exchange Service Health~ ~MS Exchange servis sağlık durumu~
+~sisiya.records.services.msexchange_mapiconnectivity~ ~MS Exchange MAPI connectivity service in the services table~ ~MS Exchange MAPI connectivity~ ~MS Exchange MAPI bağlantısı~
+~sisiya.records.services.msexchange_mailflow~ ~MS Exchange Mail flow service in the services table~ ~MS Exchange Mailflow~ ~MS Exchange E-Posta Akışı~
+~sisiya.records.services.msexchange_mailqueue~ ~MS Exchange Mail Queue service in the services table~ ~MS Exchange Mail Queue~ ~MS Exchange E-Posta Kuyruğu~
+~sisiya.records.services.baan_users~ ~Baan Uusers service in the services table~ ~Baan Users~ ~Baan Kullanıcıları~
+~sisiya.records.services.baan_edi~ ~Baan EDI service in the services table~ ~Baan EDI~ ~Baan EDI~
+~sisiya.records.services.baan_message~ ~Baan Message service in the services table~ ~Baan Message~ ~Baan Mesajları~
+~sisiya_admin.button.add~ ~Add button~ ~Add~ ~Ekle~ 
+~sisiya_admin.button.change~ ~Change button~ ~Change~ ~Değiştir~ 
+~sisiya_admin.button.clear~ ~Clear button~ ~Clear~ ~Temizle~ 
+~sisiya_admin.button.delete~ ~Delete button~ ~Delete~ ~Sil~ 
+~sisiya_admin.button.export~ ~Export button~ ~Export~ ~Dışa çık~ 
+~sisiya_admin.button.find~ ~Find button~ ~Find~ ~Bul~
+~sisiya_admin.button.forgot_password~ ~Forgot password button~ ~Forgot password~ ~Şifremi unuttum~ 
+~sisiya_admin.button.insert~ ~Insert button~ ~Insert~ ~Gir~ 
+~sisiya_admin.button.login~ ~Login button~ ~Login~ ~Giriş~ 
+~sisiya_admin.button.logout~ ~Logout button~ ~Logout~ ~Çıkış~ 
+~sisiya_admin.button.update~ ~Update button~ ~Update~ ~Güncelle~ 
+~sisiya_admin.interface.header~ ~Header of the interface form~ ~Web interface~ ~Web arayüzü~ 
+~sisiya_admin.interface.label.keystr~ ~Key string label in the interface form~ ~String key~ ~Anahtar sözcük~ 
+~sisiya_admin.interface.label.language~ ~Language label in the interface form~ ~Language~ ~Dil~ 
+~sisiya_admin.interface.label.text~ ~Text label in the interface form~ ~Text~ ~Metin~ 
+~sisiya_admin.interface.title~ ~Title of the interface form~ ~Web interface~ ~Web arayüzü~ 
+~sisiya_admin.label.add~ ~add label~ ~add~ ~ekle~ 
+~sisiya_admin.label.update~ ~update label~ ~update~ ~güncelle~ 
+~sisiya_admin.label.delete~ ~delete label~ ~delete~ ~sil~ 
+~sisiya_admin.infos.label.id~ ~ID label on the infos page~ ~ID~ ~No~
+~sisiya_admin.infos.label.sortid~ ~Sort ID label on the infos page~ ~Sort ID~ ~Sıra No~
+~sisiya_admin.infos.label.keystr~ ~Status label on the infos page~ ~Infos~ ~Bilgi~
+~sisiya_admin.label.error~ ~Error label~ ~Error~ ~Hata~ 
+~sisiya_admin.label.is_active~ ~Is active label~ ~Is active?~ ~Etkin mi?~ 
+~sisiya_admin.label.no~ ~No label~ ~No~ ~Hayır~ 
+~sisiya_admin.label.orderby~ ~Order by label in forms~ ~Order by~ ~Sıralama koşulu~ 
+~sisiya_admin.label.select~ ~Select label~ ~Select~ ~Seç~ 
+~sisiya_admin.label.version~ ~Version label~ ~Version~ ~Sürüm~
+~sisiya_admin.label.yes~ ~Yes label~ ~Yes~ ~Evet~ 
+~sisiya_admin.languages.header~ ~Header of the languages form~ ~Languages~ ~Diller~ 
+~sisiya_admin.languages.label.charset~ ~Charset label in the languages form~ ~Charset~ ~Karakter seti~ 
+~sisiya_admin.languages.label.code~ ~Code label in the languages form~ ~Code~ ~Kod~ 
+~sisiya_admin.languages.label.id~ ~ID label in the languages form~ ~ID~ ~No~ 
+~sisiya_admin.languages.label.language~ ~Language label in the languages form~ ~Language~ ~Dil~ 
+~sisiya_admin.languages.title~ ~Title of the languages form~ ~Languages~ ~Diller~ 
+~sisiya_admin.locations.label.id~ ~ID label on the locations page~ ~ID~ ~No~
+~sisiya_admin.locations.label.sortid~ ~Sort ID label on the locations page~ ~Sort ID~ ~Sıra No~
+~sisiya_admin.locations.label.keystr~ ~Status label on the locations page~ ~Location~ ~Konum~
+~sisiya_admin.login.click_to_proceed~ ~Click here to proceed~ ~Click here to proceed.~ ~Devam etmek için tıklayın.~ 
+~sisiya_admin.login.header~ ~Header of the login page~ ~Swot Approach to Corporate Management Objectives~ ~Kurumsal Yönetim Hedeflerine Swot Yaklaşımı~
+~sisiya_admin.login.invalid_login~ ~Invalid login~ ~Invalid login!~ ~Hatalı giriş!~ 
+~sisiya_admin.login.invalid_username~ ~Invalid username~ ~Invalid username!~ ~Hatalı kullanıcı!~
+~sisiya_admin.login.label.password~ ~Password label in the login page~ ~Password~ ~Şifre~ 
+~sisiya_admin.login.label.login~ ~login label on the login page~ ~Login~ ~Giriş~ 
+~sisiya_admin.login.label.username~ ~Username label in the login page~ ~Username~ ~Kullanıcı~ 
+~sisiya_admin.login.label.email~ ~Email label in the login page~ ~E-Mail~ ~E-Posta~ 
+~sisiya_admin.login.sent_new_password~ ~New password sent message!~ ~A new password has been sent to your e-mail account.~ ~Yeni şifreniz e-posta adresinize gönderilmiştir.~
+~sisiya_admin.login.title~ ~Title of the login page~ ~SisIYA admin login~ ~SisIYA admin giriş~ 
+~sisiya_admin.login.try_again~ ~Please try again~ ~Please try again.~ ~Lütfen bir daha deneyin.~ 
+~sisiya_admin.logout.header~ ~Header of the logout form~ ~Logout~ ~Çık~ 
+~sisiya_admin.logout.title~ ~Title of the logout form~ ~Logout~ ~Çık~ 
+~sisiya_admin.main.header~ ~Header of the main page~ ~SisIYA Administration~ ~SisIYA Yönetimi~
+~sisiya_admin.main.title~ ~Title of the main page~ ~SisIYA~ ~SisIYA~ 
+~sisiya_admin.menu.label.changepassword~ ~Change password menu label of the menu~ ~Change password~ ~Şifre değiştir~ 
+~sisiya_admin.menu.label.formpermissions~ ~Form permissions menu label of the menu~ ~Form permissions~ ~Form erişim hakları~ 
+~sisiya_admin.menu.label.forms~ ~Forms menu label of the menu~ ~Forms~ ~Formlar~ 
+~sisiya_admin.menu.label.infos~ ~Info types menu label of the menu~ ~Production info types~ ~Üretim bilgi tipleri~ 
+~sisiya_admin.menu.label.interface~ ~Webinterface menu label of the menu~ ~Webinterface~ ~Web arayüzü~ 
+~sisiya_admin.menu.label.languages~ ~Languages menu label of the menu~ ~Languages~ ~Diller~ 
+~sisiya_admin.menu.label.login~ ~Workcenters menu label of the menu~ ~Workcenters~ ~İş merkezleri~ 
+~sisiya_admin.menu.label.strkeys~ ~String keys menu label of the menu~ ~String keys~ ~Anahtar sözcükler~ 
+~sisiya_admin.menu.label.users~ ~Users menu label of the menu~ ~Users~ ~Kullanıcılar~ 
+~sisiya_admin.msg.successfully_added~ ~Successfully added message~ ~Successfully added.~ ~Eklendi.~ 
+~sisiya_admin.msg.successfully_deleted~ ~Successfully deleted message~ ~Successfully deleted.~ ~Silindi.~ 
+~sisiya_admin.msg.successfully_updated~ ~Successfully updated message~ ~Successfully updated.~ ~Güncellendi.~ 
+~sisiya_admin.msg.couldnot_add~ ~Could not add message~ ~Could not add!~ ~Eklenemedi!~ 
+~sisiya_admin.msg.couldnot_delete~ ~Could not delete message~ ~Could not delete!~ ~Silinemedi!~ 
+~sisiya_admin.msg.couldnot_update~ ~Could not update message~ ~Could not update!~ ~Güncellenemedi!~ 
+~sisiya_admin.msg.sql_select_error~ ~Select SQL error message~ ~There was an error during select SQL!~ ~SQL sırasında hata oluştu!~ 
+~sisiya_admin.properties.label.id~ ~ID label on the properties page~ ~ID~ ~No~
+~sisiya_admin.properties.label.keystr~ ~Properties label on the properties page~ ~Property~ ~Özellik~
+~sisiya_admin.services.label.id~ ~ID label on the services page~ ~ID~ ~No~
+~sisiya_admin.services.label.keystr~ ~Service label on the services page~ ~Service~ ~Denetim~
+~sisiya_admin.status.label.id~ ~ID label on the status page~ ~ID~ ~No~
+~sisiya_admin.status.label.keystr~ ~Status label on the status page~ ~Status~ ~Durum~
+~sisiya_admin.strkeys.header~ ~Header of the strkeys form~ ~String keys~ ~Anahtar sözcükler~
+~sisiya_admin.strkeys.label.id~ ~ID label in the strkeys form~ ~ID~ ~No~ 
+~sisiya_admin.strkeys.label.keystr~ ~Keystr label in the strkeys form~ ~String keys~ ~Anahtar sözcük~ 
+~sisiya_admin.strkeys.label.str~ ~Str label in the strkeys form~ ~String key description~ ~Anahtar sözcügün açıklaması~ 
+~sisiya_admin.strkeys.title~ ~Title of the strkeys form~ ~String keys~ ~Anahtar sözcükler~ 
+~sisiya_admin.system_infos.label.info_name~ ~Info name label on the system_infos page~ ~Info name~ ~Bilginin adı~
+~sisiya_admin.system_infos.label.info_value~ ~Info value label on the system_infos page~ ~Info value~ ~Bilginin değeri~
+~sisiya_admin.systemtypes.label.id~ ~ID label on the systemtypes page~ ~ID~ ~No~
+~sisiya_admin.systemtypes.label.str~ ~System Types label on the systemtypes page~ ~System Type~ ~Sistem Tipi~
+~sisiya_admin.systems.label.id~ ~ID label on the systems page~ ~ID~ ~No~
+~sisiya_admin.systems.label.hostname~ ~System name label on the systems page~ ~System name~ ~Sistemin adı~
+~sisiya_admin.systems.label.fullhostname~ ~System full name label on the systems page~ ~System full name~ ~Sistemin tam adı~
+~sisiya_admin.systems.label.systemtype~ ~System type label on the systems page~ ~System type~ ~Sistemin tipi~
+~sisiya_admin.systems.label.isactive~ ~Active label on the systems page~ ~Is active?~ ~Kullanımda mı?~
+~sisiya_admin.systems.label.effectsoverallstatus~ ~Does system effects overall status label on the systems page~ ~Does the system effects the overall system status?~ ~Sistem genel durumunu etkiliyor mu?~
+~sisiya_admin.systems.label.systemlocation~ ~Systems location label on the systems page~ ~Systems location~ ~Sistemin konumu~
+~sisiya_admin.user_password.header~ ~Header of the user_password form~ ~User~ ~Kullanıcı~ 
+~sisiya_admin.user_password.label.user~ ~User label in the user_password form~ ~User~ ~Kullanıcı~ 
+~sisiya_admin.user_password.label.new_password~ ~New password label in the user_password form~ ~New password~ ~Yeni şifre~ 
+~sisiya_admin.user_password.label.old_password~ ~Old password label in the user_password form~ ~Old password~ ~Eski şifre~ 
+~sisiya_admin.user_password.label.renew_password~ ~Re New password label in the user_password form~ ~Re New password~ ~Yeni şifre tekrar~ 
+~sisiya_admin.users.header~ ~Header of the users form~ ~Users~ ~Kullanıcılar~ 
+~sisiya_admin.user_password.msg.password_missmatch~ ~Password missmatch message of the user_password form~ ~Password missmatch!~ ~Şifreler birbirini tutmuyor!~ 
+~sisiya_admin.user_password.msg.no_old_password~ ~Empty old password message of the user_password form~ ~You must specıfy the old password!~ ~Eski şifrenizi girin!~ 
+~sisiya_admin.user_password.msg.no_new_password~ ~Empty new password message of the user_password form~ ~You must specıfy non empty new password!~ ~Yeni şifrenizi boş olamaz!~ 
+~sisiya_admin.user_password.msg.min_password_length~ ~Min password length message of the user_password form~ ~Password is too short!~ ~Şifreniz kısa!~ 
+~sisiya_admin.user_password.msg.invalid_old_password~ ~Invalid old password message of the user_password form~ ~Invalid old password!~ ~Eski şifreniz hatalıdır!~ 
+~sisiya_admin.users.label.email~ ~E-Mail label in the users form~ ~E-Mail~ ~E-Posta~ 
+~sisiya_admin.users.label.id~ ~ID label in the users form~ ~ID~ ~No~ 
+~sisiya_admin.users.label.isadmin~ ~Is admin label in the users form~ ~Is admin?~ ~Yönetici mi?~ 
+~sisiya_admin.users.label.isroot~ ~Is root label on the users page~ ~Is root?~ ~Süper yönetici mi?~ 
+~sisiya_admin.users.label.name~ ~Name label on the users page~ ~Name~ ~Adı~ 
+~sisiya_admin.users.label.surname~ ~Surname label on the users page~ ~Surname~ ~Soyadı~ 
+~sisiya_admin.users.label.username~ ~Username label on the users page~ ~Username~ ~Kullanıcı adı~ 
+~sisiya_admin.users.title~ ~Title of the users form~ ~Users~ ~Kullanıcılar~ 
+~sisiya_admin.users.label.position~ ~Position label on the users page~ ~Position~ ~Pozisyonu~ 
+~sisiya_admin.users.label.phone~ ~Phone label on the users page~ ~Phone~ ~Telefonu~ 

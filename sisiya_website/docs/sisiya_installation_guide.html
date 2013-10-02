@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="description" content="SisIYA system and network monitoring" />
+<meta name="keywords" content="system monitoring,network monitoring,snmp traps,web based,free" />
+<link rel="stylesheet" type="text/css" href="../style/style.css" />
+<title>SisIYA Homepage</title>
+</head>
+<body>
+
+<h3>SisIYA Installation Guide</h3>
+<ins>
+<table class="header">
+<tr class="header">
+<td><a href="/">Home</a></td>
+<td><a href="../docs/">Documentation</a></td>
+<td><a href="../downloads/">Downloads</a></td>
+<td><a href="../faq/">FAQ</a></td>
+<td><a href="http://sisiya.sisiya.net">Live demo</a></td>
+<td><a href="../mailing_lists.html">Mailing Lists</a></td>
+<td><a href="../screenshots/">Screenshots</a></td>
+<td><a href="http://sisiya.svn.sourceforge.net/viewvc/sisiya/">Subversion</a></td>
+</tr>
+</table>
+</ins>
+
+
+<h3>Installing from source</h3>
+<p>
+In order to install SisIYA from source just get the sources from the
+<a href="http://svn.sourceforge.net/viewcvs.cgi/sisiya/">Subversion</a>
+using the following command :
+</p>
+<ins><pre>
+svn co https://sisiya.svn.sourceforge.net/svnroot/sisiya sisiya
+</pre></ins>
+<p>
+or form the <a href="/downloads/">Downloads</a> section. 
+
+And give the following commands:
+</p>
+<ins><pre>
+make
+make install
+</pre></ins>
+<p>
+<b>make</b> configures and compiles the sources. <b>make install</b> installs them.
+The <b>make</b> command does executes the following commands :
+</p><ins>
+<pre>
+cd src/ &amp;&amp; ./bootstrap create &amp;&amp; ./configure make &amp;&amp; cd ..
+cd edbc/ &amp;&amp; make clean &amp;&amp; make &amp;&amp; cd ..
+cd sisiya_server/ &amp;&amp; ./bootstrap create &amp;&amp; ./configure &amp;&amp; make clean &amp;&amp; make &amp;&amp; cd ..
+</pre>
+</ins><p>
+The <b>make install</b> command does executes the following commands :
+</p><ins>
+<pre> 
+cd src/ &amp;&amp; make install &amp;&amp; cd ..
+cd sisiya_server &amp;&amp; make install &amp;&amp; cd ..
+cd edbc &amp;&amp; make install &amp;&amp; cd ..
+</pre></ins>
+<p>
+At the moment <b>src</b>, <b>sisiya_server</b> and <b>edbc</b> use different configure and make files and options. This is the reason why I need
+to configure, compile and install them with seperate commands. On the top level of the source directory there is a Makefile which has the
+above commands in one place. Please refere to this Makefile for up-to-date compile information.<br /><br />
+
+<b>./bootsrtap create</b> command initializes the autoconf/automake environment. 
+<br />
+<b>./configure</b>
+configures the sources.
+<br />
+<b>make</b> compiles the sources and <b>make install</b> installs SisIYA. Install targets accept 
+"install_root=/new_root_dir" parameter, so that you can install relative to the new_root_dir. Install scripts are designed
+and tested under CentOS 4.2, Fedora Core 4 and RedHat ES4. But I am going to modify them and make them compatible with 
+other systems. At least I am going to read the LSB and try to be comformed with it.
+If your system is not one of the tested systems, you can modify the corresponding files and run the above commands again.
+Or just let me know and I would be very glad to help you.
+</p>
+
+<h3>Installing from rpm</h3>
+<p>
+This is the preferred way of installing SisIYA on Linux. There are different packages to install on:
+<ins>
+<pre>
+sisiya-edbc-libs-&lt;version&gt;.i386.rpm
+sisiya-server-&lt;version&gt;.i386.rpm
+sisiya-server-checks-&lt;version&gt;.i386.rpm
+sisiya-client-checks&lt;version&gt;.i386.rpm
+sisiya-client-systems-&lt;version&gt;.i386.rpm
+sisiya-dbscripts-&lt;version&gt;.i386.rpm
+sisiya-php-&lt;version&gt;.i386.rpm
+</pre></ins>
+Every package hase its own version, because the development is at different stages for each package. The RPM's spec
+file contains the version information.
+<b>sisiya-edbc-libs</b> package contains shared libraries used by the <b>sisiyad</b> for database operations. This package
+is a database connectivity framework written in C++ and for C++ applications. It is far from a complete framework, but
+it meets all requirements that SisIYA needs.
+<br />
+<b>sisiya-server</b> package contains the <b>sisiyad</b> daemon which recieves messages from the client systems and
+records them in the database. This computer must be accessible from all your client systems.
+<br />
+<b>sisiya-server-checks</b> package contains scripts and programs to check your systems remotely. Therefore you are 
+going to need access from this computer to your clients that are going to be checked remotely. Normally I install
+this package on the same computer, on which the sisiya-server package is installed. This is also the reason for
+the package name. These scripts and programs are used to check your systems and send the results to the <b>sisiyad</b>
+server.
+<br />
+<b>sisiya-client-checks</b> package contains the software for your clients. There are 5 check scripts available with this
+package. These are checks for filesystem, swap, system, load and users.  
+<br />
+<b>sisiya-client-systems</b> package contains your site specific hostname directories, which in turn contain
+checks that are special for every system. More on this package later.
+<br />
+<b>sisiya-dbscripts</b> contains scripts and SQL files to initialize the SisIYA database. Normally you will
+need this package only to initialize the SisIYA database. After that you can use the SisIYA's administration
+web interface. This package does not have to be installed on the database server. 
+<br />
+<b>sisiya-php</b> contains the web interface to SisIYA. There is also an administration web interface. These
+scripts are written in PHP for Apache. The web interface scripts support PostgreSQL and MySQL databases.
+</p>
+<h3>Packages to install on the SisIYA server</h3>
+<p>
+Install 
+<ins><pre>
+sisiya-edbc-libs
+sisiya-server
+sisiya-server-checks
+sisiya-dbscripts
+sisiya-php
+</pre></ins> 
+on the SisIYA server. The SisIYA server is the computer which is going to be used to monitor your systems. 
+Actually you could install all these components on different computers.  
+</p>
+<h3>Packages to install on your clients</h3>
+<p>
+Install the following packages
+<ins><pre>
+sisiya-client-checks
+sisiya-client-systems
+</pre></ins> 
+on your client systems. A client system is computer which is going to be monitored by the SisIYA server. You can also
+install these packages on the SisIYA server itsel in order to monitor it.
+</p>
+
+<h3>Recommendation</h3>
+<p>
+I would recommend that you rebuild the <b>sisiya-client-checks</b> and <b>sisiya-client-systems</b> packages
+according to your needs. In the <b>sisiya-client-checks</b> package you would need to chanage the hostname for your SisIYA
+server, which is specified in the <b>sisiya_client.conf</b> file. The <b>sisiya-client-systems</b> package 
+contains directories which are your client systems' hostnames. In these directories you can create soft links 
+to the scripts in the  <b>special</b> directory, which comes with the <b>sisiya-client-checks</b> package. And change the
+default values for error and warning. 
+</p>
+<h3>Building SisIYA RPM packages</h3>
+<p>
+In order to build the SisIYA RPM packages:
+<ins>
+<ol><li>
+Download the SisIYA's source RPM package sisiya-&lt;version&gt;.src.rpm.
+</li><li>
+Install the source RPM with the rpm -ivh sisiya-&lt;version&gt;.src.rpm.
+</li><li>
+Build the SisIYA packages with the rpmbuild -ba /path_to_rpm_SPECS_dir/sisiya.spec. Where path_to_rpm_SPECS_dir is where 
+your RPM specs files reside. The default is /usr/src/redhat/SPECS.
+</li></ol></ins>
+You will need a Java SDK installed on your build computer. This is needed to compile the SISIYACheckDB.java program, which
+is used to check the database systems.
+<br />
+It is usefull to build the SisIYA packages and customize them for your needs. You can use the sisiya-&lt;version&gt;.src.rpm package or you can get the SisIYA sources from cvs server. See <a href="sisiya.sourceforge.net">SisIYA</a> homepage
+for more information on obtaining the sources. If you would like to use the sisiya-&lt;version&gt;.src.rpm follow the 
+following steps:
+<ins><ol><li>
+Unpackage the source RPM using the following command:
+<ins><pre>
+ rpm2cpio sisiya-&lt;version&gt;.src.rpm | cpio -i 
+</pre></ins>
+</li><li>
+Next untar the tar.gz file:
+<ins><pre>
+tar xvfz sisiya-&lt;version&gt;.tar.gz
+</pre></ins>
+Note: The version here does not contain the release part, which has the source RPM package.
+</li><li>
+In the sisiya-&lt;version&gt;/src directory there is a script called make_sisiya_source.sh. 
+Use this script to generate a custom sisiya-&lt;version&gt;.tar.gz tar file. 
+</li><li>
+And build the RPM packages with the following command:
+<ins><pre>
+rpmbuild -ta sisiya-&lt;version&gt;.tar.gz
+</pre></ins>
+</li></ol></ins>
+I would like to explain the customization (step 3) a little bit more:
+<ins><ol><li>
+Create a directory where you are going to keep your customized files:
+<ins><pre>
+mkdir sisiya_local_dir
+</pre></ins>
+</li><li>
+Use your favorite editor and create a file called local_confs.conf under the newly created directory:
+<ins><pre>
+vi sisiya_local_dir/local_confs.conf
+</pre></ins>
+And enter the following line:
+<ins><pre>
+sisiya_server=sisiya.example.org
+admins_mail=sisiyaadmins@example.org
+</pre></ins>
+Change the sisiya_server and admins_mail according to your needs. The sisiya_server contains the name or IP address of
+the server, where the sisiya-server package is installed. The admins_mail contains the e-mail address or e-mail
+addresses separete by a comma. Some SisIYA scripts send e-mails to the SisIYA admin(s) requiring attention of the admin.
+</li><li>
+If you create the following subdirectories under the sisiya_local_dir and put customized versions of the original
+files, they are going to be copied by the make_sisiya_source.sh script to their corresponding directories:
+<ins><pre>
+db/
+sisiya_ui/images/
+sisiya_server_checks/
+sisiya_check/systems/
+</pre></ins>
+</li></ol></ins>
+</p>
+<p>
+Customization is an advanced topic which requires in depth knowledge of SisIYA. For more information read the
+<a href="./sisiya_administration_guide.html">SisIYA administration guide</a>.
+</p>
+<h3>Database configuration</h3>
+<p>
+At the moment SisIYA supports only MySQL and PostgreSQL database systems. The <b>sisiya-dbscripts</b> package
+contains scripts for an initial database configuration.  Those scripts help you to create the SisIYA database 
+and populate it with initial data. Change into the /opt/sisiya-dbscripts directory.
+<ins><ol><li>
+Decide which database system you are going to use. There are two
+possible choices at the momemnt: MySQL and PostgreSQL. When you
+have made your choice, set the DBTYPE variable in the Makefile and
+according to your needs edit the corresponding db_MySQL.conf or db_PostgreSQL.conf
+files. What you will probably need to change is the following :
+<ins><ul><li>
+dbserver : The server name or IP address of your database system.
+</li><li>
+dbauser : The database administrator's user name. Usually this is mysql for MySQL and postgres 
+for PostgreSQL database systems.
+</li><li>
+dbapassword : This is the password of the dbauser.
+</li><li>
+dbadbname : This is the database name of the dbauser. Usually this is mysql for MySQL and 
+template1 for PostgreSQL.
+</li><li>
+dbpassword : The password of the SisIYA database user (dbuser=sisiya).
+</li></ul></ins></li>
+<li>
+Edit the populate_db.sql. Here you will need to change the entries for
+locations (When you have more then one server room or server center, you may
+want to see your systems grouped by their location. This table defines the possible
+locations.) and systems (Here you specify your systems: servers, etc.) tables.
+</li>
+<li>Type make to do all the installation. If you have chosen PostgreSQL, then you are going to be prompted for dbauser's 
+password.
+</li></ol></ins>
+
+Here is a short description of some files in the /opt/sisiya-dbscripts directory:
+<ins><ul><li>
+Makefile                : This file is used by make (as always) and is a wrapper around dbscript.
+</li><li>
+dbscript.sh             : This is a wrapper script for exec_DBTYPE.sh scripts. DBTYPE can be
+                          MySQL or PostgreSQL.
+</li><li>
+db_DBTYPE.conf          : These files contain database connection info SQL file names.
+</li><li>
+exec_DBTYPE.sh          : These are scripts which are called from dbscript.sh for
+                          executing varios SQLs.
+</li><li>
+make_history_archive.sh : This script should be run every night after midnight in order to
+                          move all records exept which are for today (after midnight records)
+                          from the systemhistorystatus to the systemhistorystatusall table.
+                          This is needed in order to speed up the daily queries.
+</li><li>
+create_tables.sql       : SQL statements for creating the SisIYA's tables.
+</li><li>
+drop_tables.sql         : SQL statements for deleting the SisIYA's tables.
+</li><li>
+populate_db.sql         : SQL statements for populating the SisIYA's tables. The password for the admin user is sisiyaadmin1.
+</li></ul></ins>
+</p>
+<h3>SisIYA daemon configuration</h3>
+<p>
+Use 
+<ins><pre>man sisiyad</pre></ins>
+and 
+<ins><pre>man sisiyad.conf</pre></ins> 
+commands to get information about the SisIYA daemon and its configuration file. Don't forget to check and
+maybe edit the database related configuration part of the sisiyad.conf file.
+</p>
+<h3>PHP interface configuration</h3>
+<p>
+The <b>sisiya-php</b> package installs SisIYA's PHP GUI under the /var/www/html/sisiya directory. There is 
+file called dbconf.php. Here you can edit and change values for the following database configuration parameters:
+<ins><pre>
+$dbType="MySQL";		# valid values are MySQL and PostgreSQL 
+$db_server="localhost";		# host name or IP address of the the SisIYA's database
+$db_user="sisiyauser";		# the username to connect to the SisIYA's database
+$db_password="sisiyauser1";	# database user's password
+$db_name="sisiya";		# name of the SisIYA's database
+</pre></ins>
+If you have installed SisIYA's database using the sisiya-dbscripts package scripts, then you can use the initial
+administration user <b>admin</b> with password <b>sisiyaadmin1</b>. After successfully accessing the GUI interface, you
+can change the password for this user or generate another admin or general users. The difference between admin
+users and general users is that general users do not have all permissions that admin users have. The admin user interface
+is accessable through the monitoring interface or directly by specifying sisiya_adm.php. For example: 
+<ins><pre>
+http://sisiya.example.org/sisiya_adm.php
+</pre></ins>
+</p>
+<h3>Client configuration</h3>
+<p>
+Clients are configured through the <b>sisiya_client.conf</b> configuration file under the /opt/sisiya_client_checks directory.
+This file is installed on every computer, which is going to be monitored by SisIYA. Here is a partially listing of the
+sisiya_client.conf file:
+<ins><pre>
+### SisIYA Server's name or IP address
+SISIYA_SERVER=127.0.0.1
+### SisIYA server port on which the SisIYA daemon is listenening 
+SISIYA_PORT=8888
+###
+### Field seperator, used to seperate fields in the SisIYA message
+SP="~"
+##########################################################
+sisiya_hostname=`hostname`
+sisiya_base_dir="/opt/sisiya_client_checks"
+sisiya_bin_dir="${sisiya_base_dir}/bin"
+sisiya_host_dir="${sisiya_base_dir}/systems/${sisiya_hostname}"
+send_message_prog="${sisiya_bin_dir}/sisiya_send_message.sh"
+send_message2_prog="${sisiya_bin_dir}/sisiya_send_message2.sh"
+sisiyac_prog="${sisiya_bin_dir}/sisiyac"
+sisiya_functions="${sisiya_bin_dir}/sisiya_functions.sh"
+### status ids
+status_info=0
+status_ok=1
+status_warning=2
+status_error=3
+###
+### service ids, these IDs must be identical with IDs in the SisIYA database
+serviceid_system=0
+serviceid_filesystem=1
+serviceid_cpu=2
+serviceid_swap=3
+serviceid_load=4
+serviceid_smtp=5
+</pre></ins> 
+This configuration file is actually a BASH script. This configuration file is included from all SisIYA check scripts.
+Therefore, BASH syntax apply to this script.
+<b>SISIYA_SERVER</b> is the name or the IP address of the SisIYA server. <b>SISIYA_PORT</b> is the the port number where 
+the SisIYA daemon listens on. <b>sisiya_hostname</b> is the name of the system (in this case the name of the client) for
+which the checks are performed. The SisIYA daemon checks this name before recording the results of the checks. Therefore,
+it must be a name whic also exists in the SisIYA's database. The <b>sisiya_hostname</b> can either be short hostname or
+a fully qualified hostname. The value of this parameter (sisiya_hostname) is also used by the <b>sisiya_all.sh</b>
+script to locate the host's systems directory under the /opt/sisiya_client_checks/systems directory. Under this directory 
+(/opt/sisiya_checks/systems/$sisiya_hostname) are the links to special checks for this system and/or config files
+for various scripts. For more info about SisIYA scripts refer to the 
+<a href="./sisiya_administration_guide.html">SisIYA Administration Guide</a>. <b>SP</b> is the field seperator used to 
+seperate fields in the SisIYA message. <b>sisiya_base_dir</b> is the top level directory where the SisIYA client package
+is installed to. <b>sisiya_bin_dir</b> is the directory where SisIYA binaries and scripts reside. <b>sisiya_host_dir</b>
+is the directory where the customization conf files and links to the spacial scripts reside. <b>send_message_prog</b>
+is a script, which is used to send one SisIYA message at a time to the SisIYA server. <b>send_message2_prog</b> is another
+script, which is used to send multiple SisIYA messages to the SisIYA server. Both of these scripts use the 
+<b>sisiyac_prog</b> for sending the SisIYA message to the SisIYA server. <b>sisiya_functions</b> is a BASH script,
+which contains common functions used in the SisIYA check scripts. <b>status_info</b>, <b>status_ok</b>, 
+<b>status_warning</b> and <b>status_error</b> are the all possible status IDs used in SisIYA. You do need to change these
+status values, unless you also change them in the database. The rest of the configuration file contains service IDs for
+various SisIYA checks. These values must also correspond to those in the SisIYA database.
+</p>
+</body></html>

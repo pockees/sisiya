@@ -1,0 +1,52 @@
+### service id
+serviceid=$serviceid_netbackup_debug 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_netbackup_debug is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+netbackup_log_dir=/usr/openv/netbackup/logs
+### end of the default values
+##########################################################################
+
+### If there is a module conf file then override these default values
+str=$script_name
+if test "$sisiya_osname" = "SunOS"  ; then
+	str=`echo $str | awk -F. '{ print $1 }'`
+else
+	str=${str%.*}
+fi
+
+module_conf_file=${sisiya_host_dir}/${str}.conf
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+if test ! -d $netbackup_log_dir ; then
+	statusid=$status_error
+	message_str="ERROR: NetBackup log directory [${netbackup_log_dir}] does not exist! Please check the default value in the $script_name or in the $module_conf_file"
+else
+	tmp_file=`maketemp /tmp/tmp_${script_name}_XXXXXX`
+	touch $tmp_file
+
+	cd $netbackup_log_dir
+	find . -type d -maxdepth 1 | while read -r dir
+	do
+		dir=`echo $dir | awk -F/ '{print $2}'`
+		if test "$dir" = "user_ops" ; then
+			continue
+		else
+			echo -n "$dir " >> $tmp_file
+		fi
+	done
+	dir_str=`cat $tmp_file`
+	rm -f $tmp_file
+	if test -z "$dir_str" || test "$dir_str" = " " ; then
+		statusid=$status_ok
+		message_str="OK: Debugging is not activated."
+	else
+		statusid=$status_warning
+		message_str="WARNING: Debugging is for [${dirs_str}] activated! If you do not do any debugging deactivate them."
+	fi
+fi

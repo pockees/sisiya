@@ -1,0 +1,354 @@
+body {
+	padding-left: 0em;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: black;
+	background-color: white;
+}
+img {border-style: none;} 
+/*
+a {	text-decoration: none
+	color: black }
+*/
+/*a:link {text-decoration: none; color: #00aaff}*/     /* unvisited link */
+/*a:visited {text-decoration: none; color: #00aaff}*/  /* visited link */
+/*a:hover {text-decoration: none; color: #0000ff}*/   /* mouse over link */
+/*a:active {text-decoration: none; color: #000000}*/   /* selected link */
+
+a:link {text-decoration: none; color: #00f}     /* unvisited link */
+a:visited {text-decoration: none; color: #00f}  /* visited link */
+a:hover {text-decoration: none; color: #0af}   /* mouse over link */
+a:active {text-decoration: none; color: #00f}   /* selected link */
+
+table.copyright {
+	margin: auto;
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.login {
+	margin: auto;
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	border: thin solid #abd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+/*	border-spacing: 1px;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+}
+
+table.login 		td { border: thin solid #ccc; color: black; }
+table.login td.label	{ background-color: #abd; }
+
+table.login_failed {
+	margin: auto;
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+table.login_failed 		td { color: red; }
+
+table.header {
+	width: 100%;
+	margin : auto;
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+
+	border-style: none;
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+}
+table.header td.center 	{ text-align: center; }
+table.header td.right 	{ text-align: right; }
+
+table.header2 {
+	/*width: 100%;*/
+	margin-left: auto;
+	margin-right: auto;
+
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 5em; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.headerbar {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 5em;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.color_info {
+	margin-left: auto;
+	margin-right: auto;
+
+	border: none;
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.system_detailed_view {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #ddd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.system_detailed_view 		td 		{ border: thin solid #ccc; color: black; }
+table.system_detailed_view tr.header	td 		{ background-color: #ddd; text-align: center; }
+table.system_detailed_view tr.subheader	td 		{ background-color: #ddd; text-align: center; }
+table.system_detailed_view tr.row 	td 		{ background-color: white; }
+/*table.system_detailed_view tr.row	td.ok		{ background-color: green; }*/
+/*table.system_detailed_view tr.row	td.warning	{ background-color: yellow; }*/
+/*table.system_detailed_view tr.row	td.error	{ background-color: red; }*/
+table.system_detailed_view tr.row	td.effectsfalse	{ background-color: green; }
+table.system_detailed_view tr.row	td.ok		{ color: green; }
+table.system_detailed_view tr.row	td.warning	{ color: orange; }
+table.system_detailed_view tr.row	td.error	{ color: red; }
+table.system_detailed_view tr.footer	td 		{ background-color: #ddd; }
+
+table.system_service_history {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #ddd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.system_service_history 			td		{ border: thin solid #ccc; color: black; }
+table.system_service_history	tr.header	td		{ background-color: #ddd; text-align: center; }
+table.system_service_history	tr.subheader	td		{ background-color: #ddd; text-align: center; }
+table.system_service_history	tr.row	 	td		{ background-color: white; }
+table.system_service_history	tr.footer	td		{ background-color: #ddd; }
+
+
+table.system_info {
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #ddd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.system_info 		td { border: thin solid #ccc; color: black; }
+table.system_info	tr.header td { background-color: #ddd; text-align: center; }
+table.system_info	tr.row 	td { background-color: white; }
+table.system_info	tr.footer td { background-color: #ddd; }
+table.system_info	td.label { background-color: #ddd; }
+
+table.system_services {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #fdd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.system_services			td 		{ border: thin solid #ccc; color: black; }
+table.system_services	tr.header	td 		{ background-color: #ddd; text-align: center; }
+table.system_services	tr.row 		td 		{ background-color: white; }
+table.system_services	tr.row		td.ok		{ color: green; }
+table.system_services	tr.row		td.warning	{ color: orange; }
+table.system_services	tr.row		td.error	{ color: red; }
+/*table.system_services	tr.row		td.ok		{ background-color: green; }*/
+/*table.system_services	tr.row		td.warning	{ background-color: yellow; }*/
+/*table.system_services	tr.row		td.error	{ background-color: red; }*/
+table.system_services	tr.footer 	td 		{ background-color: #ddd; }
+
+
+table.header_system_info {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	/*border-style: thin solid black;*/
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 5em;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.header_system_services {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	/*border-style: thin solid black;*/
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 5em; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.info {
+	margin-left: auto;
+	margin-right: auto;
+
+	border-style: none;
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: fixed; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.SisIYA {
+	margin-left: auto;
+	margin-right: auto;
+
+	border-style: none;
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.system_overview {
+	margin-left: auto;
+	margin-right: auto;
+
+	border-style: none;
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.system_overview 		td		{ color: black; }
+table.system_overview tr.header td		{ background-color: #dddddd; text-align: center; }
+table.system_overview tr.row 	td		{ background-color: white; }
+table.system_overview tr.row	td.effectsfalse	{ background-color: green; }
+table.system_overview tr.footer td		{ background-color: #dddddd; }
+
+table.menu {
+	margin-top: 3px;
+	margin-left: auto;
+	margin-right: auto;
+/*	margin-left:0em;*/
+/*	border-style: solid;*/
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 5em;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: fixed; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	width:230px;
+}
+table.menu 		td { border: thin solid black; color: black; }
+table.menu td.submenu { background-color: #abd; text-align: center; }
+
+caption.login {
+	margin: auto;
+	background-color: #abd;
+	/*text-transform: uppercase;*/
+	text-align:center;  
+	/*font: bold 12pt Verdana;*/
+}
+
+caption.form {
+	margin-top: 3px;
+	margin-left: 5px;
+	background-color: #abd;
+	text-align:center;  
+}
+
+table.form {
+	margin-top:5px;
+	margin-left:5px;
+
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 5em; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: fixed; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+table.form 	td { border: thin solid black; color: black; }
+table.form	th { border: thin solid black; color: black; }
+table.form 	td.label { border: thin solid black; background-color: #abd; color: black; }
+
+table.login_buttons {
+	margin  : auto;
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	border-style: none;
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+}
+
+
+table.buttons {
+	margin-top:5px;
+	margin-left:5px;
+
+	border-style: none;
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: fixed; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+table.buttons 	td { border: none; }
+
+table.layout {
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 5em; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.sql_msg {
+	margin 		: auto;
+	border-style 	: none;
+	table-layout	: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.sql {
+	margin: auto;
+	margin-top: auto;
+	margin-left: auto;
+	font: 8pt Times; 
+
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 5em; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+table.sql 	td { border: thin solid black; color: black; }
+table.sql 	th { border: thin solid black; color: black; background-color : #abd}
+table.sql	a:link		{text-decoration: none; color: black} /* unvisited link */
+table.sql	a:visited 	{text-decoration: none; color: black} /* visited link */
+table.sql	a:hover 	{text-decoration: none; color: blue} /* mouse over link */
+table.sql	a:active 	{text-decoration: none; color: black} /* selected link */
+
+table.sql_pages {
+	margin: auto;
+	margin-top: auto;
+	margin-left: auto;
+	font: 8pt Verdana; 
+
+	border-style: none;
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+table.sql_pages	a:link		{text-decoration: none; color: black} /* unvisited link */
+table.sql_pages	a:visited 	{text-decoration: none; color: black} /* visited link */
+table.sql_pages	a:hover 	{text-decoration: none; color: blue} /* mouse over link */
+table.sql_pages	a:active 	{text-decoration: none; color: black} /* selected link */

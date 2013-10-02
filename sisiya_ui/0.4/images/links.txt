@@ -1,0 +1,52 @@
+#
+#
+### misc
+#valid-html401.png
+#
+### for system types
+#Linux.gif
+#Solaris.gif
+#Windows.gif
+#
+### for status types
+#Info		3_Info.gif
+#Info_big	3_Info_big.gif
+#Ok		3_Ok.gif
+#Ok_big		3_Ok_big.gif
+#Warning		3_Warning.gif
+#Warning_big	3_Warning_big.gif
+#Error		3_Error.gif
+#Error_big	3_Error_big.gif
+### colored
+Info		5_Info.gif
+Info_big	5_Info_big.gif
+Ok		5_Ok.gif
+Ok_big		5_Ok_big.gif
+Warning		5_Warning.gif
+Warning_big	5_Warning_big.gif
+Error		5_Error.gif
+Error_big	5_Error_big.gif
+### black and white
+#Info		6_Info.gif
+#Info_big	6_Info_big.gif
+#Ok		6_Ok.gif
+#Ok_big		6_Ok_big.gif
+#Warning		6_Warning.gif
+#Warning_big	6_Warning_big.gif
+#Error		6_Error.gif
+#Error_big	6_Error_big.gif
+#
+#
+#### now for hostnames
+airport1	Apple_Airport.gif
+airport2	Apple_Airport.gif
+apcusv		APC_SmartUPS_7500XL.gif
+server1		Dell_PowerEdge_1655MC.gif
+server2		Dell_PowerEdge_2550.gif
+server3		Dell_PowerEdge_1855.gif
+printer1	HPPrinter_LJ2100TN.gif
+printer2	HPPrinter_LJ5500dn.gif
+printer3	OCE_3145.gif
+switch1		HPSwitch_2848.gif
+emutlu2-linux	Dell_Latitude_D505.gif
+powerswt1	APC_PDU.gif

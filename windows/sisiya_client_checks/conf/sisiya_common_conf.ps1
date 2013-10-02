@@ -1,0 +1,172 @@
+#
+# This file is the config for SisIYA check programs.
+#
+#    Copyright (C) 2003  Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#
+#################################################################################
+function getJavaProg
+{
+
+	$java_prog=""
+	foreach($java_prog in "C:\Program Files\Java\jre6\bin\java.exe","C:\Program Files (x86)\Java\jre6\bin\java.exe") {
+		if([System.IO.File]::Exists($java_prog) -eq $True) {
+			break
+		}
+	}
+	if($java_prog.Lenth -eq 0) {
+		Write-Output $MyInvocation.ScriptName ":Error: Could not find java.exe!" | eventlog_error
+		exit
+	}
+	return $java_prog
+}
+#################################################################################
+$sisiya_osname="Windows"
+$sisiya_tmp_dir=$sisiya_base_dir + "\tmp"
+$sisiya_bin_dir=$sisiya_base_dir + "\bin"
+$sisiya_common_dir=$sisiya_base_dir + "\common"
+$sisiya_special_dir=$sisiya_base_dir + "\special"
+$sisiya_host_dir=$sisiya_base_dir + "\systems\" + $sisiya_hostname
+$sisiya_host_conf_dir=$sisiya_host_dir + "\conf"
+$send_message_prog=$sisiya_bin_dir + "\sisiya_send_message_xml.ps1"
+$send_message2_prog=$sisiya_bin_dir + "\sisiya_send_message2_xml.ps1"
+#$java_prog=getJavaProg
+#$sisiyac_prog="java -classpath" + $sisiya_bin_dir + " " + $sisiya_bin_dir + "\SisIYASendMessage"
+$sisiya_functions=$sisiya_bin_dir + "\sisiya_functions.ps1"
+$sisiya_latest_results=$sisiya_base_dir + "\systems\latest_results.txt"
+### status ids
+$status_info=1
+$status_ok=2
+$status_warning=4
+$status_error=8
+$status_noreport=16
+$status_unavailable=32
+$status_mwarning=64
+$status_merror=128
+$status_mnoreport=256
+$status_munavailable=512
+###
+### service ids, these IDs must be identical with IDs in the SisIYA database
+$serviceid_system=0
+$serviceid_filesystem=1
+$serviceid_cpu=2
+$serviceid_swap=3
+$serviceid_load=4
+$serviceid_smtp=5
+$serviceid_smb=6
+$serviceid_nmb=7
+$serviceid_postgresql=8
+$serviceid_mysql=9
+$serviceid_oracle=10
+$serviceid_imap=11
+$serviceid_pop3=12
+$serviceid_lotus=13
+$serviceid_printer=14
+$serviceid_ftp=15
+$serviceid_squid=16
+$serviceid_dns=17
+$serviceid_nfs=18
+$serviceid_dhcpd=19
+$serviceid_httpd=20
+$serviceid_httpsd=21
+$serviceid_ping=22
+$serviceid_telnet=23
+$serviceid_postfix=24
+$serviceid_xinetd=25
+$serviceid_sshd=26
+$serviceid_xfs=27
+$serviceid_kdm=28
+$serviceid_portmap=29
+$serviceid_atalkd=30
+$serviceid_afpd=31
+$serviceid_papd=32
+$serviceid_ram=33
+$serviceid_nmbd=34
+$serviceid_solstice_disksuite=35
+$serviceid_rpcstatd=36
+$serviceid_rpcrquotad=37
+$serviceid_rpcmountd=38
+$serviceid_nfsd=39
+$serviceid_lockd=40
+$serviceid_rpciod=41 
+$serviceid_slapd=42
+$serviceid_sun_cluster=43
+$serviceid_inetd=44
+$serviceid_users=45
+$serviceid_veritas_volume_manager=46
+$serviceid_netstat=47
+$serviceid_progs=48
+$serviceid_progs_count=49
+$serviceid_ssh_attack=50
+$serviceid_oracle_tablespace=51
+$serviceid_domino_webaccount=52
+$serviceid_netbackup_jobs=53
+$serviceid_netbackup_debug=54
+$serviceid_netbackup_drives=55
+$serviceid_netbackup_clients=56
+$serviceid_netbackup_library=57
+$serviceid_oracle_hitratios=58
+$serviceid_netbackup_robots=59
+$serviceid_ups_battery=60
+$serviceid_temperature=61
+$serviceid_ups_status=62
+$serviceid_ups_output=63
+$serviceid_ups_timeonbattery=64
+$serviceid_pdu_output=65
+$serviceid_battery=66
+$serviceid_netbackup_scratch=67
+$serviceid_netbackup_notify=68
+$serviceid_printer_pagecounts=69
+$serviceid_batchjob_notify=70
+$serviceid_netbackup_media=71
+$serviceid_daemon_childs=72
+$serviceid_dmesg=73
+$serviceid_test=74
+$serviceid_listening_socket=75
+$serviceid_ntpstat=76
+$serviceid_ipconntrack=77
+$serviceid_mysql_table_status=78
+$serviceid_established_connections=79
+$serviceid_hddtemp=80
+$serviceid_raid=81
+$serviceid_fanspeed=82
+$serviceid_baan_jobs=83
+$serviceid_baan_warehouse=84
+$serviceid_lpstat=85
+$serviceid_smart=90
+$serviceid_mssql=91
+$serviceid_linestatus=92
+$serviceid_portstatus=93
+$serviceid_snmptrap=94
+$serviceid_softraid=95
+$serviceid_mailq=96
+$serviceid_powersupply=97
+$serviceid_vmware=98
+$serviceid_mswindows_eventlog=99
+$serviceid_isuptodate=100
+$serviceid_antivirus=101
+$serviceid_services=102
+$serviceid_brightstore_jobs=103
+$serviceid_brightstore_devices=104
+$serviceid_brightstore_scratch=105
+$serviceid_msexchange_servicehealth=120
+$serviceid_msexchange_mapiconnectivity=121
+$serviceid_msexchange_mailflow=122
+$serviceid_msexchange_mailqueue=123
+$serviceid_baan_users=5000
+$serviceid_baan_edi=5001
+$serviceid_baan_message=5002

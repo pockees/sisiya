@@ -1,0 +1,32 @@
+### service id
+serviceid=$serviceid_netbackup_library 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_netbackup_library is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+tpconfig_prog=/usr/openv/netbackup/bin/tpconfig
+### end of the default values
+##########################################################################
+
+### If there is a module conf file then override these default values
+str=$script_name
+if test "$sisiya_osname" = "SunOS"  ; then
+	str=`echo $str | awk -F. '{ print $1 }'`
+else
+	str=${str%.*}
+fi
+
+module_conf_file=${sisiya_host_dir}/${str}.conf
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+
+if test ! -x $tpconfig_prog ; then
+	statusid=$status_error
+	message_str="ERROR: tpconfig program [$tpconfig_prog] does not exist or is not executable!"
+	exit 0
+fi
+

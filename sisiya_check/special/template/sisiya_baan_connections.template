@@ -1,0 +1,113 @@
+#######################################################################################
+### server service id
+serviceid=$serviceid_baan_users
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_baan_users is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+service_name="Baan Connection"
+##########################################################################
+### default values
+local_ip=localhost
+port=512
+error_count=30
+warning_count=28
+BSE_TMP=/usr2/baan/bse/tmp
+BSE=/usr2/baan/bse
+licmon=${BSE}/bin/licmon6.1
+slm_server=localhost
+slmcmd=/usr/slm/bin/SlmCmd
+### end of the default values
+##########################################################################
+
+if test -f $module_conf_file ; then
+	### source the module conf
+	. $module_conf_file
+fi
+
+### 
+export BSE_TMP
+export BSE
+
+### get the number of established connections to the Baan ip:port.
+if test "$sisiya_osname" = "HP-UX" ; then
+	netstat_count=`netstat -n | grep "${local_ip}.$port " | grep EST | grep -v grep | wc -l`
+else
+	netstat_count=`netstat -ntp | grep "${local_ip}:$port " | grep EST | grep -v grep | wc -l`
+fi
+
+slm_count=0
+licmon_count=0
+if test -x $licmon ; then
+	### get the number of users reported by licmon, the licence monitor
+	line=`$licmon -u | grep TOTAL`
+	if test -n "$line" ; then
+		a=`echo $line | awk '{print $3}'`
+		b=`echo $line | awk '{print $4}'`
+		licmon_count=`(echo "$a + $b") | bc`
+	fi
+else
+	if test -x $slmcmd ; then
+		#/usr/slm/bin/SlmCmd -mondts altin01|grep count|tr -d "\t"|tr -d " "|cut -d "\"" -f 2|grep -v "^0"
+		#slm_count=`$slmcmd -mondts $slm_server | grep count | tr -d "\t" | tr -d " " | cut -d "\"" -f 2 | grep -v "^0" | awk 'BEGIN { sum=0 } {sum+=$i} END {printf "%s",sum}'`
+		slm_count1=`$slmcmd -mondts $slm_server | grep "<concurrentLicense" -A 1 | grep count | tr -d "\t" | tr -d " " | cut -d "\"" -f 2 | grep -v "^0" | awk 'BEGIN { sum=0 } {sum+=$i} END {printf "%s",sum}'`
+		slm_count2=`$slmcmd -mondts $slm_server | grep "<serverLicense" -A 1 | grep count | tr -d "\t" | tr -d " " | cut -d "\"" -f 2 | grep -v "^0" | awk 'BEGIN { sum=0 } {sum+=$i} END {printf "%s",sum}'`
+		slm_count=`echo "$slm_count1 + $slm_count2" | bc`
+	fi
+fi
+#echo "licmon_count=$licmon_count slm_count=$slm_count"
+license_count=0
+if test $license_count -eq 0 ; then
+	license_count=$slm_count
+fi
+### get the number of working bshell's
+grep_count=0
+str=`ps -ef | grep -v grep | grep  bshell|wc -l`
+if test -n "$str" ; then
+	grep_count=$str
+fi
+
+statusid=$status_ok 
+if test $license_count -ge $error_count ; then
+	statusid=$status_error
+	message_str="Too many Baan users $license_count (>= $error_count)!"
+elif test $license_count -ge $warning_count ; then
+	statusid=$status_warning  
+	message_str="Too many Baan users $license_count (>= $warning_count)!"
+fi
+
+
+#if test $license_count -gt $grep_count ; then
+#	if test $statusid -lt $status_warning ; then
+#		statusid=$status_warning
+#	fi
+#	message_str="$message_str WARNING: licmon user count is $license_count < $grep_count (grep)!"
+#else
+	message_str="Number of active Baan users is $license_count (grep_count=$grep_count, netstat_count=$netstat_count)."
+#fi
+
+tmp_file=`maketemp /tmp/tmp_${script_name}.XXXXXX`
+tmp_users_file=`maketemp /tmp/tmp_users_${script_name}.XXXXXX`
+tmp_count_file=`maketemp /tmp/tmp_count_${script_name}.XXXXXX`
+
+ps -ef | grep -v grep | grep  $BSE/bin/bshell | sort > $tmp_file
+cat $tmp_file | awk '{print $1}' | uniq > $tmp_users_file
+#cat $tmp_file | while read line
+#do
+#	echo "line=[$line]"
+#done
+
+str=""
+cat $tmp_users_file | while read user
+do
+	c=`grep $user $tmp_file| wc -l`
+	str="$str $user($c)"
+	echo $str > $tmp_count_file
+done
+str=`cat $tmp_count_file`
+message_str="$message_str Users: $str"
+#echo "str=[$str]"
+
+rm -f $tmp_file $tmp_users_file $tmp_count_file
+

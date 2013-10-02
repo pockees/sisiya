@@ -1,0 +1,77 @@
+### service id
+serviceid=$serviceid_ntpstat
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_ntpstat is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+ntpstat_prog=/usr/bin/ntpstat
+ntpq_prog=/usr/sbin/ntpq
+### end of the default values
+##########################################################################
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	source $module_conf_file
+fi
+
+
+str=`$ntpstat_prog 2>/dev/null`
+retcode=$?
+str="\("`echo "$str" | tr -s "\n" " "`"\)"
+statusid=$status_error
+case "$retcode" in
+	"0")
+		### but it must not be synchronized to its local clock
+		str2=`echo $str | grep -v "to local net"`
+		if test -z "$str2" ; then
+			statusid=$status_error
+			message_str="ERROR: The system clock is not synchronized! It is synchronized to its local clock! $str"
+		else
+			statusid=$status_ok
+			message_str="OK: The system clock is synchronized. $str" 
+		fi
+	;;
+	"1")
+		message_str="ERROR: The system clock is not synchronized! $str" 
+	;;
+	"2")
+		message_str="ERROR: The system clock is not synchronized! Could not contact the ntp daemon! $str" 
+	;;
+	"127")
+		str=`$ntpq_prog -np 2>&1 | grep "Connection refused"`
+		if test -n "$str" ; then
+			message_str="ERROR: Time server (ntpd) is not running!" 
+		else
+			str=`$ntpq_prog -np | grep -v "=" | grep "*" | cut -d " " -f 1 | cut -d "*" -f 2 2>/dev/null`
+			retcode=$?
+			str=""`echo "$str" | tr -s "\n" " "`""
+			message_str="$str" 
+			case "$retcode" in
+				"0")
+					if test -n "$str" && test "$str" != " " ; then
+						statusid=$status_ok
+						ip_str=`echo $str | cut -d "." -f 1|grep 127`
+						if test -z "$ip_str" ; then
+							message_str="OK: This system clock is synchronized to $str." 
+						else
+							statusid=$status_warning
+							message_str="WARNING: The system clock is synchronized to the localhost! $str" 
+						fi
+					else
+						statusid=$status_warning
+						message_str="WARNING: The system clock is not yet synchronized!" 
+					fi
+				;;
+				*)
+					message_str="ERROR: The system clock is not synchronized! Unknown return code $retcode!" 
+				;;
+			esac
+		fi 
+
+	;;
+	*)
+		message_str="ERROR: Unknown return code=$retcode from ntpstat! $str" 
+	;;
+esac

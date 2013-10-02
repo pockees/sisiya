@@ -1,0 +1,166 @@
+### service id
+serviceid=$serviceid_swap
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_swap is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### <swap><unit>MB</unit><capaci</swap><ram></ram>
+# like in sisiya_fs.sh
+flag="TRUE"
+case "$sisiya_osname" in
+	"Darwin")
+		pages_free=`vm_stat     | grep "^Pages free"    	| awk -F: '{print $2}' | awk -F. '{print $1}' | awk '{print $1}'`
+		pages_active=`vm_stat   | grep "^Pages active"  	| awk -F: '{print $2}' | awk -F. '{print $1}' | awk '{print $1}'`
+		pages_inactive=`vm_stat | grep "^Pages inactive"        | awk -F: '{print $2}' | awk -F. '{print $1}' | awk '{print $1}'`
+		pages_wired=`vm_stat    | grep "^Pages wired"   	| awk -F: '{print $2}' | awk -F. '{print $1}' | awk '{print $1}'`
+		### page size in bytes
+		page_size=4096
+		total_ram=`(echo "($pages_free + $pages_active + $pages_inactive + $pages_wired) * $page_size / 1024") | bc`
+		used_ram=`(echo "($pages_active + $pages_inactive + $pages_wired) * $page_size / 1024 ") | bc`
+		free_ram=`(echo "$pages_free * $page_size / 1024") | bc`
+		### must be implemented
+		total_swap=1;
+		free_swap=1;
+		used_swap=`(echo "$total_swap - $free_swap")               | bc`
+	;;
+	"SunOS"|"AIX")
+		swap_str=`swap -s`
+		if test "$sisiya_osname" = "SunOS" ; then
+			total_swap=`echo $swap_str    | awk -F, '{print $2}' | awk -Fk '{print $1}'`
+			used_swap=`echo $swap_str     | awk -F= '{print $2}' | awk -Fk '{print $1}'`
+		else
+			total_swap=`echo $swap_str    | awk -F= '{print $2}' | awk '{print $1}'`
+			used_swap=`echo $swap_str     | awk -F= '{print $3}' | awk '{print $1}'`
+		fi
+		free_swap=`(echo "$total_swap - $used_swap") | bc`
+		total_ram=`prtconf|grep -i "^Memory size" | awk -F: '{print $2}' | awk '{print $1}'`
+		total_ram=`(echo "$total_ram * 1024") | bc`
+		tmp_file=`maketemp /tmp/tmp.${script_name}_XXXXXX`
+		### ignore the first output line of the vmstat command
+		vmstat 1 2 > $tmp_file
+		free_ram=`tail -1 $tmp_file | awk '{print $5}'`
+		rm -f $tmp_file
+		used_ram=`(echo "$total_ram - $free_ram")		| bc`
+	;;
+	"FreeBSD")
+		swap_str=`swapctl -s`
+		################################################################
+		#swapctl -s
+		#Total:           253648         0
+		################################################################
+		total_swap=`echo $swap_str    | awk -F: '{print $2}' | awk '{print $1}' | tr -d " "`
+		used_swap=`echo $swap_str     | awk -F: '{print $2}' | awk '{print $2}' | tr -d " "`
+		free_swap=`(echo "$total_swap - $used_swap") | bc`
+		####sysctl hw.physmem
+		# hw.physmem: 523665408
+		total_ram=`sysctl hw.physmem | awk -F: '{print $2}' | awk '{print $1}'`
+		total_ram=`(echo "$total_ram / 1024") | bc`
+		tmp_file=`maketemp /tmp/tmp.${script_name}_XXXXXX`
+		########################################################################################
+		### vmstat 1 2
+		# procs      memory      page                    disks     faults         cpu
+		# r b w     avm    fre   flt  re  pi  po    fr  sr da0 pa0   in   sy   cs us sy id
+		# 1 0 0  76220K   433M    83   0   0   0    71   0   0   0    6  123  226  0  1 99
+		# 0 0 0  76220K   433M     1   0   0   0     0   0   0   0    6  115  232  0  0 100
+		########################################################################################
+		vmstat 1 2 > $tmp_file
+		### ignore the first output line of the vmstat command
+		free_ram=`tail -1 $tmp_file | awk '{print $5}'`
+		rm -f $tmp_file
+		used_ram=`(echo "$total_ram - $free_ram")		| bc`
+	;;
+	"OpenBSD")
+		swap_str=`swapctl -s`
+		################################################################
+		#swapctl -s
+		#total: 262144k bytes allocated = 0k used, 262144k available
+		################################################################
+		total_swap=`echo $swap_str    | awk -F: '{print $2}' | awk -Fk '{print $1}' | tr -d " "`
+		used_swap=`echo $swap_str     | awk -F= '{print $2}' | awk -Fk '{print $1}' | tr -d " "`
+		free_swap=`(echo "$total_swap - $used_swap") | bc`
+		total_ram=`sysctl hw.physmem | awk -F= '{print $2}' | awk '{print $1}'`
+		total_ram=`(echo "$total_ram / 1024") | bc`
+		tmp_file=`maketemp /tmp/tmp.${script_name}_XXXXXX`
+		### ignore the first output line of the vmstat command
+		vmstat 1 2 > $tmp_file
+		free_ram=`tail -1 $tmp_file | awk '{print $5}'`
+		rm -f $tmp_file
+		used_ram=`(echo "$total_ram - $free_ram")		| bc`
+	;;
+	"HP-UX")
+		#             #swapinfo -M
+		############################################################             
+		#             Kb      Kb      Kb   PCT
+		#             TYPE      AVAIL    USED    FREE  USED
+		#             memory  4164892 3682580  482312   88%
+		############################################################
+		#		#swapinfo -dt
+		###########################################################################################
+		#             Kb      Kb      Kb   PCT              Kb
+		#             TYPE      AVAIL    USED    FREE  USED   START RESERVE  PRI  NAME
+		#             dev     2121728       0 2121728    0%       0       -    1  /dev/vg00/lvol2
+		#             dev     2097152       0 2097152    0%       0       -    1  /dev/vg00/lvol8
+		#             dev     2097152       0 2097152    0%       0       -    1  /dev/vg05/lvol2
+		#             total   6316032       0 6316032    0%       -       0    -
+		###########################################################################################
+		str=`swapinfo -M | tail -1`
+		total_ram=`echo $str	| awk '{print $2}'`
+		used_ram=`echo $str	| awk '{print $3}'`
+		free_ram=`echo $str	| awk '{print $4}'`
+		str=`swapinfo -dt | grep "^total"`
+		#total_swap=`echo $str	| awk '{print $2}'`
+		total_swap=`swapinfo -qd`
+		used_swap=`echo $str	| awk '{print $3}'`
+		free_swap=`echo $str	| awk '{print $4}'`
+	;;
+	*)
+		total_ram=`cat /proc/meminfo	| grep "MemTotal:"	| awk -F ":" '{print $2}' | awk '{print $1}'`
+		free_ram=`cat /proc/meminfo	| grep "MemFree:"	| awk -F ":" '{print $2}' | awk '{print $1}'`
+		used_ram=`(echo "$total_ram - $free_ram")		| bc`
+		total_swap=`cat /proc/meminfo	| grep "SwapTotal:"	| awk -F ":" '{print $2}' | awk '{print $1}'`
+		free_swap=`cat /proc/meminfo	| grep "SwapFree:"	| awk -F ":" '{print $2}' | awk '{print $1}'`
+		used_swap=`(echo "$total_swap - $free_swap")		| bc`
+	;;
+esac
+
+if test "$flag" = "TRUE" ; then
+	### default values
+	warning_percent=30
+	error_percent=50
+	### end of the default values
+	### If there is a module conf file then override these default values
+	if test -f $module_conf_file ; then
+		. $module_conf_file
+	fi
+
+	if test $total_swap -ne 0 ; then
+		percent_swap=`(echo "100 * $used_swap / $total_swap")|bc`
+	else
+		percent_swap=0;
+	fi
+	### only for information
+	if test $total_ram -ne 0 ; then
+		percent_ram=`(echo "100 * $used_ram / $total_ram")|bc`
+	else
+		percent_ram=0;
+	fi
+	tr_str=`print_size_k $total_ram`
+	fr_str=`print_size_k $free_ram`
+	ur_str=`print_size_k $used_ram`
+	ts_str=`print_size_k $total_swap`
+	fs_str=`print_size_k $free_swap`
+	us_str=`print_size_k $used_swap`
+	rest_str="SWAP: total=$ts_str used=$us_str free=$fs_str RAM: total=$tr_str used=$ur_str free=$fr_str usage=$percent_ram%" 
+	if test $percent_swap -ge $error_percent ; then
+		statusid=$status_error
+		message_str="ERROR: Swap usage is $percent_swap% >= ${error_percent}"
+	elif test $percent_swap -ge $warning_percent ; then
+		statusid=$status_warning
+		message_str="Warning: Swap usage is $percent_swap% >= ${warning_percent}"
+	else
+		statusid=$status_ok
+		message_str="OK: Swap usage is $percent_swap%"
+	fi
+	message_str="${message_str}. $rest_str"
+fi

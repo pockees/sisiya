@@ -1,0 +1,31 @@
+#######################################################################################
+### service id
+serviceid=$serviceid_mailq 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_mailq is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+warning_mailq=3
+error_mailq=5
+### end of the default values
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	source $module_conf_file
+fi
+
+queue_count=`mailq|grep -v "^-"|grep -v "^ "|grep -v "^(" |tr "\n" "~" | sed -e "s/~~/\n/g"|wc -l`
+
+message_str="Load average for the past 5 minutes is $load_str"
+if test $queue_count -ge $error_mailq ; then
+	statusid=$status_error
+	message_str="ERROR: There are $queue_count (>= $error_mailq) number of mails waiting in the queue!"
+elif test $queue_count -ge $warning_mailq ; then
+	statusid=$status_warning
+	message_str="WARNING: There are $queue_count (>= $warning_mailq) number of mails waiting in the queue!"
+else
+	statusid=$status_ok
+	message_str="OK: There are $queue_count number of mails waiting in the queue."
+fi

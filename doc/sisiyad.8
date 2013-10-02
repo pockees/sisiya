@@ -1,0 +1,59 @@
+.\"(c) Copyright 2003 by Erdal Mutlu
+.\"(c) Sections Copyright 2003 by Erdal Mutlu
+.\"All rights reserved.  The file named COPYRIGHT specifies the terms 
+.\"and conditions for redistribution.
+.\"
+.\" $Id: sisiyad.8 304 2006-01-02 14:39:53Z emutlu $
+.TH SISIYAD 8 "28 January 2003"
+.\" *************************** NAME *********************************
+.SH NAME
+sisiyad \- The SisIYA server.
+.\" *************************** SYNOPSIS *********************************
+.SH SYNOPSIS
+.B sisiyad
+config_file_name
+.\" *************************** DESCRIPTION *********************************
+.SH DESCRIPTION
+\fBsisiyad\fP is a part of SisIYA - a system monitoring tool.
+\fBsisiyad\fP listens for connections from SisIYA clients. When there is
+a connection from a SisIYA client, than it insert the message into
+a database. The daemon uses sisiya-edbc-libs package for its database operations.
+This package contains shared objects for supported databases. At the moment MySQL and
+PostgreSQL are the only supported datbases. 
+.\" *********************** CONTROLLING sisiyad ****************************
+.SH "CONTROLLING SISIYAD"
+.LP
+\fBsisiyad\fP performs certain actions when it receives certain signals.
+.TP 15
+.B SIGHUP
+causes a hard reconfiguration, which means that \fBsisiyad\fP re-reads 
+the configuration file.
+.TP
+.B SIGQUIT
+causes clean program termination.
+.TP
+.B SIGTERM
+the same as SIGQUIT.
+.TP
+.B SIGUSR1
+causes the \fBsisiyad\fP server process to print its configuration values via syslog.
+.\" *********************** FILES ****************************
+.SH FILES
+.LP
+.PD .1v
+.TP 20
+.B /etc/sisiyad.conf
+default configuration file
+.PD
+.\" *********************** SEE ALSO ****************************
+.SH "SEE ALSO"
+.I "sisiyad.conf(5),"
+.LP
+.I "http://sisiya.sourcefourge.net"
+.\" *********************** AUTHOR ****************************
+.SH AUTHOR
+Erdal Mutlu
+.\" *********************** PRONUNCIATION ****************************
+.SH PRONUNCIATION
+sisiya
+

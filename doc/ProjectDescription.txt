@@ -1,0 +1,15 @@
+SisIYA a system monitoring and administration tool is a tool for
+monitoring the varios networked systems, such as Linux/UNIX, MacOS X and
+Windows servers, network switches, routers and other networked devices.
+It is based on the client/server architecture. It has its own protocol
+of communication. The idea is to inform the system administrators or
+operators about the systems in use, about their current status (INFO, OK, WARNING, ERROR).
+Mostly client systems send messages to a central server, who
+places them in a database. But, there are also cases where the server self
+collects some data from clients. At the same time, there is a web interface
+to the data stored in the database system, which show the status of the monitored systems.
+The project uses at the moment C, Bash, Java and Php. But I plan to
+rewrite the C and Java part of it in C++. The supported DBs at the moment are
+MySQL and PostgreSQL.
+
+

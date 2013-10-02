@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+<record><system_name>server1.example.org</system_name><isactive>f</isactive><hostname>server1.example.org</hostname><hostname_to_query>www.example.org</hostname_to_query><ip_to_query>10.10.10.22</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
+</systems>

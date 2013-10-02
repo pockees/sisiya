@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+<record><system_name>telekutu1.example.org</system_name><isactive>f</isactive><hostname>telekutu1.example.org</hostname><index_file>/</index_file><http_port>80</http_port><username></username><password></password></record>
+</systems>

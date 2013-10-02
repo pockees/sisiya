@@ -1,0 +1,61 @@
+### service id
+serviceid=$serviceid_netbackup_drives 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_netbackup_drives is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+tpconfig_prog=/usr/openv/volmgr/bin/tpconfig
+### end of the default values
+##########################################################################
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+
+if test ! -x $tpconfig_prog ; then
+	statusid=$status_error
+	message_str="ERROR: tpconfig program [$tpconfig_prog] does not exist or is not executable!"
+	exit 0
+fi
+
+### get the number of drives
+total_drive_count=`$tpconfig_prog -dl |grep -i "drive name" | wc -l| awk '{print $1}'`
+declare -i i=0 down_drive_count=0
+while test $i -lt $total_drive_count
+do
+	state=`$tpconfig_prog -d | grep "^  ${i}" | awk '{print $6}'`
+	if test "$state" = "DOWN" ; then
+		down_drive_count=down_drive_count+1
+	fi
+	i=i+1
+done
+
+
+if test $total_drive_count -eq $down_drive_count ; then
+	statusid=$status_error
+	if test $total_drive_count -eq 0 ; then
+		message_str="ERROR: The drive is in state DOWN!"
+	else
+		message_str="ERROR: All $total_drive_count drives are in state DOWN!"
+	fi
+elif test $down_drive_count = 0 ; then
+	statusid=$status_ok
+	if test $total_drive_count -eq 0 ; then
+		message_str="OK: The drive is in state UP." 
+	else
+		message_str="OK: All $total_drive_count drives are in state UP." 
+	fi
+else
+	statusid=$status_warning
+	message_str="WARNING: $down_drive_count of total $total_drive_count drives" 
+	if test $down_drive_count -eq 0 ; then
+		message_str="$message_str is"
+	else
+		message_str="$message_str are"
+	fi
+ 	message_str="$message_str in state DOWN!" 
+fi

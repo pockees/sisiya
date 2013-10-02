@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="description" content="SisIYA system and network monitoring" />
+<meta name="keywords" content="system monitoring,network monitoring,snmp traps,web based,free" />
+<link rel="stylesheet" type="text/css" href="../style/style.css" />
+<title>SisIYA FAQ</title>
+</head>
+<body>
+<h3>SisIYA FAQ</h3>
+
+<table class="header">
+<tr class="header">
+<td><a href="/">Home</a></td>
+<td><a href="../docs/">Documentation</a></td>
+<td><a href="../downloads/">Downloads</a></td>
+<td><a href="../faq/">FAQ</a></td>
+<td><a href="http://sisiya.sisiya.net">Live demo</a></td>
+<td><a href="../mailing_lists.html">Mailing Lists</a></td>
+<td><a href="../screenshots/">Screenshots</a></td>
+<td><a href="http://sisiya.svn.sourceforge.net/viewvc/sisiya/">Subversion</a></td>
+</tr>
+</table>
+
+<p>
+<b>Q: What does SisIYA mean?</b><br />
+A: The word SisIYA is derived from the Turkish <b>Sis</b>tem <b>I</b>zleme ve 
+<b>Y</b>onetim <b>A</b>raci, which means system monitoring and administration tool.
+</p>
+<p>
+
+<b>Q: How to delete the status about a check which is not active any more?</b><br />
+A: You can use the SisIYA administration interface for that. In order to delete the current system status for
+a system, go to the "System Status". In order to delete a system service status for a system, go to the 
+"System Service Status". Deleting the status of a system or deleting a service status for a systems is used, when
+the a specific service is not active any more or is dissabled. It is enough just to delete the system service 
+status for that specific service. The system status is going to be updated with the next message.
+Do not worry! After a specified amount of time 
+(defaults to 5 minutes) you are going to recieve status informations about that system.
+</p>
+
+<p><b>Q: What kind of connection is used to connect to the SisIYA daemon?</b><br />
+A: SisIYA listen on a specified port (Default port is 8888. Note that this port is not reseved for SisIYA.) 
+and uses TCP/IP.
+</p>
+
+<p><b>Q: What is the SisIYA's message format?</b><br />
+A: The Message Format is one line ending with new line (\n) character :<br />
+<b>[SP][serviceid][SP][statusid][SP][hostname][SP][YYYYMMTTHHMMSS][SP][expire][SP]message\n</b>
+SP stands for separator. This is a one character field separator. Example:<br />
+~80~0~dev-app03~20051115174600~10~Hello world! This check is valid for 10 minutes.\n
+</p>
+	
+<p><b>Q: Can I use the same connection to send more than one message to the SisIYA server?</b><br />
+A: Yes. You can open one conection and send multiple SisIYA messages.
+</p>
+
+<p>
+<a href="http://sourceforge.net/projects/sisiya"><img src="http://sourceforge.net/sflogo.php?group_id=115771&amp;type=1" width="88" height="31" alt="SourceForge.net Logo" /></a>
+</p>
+</body></html>

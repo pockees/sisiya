@@ -1,0 +1,46 @@
+OBJS=systype.o signal.o misc.o mesg.o esem.o sisiyad_mysql.o sisiyad_postgresql.o sisiyad1.o sisiyad.o
+GCC=gcc -D_GNU_SOURCE -Wall
+RM=rm -f
+OS=$(shell uname -s)
+
+SISIYAS_H=smt.h systype.h signal.h inet.h sisiyad_mysql.h sisiyad_postgresql.h sisiyad1.h mesg.h esem.h
+SISIYAS_C=systype.c signal.c misc.c sisiyad_mysql.c sisiyad_postgresql.c sisiyad1.c mesg.c esem.c
+
+SISIYAS1_H=sisiyad1.h inet.h systype.h mesg.h sisiyad_mysql.h sisiyad_postgresql.h
+SISIYAS1_C=sisiyad1.c misc.c systype.c mesg.c sisiyad_mysql.c sisiyad_postgresql.c
+
+ifeq ($(OS),SunOS)
+        LDFLAGS=-lpq -lmysqlclient -lsocket -lnsl
+endif
+ifeq ($(OS),Linux)
+        LDFLAGS=-lpq -lmysqlclient
+endif
+
+
+#sisiyad: $(OBJS) smt.h systype.h systype.c signal.h signal.c misc.h misc.c inet.h sisiyad_mysql.c sisiyad_mysql.h sisiyad1.h sisiyad1.c mesg.h mesg.c esem.h esem.c
+
+sisiyad: $(OBJS) $(SISIYAS_H) $(SISIYAS_C)
+	$(GCC) $(LDFLAGS) $(OBJS) -o sisiyad
+systype.o: systype.c systype.h 
+	$(GCC) -c systype.c
+signal.o: signal.c signal.h 
+	$(GCC) -c signal.c
+esem.o: esem.c esem.h
+	$(GCC) -c esem.c
+misc.o: misc.c misc.h
+	$(GCC) -c misc.c
+mesg.o: mesg.c mesg.h
+	$(GCC) -c mesg.c
+sisiyad_mysql.o: sisiyad_mysql.c sisiyad_mysql.h
+	$(GCC) -c sisiyad_mysql.c
+sisiyad_postgresql.o: sisiyad_postgresql.c sisiyad_postgresql.h
+	$(GCC) -c sisiyad_postgresql.c
+#sisiyad1.o: sisiyad1.c sisiyad1.h misc.c inet.h systype.h systype.c mesg.h mesg.c sisiyad_mysql.c sisiyad_mysql.h
+sisiyad1.o: $(SISIYAS1_H) $(SISIYAS1_C)
+	$(GCC) -c sisiyad1.c
+sisiyad.o: sisiyad.c sisiyad1.h systype.h systype.c misc.h inet.h
+	$(GCC) -c sisiyad.c 
+
+clean:
+	$(RM) $(OBJS)
+         

@@ -1,0 +1,35 @@
+### service id
+serviceid=$serviceid_netbackup_clients 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_netbackup_clients is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+ping_prog=/usr/openv/netbackup/bin/bpclcmdping ????
+### consider automatically discover all netbackup clients
+clients_file=${sisiya_host_dir}/netbackup_clients.conf
+### end of the default values
+##########################################################################
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+
+if test ! -f $clients_file ; then
+	statusid=$status_error
+	message_str="ERROR:  NetBackup clients file [$clients_file] does not exist!"
+	exit 0
+fi
+if test ! -x $ping_prog ; then
+	statusid=$status_error
+	message_str="ERROR:  program [$ping_prog] does not exist or is not executable!"
+	exit 0
+fi
+
+cat $clients_file | grep -v "#" | while read -r line
+do
+check...
+done

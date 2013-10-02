@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# This script is used to generate the autoconf/atomake environment or
+# for clean.
+#
+#    Copyright (C) 2003  Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#
+###############################################################################
+usage()
+{
+	echo "Usage : $0 create|clean"
+}
+
+if test $# -ne 1 ; then 
+	usage
+	exit 1
+fi
+
+case "$1" in
+	create)
+		echo "Creating ..."
+		#aclocal -I config && autoheader && autoconf && automake --add-missing && touch NEWS README AUTHORS ChangeLog && automake --add-missing
+		#aclocal &&autoheader -v && autoconf && automake --add-missing && touch NEWS README AUTHORS ChangeLog && automake --add-missing
+		echo "Running aclocal ..."
+		aclocal &&
+		echo "Running autoheader ..."
+		#autoheader -v && 
+		autoheader && 
+		echo "Running autoconf ..."
+		autoconf && 
+		echo "Running automake ..."
+		automake --add-missing  
+	;;
+	clean)
+		echo "Cleaning ..."
+		rm -rf Makefile autom4te.cache config.status compile depcomp Makefile.in aclocal.m4 configure config.sub config.guess config.log stamp-h stamp-h.in install-sh missing mkinstalldirs
+		rm -rf src/*.o src/config.h* src/stamp-* src/Makefile.in src/Makefile src/compile src/.deps
+	;;
+	*)
+		echo "$0 : Unknown option"
+		usage
+		exit 1
+	;;
+esac
+exit 0

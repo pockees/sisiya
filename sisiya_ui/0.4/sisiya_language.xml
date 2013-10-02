@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<tmx version="1.4">
+	<header
+		creationtool="hand made"
+		creationtoolversion="1"
+		datatype="PlainText"
+		segtype="sentence"
+		adminlang="en-us"
+		srclang="EN"
+		o-tmf="ABCTransMem">
+	</header>
+	<body>
+		<tu tuid="aSystemMonitoringTool" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>a System Monitoring tool</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Sistem İzleme ve Yönetim Aracı</seg>
+			</tuv>
+		</tu>
+
+		<tu tuid="f0.title" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>SisIYA a System Monitoring Tool (by Erdal Mutlu) Overview</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>SisIYA bir Sistem İzleme ve Yönetim Aracı (Erdal Mutlu) Kuş Bakışı</seg>
+			</tuv>
+		</tu>
+
+		<tu tuid="f0.header" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>System Overview</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Kuş Bakışı</seg>
+			</tuv>
+		</tu>
+		<tu tuid="f1.title" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>SisIYA a System Monitoring Tool (by Erdal Mutlu) Detailed System View</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>SisIYA bir Sistem İzleme ve Yönetim Aracı (Erdal Mutlu) Ayrıntılı Sistem Durumu</seg>
+			</tuv>
+		</tu>
+
+		<tu tuid="f1.header" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Detailed System Verview</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Ayrıntılı sistem durumu</seg>
+			</tuv>
+		</tu>
+
+
+		<tu tuid="LastUpdated" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Last updated</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Son güncelleme</seg>
+			</tuv>
+		</tu>
+
+		<tu tuid="logout" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Logout</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Çıkış</seg>
+			</tuv>
+		</tu>
+		<tu tuid="login" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Login</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Giriş</seg>
+			</tuv>
+		</tu>
+		<tu tuid="OverallSystemStatus" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Overall system status</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Genel sistem durumu</seg>
+			</tuv>
+		</tu>
+
+		<tu tuid="preferences" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Preferences</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Tercihler</seg>
+			</tuv>
+		</tu>
+		<tu tuid="ServerTime" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Server time</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Sunucu saati</seg>
+			</tuv>
+		</tu>
+		<tu tuid="status.info" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Info</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Bilgi</seg>
+			</tuv>
+		</tu>
+		<tu tuid="status.ok" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Ok</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Sorun yok</seg>
+			</tuv>
+		</tu>
+		<tu tuid="status.warning" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Warning</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Uyarı</seg>
+			</tuv>
+		</tu>
+		<tu tuid="status.error" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Error</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Hata</seg>
+			</tuv>
+		</tu>
+
+		<tu tuid="SymbolInfo" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Information about symbols</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>İşaretlerin anlamı</seg>
+			</tuv>
+		</tu>
+
+		<tu tuid="TotalSystems" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>Total number of systems</seg>
+			</tuv>
+			<tuv xml:lang="TR">
+				<seg>Toplam sistem sayısı</seg>
+			</tuv>
+		</tu>
+
+		<tu tuid="utf8_test" datatype="plaintext">
+			<tuv xml:lang="EN">
+				<seg>àèéìòù€</seg>
+			</tuv>
+			<tuv xml:lang="IT">
+				<seg>àèéìòù€</seg>
+			</tuv>
+		</tu>
+	</body>
+</tmx>

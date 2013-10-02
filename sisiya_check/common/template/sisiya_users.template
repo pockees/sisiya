@@ -1,0 +1,76 @@
+### service id
+serviceid=$serviceid_users 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_users is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+tmp_file=`maketemp /tmp/tmp.${script_name}.XXXXXX`
+
+### default values
+exception_hosts=""
+### end of the default values
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+#
+### <users>16</users>
+#
+if test "$sisiya_osname" = "HP-UX" ; then
+	who -R | grep "root" > $tmp_file
+else
+	who | grep "root" > $tmp_file
+fi
+
+for s in $exception_hosts
+do
+	str=`cat $tmp_file | grep -v  "$s"`
+	echo "$str" > $tmp_file
+done
+str=`cat $tmp_file`
+> $tmp_file
+if test -n "$str" ; then
+	#statusid=$status_error
+	statusid=$status_warning
+	message_str="User root is loged in\!"
+	echo "$str" | while read line
+	do 
+		tty=`echo $line | awk '{print $2}'`
+		### check whether the terminal dead is or not
+		case "$sisiya_osname" in
+			"OpenBSD"|"FreeBSD")
+				str2=""
+			;;
+			*)
+				str2=`who -d | grep $tty | grep -v grep`
+			;;
+		esac
+		if test -z "$str2" ; then
+			(echo "Welcome root! I hope you know what you are doing!" ;
+			echo "This session is monitoring by the admins.";
+			echo "Did you ask for help from your admins? Who knows, maybe they can help you?") | write root $tty > /dev/null 2>&1
+		fi
+	done
+else
+	statusid=$status_info
+fi
+
+echo "$message_str User list:"  > $tmp_file
+
+str=`who`
+if test -n "$str" ; then
+	who | while read  line
+	do
+		user=`echo $line 	| awk '{print $1}'`
+		host_str=`echo $line 	| awk '{print $6}'`
+		echo " $user $host_str" >> $tmp_file
+	done
+	message_str=`cat $tmp_file | tr "\n" " "`
+else
+	message_str="No users loged in."
+fi
+
+rm -f $tmp_file

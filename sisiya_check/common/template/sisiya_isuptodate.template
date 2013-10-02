@@ -1,0 +1,84 @@
+### service id
+serviceid=$serviceid_isuptodate  
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_isuptodate is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+apt_cache_prog=/usr/bin/apt-cache
+apt_check_prog=/usr/lib/update-notifier/apt-check
+pacman_prog=/usr/bin/pacman
+yum_prog=/usr/bin/yum
+zypper_prog=/usr/bin/zypper
+### end of the default values
+##########################################################################
+### If there is no module conf file then exit with warning.
+if test -f $module_conf_file ; then
+	. $module_conf_file
+fi
+
+use_apt_check()
+{
+	n1=`$apt_check_prog 2>&1 | cut -d ";" -f 1`	
+	n2=`$apt_check_prog 2>&1 | cut -d ";" -f 2`	
+	n=`echo "$n1 + $n2" | bc`
+	echo $n
+}
+
+use_pacman()
+{
+	#pacman --sync --refresh >/dev/null
+	#pacman --query --upgrades
+	$pacman_prog --sync --refresh >/dev/null
+	n=`$pacman_prog --query --upgrades | wc -l`
+	echo $n
+}
+
+use_yum()
+{
+	n=`$yum_prog -q list updates | grep -v "^Updated Packages" | grep -v "^Loaded plugins" | wc -l`
+	echo $n
+}
+
+use_zypper()
+{
+	#n=`$zypper_prog --non-interactive list-updates | grep -v "Loading repository data" | grep -v "Reading installed packages" | grep -v "No updates found" |  wc -l`
+	n=`$zypper_prog --non-interactive list-updates | grep "^v |" |  wc -l`
+	echo $n
+}
+
+$yum_prog help update >/dev/null 2>&1
+if test $? -eq 0 ; then
+	n=`use_yum`
+else
+	$apt_cache_prog show apt >/dev/null 2>&1
+	if test $? -eq 0 ; then
+		n=`use_apt_check`
+	else
+		$zypper_prog --non-interactive help help >/dev/null 2>&1
+		if test $? -eq 0 ; then
+			n=`use_zypper`
+		else
+			$pacman_prog >/dev/null 2>&1
+			if test $? -eq 0 ; then
+				n=`use_pacman`
+			else
+				n=-1	
+			fi
+		fi
+	fi
+fi	
+
+if test $n -eq -1 ; then
+	statusid=$status_info
+	message_str="INFO: Unsupported system for uptodate checking."
+else
+	if test $n -gt 0 ; then
+		statusid=$status_warning
+		message_str="WARNING: The system is out of date! There are $n available updates."
+	else
+		statusid=$status_ok
+		message_str="OK: The system is uptodate."
+	fi
+fi

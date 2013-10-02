@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="description" content="SisIYA system and network monitoring" />
+<meta name="keywords" content="system monitoring,network monitoring,snmp traps,web based,free" />
+<link rel="stylesheet" type="text/css" href="../style/style.css" />
+<title>SisIYA Homepage</title>
+</head>
+<body>
+
+<h3>SisIYA Administration Guide</h3>
+<ins>
+<table class="header">
+<tr class="header">
+<td><a href="/">Home</a></td>
+<td><a href="../docs/">Documentation</a></td>
+<td><a href="../downloads/">Downloads</a></td>
+<td><a href="../faq/">FAQ</a></td>
+<td><a href="http://sisiya.sisiya.net">Live demo</a></td>
+<td><a href="../mailing_lists.html">Mailing Lists</a></td>
+<td><a href="../screenshots/">Screenshots</a></td>
+<td><a href="http://sisiya.svn.sourceforge.net/viewvc/sisiya/">Subversion</a></td>
+</tr>
+</table>
+</ins>
+
+
+<h3>Introduction</h3>
+<p>
+SisIYA is a system monitoring tool. With SisIYA you can monitor your Linux, UNIX, MacOS X, Windows, UPS,
+printers, RAID controller, HP ilo2 modules, airports, switches ... systems.
+The main developement of SisIYA is done on Linux.
+</p>
+<p>
+The following is the general picture of SisIYA :
+</p>
+<pre>
+ -   -   -    -    -    -    -    -    -    -    -    -    -    -    -    -    -   -   - 
+|                                                                                       | 
+ 
+|                                                                                       |
+                                                                              
+|                   ________                                                            |
+                   /        \                             ------------      
+|                  |        |                             |          |                  |
+                   |   DB   |---------------------------&gt;| GUI (PHP)|             
+|                  |        |                             |          |                  |
+                   \________/                             ------------
+|                      ^                                                                |
+                       |                                                             
+|                      |                                 ________________               |
+        ------------------------------------            /                \ 
+|      |       SisIYA server (sisiyad)      | &lt;--------(  Server checks   )             |
+        ------------------------------------            \________________/            
+|         ^         ^         ^            ^                /                           |
+ -  -  -  |  -   -  |  -  -   |  -   -     |  -   -   -    /   -    -   -   -   -   -  -
+          |         |         |            |              /
+        ------    ------    ------       ------          /
+       |  C1  |  |  C2  |  |  C3  | ... |  CN  |    |&lt;--/ checks clients remotely
+        ------    ------    ------       ------     
+                 Client systems
+</pre>
+<p>
+The big box is an indication that one can put the <b>sisiyad</b>, DB, server checks and the GUI on
+a single computer.
+</p>
+<p>
+SisIYA is composed of a <b>sisiyad</b> daemon, a GUI (web interface) and check scripts or programs. 
+There are two type of checks : Checks (local checks) that run on the client systems and checks that run on a
+computer, which checks the functionality of the client systems remotely. Both types of checks send their
+results (messages) to the <b>sisiyad</b> server, which in turn records them in a database. At the moment PostgreSQL 
+and MySQL are supported. The user, usually the system administrator, uses the web interface to view and monitor the status
+of the systems. 
+</p>
+<p>
+The <b>sisiyad</b> was first written in C, after it was rewritten in C++. There is a JDBC like C++ library called edbc,
+which separates the database connectivity code from the daemon code. At the momemnt there are two edbc implementations: 
+PostgreSQL and MySQL. 
+The web interface is written in PHP. The Linux/UNIX client checks are written in BASH. All these scripts
+use the <b>sisiyac</b> a small C program, which has the job of sending the message (or the messages given in file)
+to the <b>sisiyad</b> server. Checks that perform remote checking are written in BASH, C (for checking HTTP, SMTP,
+SSH etc.) and 
+Java (for checking DB connections). The Windows checks consist of one C++ program, which runs as Windows service.
+</p>
+<p>
+Every system which is going to be monitored, has to have client check programs or scripts. Every script checks
+the system for something and sends a message to the <b>sisiyad</b> server. The result of a check can have
+one of the four possible status values: <b>Info</b>, <b>OK</b>, <b>Warning</b> and <b>Error</b>. 
+The script basicaly generates a short description of what it had checked and sends this message along with the 
+status code to the <b>sisiyad</b> server. The server on his hand records it in the database. The only thing 
+that the <b>sisiyad</b> server checks is whether the specified system name is in the database and if it is active or not.
+</p>
+<h3>Client checks</h3>
+<p>
+There are two groups of check scripts <b>common</b> and <b>special</b>. Scripts that are included in the common 
+group are excuted on every client system. Scripts that are included in the special group are executed on demand. 
+You can use them if you configure them. In order to use the scripts in this group you have to create a directory under
+"/opt/sisiya_client_checks/systems" directory (The /opt/sisiya_client_checks is the default directory 
+where the files from the <b>sisiya-client</b>
+package go.) named after your client system name and make a symbolic link to scripts in the <b>special</b>
+directory. Most of the check scripts have default values. If you would like to change the default values for some
+of your systems, then create a configuration file, which has the same name as the script, but which ends with .conf
+and write those values which are apropriate for your particular system. What to write in a .conf file depends on the
+check script. You will need to copy the lines between the line "### default values" and 
+"### end of the default values" in the systems directory under "script_name.conf" and modify them according to the needs
+of this particular system. 
+</p>
+<p>
+Checks that are performed on the client systems or the chcecks that are performed from the SisIYA server are
+run every 5 minutes. This is the minimum recommended value.
+</p>
+<p>
+The following are scripts located in the /opt/sisiya_client_checks/common directory and are run on every server:
+</p>
+<ins>
+<ul><li>
+<b>sisiya_dmesg.sh</b> : Checks dmesg for a special keywords such as error, failure, warning etc. In order to configure this
+script, create a file called sisiya_dmesg.conf under the /opt/sisiya_client_checks/systems/$sisiya_hostname, where 
+$sisiya_hostname is the value of the sisiya_hostname from the /opt/sisiya_client_checks/sisiya_client.conf configuration file.
+</li><li>
+<b>sisiya_fs.sh</b> : Checks the locally mounted filesystems. This script checks wheter the filesystems are full or not.
+The warning and error percentages can be configured.
+</li><li>
+<b>sisiya_load.sh</b> : Checks the load of the system.
+</li><li>
+<b>sisiya_system.sh</b> : Checks the uptime of the system.
+</li><li>
+<b>sisiya_swap.sh</b> : Checks the swap usage of the system.
+</li><li>
+<b>sisiya_users.sh</b> : Checks wheter root is logged in or not.
+</li></ul>
+</ins>
+<p>
+The following are scripts located in the /opt/sisiya_client_checks/special directory and are only run when there is a link
+to them from the /opt/sisiya_client_checks/systems/$sisiya_hostname directory:
+</p>
+<ins>
+<ul>
+<li><b>sisiya_baan_connections.sh</b> : Lists Baan connections.</li>
+<li><b>sisiya_baan_edi.sh</b> : Checks EDI messages.</li>
+<li><b>sisiya_baan_jobs.sh</b> : Checks Baan jobs status.</li>
+<li><b>sisiya_batchjob_notify.sh</b> : Used to notify SisIYA about status of batchob scripts. Batchob scripts should be written so that they can call this script with parameters to inform SisIYA wheter the script's status was ok or not.</li>
+<li><b>sisiya_daemon_childs.sh</b> : Checks how long child(s) of a given process is(are) running.</li>
+<li><b>sisiya_hddtemp.sh</b> : Checks the hard disk temperature using the hdtemp tool.</li>
+<li><b>sisiya_hpasm_fans.sh</b> : Checks the fan rotations status using the HP's hpasm tool.</li>
+<li><b>sisiya_hpasm_powersupply.sh</b> : Checks the powersupply status using the HP's hpasm tool.</li>
+<li><b>sisiya_hpasm_temperature.sh</b> : Checks the temperature using the HP's hpasm tool.</li>
+<li><b>sisiya_listening_socket.sh</b> : Checks wheter the specified programs listen on their sockets or not.</li>
+<li><b>sisiya_lpstat.sh</b> : Checks the status of printers.</li>
+<li><b>sisiya_mailq.sh</b> : Checks the Postfix mail queue for the number of queued mails.</li>
+<li><b>sisiya_mysql_table_status.sh</b> : Checks the status of MySQL tables.</li>
+<li><b>sisiya_netbackup_clients.sh</b> : This check is not finished yet. It is supposed to bpclcmdping the Veritas NetBackup clients.</li>
+<li><b>sisiya_netbackup_debug.sh</b> : Checks wheter Veritas NetBackup is in debug mode or not.</li>
+<li><b>sisiya_netbackup_drives.sh</b> : Checks the status of Veritas NetBackup tape drives.</li>
+<li><b>sisiya_netbackup_frozen.sh</b> : Checks wheter there are any tapes in frozen state for Veritas NetBackup or not.</li>
+<li><b>sisiya_netbackup_jobs.sh</b> : Checks Veritas NetBackup jobs and reports a summary information.</li>
+<li><b>sisiya_netbackup_library.sh</b> : This check is not finished yet.</li>
+<li><b>sisiya_netbackup_media.sh</b> : Checks Veritas NetBackup  for the number of FROZEN or SUSPENDED tapes.</li>
+<li><b>sisiya_netbackup_notify.sh</b> : This script is used by Veritas NetBackup scripts to notify SisIYA about their job status.
+</li><li>
+<b>sisiya_netbackup_robots.sh</b> : Checks Veritas NetBackup robots.</li><li>
+<b>sisiya_netbackup_scratch.sh</b> : Checks wheter there are enough tapes in the scratch pool in NetBackup or not.
+</li><li>
+<b>sisiya_ntpstat.sh</b> : Checks wheter the NTP daemon is syncronized or not. 
+</li><li>
+<b>sisiya_oracle_hitratios.sh</b> : Checks Oracle SGA hit ratios, such as buffer cache, dictionory, library and nowait.
+</li><li>
+<b>sisiya_oracle_tablespace.sh</b> : Checks Oracle tablespaces. </li>
+<li><b>sisiya_progs_count.sh</b> : Checks the number of running processes. The process names must be specified along with the warning and error numbers.</li>
+<li><b>sisiya_progs.sh</b> : Checks wheter the specified programs are runnig or not.</li>
+<li><b>sisiya_raid_afacli.sh</b> : Checks the temperature using the afacli and the RAID controller.</li>
+<li><b>sisiya_raid_hpacu.sh</b> : Checks HP Smart Arrays with the hpacucli utility for RAID controller, disks, cache and battery status.</li>
+<li><b>sisiya_smart.sh</b> : Checks SMART enabled disk's temperature.</li>
+<li><b>sisiya_softraid.sh</b> : Checks the software RAID.</li>
+<li><b></b> : </li>
+<li><b>sisiya_sun_cluster.sh</b> : Checks the status of a Sun Cluster.</li>
+</ul>
+</ins>
+<p>
+One can always run the above checks from cron with different intervals.
+</p>
+<h3>Server checks</h3>
+<p>
+Server checks are used to check various systems and services remotely. Every system or device which is attached on network
+could be checked for something. The very basic check is the connectivity check, which is actually a very valuable information anyway.
+</p><p>
+The following are scripts located in the /opt/sisiya_server_checks/ directory and are used to checkt the systems remotely:
+</p>
+<ins>
+<ul><li>
+<b>sisiya_check_airport.sh</b> : Checks the uptime for Apple airport devices. It uses airport_systems.conf configuration file.
+</li><li>
+<b>sisiya_check_apc.sh</b> : Checks the uptime and output load of APC power switches. It uses airport_systems.conf configuration file.
+</li><li>
+<b>sisiya_check_dbs.sh</b> : Checks the connectivity to database systems. This script uses a small application written in 
+Java. This Java application uses JDBC for connectivity test and therefore one must configure the required JDBC drivers.
+It uses configuration files of form hostname_SISIYACheckDB.properties, where hostname is the name of the server which is
+going to be checked. These configuration files are Java properties files. If you do not know about Java properties files, do not worry. They are files which include key=value lines. Here is an example file:
+<pre>
+### Number of different database system types
+SISIYACheckDB.dbtypes_count=3
+####################################################################
+SISIYACheckDB.dbtype0_count=1
+SISIYACheckDB.dbtype0_type=postgresql
+SISIYACheckDB.dbtype0_serviceid_name=serviceid_postgresql
+SISIYACheckDB.dbtype0_jdbc_driver=org.postgresql.Driver
+#
+SISIYACheckDB.dbtype0_name_0=db_name
+### optional port.
+#SISIYACheckDB.dbtype0_port_0=5432
+SISIYACheckDB.dbtype0_user_0=db_user_name
+SISIYACheckDB.dbtype0_password_0=db_password
+####################################################################
+SISIYACheckDB.dbtype1_count=1
+SISIYACheckDB.dbtype1_type=oracle
+SISIYACheckDB.dbtype1_serviceid_name=serviceid_oracle
+SISIYACheckDB.dbtype1_jdbc_driver=oracle.jdbc.driver.OracleDriver
+#
+SISIYACheckDB.dbtype1_jdbc_url_0=jdbc:oracle:thin:@dbserver1.example.org:1521:SID
+SISIYACheckDB.dbtype1_name_0=db_name
+SISIYACheckDB.dbtype1_user_0=db_user_name
+SISIYACheckDB.dbtype1_password_0=db_password
+####################################################################
+SISIYACheckDB.dbtype2_count=2
+SISIYACheckDB.dbtype2_type=mysql
+SISIYACheckDB.dbtype2_serviceid_name=serviceid_mysql
+SISIYACheckDB.dbtype2_jdbc_driver=org.gjt.mm.mysql.Driver
+#
+SISIYACheckDB.dbtype2_name_0=db_name
+SISIYACheckDB.dbtype2_user_0=db_user_name
+SISIYACheckDB.dbtype2_password_0=db_password
+#
+SISIYACheckDB.dbtype2_name_1=db_name
+### the optional port. Use this if the DB server is running on non default port
+SISIYACheckDB.dbtype2_port_1=13306
+SISIYACheckDB.dbtype2_user_1=db_user_name
+SISIYACheckDB.dbtype2_password_1=db_password
+####################################################################
+</pre>
+
+</li><li>
+<b>sisiya_check_expired_mysql.sh</b> : This check does not make remote connection to any system. It checks wheter a service
+check expired or not when SisIYA uses MySQL as a database server.
+</li><li>
+<b>sisiya_check_expired_postgresql.sh</b> : This check does not make remote connection to any system. It checks wheter a 
+service check expired or not when SisIYA uses PostgreSQL as a database server.
+</li>
+<li><b>sisiya_check_ftp.sh</b> : Checks FTP servers. It uses ftp_systems.conf configuration file.</li>
+<li><b>sisiya_check_hpilo2.sh</b> : Checks temperature, fans and powersupplies on systems which have the HP's ILO2 module using ssh. It uses hpilo2_systems.conf configuration file.</li>
+<li><b>sisiya_check_http.sh</b> : Checks HTTP servers for connectivity. It uses http_systems.conf configuration file.</li>
+<li><b>sisiya_check_https.sh</b> : Checks HTTPS servers for connectivity. It uses https_systems.conf configuration file.</li>
+<li><b>sisiya_check_imap.sh</b> : Checks IMAP connectivity. It uses imap_systems.conf configuration file.
+</li><li>
+<b>sisiya_check_ping.sh</b> : Checks network connectivity to systems using the ping command. It uses ping_systems.conf 
+configuration file.
+</li><li>
+<b>sisiya_check_pop3.sh</b> : Checks POP3 connectivity. It uses pop3_systems.conf configuration file.
+</li><li>
+<b>sisiya_check_printer.sh</b> : Checks printers for uptime, device status and reports number of printed pages so far.
+It uses printer_systems.conf configuration file.
+</li><li>
+<b>sisiya_check_smb.sh</b> : Checks SMB servers, such as Windows and Samba. It uses smb_systems.conf configuration file.
+</li><li>
+<b>sisiya_check_smtp.sh</b> : Checks SMTP servers for connectivity. It uses smtp_systems.conf configuration file.
+</li><li>
+<b>sisiya_check_ssh.sh</b> : Checks SSH servers for connectivity. It uses ssh_systems.conf configuration file.
+</li>
+<li><b>sisiya_check_switch.sh</b> : Checks network switches for uptime. It uses switch_systems.conf configuration file.</li>
+<li><b>sisiya_check_telekutu.sh</b> : Checks the VoIP device online status using http connection. These are CISCO LinkSys devices. It uses telekutu_systems.conf configuration file.</li>
+<li><b>sisiya_check_ups.sh</b> : Cheks UPS devices for uptime, load, temperature (if there is a temperature sensor), output etc.  It uses ups_systems.conf configuration file.  </li>
+<li><b>sisiya_snmp_trap_handler.sh</b> : This is the generic SNMP trap handler.</li>
+</ul>
+</ins>
+</body></html>

@@ -1,0 +1,11 @@
+OBJS=sisiyad_mysql
+GCC=gcc -Wall
+RM=rm -f
+
+sisiyad_mysql: sisiyad_mysql.c 
+#	$(GCC) -L/usr/lib/mysql -lmysqlclient sisiyad_mysql.c 
+	$(GCC) -lmysqlclient sisiyad_mysql.c -o sisiyad_mysql
+
+clean:
+	$(RM) $(OBJS)
+         

@@ -1,0 +1,99 @@
+#######################################################################################
+### Check for fan speeds
+#######################################################################################
+### service id
+#######################################################################################
+serviceid=$serviceid_fanspeed
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_fanspeed is not defined! Exiting..."
+	exit 1
+fi
+
+#######################################################################################
+service_name="Fan speed"
+#######################################################################################
+
+#######################################################################################
+#######################################################################################
+### default values
+### HP management CLI for Linux
+hpasmcli_prog=/sbin/hpasmcli
+### end of the default values
+##########################################################################
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	source $module_conf_file
+fi
+
+##############################################################################################
+### Sample output of the hpasmcli -s "show fans" command :
+#	  Fan  Location        Present Speed  of max  Redundant  Partner  Hot-pluggable
+#	---  --------        ------- -----  ------  ---------  -------  -------------
+#	#1   I/O_ZONE        Yes     NORMAL  45%     Yes        0        Yes
+#	#2   I/O_ZONE        Yes     NORMAL  45%     Yes        0        Yes
+#	#3   PROCESSOR_ZONE  Yes     NORMAL  41%     Yes        0        Yes
+#	#4   PROCESSOR_ZONE  Yes     NORMAL  36%     Yes        0        Yes
+#	#5   PROCESSOR_ZONE  Yes     NORMAL  36%     Yes        0        Yes
+#	#6   PROCESSOR_ZONE  Yes     NORMAL  36%     Yes        0        Yes
+#
+##############################################################################################
+### or another sample output with some fans which are not present
+##############################################################################################
+#	Fan  Location        Present Speed  of max  Redundant  Partner  Hot-pluggable
+#	---  --------        ------- -----  ------  ---------  -------  -------------
+#	#1   SYSTEM          Yes     NORMAL  35%     No         N/A      No
+#	#2   SYSTEM          No      -       N/A     No         N/A      No
+#	#3   SYSTEM          Yes     NORMAL  35%     No         N/A      No
+#	#4   SYSTEM          No      -       N/A     No         N/A      No
+#	#5   CPU#1           Yes     NORMAL  35%     N/A        N/A      No
+#	#6   CPU#2           No      -       N/A     N/A        N/A      No
+##############################################################################################
+
+tmp_file=`maketemp /tmp/tmp_${script_name}.XXXXXX`
+tmp_ok_file=`maketemp /tmp/tmp_ok_${script_name}.XXXXXX`
+tmp_error_file=`maketemp /tmp/tmp_error_${script_name}.XXXXXX`
+
+cmd_str="show fans"
+$hpasmcli_prog -s "$cmd_str" > $tmp_file
+retcode=$?
+if test $retcode -eq 0 ; then
+	cat $tmp_file | grep "^#" | while read line
+	do
+		is_available=`echo $line | awk '{print $3}'`
+		if test "$is_available" = "No" ; then
+			i=i+1
+			continue
+		fi
+
+		fan_name=`echo $line		| awk '{print $2}'`
+		fan_number=`echo $line		| awk '{print $1}'`
+		fan_speed_status=`echo $line	| awk '{print $4}'`
+		fan_value=`echo $line		| awk '{print $5}' | cut -d "%" -f 1`
+
+		if test "$fan_speed_status" != "NORMAL" ; then
+			echo "ERROR: The speed of for the $fan_number $fan_name fan is ${fan_value}% and ${fan_speed_status} != NORMAL!" >> $tmp_error_file
+		else
+			echo "OK: The speed of the $fan_number $fan_name fan is ${fan_value} %." >> $tmp_ok_file
+		fi
+	done
+else
+	echo "$error_str ERROR: Error executing $hpasmcli_prog -s \"$cmd_str\" command retcode=$retcode!" >> $tmp_error_file
+fi
+
+statusid=$status_ok
+message_str=""
+if test -s $tmp_error_file ; then
+	statusid=$status_error
+	message_str=`cat $tmp_error_file | tr "\n" " "` 
+fi
+
+if test -s $tmp_ok_file ; then
+	message_str="$message_str`cat $tmp_ok_file | tr "\n" " "`"
+fi
+
+### clean up
+for f in $tmp_file $tmp_ok_file $tmp_error_file
+do
+	rm -f $f
+done

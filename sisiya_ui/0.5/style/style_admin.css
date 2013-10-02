@@ -1,0 +1,442 @@
+body {
+	text-align:center;
+	font-family: Calibri, Helvetica, sans-serif;
+}
+
+.div_container
+{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	/*width:800px;*/
+	/*height:600px;*/
+/*	background-color: black;*/
+	
+}
+
+.div_center
+{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	width:300px;
+}
+
+.div_debug
+{
+	position: relative;
+	padding-bottom: 50px;
+}
+
+.div_admin_menu
+{
+	position: relative;
+	top:58px;
+	height:22px;
+	width: 100%;
+	left:0px;
+	background-color: #3C76B2;
+}
+
+.div_admin_menu_inner
+{
+	position: relative;
+	left:-50px;
+	top:-19px;
+}
+
+.div_header
+{
+	position: relative;
+	top:0px;
+	height:80px;
+	width: 99%;
+	border: medium #336699 double;
+	/*background-color: #abd; */
+	background-color: #C5D8EB;
+/*	background-color: #FFFF00; */
+}
+.div_right_text_align
+{
+	text-align:right;
+}
+
+
+.div_float_left
+{
+	float:left;
+/*	background-color:#746;*/
+}
+
+.div_zindex_1
+{
+	z-index:1;
+}
+
+.div_zindex_2
+{
+	z-index:2;
+}
+
+
+.div_float_bottom
+{
+	position: relative;
+	float: bottom;
+}
+
+.div_gui_float_right
+{
+	position: relative;
+	float: right;
+	text-align: right;
+/*	background-color:#F08080;*/
+	/*
+	font-size: small;
+	color: #003366;
+	*/
+}
+
+
+.div_float_right
+{
+	position: relative;
+	float: right;
+/*	background-color:#F08080;*/
+	/*
+	font-size: small;
+	text-align: right;
+	color: #003366;
+	*/
+}
+
+.div_header_center
+{
+	position: absolute;
+	left-margin:auto;
+	right-margin:auto;
+	width:100%;
+	top: 15px;
+	font-size: large;
+/*	background-color:#778899;*/
+}
+
+.gui_div_subheader_center
+{
+	position: relative;
+	left-margin:auto;
+	right-margin:auto;
+	width:100%;
+	font-size: large;
+	/*background-color:#779999;*/
+	border: medium #336699 double;
+}
+
+a.language:link		{text-decoration: none; color: #00f} /* unvisited link */
+a.language:visited	{text-decoration: none; color: #00f} /* visited link */
+a.language:hover	{text-decoration: none; color: #0af} /* mouse over link */
+a.language:active	{text-decoration: none; color: #00f} /* selected link */
+
+a.page_number:link	{text-decoration: none; color: #00f; } /* unvisited link */
+a.page_number:visited	{text-decoration: none; color: #00f; } /* visited link */
+a.page_number:hover	{text-decoration: none; color: #0af; } /* mouse over link */
+a.page_number:active	{text-decoration: none; color: #00f; } /* selected link */
+
+p.language
+{
+	font-size: large;
+	color: #003366;
+}
+
+.div_header_language
+{
+	position: relative;
+	float: right;
+	vertical-align: bottom;
+	text-align: right;
+	color: #003366;
+	right: 4px; 
+	bottom: 0px; 
+	height: 20px;
+	font-size: xx-small;
+}
+
+.div_header_right_bottom_login
+{
+	font-size: small;
+	height: 24px;
+	font-style: normal;
+	vertical-align: top;
+	text-align: center;
+
+}
+
+.div_content
+{
+	position: relative;
+	top: 5px;
+	left: 0px;
+/*	background-color: #FF0000;*/
+}
+
+ .div_content_center
+{
+	position: relative;
+	top: 0px;
+	bottom: 10px;
+	margin-left:auto; 
+	margin-right:auto;
+/*	background-color: #FF0000;*/
+}
+
+
+ .div_content_left
+{
+	position: relative;
+	top:-10px;
+	left:-15px;
+	z-index:1;
+}
+
+.div_content_left_org
+{
+	position: absolute;
+	/*
+	width: 175px;
+	height: 520px;
+	*/
+	top: -6px;
+	left: -15px;
+	z-index:1;
+}
+
+.div_content_right
+{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	left:0px;
+}
+
+.div_content_right_main
+{
+	position: relative;
+	top:5px;
+}
+
+.div_logged_user
+{
+	color: #003366;
+}
+
+
+.div_page_numbers
+{
+	position : relative;
+	/*width: 100%;*/
+	text-align: center;
+	color: #003366;
+/*	background-color: #C5D8EB; */
+}
+
+
+.div_gui_footer
+{
+	position : relative;
+	float: bottom;
+	top:10px;
+	width: 99%;
+	bottom: 1%;
+	border: medium #336699 double;
+	text-align: center;
+	color: #003366;
+	background-color: #C5D8EB;
+}
+
+
+.div_footer
+{
+	position : fixed;
+	float: bottom;
+	width: 98%;
+	bottom: 1%;
+	border: medium #336699 double;
+	text-align: center;
+	color: #003366;
+	background-color: #C5D8EB;
+}
+
+.small_link
+{
+	color: #008080;
+	font-size:xx-small ;
+}
+
+#password
+{
+	width:180px;
+}
+
+#username
+{
+	width:180px;
+}
+.xx_small_font
+{
+	font-size: xx-small;
+}
+.small_font
+{
+	font-size: small;
+}
+
+.transparent_button
+{
+	color: #003366;
+	border:0px;
+	background: transparent;
+}
+
+caption.general {
+	margin: auto;
+	background-color: #abd;
+	/*text-transform: uppercase;*/
+	text-align:center;  
+}
+
+
+table.general {
+/* 
+	margin-left: 2px;
+        margin-right: 2%;
+        margin-top:12px;
+*/
+	margin-left:auto; 
+	margin-right:auto;
+        border: thin solid #abd;
+        border-style: solid;
+        border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+        border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+        caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+        empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+ /*       table-layout: auto;*/ /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	font-size: small;
+	font-weight: normal; /* normal,lighter,bold,900 */
+	text-align:left;
+}
+
+table.general               	td 		{ border: thin solid #ccc; color: black; }
+table.general       tr.header th 		{ text-align: center; border: thin solid #ccc; background-color:#abd}
+/*table.general       tr.row  	th 		{  } */
+table.general       tr.row  	td		{ background-color:transparent;}
+table.general       tr.row  	td.center	{ background-color:transparent; text-align: center;}
+table.general       tr.row  	td.left		{ background-color:transparent; text-align: left;}
+table.general       tr.row  	td.right	{ background-color:transparent; text-align: right;}
+table.general       tr.row  	td.label	{ background-color:#abd;}
+table.general       tr.row  	td.password	{ text-align:left;}
+table.general       tr.footer td 		{ background-color:gray ; }
+table.general       td.label 			{ background-color: #abd; }
+
+table.general	a:link		{text-decoration: none; color: black}	/* unvisited link */
+table.general	a:visited 	{text-decoration: none; color: black}	/* visited link */
+table.general	a:hover 	{text-decoration: none; color: blue}	/* mouse over link */
+table.general	a:active 	{text-decoration: none; color: black}	/* selected link */
+
+input.id
+{
+	width:50px;
+	text-align:left;
+	border:0;
+}
+
+input.date
+{
+	width:100px;
+	text-align:left;
+	border:0;
+}
+input.readonly
+{
+	/*background-color: #DCDCDC;*/
+	background-color: white;
+}
+
+input.text_size100
+{
+	width:100px;
+	text-align: justify;
+	border:0;
+}
+
+
+input.text_size150
+{
+	width:150px;
+	text-align: justify;
+	border:0;
+}
+
+input.text_size200
+{
+	width:200px;
+	text-align: justify;
+	border:0;
+}
+
+
+input.text_size300
+{
+	width:300px;
+	text-align: justify;
+	border:0;
+}
+
+
+input.text
+{
+	width:200px;
+	text-align: justify;
+	border:0;
+}
+
+input.password
+{
+	width:200px;
+	text-align: justify;
+	border:0;
+}
+
+input.text_large
+{
+	width:300px;
+	text-align: justify;
+	border:0;
+}
+
+
+input.text_wide
+{
+	width:600px;
+	text-align: justify;
+	border:0;
+}
+.underline
+{
+	text-decoration:underline;
+}
+
+.bold
+{
+	font-weight: bold;
+}
+
+img
+{
+	border-style: none;
+}
+
+img.up
+{
+	z-index:10;
+}

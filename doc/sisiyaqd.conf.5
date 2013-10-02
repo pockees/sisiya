@@ -1,0 +1,89 @@
+.\"(c) Copyright 2003 by Erdal Mutlu
+.\"(c) Sections Copyright 2003 by Erdal Mutlu
+.\"All rights reserved.  The file named COPYRIGHT specifies the terms 
+.\"and conditions for redistribution.
+.\"
+.\" $Id: sisiyaqd.conf.5 68 2005-02-17 17:29:46Z emutlu $
+.TH SISIYAQD.CONF 8 "28 January 2003"
+.\" *************************** NAME *********************************
+.SH NAME
+sisiyaqd.conf \- Configuration file for SisIYA server.
+.\" *********************** DESCRIPTION ****************************
+.SH DESCRIPTION
+.B "sisiyaqd.conf"
+is the configuration file that controls \fBsisiyaqd\fP server.
+Any line whose first non-white-space character is a '#' is considered
+a comment line. Empty lines are ignored.
+.LP
+The file contains entries of the form:
+.TP
+.B KEY=VALUE
+.LP
+Each entry defines a value for the key (parameter). There are default values for all keys.
+These default values are initially installed by the SisIYA package.
+.TP
+Here are the parameters (keys) :
+.TP
+.B LOGLEVEL
+This is the level of how much, the \fBsisiyad\fP server is going to log via syslog.
+Available values are 0,1,2 and 3. The default is 0, which means do not log. 3 is the most
+verbose level.
+.TP
+.B SLEEP_SECONDS
+This is the amount of time between in seconds to wait between queue processing.
+This value is only used by the SisIYA's queue processor daemon \fBsisiyaqd\fP. The default value is 30.
+.TP
+.B DB_SERVER
+This is the IP number of the database server. The default value is localhost.
+.TP
+.B DB_TYPE
+This is the type of database. There are two possible values for now: PostgreSQL or MySQL.
+The default value is PostgreSQL.
+.TP
+.B DB_NAME
+The \fBSisIYA\fP database name. If you didn't change the database name, its value
+is \fBsisiya\fP.
+.TP
+.B DB_USER
+The \fBSisIYA\fP database user name. If you didn't change it, its value is \fBsisiyauser\fP
+.TP
+.B DB_PASSWORD
+This is the pasword for the DB_USER. The dafult value is \fBsisiyauser1\. You should
+change this default password to something else.
+.\" *********************** EXAMPLE ****************************
+.SH EXAMPLE
+.LP
+.PD .1v
+.RS
+.nf
+### Process ID file, where the PID of the SisIYA queue processor server is stored.
+#QPID_FILE=/var/run/sisiyaqd.pid
+
+### debug level 0-3. 0 no log output. 3 verbose. 
+### Default is 0
+#LOGLEVEL=0
+#
+#
+### sleep the speciefied number of seconds between queue processesing
+### This value is used bye the SisIYA queue processor daemon (sisiyaqd)
+#SLEEP_SECONDS=30
+
+### DB info
+#
+### DB default values are ######################
+#DB_SERVER=localhost
+#DB_TYPE=PostgreSQL
+#DB_NAME=sisiya
+#DB_USER=sisiyauser
+#DB_PASSWORD=sisiyauser1
+##### End of default values for DB info ##### 
+.PD
+.\" *********************** SEE ALSO ****************************
+.SH "SEE ALSO"
+.I "sisiyad(8), sisiyad.conf(5)"
+.LP
+.I "http://sisiya.sourcefourge.net"
+.\" *********************** AUTHOR ****************************
+.SH AUTHOR
+Erdal Mutlu
+

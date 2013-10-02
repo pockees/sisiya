@@ -1,0 +1,74 @@
+### service id
+$serviceid=$serviceid_services
+if(! $serviceid_services) {
+	Write-Output "Error : serviceid_services is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+	exit
+}
+############################################################################################################
+### the default values
+#$exceptions = @("clr_optimization_v4.0.30319_32", "SkypeUpdate")
+$exceptions=""
+### end of the default values
+############################################################################################################
+### If there is a module conf file then override these default values
+if([System.IO.File]::Exists($module_conf_file) -eq $True) {
+#if(test-path $module_conf_file -eq $True) {
+	. $module_conf_file
+}
+###############################################################################################################################################
+$error_services_str=""
+$info_services_str=""
+
+#write-output "exceptions : count " + $exceptions.count + " exceptions = " + $exceptions
+
+function isException()
+{
+	Param([String]$service_str)
+	
+	for($i = 0; $i -lt $exceptions.Count; $i++) {
+		if($service_str -eq $exceptions[$i]) {
+			return $True
+		}
+	}
+	return $False
+}
+
+### get services
+$services=Get-WmiObject Win32_Service
+$n=0
+foreach($service in $services) {
+	if($service.StartMode -eq "Auto" -and $service.Started -eq 0) {
+		if(($exceptions.Count -gt 0) -and (isException($service.Name) -eq $True)) {
+			if($info_services_str.Length -eq 0) {
+				$info_services_str=$service.Name +"(" + $service.Caption + ")"
+			}
+			else {
+				$info_services_str=$info_services_str+ "," + $service.Name +"(" + $service.Caption + ")"
+			}
+			continue
+		}	
+		$n=$n+1
+		if($error_services_str.Length -eq 0) {
+			$error_services_str=$service.Name +"(" + $service.Caption + ")"
+		}
+		else {
+			$error_services_str=$error_services_str+ "," + $service.Name +"(" + $service.Caption + ")"
+		}
+	}
+}
+if($n -gt 0) {
+	$statusid=$status_error
+	if($n -eq 1) {
+		$message_str="ERROR: The following service: " + $error_services_str + " is set to auto start, but is not started!"
+	}
+	else {
+		$message_str="ERROR: The following " + $n + " services: " + $error_services_str + " are set to auto start, but are not started!"
+	}
+}
+else {
+	$statusid=$status_ok
+	$message_str="OK: All services set to be auto started are started."
+}
+if($info_services_str -ne "") {
+	$message_str = $message_str + " INFO: The following service(s): " + $info_services_str + " is/are set to auto start, but is/are not started!"
+}

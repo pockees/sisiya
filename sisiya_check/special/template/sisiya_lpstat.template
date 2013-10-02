@@ -1,0 +1,84 @@
+### service id
+serviceid=$serviceid_lpstat 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_lpstat is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+### default values
+### end of the default values
+
+### If there is a module conf file then override these default values
+if test -f $module_conf_file ; then
+	source $module_conf_file
+fi
+
+tmp_lpstat_file=`maketemp /tmp/tmp_${script_name}.XXXXXX`
+tmp_lpstat_ok_file=`maketemp /tmp/tmp_ok_${script_name}.XXXXXX`
+tmp_lpstat_warning_file=`maketemp /tmp/tmp_warning_${script_name}.XXXXXX`
+tmp_lpstat_error_file=`maketemp /tmp/tmp_error_${script_name}.XXXXXX`
+
+for f in $tmp_lpstat_file $tmp_lpstat_ok_file $tmp_lpstat_warning_file $tmp_lpstat_error_file
+do
+	rm -f $f
+	touch $f
+done
+
+if test "$sisiya_osname" = "SunOS" ; then
+	grep_prog="/usr/xpg4/bin/grep"
+else
+	grep_prog="grep"
+fi
+
+lpstat -p | $grep_prog ^printer | while read line
+do
+#	printer_name=`echo $line	| awk '{print $2}'`
+#	printer_status=`echo $line	| awk '{print $4}' | tr -d "."`
+##	echo "printer_name=[$printer_name] printer_status=[$printer_status]"
+#	case "$printer_status" in
+#		"idle")
+#			echo "OK: Printer $printer_name is ${printer_status}. " >> $tmp_lpstat_ok_file
+#			;;
+#		*)
+#			echo "ERROR: Printer $printer_name is ${printer_status}!" >> $tmp_lpstat_error_file
+#		;;
+#	esac
+##		echo "WARNING: Printer $printer_name is ${printer_status}!" >> $tmp_lpstat_warning_file_
+	printer_name=`echo $line        | awk '{print $2}'`
+	str=`echo $line | grep "is idle."`
+	if test -n "$str" ; then
+		printer_status=`echo $line      | awk '{print $4}' | tr -d "."`
+		echo "OK: Printer $printer_name is ${printer_status}. " >> $tmp_lpstat_ok_file
+	else
+		str=`echo $line | grep "now printing"`
+		if test -n "$str" ; then
+			echo "OK: Printer $printer_name is printing. " >> $tmp_lpstat_ok_file
+		else
+			printer_status=`echo $line      | awk '{print $3}'`
+			echo "ERROR: Printer $printer_name is ${printer_status} line=[$line]!" >> $tmp_lpstat_error_file
+		fi
+	fi
+done
+
+statusid=$status_ok
+message_str=""
+if test -s $tmp_lpstat_error_file ; then
+	message_str=`cat $tmp_lpstat_error_file | tr -s "\n" " "` 
+	statusid=$status_error
+fi
+
+if test -s $tmp_lpstat_warning_file ; then
+	message_str="$message_str`cat $tmp_lpstat_warning_file | tr -s \"\\n\" \" \"`" 
+	if test $statusid -lt $status_warning ; then
+		statusid=$status_warning
+	fi 
+fi
+
+if test -s $tmp_lpstat_ok_file ; then
+	message_str="$message_str`cat $tmp_lpstat_ok_file | tr -s \"\\n\" \" \"`"
+fi
+
+for f in $tmp_lpstat_file $tmp_lpstat_ok_file $tmp_lpstat_warning_file $tmp_lpstat_error_file $exclude_file $exceptions_file
+do
+	rm -f $f
+done

@@ -1,0 +1,116 @@
+#!/bin/sh
+#
+# This is the SisIYA HTTP server start/stop script
+#
+#    Copyright (C) 2003  Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#
+#
+# chkconfig: 345 99 10
+# description: This is the SisIYA HTTP server. It has modules that gather system
+#		information such as time, disk space, loged in users etc
+# processname: sisiya_httpd
+# pidfile: /var/run/sisiya_httpd.pid
+# config: /etc/sisiya_httpd.conf
+#
+# Source function library
+. /etc/init.d/functions
+
+###. /etc/profile
+
+prog=sisiya_httpd
+
+if test -x /usr/sbin/$prog ; then
+ sisiya_httpd_prog=/usr/sbin/$prog
+else
+ echo "The $prog program /usr/local/sbin/$prog does not exist!"
+ exit 1
+fi
+
+sisiya_httpd_conf=/etc/${prog}.conf
+if test ! -f $sisiya_httpd_conf ; then
+ echo "Configuration file $sisiya_httpd_conf for $prog does not exist!"
+ exit 1
+fi
+
+OPTIONS=$sisiya_httpd_conf
+
+
+start() {
+	echo -n "Starting $prog: "
+	daemon $prog $OPTIONS
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && touch /var/lock/subsys/$prog
+        return $RETVAL
+}
+
+stop() {
+	echo -n $"Stopping $prog: "
+	killproc $prog
+	RETVAL=$?
+	echo
+	[ $RETVAL = 0 ] && rm -f /var/lock/subsys/$prog /var/run/${prog}.pid
+
+}
+
+reload() {
+	echo -n $"Reloading $prog: "
+	killproc $prog -HUP
+	RETVAL=$?
+	echo
+}
+
+showconf()
+{
+ 	echo -n "Configuration information for $prog is send to syslog "
+	killproc $prog -USR1
+	RETVAL=$?
+	echo
+}
+
+
+
+# See how we were called.
+case "$1" in
+	start)
+		start
+	;;
+	stop)
+		stop
+
+	;;
+	reload)
+		reload
+	;;
+	restart)
+		stop
+		start
+	;;
+	status)
+        	status $prog
+		RETVAL=$?
+	;;
+	showconf)
+		showconf
+	;;
+	*)
+		echo "Usage : $0 {start|stop|restart|reload|startus|showconf}"
+	;;
+esac
+
+exit $RETVAL

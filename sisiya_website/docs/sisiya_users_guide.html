@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="description" content="SisIYA system and network monitoring" />
+<meta name="keywords" content="system monitoring,network monitoring,snmp traps,web based,free" />
+<link rel="stylesheet" type="text/css" href="../style/style.css" />
+<title>SisIYA Homepage</title>
+</head>
+<body>
+
+<h3>SisIYA Users Guide</h3>
+<ins>
+<table class="header">
+<tr class="header">
+<td><a href="/">Home</a></td>
+<td><a href="../docs/">Documentation</a></td>
+<td><a href="../downloads/">Downloads</a></td>
+<td><a href="../faq/">FAQ</a></td>
+<td><a href="http://sisiya.sisiya.net">Live demo</a></td>
+<td><a href="../mailing_lists.html">Mailing Lists</a></td>
+<td><a href="../screenshots/">Screenshots</a></td>
+<td><a href="http://sisiya.svn.sourceforge.net/viewvc/sisiya/">Subversion</a></td>
+</tr>
+</table>
+</ins>
+<h3>Introduction</h3>
+<p>
+Here I will try to explain how to use the web interface of SisIYA.
+This guid is not really complete:( I am going to update it freaquently. But unfortunately I do not really have much time 
+for documentation. If you need help or want to help, please use the mailing lists 
+(http://sisiya.sourceforge.net/mailing_lists.html).
+</p>
+<h4>SisIYA Alerts</h4>
+<p>
+Beside just looking at the SisIYA web interface, one can specify alerts. Available alert types at the moment are e-mail and XMPP
+alert types. For that you have to specify for which systems and/or system services you need to be alerted.
+Once selected, the SisIYA server is going to check every minute for system status changes and alert you accordingly.
+Iy have chosen to be alrted for a particular system's status (say Error or Warning) you could also select to be alerted
+(only once) for the same system's normal status, which is OK. In this way, you are going to recieve an e-mail informing
+you when the system's status changes back to OK again. Alerts are send every N minutes, when N is greater than 1 or
+only once when N is equal to zero.
+</p>
+</body></html>

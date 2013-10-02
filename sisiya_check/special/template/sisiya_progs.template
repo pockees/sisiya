@@ -1,0 +1,88 @@
+### server service id
+serviceid=$serviceid_progs  
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_progs is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+service_name="Progs"
+
+if test ! -f $module_conf_file ; then
+	echo "$0 : module_conf_file=$module_conf_file does not exist!"
+	exit 1
+fi
+
+ok_str=""
+err_str=""
+list_str=`grep -v "#"  $module_conf_file`
+for line in $list_str
+do
+	prog=`echo $line | awk -F! '{print $1}'`  
+	user=`echo $line | awk -F! '{print $2}'`  
+	case "$sisiya_osname" in
+		"HP-UX")
+			UNIX95=""
+			export UNIX95
+			ps_command="ps -eo user,pid,comm"
+		;;
+		"OpenBSD")
+			ps_command="ps -xeo user,pid,comm"
+		;;
+		"SunOS")
+			ps_command="ps -eo user,pid,comm"
+		;;
+		*)
+			ps_command="ps -Aeo user,pid,command"
+		;;
+	esac
+	if test -n "$user" ; then
+		case "$sisiya_osname" in
+			"HP-UX")
+				str=`$ps_command | grep "${prog}" | grep "${user}" | grep -v grep | grep -v $script_name`
+			;;
+			*)
+				str=`$ps_command | grep "${prog}" | grep "${user}" | grep -vw grep | grep -vw $script_name`
+			;;
+		esac
+	else 
+		case "$sisiya_osname" in
+			"HP-UX")
+				str=`$ps_command | grep "${prog}" | grep -v grep | grep -v $script_name`
+			;;
+			*)
+				str=`$ps_command | grep "${prog}" | grep -v grep | grep -vw $script_name`
+			;;
+		esac
+
+	fi
+	if test -n "$str" ; then
+		statusid=$status_ok
+		if test -n "$ok_str" ; then
+			ok_str="$ok_str $prog" 
+		else
+			ok_str="$prog" 
+		fi 
+	else
+		if test -n "$err_str" ; then
+			err_str="$err_str $prog"
+		else
+			err_str="$prog"
+		fi
+		statusid=$status_error
+	fi
+done 
+
+statusid=$status_ok
+message_str=""
+if test -n "$err_str" ; then
+	statusid=$status_error
+	message_str="ERROR: $err_str"
+fi 
+
+if test -n "$ok_str" ; then
+	if test -n "$message_str" ; then
+		message_str="$message_str OK: $ok_str"
+	else
+		message_str="OK: $ok_str"
+	fi
+fi 

@@ -1,0 +1,2 @@
+### SisIYA : Cleint checks.
+0-59/5 * * * * root /opt/sisiya-client-checks/bin/sisiya_all.sh /opt/sisiya-client-checks/sisiya_client.conf 10

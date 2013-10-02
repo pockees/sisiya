@@ -1,0 +1,28 @@
+### service id
+serviceid=$serviceid_batchjob_notify  
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_batchjob_notify is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+##########################################################################
+
+message_str=$org_message
+case "$status" in
+	"error")
+		statusid=$status_error
+	;;
+	"warning")
+		statusid=$status_warning
+	;;
+	"ok")
+		statusid=$status_ok
+	;;
+	"info")
+		statusid=$status_info
+	;;
+	*)
+		statusid=$status_warning
+		message_str="WARNING: The status=$status must be error, warning, ok or info! $org_message"
+esac
+data_message_str=""

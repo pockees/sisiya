@@ -1,0 +1,129 @@
+### server service id
+serviceid=$serviceid_listening_socket 
+if test -z "$serviceid" ; then
+	echo "$0 : serviceid_listening_socket is not defined! Exiting..."
+	exit 1
+fi
+##########################################################################
+service_name="Listening Socket"
+##########################################################################
+### default values
+netstat_prog=netstat
+### This check uses netstat -nlp command 
+### Interface must be numeric value 0.0.0.0 meaning all interfaces
+### If the port number is 0 then it is not going to be checked
+### The progname can be at most 13 characters long
+number_of_sockets=2
+socket_description[0]="My special server1"
+socket_progname[0]="myserver"
+#socket_onerror[0]="warn"
+socket_port[0]=45566
+socket_protocol[0]="tcp"
+socket_interface[0]="0.0.0.0"
+socket_description[1]="My udp server"
+socket_progname[1]="myserver"
+socket_port[1]=45566
+socket_protocol[1]="udp"
+socket_interface[1]="0.0.0.0"
+### end of the default values
+##########################################################################
+
+if test ! -f $module_conf_file ; then
+	statusid=$status_warning
+	echo "$0 : Configuration file $module_conf_file does not exist!"
+	exit 0
+fi
+### source the module conf
+. $module_conf_file
+
+if test $number_of_sockets -lt 1 ; then
+	statusid=$status_warning
+        echo "WARNING: The total number of sockets=$number_of_sockets must be greater than 1!"
+	exit 0
+fi
+
+tmp_error_file=`maketemp /tmp/tmp_${script_name}_error.XXXXXX`
+tmp_warning_file=`maketemp /tmp/tmp_${script_name}_warning.XXXXXX`
+tmp_ok_file=`maketemp /tmp/tmp_${script_name}_ok.XXXXXX`
+tmp_netstat_out=`maketemp /tmp/tmp_${script_name}_netstatout.XXXXXX`
+
+$netstat_prog -nlp > $tmp_netstat_out 2> /dev/null
+
+declare -i i=0
+while test $i -lt $number_of_sockets
+do
+        description=${socket_description[${i}]}
+        port=${socket_port[${i}]}
+        protocol=${socket_protocol[${i}]}
+        interface=${socket_interface[${i}]}
+        progname=${socket_progname[${i}]}
+	#echo "Checking listening socket description=$description protocol=$protocol port=$port interface=$interface ..."
+	if test $port -eq 0 ;then 
+		got_port=`grep "$progname" $tmp_netstat_out | grep "^$protocol" | grep "$interface" | awk '{print $4}' | awk -F: '{print $2}'`
+		if test -z "$got_port" && test "$interface" = "0.0.0.0" ; then
+			got_port=`grep "$progname" $tmp_netstat_out | grep "^$protocol" | grep ":::" | awk '{print $4}'|awk -F: '{print $4}'`
+		fi
+	else
+		got_port=`grep "$progname" $tmp_netstat_out | grep "^$protocol" | grep "${interface}:$port " | awk '{print $4}'|awk -F: '{print $2}'`
+		if test -z "$got_port" ; then
+			if test "$interface" = "0.0.0.0" ; then
+				got_port=`grep "$progname" $tmp_netstat_out | grep "^$protocol" | grep ":::$port " | awk '{print $4}'|awk -F: '{print $4}'`
+			elif test "$interface" = "::ffff:127.0.0.1" ; then
+				got_port=`grep "$progname" $tmp_netstat_out | grep "^$protocol" | grep "::ffff:127.0.0.1:$port " | awk '{print $4}'|awk -F: '{print $5}'`
+			fi
+		fi
+
+	fi
+	retcode=$?
+	if test $retcode -ne 0 ; then
+		if test -n "${socket_onerror[${i}]}" && test "${socket_onerror[${i}]}" = "warn" ; then
+			echo "$description \(Nothing is listening on $protocol ${interface}:${port}\)!" >> $tmp_warning_file
+		else
+			echo "$description \(Nothing is listening on $protocol ${interface}:${port}\)!" >> $tmp_error_file
+		fi
+	else
+		if test -z "$got_port" ; then
+			if test -n "${socket_onerror[${i}]}" && test "${socket_onerror[${i}]}" = "warn" ; then
+				echo "$description \(Nothing is listening on $protocol ${interface}:${port}\)!" >> $tmp_warning_file
+			else
+				echo "$description \(Nothing is listening on $protocol ${interface}:${port}\)!" >> $tmp_error_file
+			fi
+		else
+			if test $port -ne 0 && test $port -ne $got_port ;then 
+				if test -n "${socket_onerror[${i}]}" && test "${socket_onerror[${i}]}" = "warn" ; then
+					echo "$description \(Nothing is listening on $protocol ${interface}:${port}\)!" >> $tmp_warning_file
+				else
+					echo "$description \(Nothing is listening on $protocol ${interface}:${port}\)!" >> $tmp_error_file
+				fi
+			else
+				if test $port -eq 0 ; then
+					echo "$description \($protocol ${interface}\)." >> $tmp_ok_file
+				else
+					echo "$description \($protocol ${interface}:${port}\)." >> $tmp_ok_file
+				fi
+			fi
+		fi
+	fi
+        i=i+1
+done
+
+statusid=$status_ok
+message_str=""
+if test -s $tmp_error_file ; then
+	statusid=$status_error
+	message_str="ERROR: "`cat $tmp_error_file | tr "\n" " "`
+fi
+if test -s $tmp_warning_file ; then
+	message_str="$message_str WARNING: "`cat $tmp_warning_file | tr "\n" " "`
+	if test $statusid -lt $status_warning ; then
+		statusid=$status_warning
+	fi 
+fi
+
+if test -s $tmp_ok_file ; then
+	message_str="$message_str OK: `cat $tmp_ok_file | tr "\n" " "`"
+fi
+for f in $tmp_ok_file $tmp_error_file $tmp_warning_file $tmp_netstat_out
+do
+	rm -f $f
+done

@@ -1,0 +1,60 @@
+.\"(c) Copyright 2003 by Erdal Mutlu
+.\"(c) Sections Copyright 2003 by Erdal Mutlu
+.\"All rights reserved.  The file named COPYRIGHT specifies the terms 
+.\"and conditions for redistribution.
+.\"
+.\" $Id: sisiyaqd.8 68 2005-02-17 17:29:46Z emutlu $
+.TH SISIYAQD 8 "15 January 2005"
+.\" *************************** NAME *********************************
+.SH NAME
+sisiyaqd \- The SisIYA queue processor server.
+.\" *************************** SYNOPSIS *********************************
+.SH SYNOPSIS
+.B sisiyaqd
+config_file_name
+.\" *************************** DESCRIPTION *********************************
+.SH DESCRIPTION
+\fBsisiyaqd\fP is a part of SisIYA - a system monitoring tool.
+\fBsisiyaqd\fP updates the SisIYA database from records of the
+systemhistorystatusqueue table. This table is populated by the 
+\fBsisiyad\fP server, when it recieves client messages. The
+\fBsisiyaqd\fP checks periodically for new records and updates the
+database. After every check it sleeps for number of seconds specified in the
+SLEEP_SOCONDS parameter. The default values is 30.
+.\" *********************** CONTROLLING sisiyaqd ****************************
+.SH "CONTROLLING SISIYAQD"
+.LP
+\fBsisiyaqd\fP performs certain actions when it receives certain signals.
+.TP 15
+.B SIGHUP
+causes a hard reconfiguration, which means that \fBsisiyaqd\fP re-reads 
+the configuration file.
+.TP
+.B SIGQUIT
+causes clean program termination.
+.TP
+.B SIGTERM
+the same as SIGQUIT.
+.TP
+.B SIGUSR1
+causes the \fBsisiyaqd\fP server process to print its configuration values via syslog.
+.\" *********************** FILES ****************************
+.SH FILES
+.LP
+.PD .1v
+.TP 20
+.B /etc/sisiyaqd.conf
+default configuration file
+.PD
+.\" *********************** SEE ALSO ****************************
+.SH "SEE ALSO"
+.I "sisiyaqd.conf(5), sisiyad(8)"
+.LP
+.I "http://sisiya.sourcefourge.net"
+.\" *********************** AUTHOR ****************************
+.SH AUTHOR
+Erdal Mutlu
+.\" *********************** PRONUNCIATION ****************************
+.SH PRONUNCIATION
+sisiya
+
