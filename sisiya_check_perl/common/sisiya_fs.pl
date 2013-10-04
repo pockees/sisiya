@@ -55,9 +55,9 @@ if(-f $module_conf_file) {
 ################################################################################
 my $statusid;
 my $message_str = '';
-my $fs_error_str = '';
-my $fs_ok_str = '';
-my $fs_warning_str = '';
+my $error_str = '';
+my $ok_str = '';
+my $warning_str = '';
 my %file_systems;
 if($SisIYA_Config::sisiya_osname eq 'Linux') {
 	#my @a = `$df_prog -TPk`;
@@ -91,30 +91,30 @@ if($SisIYA_Config::sisiya_osname eq 'Linux') {
 	for my $k (keys %file_systems) {
 		#print STDERR "-----> : key=[$k] type=[$file_systems{$k}{'type'}] total=[$file_systems{$k}{'total'}] used=[$file_systems{$k}{'used'}] available=[$file_systems{$k}{'available'}] capacity=[$file_systems{$k}{'capacity'}] mountded on=[$file_systems{$k}{'mounted_on'}]\n";
 		if($file_systems{$k}{'capacity'} >= $percents{'error'}) {
-			$fs_error_str .= "ERROR: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percents{'error'}) of ".get_size_k($file_systems{$k}{'total'})." is full!";
+			$error_str .= "ERROR: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percents{'error'}) of ".get_size_k($file_systems{$k}{'total'})." is full!";
 		}
 		elsif($file_systems{$k}{'capacity'} >= $percents{'warning'}) {
-			$fs_warning_str .= "WARNING: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percents{'warning'}) of ".get_size_k($file_systems{$k}{'total'})." is full!";
+			$warning_str .= "WARNING: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percents{'warning'}) of ".get_size_k($file_systems{$k}{'total'})." is full!";
 		}
 		else {
-			$fs_ok_str .= "OK: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% of ".get_size_k($file_systems{$k}{'total'})." is used.";
+			$ok_str .= "OK: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% of ".get_size_k($file_systems{$k}{'total'})." is used.";
 		}
 	}
 
 }
 $statusid = $SisIYA_Config::statusids{'ok'};
-if($fs_error_str ne '') {
+if($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = $fs_error_str;
+	$message_str = $error_str;
 }
-elsif($fs_warning_str ne '') {
+elsif($warning_str ne '') {
 	if($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
-	$message_str .= $fs_warning_str;
+	$message_str .= $warning_str;
 }
-if($fs_ok_str ne '') {
-	$message_str .= $fs_ok_str;
+if($ok_str ne '') {
+	$message_str .= $ok_str;
 }
 ################################################################################
 print "filesystem$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
