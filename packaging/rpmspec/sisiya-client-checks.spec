@@ -46,3 +46,4 @@ make "DESTDIR=%{buildroot}" install_sisiya_client_checks
 %attr(0755,root,root) 					%{install_dir}/bin/*.pl
 %attr(0755,root,root) 					%{install_dir}/common/*.pl
 %attr(0755,root,root) 					%{install_dir}/special/*.pl
+%attr(0755,root,root) 					%{install_dir}/special/*.sh
