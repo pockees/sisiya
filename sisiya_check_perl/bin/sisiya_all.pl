@@ -94,7 +94,7 @@ $xml_str .= '<system><name>'.$SisIYA_Config::sisiya_hostname.'</name>';
 foreach my $f (@scripts) {
 	print STDERR "[$f] ...\n";
 	#chomp($s = `/usr/bin/perl -I./ $SisIYA_Config::sisiya_common_dir/$f`);
-	chomp($s = `$SisIYA_Config::sisiya_common_dir/$f`);
+	chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_common_dir/$f`);
 	$statusid = $? >> 8;
 	$serviceid = get_serviceid($s);	
 	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
@@ -108,7 +108,7 @@ opendir($dh, $SisIYA_Config::sisiya_systems_dir) || die "$0 : Cannot open direct
 closedir($dh);
 foreach my $f (@scripts) {
 	print STDERR "[$f] ...\n";
-	chomp($s = `$SisIYA_Config::sisiya_systems_dir/$f`);
+	chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_systems_dir/$f`);
 	$statusid = $? >> 8;
 	$serviceid = get_serviceid($s);	
 	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";

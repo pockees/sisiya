@@ -1,7 +1,7 @@
 %define name sisiya-client-checks
 
-%define version 0.5.31
-%define release 2
+%define version 0.6.0
+%define release 1
 
 %define install_dir /opt/%{name}
 
@@ -19,7 +19,7 @@ Vendor: Erdal Mutlu
 Group: System Environment/Daemons
 Packager: Erdal Mutlu <emutlu@users.sourceforge.net>
 Url: http://sisiya.sourceforge.net
-Requires: bash, gawk, perl, bc 
+Requires: bash, perl
 %description 
 The SisIYA client programs and checks. This package is installed on every server that is going to be monitored by SisIYA.
 
@@ -41,8 +41,8 @@ make "DESTDIR=%{buildroot}" install_sisiya_client_checks
 %dir %attr(0755,root,root) 				%{install_dir}/bin
 %dir %attr(0755,root,root) 				%{install_dir}/common
 %dir %attr(0755,root,root) 				%{install_dir}/special
-%attr(0644,root,root) 		%config(noreplace) 	%{install_dir}/sisiya_client.conf
-%attr(0755,root,root) 					%{install_dir}/bin/*.sh
+%attr(0644,root,root) 		%config(noreplace) 	%{install_dir}/SisIYA_Config.pm
+%attr(0644,root,root) 		%config(noreplace) 	%{install_dir}/SisIYA_Config_local.pl
 %attr(0755,root,root) 					%{install_dir}/bin/*.pl
-%attr(0755,root,root) 					%{install_dir}/common/sisiya_*.sh
-%attr(0755,root,root) 					%{install_dir}/special/sisiya_*.sh
+%attr(0755,root,root) 					%{install_dir}/common/*.pl
+%attr(0755,root,root) 					%{install_dir}/special/*.pl

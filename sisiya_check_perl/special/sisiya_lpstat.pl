@@ -44,11 +44,7 @@ my $message_str = '';
 my $statusid;
 my $ok_str = '';
 my $error_str = '';
-#my @a = `$lpstat_prog -p 2>/dev/null`;
-my @a;
-$a[0] = 'printer elan01-yz is now printing.  enabled since Prş 03 Eki 2013 16:45:50 EEST';
-$a[1] = 'printer elan02-yz is idle.  enabled since Prş 03 Eki 2013 16:45:50 EEST';
-$a[2] = 'printer elan03-yz out of paper.  enabled since Prş 03 Eki 2013 16:45:50 EEST';
+my @a = `$lpstat_prog -p 2>/dev/null`;
 my @b;
 my $retcode = $? >>=8;
 my $device_name;
@@ -56,7 +52,7 @@ my $device_status;
 
 @a = grep(/^printer/, @a);
 foreach(@a) {
-	print STDERR "$_";
+	#print STDERR "$_";
 	chomp($_ = $_);
 	@b = split(/ /, $_);
 	$device_name = $b[1];
