@@ -82,6 +82,16 @@ sub rtrim
 	$s =~ s/\s+$//; 
 	return $s; 
 }
+# Parameters:
+# 1: field seperator
+# 2: service name
+# 3: statusid
+# 4: message string
+sub sisiya_exit
+{
+	print "$_[1]$_[0]<msg>$_[3]</msg><datamsg></datamsg>\n";
+	exit $_[2];
+}
 
 sub trim 
 { 
