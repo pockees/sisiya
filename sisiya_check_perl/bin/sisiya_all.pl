@@ -103,16 +103,17 @@ foreach my $f (@scripts) {
 
 print STDERR "systems dir: $SisIYA_Config::sisiya_systems_dir\n";
 
-opendir($dh, $SisIYA_Config::sisiya_systems_dir) || die "$0 : Cannot open directory: $SisIYA_Config::sisiya_systems_dir! $!";
-@scripts = grep { /^sisiya_*/ && -x "$SisIYA_Config::sisiya_systems_dir/$_" } readdir($dh);
-closedir($dh);
-foreach my $f (@scripts) {
-	print STDERR "[$f] ...\n";
-	chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_systems_dir/$f`);
-	$statusid = $? >> 8;
-	$serviceid = get_serviceid($s);	
-	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
-	$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
+if(opendir($dh, $SisIYA_Config::sisiya_systems_dir)) {
+	@scripts = grep { /^sisiya_*/ && -x "$SisIYA_Config::sisiya_systems_dir/$_" } readdir($dh);
+	closedir($dh);
+	foreach my $f (@scripts) {
+		print STDERR "[$f] ...\n";
+		chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_systems_dir/$f`);
+		$statusid = $? >> 8;
+		$serviceid = get_serviceid($s);	
+		print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
+		$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
+	}
 }
 
 $xml_str .= '</system></sisiya_messages>';

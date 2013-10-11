@@ -43,6 +43,7 @@ install_sisiya_client_checks:
 	install -m 700 bin/*.pl $(dst_sisiya_client_checks)/bin
 	install -m 700 common/sisiya_*.pl $(dst_sisiya_client_checks)/common
 	install -m 700 special/sisiya_*.pl $(dst_sisiya_client_checks)/special
+	install -m 700 special/sisiya_*.sh $(dst_sisiya_client_checks)/special
 install_sisiya_client_systems:
 	cp -af systems/ $(dst_sisiya_client_checks)
 	chmod 700 $(dst_sisiya_client_checks)/systems
