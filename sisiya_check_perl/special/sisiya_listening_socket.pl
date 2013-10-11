@@ -134,13 +134,13 @@ if($#sockets > -1) {
 		$i++;
 	}
 	for $i (0..$#sockets) {
-		print STDERR "$sockets[$i]{'progname'}...\n";
+		#print STDERR "$sockets[$i]{'progname'}...\n";
 		if(is_listening_socket($i)) {
-			print STDERR "$sockets[$i]{'progname'} is OK\n";
+			#print STDERR "$sockets[$i]{'progname'} is OK\n";
 			$ok_str .= " $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
 		}
 		else {
-			print STDERR "$sockets[$i]{'progname'} is NOT OK\n";
+			#print STDERR "$sockets[$i]{'progname'} is NOT OK\n";
 			if($sockets[$i]{'onerror'} eq 'warn') {
 				$warning_str .= " $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
 			}
@@ -154,13 +154,13 @@ if($#sockets > -1) {
 #for $i (0..$#sockets) {
 #	print STDERR "progname=$sockets[$i]{'progname'}\n";
 #}
-for $i (0..$#netstat_list) {
-	print STDERR "--- i=$i : ";
-	for $j (0..(@{$netstat_list[$i]} -1)) {
-		print STDERR "$j : $netstat_list[$i][$j]";
-	}
-	print STDERR "\n";
-}
+#for $i (0..$#netstat_list) {
+#	print STDERR "--- i=$i : ";
+#	for $j (0..(@{$netstat_list[$i]} -1)) {
+#		print STDERR "$j : $netstat_list[$i][$j]";
+#	}
+#	print STDERR "\n";
+#}
 if($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR:$error_str";
