@@ -35,7 +35,6 @@ if(-f $SisIYA_Config::sisiya_functions) {
 our $sqlplus_prog = 'sqlplus';
 our %hitratios = ( 
 		'buffer_cache' 	=> { 'warning' => 95, 'error' => 90 },
-		'buffer_pool' 	=> { 'warning' => 95, 'error' => 90 },
 		'dictionary'	=> { 'warning' => 95, 'error' => 90 },
 		'library'	=> { 'warning' => 95, 'error' => 90 },
 		'nowait'	=> { 'warning' => 95, 'error' => 90 },
@@ -73,7 +72,7 @@ my $sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_buff
 my $x;
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
-print STDERR "x=$x\n";
+#print STDERR "x=$x\n";
 my $s = sprintf("%.2f", $x);
 if($x <= $hitratios{'buffer_cache'}{'error'}) {
 	$error_str = "ERROR: Buffer cache hit ratio is $s\% <= $hitratios{'buffer_cache'}{'error'}\%!";
@@ -89,7 +88,7 @@ else {
 $sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_dictionary.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
-print STDERR "x=$x\n";
+#print STDERR "x=$x\n";
 $s = sprintf("%.2f", $x);
 if($x <= $hitratios{'dictionary'}{'error'}) {
 	$error_str .= " ERROR: Dictionary cache hit ratio is $s\% <= $hitratios{'dictionary'}{'error'}\%!";
@@ -105,7 +104,7 @@ else {
 $sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_library.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
-print STDERR "x=$x\n";
+#print STDERR "x=$x\n";
 $s = sprintf("%.2f", $x);
 if($x <= $hitratios{'library'}{'error'}) {
 	$error_str .= " ERROR: Library cache hit ratio is $s\% <= $hitratios{'library'}{'error'}\%!";
@@ -121,7 +120,7 @@ else {
 $sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_nowait.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
-print STDERR "x=$x\n";
+#print STDERR "x=$x\n";
 $s = sprintf("%.2f", $x);
 if($x <= $hitratios{'nowait'}{'error'}) {
 	$error_str .= " ERROR: Nowait hit ratio is $s\% <= $hitratios{'nowait'}{'error'}\%!";
@@ -137,7 +136,7 @@ else {
 $sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_sort.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
-print STDERR "x=$x\n";
+#print STDERR "x=$x\n";
 $s = sprintf("%.2f", $x);
 if($x <= $hitratios{'sort'}{'error'}) {
 	$error_str .= " ERROR: Sort hit ratio is $s\% <= $hitratios{'sort'}{'error'}\%!";
@@ -148,6 +147,17 @@ elsif($x <= $hitratios{'sort'}{'warning'}) {
 else {
 	$ok_str .= " OK: Sort hit ratio is $s\%.";
 }
+
+### total users
+$sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_totalusers.sql';
+chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
+my $total_users = trim($x); 
+
+### SGA size
+$sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_sgasize.sql';
+chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
+my $sga_size = trim($x); 
+$sga_size = get_size($sga_size);
 
 if($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
@@ -162,6 +172,7 @@ elsif($warning_str ne '') {
 if($ok_str ne '') {
 	$message_str .= " $ok_str";
 }
+$message_str .= " Number of active users is $total_users.  SGA size is $sga_size";
 ################################################################################
 #print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
 #exit $statusid;

@@ -40,6 +40,35 @@ sub get_formated_size
 	return "$x1$_[2]";
 }
 
+sub get_size
+{
+	my $x;
+	if($_[0] == 0) {
+		return '0';
+	}
+	elsif($_[0] < 1024) {
+		$x = $_[0].'B';
+		return $x;
+	}
+	elsif($_[0] < 1048576) {
+		return get_formated_size($_[0], 1024, 'KB');
+	}
+	elsif($_[0] < 1073741824) {
+		return get_formated_size($_[0], 1048576, 'MB');
+	}
+	elsif($_[0] < 1099511627776) {
+		return get_formated_size($_[0], 1073741824, 'GB');
+	}
+	elsif($_[0] < 1125899906842624) {
+		return get_formated_size($_[0], 1099511627776, 'TB');
+	}
+	elsif($_[0] < 1152921504606846976) {
+		return get_formated_size($_[0], 1125899906842624, 'EB');
+	}
+	return get_formated_size($_[0], 1125899906842624, 'EB');
+}
+
+
 sub get_size_k
 {
 	my $x;
@@ -47,7 +76,7 @@ sub get_size_k
 		return '0';
 	}
 	elsif($_[0] < 1024) {
-		$x = $_[0].'MB';
+		$x = $_[0].'KB';
 		return $x;
 	}
 	elsif($_[0] < 1048576) {
