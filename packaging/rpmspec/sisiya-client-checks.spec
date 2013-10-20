@@ -1,7 +1,7 @@
 %define name sisiya-client-checks
 
 %define version 0.6.0
-%define release 1
+%define release 2
 
 %define install_dir /opt/%{name}
 
@@ -47,3 +47,4 @@ make "DESTDIR=%{buildroot}" install_sisiya_client_checks
 %attr(0755,root,root) 					%{install_dir}/common/*.pl
 %attr(0755,root,root) 					%{install_dir}/special/*.pl
 %attr(0755,root,root) 					%{install_dir}/special/*.sh
+%attr(0644,root,root) 					%{install_dir}/special/*.sql
