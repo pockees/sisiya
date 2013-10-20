@@ -32,7 +32,6 @@ if(-f $SisIYA_Config::sisiya_functions) {
 ###############################################################################
 #### the default values
 our $df_prog = 'df';
-our $grep_prog = 'grep';
 our $tune2fs_prog = '/sbin/tune2fs';
 our %percents = ('warning' => 85, 'error' => 90); 
 our @exclude_list = ( '/proc', '/dev/shm', '/var/media', 'devtmpfs', 'tmpfs');
@@ -43,8 +42,6 @@ our %exception_list;
 #		);
 #### end of the default values
 ################################################################################
-
-#######################################################################################
 ################################################################################
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
@@ -53,15 +50,38 @@ if(-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
+sub get_filesystem_state
+{
+	my $fs_device = $_[0];
+	my $fs_type = $_[1];
+	my $state = ''; # not defined
+	### check the filesystem state
+	#print STDERR "fs_type = $fs_type\n";
+	if( ($fs_type eq 'reiserfs') || ($fs_type eq 'vfat') || ($fs_type eq 'tmpfs')) {
+		#print STDERR "fs_type = $fs_type is not appicable.\n";
+		return $state;
+	}
+	$state = 'noclean'; # OK
+	my @a =   `$tune2fs_prog -l $fs_device`;
+	@a = grep(/^Filesystem state/, @a);
+	chomp($a[0] = $a[0]);
+	my @b = split(/:/, $a[0]);
+	$state = trim($b[1]);
+	#print STDERR "$fs_device state is $state\n";
+	return $state;
+}
+#######################################################################################
+
 my $statusid;
 my $message_str = '';
 my $error_str = '';
 my $ok_str = '';
 my $warning_str = '';
 my %file_systems;
+my $fs_state;
 if($SisIYA_Config::sisiya_osname eq 'Linux') {
 	#my @a = `$df_prog -TPk`;
-	my @a = `$df_prog -TPkl | $grep_prog "^/"`;
+	my @a = grep(/^\//, `$df_prog -TPkl`);
 	my $found;
 	foreach my $fs (@a) {
 		chomp($fs);
@@ -98,6 +118,10 @@ if($SisIYA_Config::sisiya_osname eq 'Linux') {
 		}
 		else {
 			$ok_str .= "OK: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% of ".get_size_k($file_systems{$k}{'total'})." is used.";
+		}
+		$fs_state = get_filesystem_state($k, $file_systems{$k}{'type'});
+		if( ($fs_state ne '') && ($fs_state ne 'clean') ) {
+				$error_str .= " ERROR: The filesystem state for $file_systems{$k}{'mounted_on'} is $fs_state (<> clean)!";
 		}
 	}
 
