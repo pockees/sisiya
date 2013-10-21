@@ -82,8 +82,9 @@ sub get_uptime_in_minutes
 		$x = <$file>;
 		close $file;
 		chomp($x);
-		my @a = split(/\./, $x); 
-		$uptime_in_minutes = int($a[0] / 60);
+			#my @a = split(/\./, $x); 
+			#$uptime_in_minutes = int($a[0] / 60);
+		$uptime_in_minutes = int( (split(/\./, $x))[0] / 60 ); 
 	}
 	return $uptime_in_minutes;
 }

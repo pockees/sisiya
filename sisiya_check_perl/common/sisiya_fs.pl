@@ -65,8 +65,9 @@ sub get_filesystem_state
 	my @a =   `$tune2fs_prog -l $fs_device`;
 	@a = grep(/^Filesystem state/, @a);
 	chomp($a[0] = $a[0]);
-	my @b = split(/:/, $a[0]);
-	$state = trim($b[1]);
+	#my @b = split(/:/, $a[0]);
+	#$state = trim($b[1]);
+	$state = trim( (split(/:/, $a[0]))[1] );
 	#print STDERR "$fs_device state is $state\n";
 	return $state;
 }

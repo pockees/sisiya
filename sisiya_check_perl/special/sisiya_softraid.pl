@@ -44,10 +44,9 @@ if(-f $module_conf_file) {
 ################################################################################
 sub get_array_list
 {
-	my @a = @_;
-	my @b;
+	my @a;
 	my $i = 0;
-	foreach(@a) {
+	foreach(@_) {
 		$a[$i] = (split(/\s+/, $_))[1];
 		#print STDERR "$a[$i]\n";
 		$i++;
@@ -71,9 +70,11 @@ if($retcode != 0) {
 	$message_str = "ERROR: Error executing the $mdadm_prog command! retcode=$retcode";
 	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 }
-@raid_arrays = get_array_list(@a);
+my $i = 0;
+foreach(@a) {
+	$raid_arrays[$i++] = (split(/\s+/, $_))[1];
+}
 my $state;
-my @b;
 my $raid_level;
 my $total_devs;
 my $raid_devs;
@@ -82,7 +83,7 @@ my $active_devs;
 my $failed_devs;
 my $spare_devs;
 my $rebuild_status;
-for my $i (0..$#raid_arrays) {
+for $i (0..$#raid_arrays) {
 	@a = `$mdadm_prog --detail $raid_arrays[$i]`;
 	$retcode = $? >>=8;
 	if($retcode != 0) {
