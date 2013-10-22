@@ -41,25 +41,24 @@ our %update_progs = (
 #######################################################################################
 sub use_pacman
 {
-	my $n;
 	`$update_progs{'pacman'} --sync --refresh >/dev/null`;
-	chomp($n = `$update_progs{'pacman'} --query --upgrades | wc -l`);
-	return $n;
+	chomp(my @a = `$update_progs{'pacman'} --query --upgrades`);
+	return @a;
 }
+
 sub use_apt_check
 {
-	my $n1;
-	my $n2;
-	chomp($n1 =`$update_progs{'apt_check'} 2>&1 | cut -d ";" -f 1`);
-	chomp($n2 =`$update_progs{'apt_check'} 2>&1 | cut -d ";" -f 2`);
-	return $n1 + $n2;
+	chomp(my $s =`$update_progs{'apt_check'} 2>&1`);
+	return (split(/;/, $s))[0] + (split(/;/, $s))[1];
 }
+
 sub use_yum
 {
-	my $n;
-	chomp($n = `$update_progs{'yum'} -q list updates | grep -v "^Updated Packages" | grep -v "^Loaded plugins" | wc -l`);
-	return $n;
+	chomp(my @a = `$update_progs{'yum'} -q list updates`);
+	@a = grep(!/^Updated Packages/, grep(!/^Updated Packages/, @a));
+	return @a;
 }
+
 sub use_zypper
 {
 	my $n;

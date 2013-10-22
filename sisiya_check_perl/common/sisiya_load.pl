@@ -30,7 +30,6 @@ if(-f $SisIYA_Config::sisiya_local_conf) {
 sub get_load_avarage
 {
 	my $n = 0;
-
 	if($SisIYA_Config::sisiya_osname eq 'Linux') {
 		my $x;
 		my $file;
@@ -38,8 +37,7 @@ sub get_load_avarage
 		$x = <$file>;
 		close $file;
 		chomp($x);
-		my @a = split(/ /, $x); 
-		$n = $a[0];
+		$n = (split(/ /, $x))[0];
 	}
 	return $n;
 }
@@ -49,26 +47,26 @@ sub get_cpu_usage
 	my $x = '';
 
 	if($SisIYA_Config::sisiya_osname eq 'Linux') {
-		chomp($x = `top -b -n 1 |grep -i "cpu[0-9,(]"|tr -s '\n' ' '`);
+			#chomp($x = `top -b -n 1 |grep -i "cpu[0-9,(]"|tr -s '\n' ' '`);
+		my @a = `top -b -n 1`;
+		$x = (grep(/^[C,c]pu[0-9,(]/, @a))[0];
 	}
 	return $x;
 }
 
 sub get_cpu_info
 {
-	my $x = '';
+	my $s = '';
 	if($SisIYA_Config::sisiya_osname eq 'Linux') {
-		my $y;
-		chomp($y =`grep --count "^processor" /proc/cpuinfo`);
+		chomp(my @a =`cat /proc/cpuinfo`);
+		my @b = grep(/^processor/, @a);
+		my $cpu_count = @b;
 		### I assume that all CPUs are of the same model. Actually this may not be the case.
-		chomp($x = `grep "^model name" /proc/cpuinfo | head -n 1 | awk -F: '{print \$2}'`);
-		$x = $y.' x'.$x;
-		chomp($y =`grep "^vendor_id" /proc/cpuinfo      | head -n 1 | awk -F: '{print \$2}'`);
-		$x .= $y;
-		chomp($y =`grep "^cache size" /proc/cpuinfo | head -n 1 | awk -F: '{print \$2}'`);
-		$x .= " Cache size =$y";
+		$s = $cpu_count.' x'.(split(/:/, (grep(/^model name/, @a))[0]))[1];
+		$s .= ( split(/:/, (grep(/^vendor_id/, @a))[0]) )[1];
+		$s .= " Cache size =".(split(/:/, (grep(/^cache size/, @a))[0]))[1];
 	}
-	return $x;
+	return $s;
 }
 ###############################################################################
 #### the default values
