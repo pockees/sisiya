@@ -78,14 +78,14 @@ for $i (0..$#disks) {
 		#print STDERR "temp=$temp\n";
 		#@a = `$smartctl_prog -a -d ata  $disks[$i]{'device'} 2>/dev/null`;
 		$s = '';
-		$retcode = $? >>=8;
+		#$retcode = $? >>=8;
 		#	if( ($retcode == 0) || ($retcode == 32) || ($retcode == 96)) {
 			chomp(@a = @a);
 			$s = (grep(/^Device Model:/, @a))[0];
 			$s .= ' '.(grep(/^Serial Number:/, @a))[0];
 			$s .= ' '.(grep(/^Firmware Version:/, @a))[0];
 			$s .= ' '.(grep(/^User Capacity:/, @a))[0];
-			print STDERR "model=[$s]\n";
+				#print STDERR "model=[$s]\n";
 			if($temp >= $disks[$i]{'error'}) {
 				$error_str .= " ERROR: $temp C (>= $disks[$i]{'error'}) on $disks[$i]{'device'} $s!";
 			}	
