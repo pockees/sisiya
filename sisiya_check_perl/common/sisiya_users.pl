@@ -77,10 +77,8 @@ if(@a) {
 chomp(@users = `who`);
 if(@users) {
 	my @only_usernames;
-	my @a1;
 	foreach(@users) {
-		@a1 = split(/ /, $_);
-		push(@only_usernames, $a1[0]);
+		push(@only_usernames, (split(/\s+/, $_))[0]);
 	}
 	my %h = map { $_, 1 } @only_usernames;
 	@only_usernames = keys %h;

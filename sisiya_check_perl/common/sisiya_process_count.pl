@@ -41,7 +41,8 @@ if(-f $module_conf_file) {
 ################################################################################
 my $message_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-chomp(my $n = `ps -ef | wc -l`);
+my @a = `ps -ef`;
+my $n = @a;
 if($n >= $process_counts{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There are $n (>= $process_counts{'error'}) running processes!";

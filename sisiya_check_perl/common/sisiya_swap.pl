@@ -47,18 +47,18 @@ if(-f $module_conf_file) {
 # 1 parameter is the search string
 # 2 parameter is an array to cat /proc/meminfo
 #
-sub get_meminfo
-{
-	my ($str, @lines) = @_;
-
-	my @a = grep(/$str/, @lines); 
-		#print STDERR "1 - memtotal = $a[0]\n";
-	@a = split(/:/, $a[0]);
-		#print STDERR "2 - memtotal = $a[1]\n";
-	@a = split(/k/, $a[1]);
-		#print STDERR "3 - memtotal = $a[0]\n";
-	return $a[0];
-}
+#sub get_meminfo
+#{
+#	my ($str, @lines) = @_;
+#
+#	my @a = grep(/$str/, @lines); 
+#		#print STDERR "1 - memtotal = $a[0]\n";
+#	@a = split(/:/, $a[0]);
+#		#print STDERR "2 - memtotal = $a[1]\n";
+#	@a = split(/k/, $a[1]);
+#		#print STDERR "3 - memtotal = $a[0]\n";
+#	return $a[0];
+#}
 
 my $statusid;
 my $message_str;
@@ -74,11 +74,15 @@ if($SisIYA_Config::sisiya_osname eq 'Linux') {
 #		print STDERR "$_\n";
 #	}
 
-	$total_ram = get_meminfo('MemTotal:', @lines);
-	$free_ram = get_meminfo('MemFree:', @lines);
+		#$total_ram = get_meminfo('MemTotal:', @lines);
+		#$free_ram = get_meminfo('MemFree:', @lines);
+	$total_ram = (split(/k/, (split(/:/, (grep(/MemTotal:/, @lines))[0]))[1]))[0];
+	$free_ram = (split(/k/, (split(/:/, (grep(/MemFree:/, @lines))[0]))[1]))[0];
 	$used_ram = $total_ram - $free_ram;
-	$total_swap = get_meminfo('SwapTotal:', @lines);
-	$free_swap = get_meminfo('SwapFree:', @lines);
+		#$total_swap = get_meminfo('SwapTotal:', @lines);
+		#$free_swap = get_meminfo('SwapFree:', @lines);
+	$total_swap = (split(/k/, (split(/:/, (grep(/SwapTotal:/, @lines))[0]))[1]))[0];
+	$free_swap = (split(/k/, (split(/:/, (grep(/SwapFree:/, @lines))[0]))[1]))[0];
 	$used_swap = $total_swap - $free_swap;
 #	print STDERR "SWAP: total=$total_swap free=$free_swap used=$total_swap\n";
 #	print STDERR "RAM: total=$total_ram free=$free_ram used=$total_ram\n";
