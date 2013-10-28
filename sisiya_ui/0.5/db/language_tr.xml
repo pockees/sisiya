@@ -419,7 +419,7 @@
 <record><strkey>sisiya.records.services.uptodate</strkey> <value>Güncellik</value></record>
 <record><strkey>sisiya.records.services.kdm</strkey> <value>Kdm</value></record>
 <record><strkey>sisiya.records.services.linestatus</strkey> <value>Hattın Durumu</value></record>
-<record><strkey>sisiya.records.services.listening_socket</strkey> <value>Dinlenmekte Olan Socketler</value></record>
+<record><strkey>sisiya.records.services.listening_socket</strkey> <value>Dinleneyen Uç Noktalar</value></record>
 <record><strkey>sisiya.records.services.load</strkey> <value>Yük</value></record>
 <record><strkey>sisiya.records.services.lockd</strkey> <value>lockd</value></record>
 <record><strkey>sisiya.records.services.lotus</strkey> <value>Lotus</value></record>

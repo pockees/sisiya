@@ -98,8 +98,8 @@ if($ok_messages ne '') {
 	$message_str .= " OK: dmesg does not contain any of $ok_messages";
 }
 
-# replace the ' with whitespace
-$message_str =~ s/\'/ /g; 
+# replace the ' with whitespace => no need anymore, it is replaced in sisiya_all.pl with \'
+#$message_str =~ s/\'/ /g; 
 ################################################################################
 print "dmesg$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
 exit $statusid;

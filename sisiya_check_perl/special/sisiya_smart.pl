@@ -69,36 +69,26 @@ for $i (0..$#disks) {
 	#@a = `$smartctl_prog -a -d ata  $disks[$i]{'device'} 2>/dev/null`;
 	@a = `$smartctl_prog -a -d auto  $disks[$i]{'device'} 2>/dev/null`;
 	$retcode = $? >>=8;
-	if( ($retcode != 0) && ($retcode != 32) && ($retcode != 96)) {
+	if($retcode == 2) {
 		$error_str .= " ERROR: Could not get info about $disks[$i]{'device'}! retcode=$retcode";
 	}
 	else {
 		chomp(@a = @a);
 		$temp = (split(/\s+/, (grep(/Temperature_Celsius/, @a))[0]))[9];
-		#print STDERR "temp=$temp\n";
-		#@a = `$smartctl_prog -a -d ata  $disks[$i]{'device'} 2>/dev/null`;
-		$s = '';
-		#$retcode = $? >>=8;
-		#	if( ($retcode == 0) || ($retcode == 32) || ($retcode == 96)) {
-			chomp(@a = @a);
-			$s = (grep(/^Device Model:/, @a))[0];
-			$s .= ' '.(grep(/^Serial Number:/, @a))[0];
-			$s .= ' '.(grep(/^Firmware Version:/, @a))[0];
-			$s .= ' '.(grep(/^User Capacity:/, @a))[0];
-				#print STDERR "model=[$s]\n";
-			if($temp >= $disks[$i]{'error'}) {
-				$error_str .= " ERROR: $temp C (>= $disks[$i]{'error'}) on $disks[$i]{'device'} $s!";
-			}	
-			elsif($temp >= $disks[$i]{'warning'}) {
-				$warning_str .= " WARNING: $temp C (>= $disks[$i]{'warning'}) on $disks[$i]{'device'} $s!";
-			}
-			else {
-				$ok_str .= " OK: $temp C on $disks[$i]{'device'} $s.";
-			}
-		#}
-		#else {
-			#$error_str .= " ERROR: Could not get info about $disks[$i]{'device'}! retcode=$retcode";
-		#}
+		$s = (grep(/^Device Model:/, @a))[0];
+		$s .= ' '.(grep(/^Serial Number:/, @a))[0];
+		$s .= ' '.(grep(/^Firmware Version:/, @a))[0];
+		$s .= ' '.(grep(/^User Capacity:/, @a))[0];
+		#print STDERR "model=[$s]\n";
+		if($temp >= $disks[$i]{'error'}) {
+			$error_str .= " ERROR: $temp C (>= $disks[$i]{'error'}) on $disks[$i]{'device'} $s!";
+		}	
+		elsif($temp >= $disks[$i]{'warning'}) {
+			$warning_str .= " WARNING: $temp C (>= $disks[$i]{'warning'}) on $disks[$i]{'device'} $s!";
+		}
+		else {
+			$ok_str .= " OK: $temp C on $disks[$i]{'device'} $s.";
+		}
 		if($retcode != 0) {
 			$warning_str .= " WARNING: $disks[$i]{'device'} smartctl return code=$retcode (<> 0)!";
 		}

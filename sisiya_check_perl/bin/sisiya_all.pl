@@ -111,6 +111,8 @@ if(opendir($dh, $SisIYA_Config::sisiya_systems_dir)) {
 		chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_systems_dir/$f`);
 		$statusid = $? >> 8;
 		$serviceid = get_serviceid($s);	
+		# replace ' with \', because it is a problem in the SQL statemnet
+		$s =~ s/'/\\\'/g;
 		print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
 		$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
 	}
