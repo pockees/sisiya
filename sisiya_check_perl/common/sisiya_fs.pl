@@ -80,6 +80,8 @@ my $ok_str = '';
 my $warning_str = '';
 my %file_systems;
 my $fs_state;
+my $percent_error;
+my $percent_warning;
 if($SisIYA_Config::sisiya_osname eq 'Linux') {
 	#my @a = `$df_prog -TPk`;
 	my @a = grep(/^\//, `$df_prog -TPkl`);
@@ -111,11 +113,17 @@ if($SisIYA_Config::sisiya_osname eq 'Linux') {
 	}
 	for my $k (keys %file_systems) {
 		#print STDERR "-----> : key=[$k] type=[$file_systems{$k}{'type'}] total=[$file_systems{$k}{'total'}] used=[$file_systems{$k}{'used'}] available=[$file_systems{$k}{'available'}] capacity=[$file_systems{$k}{'capacity'}] mountded on=[$file_systems{$k}{'mounted_on'}]\n";
-		if($file_systems{$k}{'capacity'} >= $percents{'error'}) {
-			$error_str .= "ERROR: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percents{'error'}) of ".get_size_k($file_systems{$k}{'total'})." is full!";
+		$percent_error = $percents{'error'};
+		$percent_warning = $percents{'warning'};
+		if(defined $exception_list{$file_systems{$k}{'mounted_on'}}) {
+			$percent_error = $exception_list{$file_systems{$k}{'mounted_on'}}{'error'};
+			$percent_warning = $exception_list{$file_systems{$k}{'mounted_on'}}{'warning'};
 		}
-		elsif($file_systems{$k}{'capacity'} >= $percents{'warning'}) {
-			$warning_str .= "WARNING: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percents{'warning'}) of ".get_size_k($file_systems{$k}{'total'})." is full!";
+		if($file_systems{$k}{'capacity'} >= $percent_error) {
+			$error_str .= "ERROR: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percent_error) of ".get_size_k($file_systems{$k}{'total'})." is full!";
+		}
+		elsif($file_systems{$k}{'capacity'} >= $percent_warning) {
+			$warning_str .= "WARNING: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percent_warning) of ".get_size_k($file_systems{$k}{'total'})." is full!";
 		}
 		else {
 			$ok_str .= "OK: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% of ".get_size_k($file_systems{$k}{'total'})." is used.";
