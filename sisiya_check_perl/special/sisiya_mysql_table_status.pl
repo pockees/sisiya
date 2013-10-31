@@ -46,6 +46,7 @@ our $dba_user = 'mysql';
 our $dba_password = 'mysql123654';
 our $dba_database = 'mysql';
 our @dbs = ( { 'db_name' => 'mysql', 'description' => 'MySQL System DB', 'check_type' => 'extended' });
+our @exception_tables = ( {'db' => 'mysql', 'table' => 'general_log'}, { 'db' => 'mysql', 'table' => 'slow_log'});
 #
 #### end of the default values
 ################################################################################
@@ -56,10 +57,23 @@ if(-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
+sub is_exception
+{
+	my $db = $_[0];
+	my $table = $_[1];
+	for my $i (0..$#exception_tables) {
+		if( ($exception_tables[$i]{'db'} eq $db) && ($exception_tables[$i]{'table'} eq $table)) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 my $message_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'mysql_table_status';
 my $error_str = '';
+my $info_str = '';
 my $ok_str = '';
 my $warning_str = '';
 #push @dbs , { 'db_name' => 'db1', 'description' => 'DB1', 'check_type' => 'quick' };
@@ -117,7 +131,12 @@ if($#dbs > -1) {
 							else {
 								$status_message = (split(/\|/, $c))[4];
 								#print STDERR "2 msg_type=[$msg_type] status_message=[$status_message]\n";
-								$error_str .= " ERROR: $dbs[$i]{'db_name'}:$table_name message: $status_message!"; 
+								if(is_exception($dbs[$i]{'db_name'}, $table_name)) {
+									$info_str .= " INFO: $dbs[$i]{'db_name'}:$table_name message: $status_message!"; 
+								}
+								else {
+									$error_str .= " ERROR: $dbs[$i]{'db_name'}:$table_name message: $status_message!"; 
+								}
 							}
 						}
 					}
@@ -144,11 +163,14 @@ if($statusid == $SisIYA_Config::statusids{'error'}) {
 	$ok_str = " OK: The rest of the tables of the following databases have no problems:$db_list.";
 }
 else {
-	$ok_str = " OK: All tabales of the following databases have no problems:$db_list.";
+	$ok_str = " OK: All tabales of the following databases are okey:$db_list.";
 }
 
 if($ok_str ne '') {
 	$message_str .= "$ok_str";
+}
+if($info_str ne '') {
+	$message_str .= "$info_str";
 }
 ################################################################################
 sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
