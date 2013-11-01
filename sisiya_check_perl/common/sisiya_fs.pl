@@ -72,7 +72,6 @@ sub get_filesystem_state
 	return $state;
 }
 #######################################################################################
-
 my $statusid;
 my $message_str = '';
 my $error_str = '';
@@ -111,30 +110,60 @@ if($SisIYA_Config::sisiya_osname eq 'Linux') {
 			$file_systems{$b[0]}{'mounted_on'} = $b[6];
 		}
 	}
-	for my $k (keys %file_systems) {
-		#print STDERR "-----> : key=[$k] type=[$file_systems{$k}{'type'}] total=[$file_systems{$k}{'total'}] used=[$file_systems{$k}{'used'}] available=[$file_systems{$k}{'available'}] capacity=[$file_systems{$k}{'capacity'}] mountded on=[$file_systems{$k}{'mounted_on'}]\n";
-		$percent_error = $percents{'error'};
-		$percent_warning = $percents{'warning'};
-		if(defined $exception_list{$file_systems{$k}{'mounted_on'}}) {
-			$percent_error = $exception_list{$file_systems{$k}{'mounted_on'}}{'error'};
-			$percent_warning = $exception_list{$file_systems{$k}{'mounted_on'}}{'warning'};
+}
+elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
+	#my @a = `$df_prog -TPk`;
+	my @a = grep(/^\//, `$df_prog -k`);
+	my $found;
+	foreach my $fs (@a) {
+		chomp($fs);
+		#print STDERR "fs=[$fs]\n";
+		$found = 0;
+		foreach(@exclude_list) {
+			if(index($fs, $_) != -1) {
+				$found = 1;
+				last;
+			}	
 		}
-		if($file_systems{$k}{'capacity'} >= $percent_error) {
-			$error_str .= "ERROR: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percent_error) of ".get_size_k($file_systems{$k}{'total'})." is full!";
-		}
-		elsif($file_systems{$k}{'capacity'} >= $percent_warning) {
-			$warning_str .= "WARNING: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percent_warning) of ".get_size_k($file_systems{$k}{'total'})." is full!";
-		}
-		else {
-			$ok_str .= "OK: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% of ".get_size_k($file_systems{$k}{'total'})." is used.";
-		}
-		$fs_state = get_filesystem_state($k, $file_systems{$k}{'type'});
-		if( ($fs_state ne '') && ($fs_state ne 'clean') ) {
-				$error_str .= " ERROR: The filesystem state for $file_systems{$k}{'mounted_on'} is $fs_state (<> clean)!";
+		if($found == 0) {
+			#printf STDERR "Adding fs=[$fs]\n";
+			my @b = split(/ +/, $fs);
+			#foreach(@b) {
+			#	printf STDERR "$_\n";
+			#}
+			$file_systems{$b[0]}{'type'} = $b[1]; 
+			$file_systems{$b[0]}{'total'} = $b[2]; 
+			$file_systems{$b[0]}{'used'} = $b[3]; 
+			$file_systems{$b[0]}{'available'} = $b[4];
+			my @c = split('%', $b[5]);
+			$file_systems{$b[0]}{'capacity'} = $c[0];
+			$file_systems{$b[0]}{'mounted_on'} = $b[6];
 		}
 	}
-
 }
+for my $k (keys %file_systems) {
+	#print STDERR "-----> : key=[$k] type=[$file_systems{$k}{'type'}] total=[$file_systems{$k}{'total'}] used=[$file_systems{$k}{'used'}] available=[$file_systems{$k}{'available'}] capacity=[$file_systems{$k}{'capacity'}] mountded on=[$file_systems{$k}{'mounted_on'}]\n";
+	$percent_error = $percents{'error'};
+	$percent_warning = $percents{'warning'};
+	if(defined $exception_list{$file_systems{$k}{'mounted_on'}}) {
+		$percent_error = $exception_list{$file_systems{$k}{'mounted_on'}}{'error'};
+		$percent_warning = $exception_list{$file_systems{$k}{'mounted_on'}}{'warning'};
+	}
+	if($file_systems{$k}{'capacity'} >= $percent_error) {
+		$error_str .= "ERROR: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percent_error) of ".get_size_k($file_systems{$k}{'total'})." is full!";
+	}
+	elsif($file_systems{$k}{'capacity'} >= $percent_warning) {
+		$warning_str .= "WARNING: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percent_warning) of ".get_size_k($file_systems{$k}{'total'})." is full!";
+	}
+	else {
+		$ok_str .= "OK: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% of ".get_size_k($file_systems{$k}{'total'})." is used.";
+	}
+	$fs_state = get_filesystem_state($k, $file_systems{$k}{'type'});
+	if( ($fs_state ne '') && ($fs_state ne 'clean') ) {
+			$error_str .= " ERROR: The filesystem state for $file_systems{$k}{'mounted_on'} is $fs_state (<> clean)!";
+	}
+}
+
 $statusid = $SisIYA_Config::statusids{'ok'};
 if($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};

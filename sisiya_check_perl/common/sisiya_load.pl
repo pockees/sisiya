@@ -27,52 +27,12 @@ if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
 }
 
-sub get_load_avarage
-{
-	my $n = 0;
-	if($SisIYA_Config::sisiya_osname eq 'Linux') {
-		my $x;
-		my $file;
-		open($file, '<', '/proc/loadavg') || die "$0: Could not open file /proc/loadavg! $!";
-		$x = <$file>;
-		close $file;
-		chomp($x);
-		$n = (split(/ /, $x))[0];
-	}
-	return $n;
-}
-
-sub get_cpu_usage
-{
-	my $x = '';
-
-	if($SisIYA_Config::sisiya_osname eq 'Linux') {
-			#chomp($x = `top -b -n 1 |grep -i "cpu[0-9,(]"|tr -s '\n' ' '`);
-		my @a = `top -b -n 1`;
-		$x = (grep(/^[C,c]pu[0-9,(]/, @a))[0];
-	}
-	return $x;
-}
-
-sub get_cpu_info
-{
-	my $s = '';
-	if($SisIYA_Config::sisiya_osname eq 'Linux') {
-		chomp(my @a =`cat /proc/cpuinfo`);
-		my @b = grep(/^processor/, @a);
-		my $cpu_count = @b;
-		### I assume that all CPUs are of the same model. Actually this may not be the case.
-		$s = $cpu_count.' x'.(split(/:/, (grep(/^model name/, @a))[0]))[1];
-		$s .= ( split(/:/, (grep(/^vendor_id/, @a))[0]) )[1];
-		$s .= " Cache size =".(split(/:/, (grep(/^cache size/, @a))[0]))[1];
-	}
-	return $s;
-}
 ###############################################################################
 #### the default values
 # load avarage is specified by A * 100, where A is the normal load avarage. Example: In 
 # order to specify load avarage limit of 1.2 => 1.2 * 100 = 120
 our %load_avarages = ( 'warning' => 2, 'error' => 5);
+our $uptime_prog = 'uptime';
 #### end of the default values
 ################################################################################
 
@@ -87,6 +47,73 @@ if(-f $module_conf_file) {
 ################################################################################
 my $statusid = $SisIYA_Config::statusids{'info'};
 my $message_str = "INFO: Unsupported system for uptodate checking.";
+my $service_name = 'load';
+################################################################################
+sub get_load_avarage
+{
+	my $n = 0;
+	if($SisIYA_Config::sisiya_osname eq 'Linux') {
+		#cat /proc/loadavg 
+		#0.04 0.09 0.13 1/410 11983
+		my $x;
+		my $file;
+		open($file, '<', '/proc/loadavg') || die "$0: Could not open file /proc/loadavg! $!";
+		$x = <$file>;
+		close $file;
+		#chomp($x);
+		$n = (split(/ /, $x))[0];
+	}
+	elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
+		# uptime
+		# 10:16am  up  3 users,  load average: 0.01, 0.02, 0.01
+		my @a = `$uptime_prog`;
+		my $retcode = $? >>=8;
+		if($retcode != 0) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$message_str = "ERROR: Error executing the uptime command $uptime_prog! retcode=$retcode";
+			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		}
+		else {
+			$n = (split(/,/,(split(/:/, $a[0]))[2]))[0];
+		}
+
+	}
+	return $n;
+}
+
+sub get_cpu_usage
+{
+	my $s = '';
+
+	if($SisIYA_Config::sisiya_osname eq 'Linux') {
+			#chomp($x = `top -b -n 1 |grep -i "cpu[0-9,(]"|tr -s '\n' ' '`);
+		my @a = `top -b -n 1`;
+		$s = (grep(/^[C,c]pu[0-9,(]/, @a))[0];
+	}
+	if($s ne '') {
+		$s = " Usage: $s";
+	}
+	return $s;
+}
+
+sub get_cpu_info
+{
+	my $s = '';
+	if($SisIYA_Config::sisiya_osname eq 'Linux') {
+		chomp(my @a =`cat /proc/cpuinfo`);
+		my @b = grep(/^processor/, @a);
+		my $cpu_count = @b;
+		### I assume that all CPUs are of the same model. Actually this may not be the case.
+		$s = $cpu_count.' x'.(split(/:/, (grep(/^model name/, @a))[0]))[1];
+		$s .= ( split(/:/, (grep(/^vendor_id/, @a))[0]) )[1];
+		$s .= " Cache size =".(split(/:/, (grep(/^cache size/, @a))[0]))[1];
+	}
+	if($s ne '') {
+		$s = " CPU: $s";
+	}
+	return $s;
+}
+################################################################################
 my $n = get_load_avarage();
 my $str = "Load average for the past 5 minutes is $n";
 
@@ -103,9 +130,9 @@ else {
 	$message_str = "OK: $str.";
 }
 ### add cpu info
-$message_str .= ' CPU: '.get_cpu_info();
+$message_str .= get_cpu_info();
 ### add cpu usage info
-$message_str .= ' Usage: '.get_cpu_usage();
+$message_str .= get_cpu_usage();
 ################################################################################
 print "load$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
 exit $statusid;

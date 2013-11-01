@@ -31,6 +31,9 @@ if(-f $SisIYA_Config::sisiya_functions) {
 }
 ###############################################################################
 #### the default values
+our $sunos_swap_prog = '/usr/sbin/swap';
+our $sunos_prtconf_prog = '/usr/sbin/prtconf';
+our $sunos_vmstat_prog = '/usr/bin/vmstat';
 our %swap_percents = ( 'warning' => 30, 'error' => 50);
 #### end of the default values
 ################################################################################
@@ -62,6 +65,8 @@ if(-f $module_conf_file) {
 
 my $statusid;
 my $message_str;
+my $service_name = 'swap';
+my $retcode;
 my ($free_ram, $total_ram, $used_ram, $percent_ram);
 my ($free_swap, $total_swap, $used_swap, $percent_swap);
 if($SisIYA_Config::sisiya_osname eq 'Linux') {
@@ -88,6 +93,45 @@ if($SisIYA_Config::sisiya_osname eq 'Linux') {
 #	print STDERR "RAM: total=$total_ram free=$free_ram used=$total_ram\n";
 #	print STDERR "formated RAM total=".get_size_k($total_ram)."\n";
 }
+elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
+	my @a = `$sunos_swap_prog -s`;
+	$retcode = $? >>=8;
+	if($retcode != 0) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$message_str = " ERROR: Could not execute swap command $sunos_swap_prog!";
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	}
+	else {
+		$total_swap = (split(/k/, (split(/,/, $a[0]))[1]))[0];
+		$used_swap = (split(/k/, (split(/=/, $a[0]))[1]))[0];
+		$free_swap = $total_swap - $used_swap;
+	}
+	@a = `$sunos_prtconf_prog`;
+	$retcode = $? >>=8;
+	if($retcode != 0) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$message_str = " ERROR: Could not execute prtconf command $sunos_prtconf_prog!";
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	}
+	else {
+		my $s = (grep(/^Memory size:/, @a))[0];
+		$total_ram = (split(/\s+/, (split(/:/, $s))[1]))[1];
+		$total_ram = 1024 * $total_ram;
+		$free_ram = 0;
+		@a = `$sunos_vmstat_prog 1 2`;
+		$retcode = $? >>=8;
+		if($retcode != 0) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$message_str = " ERROR: Could not execute vmstat command $sunos_vmstat_prog!";
+			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		}
+		else {
+			$s = $a[3];
+			$free_ram = (split(/\s+/, $s))[5];
+		}
+		$used_ram = $total_ram - $free_ram;
+	}
+}
 $percent_swap = 0;
 if($total_swap != 0) {
 	$percent_swap = int(100 * $used_swap / $total_swap);
@@ -97,22 +141,27 @@ $percent_ram = 0;
 if($total_ram != 0) {
 	$percent_ram = int(100 * $used_ram / $total_ram);
 }
+my $s = "SWAP: total=".get_size_k($total_swap)." used=".get_size_k($used_swap)." free=".get_size_k($free_swap).". RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
 if($percent_swap >= $swap_percents{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: Swap usage is ".$percent_swap."% (>= ".$swap_percents{'error'}.")! RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
+	$message_str = "ERROR: Swap usage is ".$percent_swap."% (>= ".$swap_percents{'error'}.")! $s";
+	#	SWAP: total=".get_size_k($total_swap)." used=".get_size_k($used_swap)." free=".get_size_k($free_swap).". RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
 }
 elsif($percent_swap >= $swap_percents{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
-	$message_str = "WARNING: Swap usage is ".$percent_swap."% (>= ".$swap_percents{'warning'}.")! RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
+	$message_str = "WARNING: Swap usage is ".$percent_swap."% (>= ".$swap_percents{'warning'}.")! $s";
+	#	RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
 }
 else {
 	$statusid = $SisIYA_Config::statusids{'ok'};
-	$message_str = "OK: Swap usage is ".$percent_swap."%. RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
+	$message_str = "OK: Swap usage is ".$percent_swap."%. $s";
+	#RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
 }
 
 ################################################################################
-print "swap$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-exit $statusid;
+#print "swap$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
+#exit $statusid;
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 ################################################################################
 # cat /proc/meminfo
 # cat /proc/meminfo 
@@ -128,25 +177,25 @@ exit $statusid;
 # Active(file):     680320 kB
 # Inactive(file):   212880 kB
 # Unevictable:           0 kB
-# Mlocked:               0 kB
+# Mlocked:    0 kB
 # HighTotal:       3286984 kB
 # HighFree:        2627932 kB
 # LowTotal:         732680 kB
 # LowFree:          174848 kB
 # SwapTotal:       4095992 kB
 # SwapFree:        4094600 kB
-# Dirty:               260 kB
-# Writeback:            12 kB
+# Dirty:    260 kB
+# Writeback: 12 kB
 # AnonPages:        160724 kB
-# Mapped:            37404 kB
-# Shmem:             34884 kB
-# Slab:             101232 kB
+# Mapped: 37404 kB
+# Shmem:  34884 kB
+# Slab:  101232 kB
 # SReclaimable:      90776 kB
 # SUnreclaim:        10456 kB
 # KernelStack:        1360 kB
 # PageTables:         3776 kB
 # NFS_Unstable:          0 kB
-# Bounce:                0 kB
+# Bounce:     0 kB
 # WritebackTmp:          0 kB
 # CommitLimit:     6105824 kB
 # Committed_AS:     467648 kB
@@ -160,3 +209,44 @@ exit $statusid;
 # Hugepagesize:       2048 kB
 # DirectMap4k:       10232 kB
 # DirectMap2M:      897024 kB
+## #############################################################
+# on a SunOS system
+## #############################################################
+#swap -s
+#total: 276788k bytes allocated + 103884k reserved = 380672k used, 4552520k available
+#####
+# prtconf
+# System Configuration:  Oracle Corporation  i86pc
+# Memory size: 2048 Megabytes
+# System Peripherals (Software Nodes):
+#
+# i86pc
+#     scsi_vhci, instance #0
+#         pci, instance #0
+#      pci8086,1237 (driver not attached)
+#   isa, instance #0
+#        i8042, instance #0
+#  keyboard, instance #0
+#           mouse, instance #0
+# lp, instance #0 (driver not attached)
+#      pit_beep, instance #0
+#   pci-ide, instance #0
+#    ide, instance #0
+#  cmdk, instance #0
+#   ide (driver not attached)
+#    display, instance #0
+# pci8086,1e, instance #0
+#         pci80ee,cafe, instance #0
+#      pci8086,7113 (driver not attached)
+#   fw, instance #0
+#           cpu (driver not attached)
+#        sb, instance #1
+# used-resources (driver not attached)
+#     fcoe, instance #0
+#  iscsi, instance #0
+#      agpgart, instance #0 (driver not attached)
+#          options, instance #0
+#   pseudo, instance #0
+#        vga_arbiter, instance #0 (driver not attached)
+#   xsvc, instance #0
+#

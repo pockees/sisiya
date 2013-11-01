@@ -94,7 +94,7 @@ if($n > 0) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: The system is out of date! There are $n available updates.";
 }
-else {
+elsif($n == 0) {
 	$statusid = $SisIYA_Config::statusids{'ok'};
 	$message_str = "OK: The system is uptodate.";
 }
