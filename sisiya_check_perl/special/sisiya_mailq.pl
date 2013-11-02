@@ -66,7 +66,7 @@ if($queue_count >= $mailq{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There are $queue_count (>= $mailq{'error'}) number of mails waiting in the queue!";
 }
-elsif($queue_count >= $mailq{'warning'}) {
+if($queue_count >= $mailq{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: There are $queue_count (>= $mailq{'warning'}) number of mails waiting in the queue!";
 }

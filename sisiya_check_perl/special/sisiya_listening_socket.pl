@@ -165,7 +165,7 @@ if($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR:$error_str";
 }
-elsif($warning_str ne '') {
+if($warning_str ne '') {
 	if($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	

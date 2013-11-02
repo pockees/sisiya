@@ -117,11 +117,11 @@ sub get_cpu_info
 my $n = get_load_avarage();
 my $str = "Load average for the past 5 minutes is $n";
 
-if($n > $load_avarages{'error'}) {
+if($n >= $load_avarages{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: $str >= $load_avarages{'error'}!";
 }
-elsif($n > $load_avarages{'warning'}) {
+elsif($n >= $load_avarages{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: $str >= $load_avarages{'warning'}!";
 }

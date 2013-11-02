@@ -47,7 +47,7 @@ if($n >= $process_counts{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There are $n (>= $process_counts{'error'}) running processes!";
 }
-elsif($n >= $process_counts{'warning'}) {
+if($n >= $process_counts{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: There are $n (>= $process_counts{'warning'}) running processes!";
 }

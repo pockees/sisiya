@@ -75,7 +75,7 @@ my $service_name = 'mysql_table_status';
 my $error_str = '';
 my $info_str = '';
 my $ok_str = '';
-my $warning_str = '';
+#my $warning_str = '';
 #push @dbs , { 'db_name' => 'db1', 'description' => 'DB1', 'check_type' => 'quick' };
 my @a;
 my @b;
@@ -149,12 +149,12 @@ if($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-elsif($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
-		$statusid = $SisIYA_Config::statusids{'warning'};
-	}	
-	$message_str .= "$warning_str";
-}
+#if($warning_str ne '') {
+#	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+#		$statusid = $SisIYA_Config::statusids{'warning'};
+#	}	
+#	$message_str .= "$warning_str";
+#}
 my $db_list = '';
 for $i (0..$#dbs) {
 	$db_list .= " $dbs[$i]{'db_name'}";
