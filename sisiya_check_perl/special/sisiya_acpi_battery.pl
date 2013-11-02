@@ -34,7 +34,7 @@ if(-f $SisIYA_Config::sisiya_functions) {
 #### the default values
 our $acpi_prog = '/usr/sbin/acpi';
 our $proc_acpi_battery_dir = '/proc/acpi/battery';
-our $proc_acpi_ac_adapter_dir = '/proc/acpi/ac_adapter';
+our $proc_acpi_ac_adapter_dir = '/proc/acpi/ac_adapter/AC';
 our @charged_percents;
 our %default_charged_percents = ( 'warning' => 25, 'error' => 15 );
 #our @charged_percents = ( 
@@ -147,11 +147,11 @@ sub use_proc_dir
 	my $design_capacity_low;
 	my $design_capacity_warning;
 	my $unit;
+	my $f;
+	my $fh;
 	if(opendir(my $dh, $proc_acpi_battery_dir)) {
 		my @battery_dirs = grep{!/^\./} readdir($dh);
 		closedir($dh);
-		my $f;
-		my $fh;
 		foreach my $d (@battery_dirs) {
 			$f = $proc_acpi_battery_dir.'/'.$d.'/info';
 			#print STDERR "$f\n";
@@ -214,8 +214,18 @@ sub use_proc_dir
 			chomp(@a_info = @a_info);
 			$info_str .= " INFO: $d battery details: @a_info"; 
 		}
+		}
+	if(opendir(my $dh, $proc_acpi_ac_adapter_dir)) {
+		$f = $proc_acpi_ac_adapter_dir.'/state';
+		#print STDERR "$f\n";
+		$retcode = open($fh, '<', $f);
+		if($retcode) {
+			@a_state = <$fh>;
+			close $fh;
+			$status = trim((split(/:/, (grep(/^state/, @a_state))[0]))[1]);
+			$info_str .= " INFO: AC adapter state is $status."; 
+		}
 	}
-	
 }
 ################################################################################
 if(! -d $proc_acpi_battery_dir) {

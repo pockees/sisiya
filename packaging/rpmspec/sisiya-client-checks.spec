@@ -1,7 +1,7 @@
 %define name sisiya-client-checks
 
 %define version 0.6.0
-%define release 5
+%define release 6
 
 %define install_dir /opt/%{name}
 
