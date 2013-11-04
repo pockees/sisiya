@@ -100,10 +100,10 @@ sub use_acpi
 		#print STDERR "Processing battery $i... status=[$status]\n";
 		$warning_percent = $default_charged_percents{'warning'};
 		$error_percent = $default_charged_percents{'error'};
-		if(defined $charged_percents[$j]{'warning'}) {
+		if(defined $charged_percents[$i]{'warning'}) {
 			$warning_percent = $charged_percents[$j]{'warning'};
 		}
-		if(defined $charged_percents[$j]{'error'}) {
+		if(defined $charged_percents[$i]{'error'}) {
 			$error_percent = $charged_percents[$j]{'error'};
 		}
 		if($status eq 'Full') {
