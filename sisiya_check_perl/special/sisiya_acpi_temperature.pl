@@ -35,10 +35,11 @@ if(-f $SisIYA_Config::sisiya_functions) {
 our $acpi_prog = '/usr/sbin/acpi';
 our $proc_acpi_dir = '/proc/acpi/thermal_zone';
 our %default_temperatures = ( 'warning' => 60, 'error' => 70 );
-our @temperatures;
-#$temperatures[0] = ({ 'warning' => 24, 'error' => 25 });
-#$temperatures[1] = ({ 'warning' => 22, 'error' => 38 });
-#$temperatures[2] = ({ 'warning' => 19, 'error' => 20 });
+our %temperatures;
+#$temperatures{'THM'} = { 'warning' => 10, 'error' => 30 };
+#$temperatures{'0'} = { 'warning' => 24, 'error' => 25 };
+#$temperatures{'1'} = { 'warning' => 22, 'error' => 38 };
+#$temperatures{'2'} = { 'warning' => 19, 'error' => 20 };
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
@@ -99,25 +100,25 @@ sub use_acpi
 	my $temperature;
 	my $warning_temperature;
 	my $error_temperature;
-	my @a_trip_points;
+	my @trip_points;
 	my $extra_info;
 	chomp(@a = @a);
 	for my $i (0..$#a) {
-		# get trip points into a_trip_points array 
-		@a_trip_points = grep(/Thermal $i: trip point/, @a_all);
-		#print STDERR "a_trip_points = [@a_trip_points]\n";
-		chomp(@a_trip_points = @a_trip_points);
+		# get trip points into trip_points array 
+		@trip_points = grep(/Thermal $i: trip point/, @a_all);
+		#print STDERR "trip_points = [@trip_points]\n";
+		chomp(@trip_points = @trip_points);
 		$state = trim((split(/,/, (split(/:/, $a[$i]))[1]))[0]);
 		$temperature = (split(/\s+/,(split(/,/, (split(/:/, $a[$i]))[1]))[1]))[1];
 		#print STDERR "Processing battery $i... state=[$state]\n";
+		$extra_info = "@trip_points";
 		$warning_temperature = $default_temperatures{'warning'};
 		$error_temperature = $default_temperatures{'error'};
-		$extra_info = "@a_trip_points";
-		if(defined $temperatures[$i]{'warning'}) {
-			$warning_temperature = $temperatures[$i]{'warning'};
+		if(defined $temperatures{"$i"}{'warning'}) {
+			$warning_temperature = $temperatures{"$i"}{'warning'};
 		}
-		if(defined $temperatures[$i]{'error'}) {
-			$error_temperature = $temperatures[$i]{'error'};
+		if(defined $temperatures{"$i"}{'error'}) {
+			$error_temperature = $temperatures{"$i"}{'error'};
 		}
 		if(($state eq 'ok') || ($state eq 'active')) {
 			$ok_str .= " OK: $a[$i]. $extra_info";
@@ -131,7 +132,7 @@ sub use_acpi
 		elsif($temperature >= $warning_temperature) {
 			$warning_str .= " WARNING: Temperature is $temperature C (>= $warning_temperature) $a[$i]!";
 		}
-		#$info_str .= "INFO: @a_trip_points";
+		#$info_str .= "INFO: @trip_points";
 
 	}
 
@@ -143,8 +144,12 @@ sub use_proc_dir
 	my $s;
 	my $retcode;
 	my $temperature;
+	my $warning_temperature;
+	my $error_temperature;
 	my $f;
 	my $fh;
+	my @trip_points;
+	my $extra_info;
 	if(opendir(my $dh, $proc_acpi_dir)) {
 		my @thermal_dirs = grep{!/^\./} readdir($dh);
 		closedir($dh);
@@ -157,7 +162,7 @@ sub use_proc_dir
 			}
 			$s = <$fh>;
 			close $fh;
-			print STDERR $s;
+			#print STDERR $s;
 			$state = trim((split(/:/, $s))[1]);
 
 			$f = $proc_acpi_dir.'/'.$d.'/temperature';
@@ -168,10 +173,36 @@ sub use_proc_dir
 			}
 			$s = <$fh>;
 			close $fh;
-			print STDERR $s;
-			$temperature = trim((split(/:/, $s))[1]);
+			#print STDERR $s;
+			$f = $proc_acpi_dir.'/'.$d.'/trip_points';
+			#print STDERR "$f\n";
+			$retcode = open($fh, '<', $f);
+			if(! $retcode) {
+				next;
+			}
+			@trip_points = <$fh>;
+			close $fh;
+			#print STDERR @trip_points;
+			$extra_info = "@trip_points";
+
+			$warning_temperature = $default_temperatures{'warning'};
+			$error_temperature = $default_temperatures{'error'};
+			if(defined $temperatures{"$d"}{'warning'}) {
+				$warning_temperature = $temperatures{"$d"}{'warning'};
+			}
+			if(defined $temperatures{"$d"}{'error'}) {
+				$error_temperature = $temperatures{"$d"}{'error'};
+			}
+
+			$temperature = (split(/\s+/, (split(/:/, $s))[1]))[1];
 			if(($state eq 'ok') || ($state eq 'active')) {
-				$ok_str .= " OK: $d $temperature";
+				$ok_str .= " OK: Thermal : $d $temperature C. $extra_info";
+			}
+			if($temperature >= $error_temperature) {
+				$error_str .= " ERROR: Thermal $d: Temperature is $temperature C (>= $error_temperature)!";
+			}
+			elsif($temperature >= $warning_temperature) {
+				$warning_str .= " WARNING: Thermal $d:Temperature is $temperature C (>= $warning_temperature)!";
 			}
 		}
 	}

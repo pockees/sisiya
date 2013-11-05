@@ -128,7 +128,12 @@ sub use_acpi
 		else {
 			$warning_str .= " WARNING: $a[$j]! $a[$j + 1].";
 		}
-
+	}
+	@a = `$acpi_prog -a`;
+	my $s = "@a";
+	$retcode = $? >>=8;
+	if($retcode == 0) {
+		$info_str = "INFO: $s."; 
 	}
 
 }
@@ -214,7 +219,7 @@ sub use_proc_dir
 			chomp(@a_info = @a_info);
 			$info_str .= " INFO: $d battery details: @a_info"; 
 		}
-		}
+	}
 	if(opendir(my $dh, $proc_acpi_ac_adapter_dir)) {
 		$f = $proc_acpi_ac_adapter_dir.'/state';
 		#print STDERR "$f\n";
