@@ -80,25 +80,35 @@ sub is_listening_socket
 	my $j = $_[0];
 	my $found = 0;
 	my $interface_port_str;
-
 	for my $i (0..$#netstat_list) {
 		$interface_port_str = "$sockets[$j]{'interface'}:$sockets[$j]{'port'}";
-		if(
-			($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
-		&& 	($netstat_list[$i][3] eq $interface_port_str)
-		&& 	($netstat_list[$i][5] eq 'LISTEN')
-		&& 	($netstat_list[$i][6] eq $sockets[$j]{'progname'})
-		) {
-				$found = 1;
-				last;
+		#print STDERR "$netstat_list[$i][0] [$netstat_list[$i][5]] [$netstat_list[$i][6]] $netstat_list[$i][3] $interface_port_str\n";
+		if($sockets[$j]{'protocol'} eq 'tcp') {
+			if(
+				($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
+			&& 	($netstat_list[$i][3] eq $interface_port_str)
+			&& 	($netstat_list[$i][5] eq 'LISTEN')
+			&& 	($netstat_list[$i][6] eq $sockets[$j]{'progname'})
+			) {
+					$found = 1;
+					last;
+			}
+		}
+		elsif($sockets[$j]{'protocol'} eq 'udp') {
+			if(
+				($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
+			&& 	($netstat_list[$i][3] eq $interface_port_str)
+			&& 	($netstat_list[$i][5] eq $sockets[$j]{'progname'})
+			) {
+					$found = 1;
+					last;
+			}
 		}
 	}
 	return $found;
 }
 
-
-my $i = 0;
-my $j;
+my ($i, $j);
 if($#sockets > -1) {
 	@a = `$netstat_prog -nlp`;
 	my $retcode = $? >>=8;
@@ -109,12 +119,23 @@ if($#sockets > -1) {
 	}
 	my @b;
         my @c;
-	foreach(@a) {
-		@b = split(/\s+/, $_);
+	for $i (0..$#a) {
+		@b = split(/\s+/, $a[$i]);
 		$j = 0;
 		foreach my $k (@b) {
 			#print STDERR "$k ";
-			if($j == 6) {
+			if(($j == 6) && ($netstat_list[$i][0] eq 'tcp')) {
+				# extract the progname part of "PID/progname" string
+				# and only add the line if it has a valid progname
+				@c = split(/\//, $k);
+				if($#c == 1) {
+					push @{$netstat_list[$i]}, $c[1];
+				}
+				else {
+					push @{$netstat_list[$i]}, $k;
+				}
+			}
+			elsif(($j == 5) && ($netstat_list[$i][0] eq 'udp')) {
 				# extract the progname part of "PID/progname" string
 				# and only add the line if it has a valid progname
 				@c = split(/\//, $k);
@@ -131,7 +152,6 @@ if($#sockets > -1) {
 			$j++;
 		}
 		#print STDERR "\n";
-		$i++;
 	}
 	for $i (0..$#sockets) {
 		#print STDERR "$sockets[$i]{'progname'}...\n";
