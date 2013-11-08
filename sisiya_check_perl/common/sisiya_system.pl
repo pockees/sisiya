@@ -37,6 +37,7 @@ our $uptime_prog = 'uptime';
 our $info_prog = '';
 ##our $info_prog="$SisIYA_Config::sisiya_base_dir/special/sisiya_system_info_hpasm.sh"
 our $version_file = "$SisIYA_Config::sisiya_base_dir/version.txt";
+our $ip_prog = 'ip';
 #### end of the default values
 ################################################################################
 # override defaults if there is a corresponfing conf file
@@ -173,6 +174,19 @@ if($version_file ne '') {
 		close($file);
 		$message_str .= " SisIYA: $x";
 	}
+}
+# add IP information
+my @a = `$ip_prog -4 a`;
+my $retcode = $? >>=8;
+if($retcode == 0) {
+	@a = grep(/inet/, @a);
+	foreach(@a) {
+		$_ = (split(/\s+/, $_))[2];
+	}
+	#print STDERR "@a\n";
+	#chomp(@a = @a);
+	$x = "@a";
+	$message_str .= " IP: $x";
 }
 
 # add other information via an external info
