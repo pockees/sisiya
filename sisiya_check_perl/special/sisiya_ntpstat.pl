@@ -99,7 +99,10 @@ if($retcode == 0) {
 	#######################################################       
 	# but it should not be synchronized to its local clock
 	$statusid = $SisIYA_Config::statusids{'ok'};
-	$message_str = "OK: The system clock is synchronized.";
+	my $s = (split(/\(/, (grep(/synchronised to NTP server/, @a))[0]))[1];
+	chomp($s = $s);
+	$s =~ s/\)//g;
+	$message_str = "OK: The system clock is synchronized to $s.";
 }
 elsif($retcode == 1) {
 	#######################################################       
