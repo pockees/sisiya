@@ -251,16 +251,38 @@ sub use_sensors
 	my @trip_points;
 	my $extra_info;
 	my $sensor;
-	#chomp(@a = @a);
-	@a = grep(/°C/, @a);
+	my ($crit, $high);
+	chomp(@a = @a);
+	@a = grep(/[°|\+]/, @a);
 	#print STDERR "@a\n";
 	for my $i (0..$#a) {
 		$sensor = (split(/:/, $a[$i]))[0];
-		$temperature = (split(/\+/,(split(/°/, (split(/:/, $a[$i]))[1]))[0]))[1];
-		#print STDERR "Processing $i... state=[$state]\n";
+		$temperature = trim((split(/[°|C]/, (split(/\+/, (split(/:/, $a[$i]))[1]))[1]))[0]);
+		#print STDERR "sensor=[$sensor] temperature=[$temperature]\n";
 		$extra_info = "";
+		$crit = 0;
+		$high = 0;
+		if(index($a[$i], '(') != -1) {
+			# get critical and/or high temperature values
+			#print STDERR "Getting crit and/or high temperature values from : $a[$i]\n"; 
+			if(index($a[$i], 'high') == -1) {
+				$crit = trim((split(/[°|C]/, (split(/\+/, (split(/=/, $a[$i]))[1]))[1]))[0]);
+			}
+			else {
+				$high = trim((split(/[°|C]/, (split(/\+/, (split(/=/, $a[$i]))[1]))[1]))[0]);
+				$crit = trim((split(/[°|C]/, (split(/\+/, (split(/=/, $a[$i]))[2]))[1]))[0]);
+			}
+		}
+		#print STDERR "high=[$high] crit=[$crit]\n";
 		$warning_temperature = $default_temperatures{'warning'};
 		$error_temperature = $default_temperatures{'error'};
+		# set crit and high values instead of the overall defaults
+		if($high != 0) {
+			$warning_temperature = $high;
+		}
+		if($crit != 0) {
+			$error_temperature = $crit;
+		}
 		if(defined $temperatures{$sensor}{'warning'}) {
 			$warning_temperature = $temperatures{$sensor}{'warning'};
 		}
