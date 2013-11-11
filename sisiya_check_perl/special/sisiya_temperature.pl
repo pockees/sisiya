@@ -32,6 +32,7 @@ if(-f $SisIYA_Config::sisiya_functions) {
 #######################################################################################
 ###############################################################################
 #### the default values
+our $sensors_prog = '/usr/bin/sensors';
 our $acpi_prog = '/usr/sbin/acpi';
 our $proc_acpi_dir = '/proc/acpi/thermal_zone';
 our %default_temperatures = ( 'warning' => 60, 'error' => 70 );
@@ -110,7 +111,7 @@ sub use_acpi
 		chomp(@trip_points = @trip_points);
 		$state = trim((split(/,/, (split(/:/, $a[$i]))[1]))[0]);
 		$temperature = (split(/\s+/,(split(/,/, (split(/:/, $a[$i]))[1]))[1]))[1];
-		#print STDERR "Processing $i... state=[$state]\n";
+		#print STDERR "Processing battery $i... state=[$state]\n";
 		$extra_info = "@trip_points";
 		$warning_temperature = $default_temperatures{'warning'};
 		$error_temperature = $default_temperatures{'error'};
@@ -207,19 +208,94 @@ sub use_proc_dir
 		}
 	}
 }
-################################################################################
-if(! -d $proc_acpi_dir) {
-	if(! -f $acpi_prog) {
+
+sub use_sensors
+{
+	my @a = `$sensors_prog -A`;
+	my $retcode = $? >>=8;
+	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$message_str = "ERROR: Both directory $proc_acpi_dir and acpi program $acpi_prog does not exist!";
+		$message_str = "ERROR: Error executing the acpi command! retcode=$retcode";
 		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 	}
-	else {
-		use_acpi();
+#	@a = (
+#		"i5k_amb-isa-0000\n",
+#		"Ch. 0 DIMM 0: +48.0°C  (low  = +127.5°C, high = +127.5°C)\n",  
+#		"Ch. 0 DIMM 1: +57.0°C  (low  = +127.5°C, high = +127.5°C)\n",
+#		"Ch. 1 DIMM 0: +53.0°C  (low  = +127.5°C, high = +127.5°C)\n",
+#		"Ch. 1 DIMM 1: +58.5°C  (low  = +127.5°C, high = +127.5°C)\n",
+#		"\n",
+#		"coretemp-isa-0000\n",
+#		"Core 0:      +40.0°C  (high = +80.0°C, crit = +100.0°C)\n",  
+#		"Core 1:      +44.0°C  (high = +80.0°C, crit = +100.0°C)\n",  
+#		"\n",
+#		"coretemp-isa-0001\n",
+#		"Core 0:      +42.0°C  (high = +80.0°C, crit = +100.0°C)\n",
+#		"Core 1:      +45.0°C  (high = +80.0°C, crit = +100.0°C)\n",
+#		"cpitz-virtual-0\n",
+#		"temp1:        +32.5°C  (crit = +107.0°C)\n",
+#		"\n",
+#		"coretemp-isa-0000\n",
+#		"Physical id 0:  +53.0°C  (high = +87.0°C, crit = +105.0°C)\n",
+#		"Core 0:         +53.0°C  (high = +87.0°C, crit = +105.0°C)\n",
+#		"Core 1:         +53.0°C  (high = +87.0°C, crit = +105.0°C)\n",
+#		"\n",
+#		"pkg-temp-0-virtual-0\n",
+#		"temp1:        +53.0°C\n"
+#	);
+	########################################################################## 
+	my $state;
+	my $temperature;
+	my $warning_temperature;
+	my $error_temperature;
+	my @trip_points;
+	my $extra_info;
+	my $sensor;
+	#chomp(@a = @a);
+	@a = grep(/°C/, @a);
+	#print STDERR "@a\n";
+	for my $i (0..$#a) {
+		$sensor = (split(/:/, $a[$i]))[0];
+		$temperature = (split(/\+/,(split(/°/, (split(/:/, $a[$i]))[1]))[0]))[1];
+		#print STDERR "Processing $i... state=[$state]\n";
+		$extra_info = "";
+		$warning_temperature = $default_temperatures{'warning'};
+		$error_temperature = $default_temperatures{'error'};
+		if(defined $temperatures{$sensor}{'warning'}) {
+			$warning_temperature = $temperatures{$sensor}{'warning'};
+		}
+		if(defined $temperatures{$sensor}{'error'}) {
+			$error_temperature = $temperatures{$sensor}{'error'};
+		}
+		if($temperature >= $error_temperature) {
+			$error_str .= " ERROR: $sensor temperature is $temperature C (>= $error_temperature) $a[$i]!";
+		}
+		elsif($temperature >= $warning_temperature) {
+			$warning_str .= " WARNING: $sensor temperature is $temperature C (>= $warning_temperature) $a[$i]!";
+		}
+		else {
+			$ok_str .= " OK: $sensor temperature is $temperature C.";
+		}
 	}
 }
+################################################################################
+if( -f $sensors_prog) {
+	use_sensors();
+}
 else {
-	use_proc_dir();
+	if(! -d $proc_acpi_dir) {
+		if(! -f $acpi_prog) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$message_str = "ERROR: Directory $proc_acpi_dir, $acpi_prog and $sensors_prog programs does not exist!";
+			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		}
+		else {
+			use_acpi();
+		}
+	}
+	else {
+		use_proc_dir();
+	}
 }
 
 if($error_str ne '') {
@@ -244,6 +320,42 @@ if($info_str ne '') {
 sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 ################################################################################
 ##################################################################
+### cat /proc/acpi/battery/C1BE/info
+### or cat /proc/acpi/battery/BAT0/info
+#present:                 yes
+#design capacity:         2086 mAh
+#last full capacity:      2086 mAh
+#battery technology:      rechargeable
+#design voltage:          14400 mV
+#design capacity warning: 105 mAh
+#design capacity low:     21 mAh
+#capacity granularity 1:  100 mAh
+#capacity granularity 2:  100 mAh
+#model number:            Primary
+#serial number:           45119 2007/05/09
+#battery type:            LIon
+#OEM info:                Hewlett-Packard
+##########################################################################
+### cat /proc/acpi/battery/C1BE/state
+#present:                 yes
+#capacity state:          ok
+#charging state:          discharging
+#present rate:            2264 mA
+#remaining capacity:      1965 mAh
+#present voltage:         15344 mV
+##########################################################################
+
+##########################################################################
+# Since kernel 2.6.20.7, ACPI modules are all modularized to avoid ACPI issues that were reported on some machines.
+# https://wiki.archlinux.org/index.php/ACPI_modules
+# acpi -i
+# Battery 0: Full, 100%
+# Battery 0: design capacity 5405 mAh, last full capacity 5441 mAh = 100%
+#
+# acpi -i
+# Battery 0: Discharging, 97%, 04:11:04 remaining
+# Battery 0: design capacity 5405 mAh, last full capacity 5441 mAh = 100%
+#
 #########
 # acpi -V
 #
@@ -258,3 +370,30 @@ sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 # Cooling 3: Processor 0 of 10
 # Cooling 4: Processor 0 of 10
 
+#########################################################################
+#### sensors -A
+#########################################################################
+#i5k_amb-isa-0000
+#Ch. 0 DIMM 0: +48.0°C  (low  = +127.5°C, high = +127.5°C)  
+#Ch. 0 DIMM 1: +57.0°C  (low  = +127.5°C, high = +127.5°C)  
+#Ch. 1 DIMM 0: +53.0°C  (low  = +127.5°C, high = +127.5°C)  
+#Ch. 1 DIMM 1: +58.5°C  (low  = +127.5°C, high = +127.5°C)  
+#
+#coretemp-isa-0000
+#Core 0:      +40.0°C  (high = +80.0°C, crit = +100.0°C)  
+#Core 1:      +44.0°C  (high = +80.0°C, crit = +100.0°C)  
+#                                                                                                                                                                                                                            
+#coretemp-isa-0001
+#Core 0:      +42.0°C  (high = +80.0°C, crit = +100.0°C)
+#Core 1:      +45.0°C  (high = +80.0°C, crit = +100.0°C) 
+#########################################################################
+#cpitz-virtual-0
+#temp1:        +32.5°C  (crit = +107.0°C)
+#
+#coretemp-isa-0000
+#Physical id 0:  +53.0°C  (high = +87.0°C, crit = +105.0°C)
+#Core 0:         +53.0°C  (high = +87.0°C, crit = +105.0°C)
+#Core 1:         +53.0°C  (high = +87.0°C, crit = +105.0°C)
+#
+#pkg-temp-0-virtual-0
+#temp1:        +53.0°C
