@@ -35,7 +35,7 @@ if(-f $SisIYA_Config::sisiya_functions) {
 our $sensors_prog = '/usr/bin/sensors';
 our $acpi_prog = '/usr/sbin/acpi';
 our $proc_acpi_dir = '/proc/acpi/thermal_zone';
-our %default_temperatures = ( 'warning' => 60, 'error' => 70 );
+our %default_temperatures = ( 'warning' => 70, 'error' => 80 );
 our %temperatures;
 #$temperatures{'THM'} = { 'warning' => 10, 'error' => 30 };
 #$temperatures{'0'} = { 'warning' => 24, 'error' => 25 };
