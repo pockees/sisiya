@@ -43,19 +43,18 @@ chomp($sisiya_osrelease = `uname -r`);
 # field seperator
 our $FS = '~';
 
-our $sisiya_base_dir	= '/opt/sisiya-client-checks';
-#our $sisiya_base_dir	= '/ev/erdalmutlu/sisiya/sisiya/sisiya_check_perl';
-our $sisiya_local_conf	= "$sisiya_base_dir/SisIYA_Config_local.pl";
-our $sisiya_common_dir	= "$sisiya_base_dir/common";
-our $sisiya_special_dir	= "$sisiya_base_dir/special";
-our $sisiya_bin_dir 	= "$sisiya_base_dir/bin";
-our $sisiya_systems_dir	= "$sisiya_base_dir/systems/$sisiya_hostname";
-#our $sisiya_systems_dir	= "/ev/erdalmutlu/downloads/sisiya/deneme";
-our $sisiya_systems_conf_dir	= "$sisiya_systems_dir/conf";
-our $send_message_prog 	= "$sisiya_bin_dir/sisiya_send_message_xml.pl";
-our $send_message2_prog	= "$sisiya_bin_dir/sisiya_send_message2_xml.pl";
-our $sisiyac_prog 	= "$sisiya_bin_dir/sisiyac_xml.pl";
-our $sisiya_functions 	= "$sisiya_bin_dir/sisiya_functions.pl";
+our $sisiya_base_dir		= '/opt/sisiya-client-checks';
+our $sisiya_local_conf		= "$sisiya_base_dir/SisIYA_Config_local.pl";
+our $sisiya_common_dir		= "$sisiya_base_dir/common";
+our $sisiya_misc_dir 		= "$sisiya_base_dir/misc";
+our $sisiya_special_dir		= "$sisiya_base_dir/special";
+our $sisiya_utils_dir 		= "$sisiya_base_dir/utils";
+our $sisiya_systems_dir		= "$sisiya_base_dir/systems/$sisiya_hostname";
+our $sisiya_systems_conf_dir 	= "$sisiya_systems_dir/conf";
+our $send_message_prog 		= "$sisiya_utils_dir/sisiya_send_message_xml.pl";
+our $send_message2_prog		= "$sisiya_utils_dir/sisiya_send_message2_xml.pl";
+our $sisiyac_prog 		= "$sisiya_utils_dir/sisiyac_xml.pl";
+our $sisiya_functions 		= "$sisiya_utils_dir/sisiya_functions.pl";
 
 our %statusids = (
 	'info' 		=> 1,	# 2^0 

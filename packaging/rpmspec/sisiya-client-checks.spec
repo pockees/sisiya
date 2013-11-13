@@ -1,7 +1,7 @@
 %define name sisiya-client-checks
 
 %define version 0.6.0
-%define release 12
+%define release 13
 
 %define install_dir /opt/%{name}
 
@@ -38,13 +38,13 @@ make "DESTDIR=%{buildroot}" install_sisiya_client_checks
 #%attr(0644,root,root) 		%doc 			README NEWS ChangeLog AUTHORS INSTALL TODO
 %dir %attr(0755,root,root) 				%{install_dir}
 %attr(0644,root,root) 					%{install_dir}/version.txt
-%dir %attr(0755,root,root) 				%{install_dir}/bin
+%dir %attr(0755,root,root) 				%{install_dir}/misc
 %dir %attr(0755,root,root) 				%{install_dir}/common
 %dir %attr(0755,root,root) 				%{install_dir}/special
+%dir %attr(0755,root,root) 				%{install_dir}/utils
 %attr(0644,root,root) 		%config(noreplace) 	%{install_dir}/SisIYA_Config.pm
 %attr(0644,root,root) 		%config(noreplace) 	%{install_dir}/SisIYA_Config_local.pl
-%attr(0755,root,root) 					%{install_dir}/bin/*.pl
-%attr(0755,root,root) 					%{install_dir}/common/*.pl
-%attr(0755,root,root) 					%{install_dir}/special/*.pl
-%attr(0755,root,root) 					%{install_dir}/special/*.sh
-%attr(0644,root,root) 					%{install_dir}/special/*.sql
+%attr(0755,root,root) 					%{install_dir}/common/*
+%attr(0644,root,root) 					%{install_dir}/misc/*
+%attr(0755,root,root) 					%{install_dir}/special/*
+%attr(0755,root,root) 					%{install_dir}/utils/*

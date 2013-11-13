@@ -103,7 +103,7 @@ echo "------"
 deb_dir="deb/$package_dir"
 rm -rf $deb_dir 
 mkdir -p $deb_dir/opt/${package_str} 
-for f in bin common special version.txt SisIYA_Config.pm SisIYA_Config_local.pl
+for f in common misc special version.txt SisIYA_Config.pm SisIYA_Config_local.pl utils
 do
 	cp -a $package_dir/$f ${deb_dir}/opt/${package_str}/ 
 done
