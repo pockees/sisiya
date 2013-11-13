@@ -57,7 +57,7 @@ sub get_filesystem_state
 	my $state = ''; # not defined
 	### check the filesystem state
 	#print STDERR "fs_type = $fs_type\n";
-	if( ($fs_type eq 'reiserfs') || ($fs_type eq 'vfat') || ($fs_type eq 'tmpfs')) {
+	if( ($fs_type eq 'reiserfs') || ($fs_type eq 'vfat') || ($fs_type eq 'tmpfs') || ($fs_type eq 'fuseblk')) {
 		#print STDERR "fs_type = $fs_type is not appicable.\n";
 		return $state;
 	}
