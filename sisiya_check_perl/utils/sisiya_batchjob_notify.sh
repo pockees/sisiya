@@ -27,7 +27,7 @@ fi
 
 #client_conf_file="$1"
 base_dir="/opt/sisiya-client-checks"
-send_message_prog="$base_dir/bin/sisiya_send_message.pl"
+send_message_prog="$base_dir/utils/sisiya_send_message.pl"
 client_conf_file="$1"
 expire="$2"
 status_str="$3"
