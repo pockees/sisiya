@@ -1,2 +1,2 @@
 ### SisIYA : Cleint checks.
-0-59/5 * * * * root perl -I/opt/sisiya-client-checks /opt/sisiya-client-checks/bin/sisiya_all.pl 10 2>/dev/null
+0-59/5 * * * * root perl -I/opt/sisiya-client-checks /opt/sisiya-client-checks/misc/sisiya_all.pl 10 2>/dev/null
