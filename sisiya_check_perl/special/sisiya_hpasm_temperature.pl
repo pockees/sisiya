@@ -81,20 +81,25 @@ if($info_str ne '') {
 #exit $statusid;
 sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 ################################################################################
-#hpasmcli -s "show powermeter"
+### Sample output of the hpasmcli -s "show temp" command :
+#	Sensor   Location              Temp       Threshold
+#	------   --------              ----       ---------
+#	#1        I/O_ZONE             40C/104F   70C/158F
+#	#2        AMBIENT              17C/62F    39C/102F
+#	#3        CPU#1                30C/86F    127C/260F
+#	#4        CPU#1                30C/86F    127C/260F
+#	#5        POWER_SUPPLY_BAY     43C/109F   77C/170F
+#	#6        CPU#2                30C/86F    127C/260F
+#	#7        CPU#2                30C/86F    127C/260F
 #
-#Power Meter #1
-#        Power Reading  : 284
-################################################################################
-### Sample output of the hpasmcli -s "show powersupply" command :
-#Power supply #1
-#        Present  : Yes
-#        Redundant: Yes
-#        Condition: Ok
-#        Hotplug  : Supported
-#Power supply #2
-#        Present  : Yes
-#        Redundant: Yes
-#        Condition: Ok
-#        Hotplug  : Supported
+##########################################################################
+#	Sensor   Location              Temp       Threshold
+#	------   --------              ----       ---------
+#	#1        AMBIENT              27C/80F    40C/104F
+#	#2        MEMORY_BD            53C/127F   110C/230F
+#	#3        CPU#1                30C/86F    100C/212F
+#	#4        CPU#1                30C/86F    100C/212F
+#	#5        I/O_ZONE             48C/118F   63C/145F
+#	#6        CPU#2                 -         100C/212F
+#	#7        CPU#2                 -         100C/212F
 ##############################################################################################

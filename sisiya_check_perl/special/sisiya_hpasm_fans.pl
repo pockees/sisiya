@@ -54,10 +54,26 @@ my $warning_str = '';
 my @a = `$hpasmcli_prog -s "show fans"`;
 my $retcode = $? >>=8;
 if($retcode == 0) {
+	@a = grep(/#/, @a);
 	chomp(@a = @a);
-	my $s = "@a";
-	$s =~ s/\s+/ /g;
-	$info_str = "INFO: $s"; 
+	my ($is_available, $fan_name, $fan_number, $fan_speed_status, $fan_value);
+       	foreach(@a) {
+		$is_available = (split(/\s+/, $_))[2];
+		#print STDERR "[$is_available]\n";
+		if($is_available eq 'Yes') {
+			$fan_name = (split(/\s+/, $_))[1];
+			$fan_number = (split(/\s+/, $_))[0];
+			$fan_speed_status = (split(/\s+/, $_))[3];
+			$fan_value = (split(/%/, (split(/\s+/, $_))[4]))[0];
+			if($fan_speed_status eq 'NORMAL') {
+				$ok_str .= "OK: The speed of the $fan_number $fan_name fan is $fan_value%.";
+			}
+			else {
+				$error_str .= "ERROR: The speed of the $fan_number $fan_name fan is $fan_value% and $fan_speed_status != NORMAL!";
+			}
+		}
+	}	
+
 }
 
 if($error_str ne '') {
@@ -86,15 +102,25 @@ sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 #Power Meter #1
 #        Power Reading  : 284
 ################################################################################
-### Sample output of the hpasmcli -s "show powersupply" command :
-#Power supply #1
-#        Present  : Yes
-#        Redundant: Yes
-#        Condition: Ok
-#        Hotplug  : Supported
-#Power supply #2
-#        Present  : Yes
-#        Redundant: Yes
-#        Condition: Ok
-#        Hotplug  : Supported
+### Sample output of the hpasmcli -s "show fans" command :
+#	  Fan  Location        Present Speed  of max  Redundant  Partner  Hot-pluggable
+#	---  --------        ------- -----  ------  ---------  -------  -------------
+#	#1   I/O_ZONE        Yes     NORMAL  45%     Yes        0        Yes
+#	#2   I/O_ZONE        Yes     NORMAL  45%     Yes        0        Yes
+#	#3   PROCESSOR_ZONE  Yes     NORMAL  41%     Yes        0        Yes
+#	#4   PROCESSOR_ZONE  Yes     NORMAL  36%     Yes        0        Yes
+#	#5   PROCESSOR_ZONE  Yes     NORMAL  36%     Yes        0        Yes
+#	#6   PROCESSOR_ZONE  Yes     NORMAL  36%     Yes        0        Yes
+#
+##############################################################################################
+### or another sample output with some fans which are not present
+##############################################################################################
+#	Fan  Location        Present Speed  of max  Redundant  Partner  Hot-pluggable
+#	---  --------        ------- -----  ------  ---------  -------  -------------
+#	#1   SYSTEM          Yes     NORMAL  35%     No         N/A      No
+#	#2   SYSTEM          No      -       N/A     No         N/A      No
+#	#3   SYSTEM          Yes     NORMAL  35%     No         N/A      No
+#	#4   SYSTEM          No      -       N/A     No         N/A      No
+#	#5   CPU#1           Yes     NORMAL  35%     N/A        N/A      No
+#	#6   CPU#2           No      -       N/A     N/A        N/A      No
 ##############################################################################################
