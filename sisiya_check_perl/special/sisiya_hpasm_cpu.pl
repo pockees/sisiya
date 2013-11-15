@@ -55,9 +55,25 @@ my @a = `$hpasmcli_prog -s "show server"`;
 my $retcode = $? >>=8;
 if($retcode == 0) {
 	chomp(@a = @a);
-	my $s = "@a";
-	$s =~ s/\s+/ /g;
+	my $s = (grep(/Processor total/, @a))[0];
+	chomp($s = $s);
 	$info_str = "INFO: $s"; 
+
+	$s = "@a";
+	$s =~ s/\s+/ /g;
+	my @b = grep(/Stepping/, split(/Processor/, $s));
+	my $status;
+	for my $i (0..$#b) {
+		#print STDERR "$i $b[$i]\n";
+		$status = trim((split(/:/, (split(/Status/, $b[$i]))[1]))[1]);
+		#print STDERR "status=[$status]\n";
+		if($status eq 'Ok') {
+			$ok_str .= " OK: Processor $b[$i].";
+		}
+		else {
+			$error_str .= " ERROR: The status of processor $i is $status (!= Ok)! $b[$i].";
+		}
+	}
 }
 
 if($error_str ne '') {
@@ -81,20 +97,40 @@ if($info_str ne '') {
 #exit $statusid;
 sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 ################################################################################
-#hpasmcli -s "show powermeter"
+# The output of the following command : hpasmcli -s "show server"
+########################################################################
+#System        : ProLiant DL380 G5
+#Serial No.    : CZC7321M4B      
+#ROM version   : P56 05/18/2009
+#iLo present   : Yes
+#Embedded NICs : 2
+#	NIC1 MAC: 00:1b:78:96:72:a8
+#	NIC2 MAC: 00:1b:78:96:72:a6
 #
-#Power Meter #1
-#        Power Reading  : 284
-################################################################################
-### Sample output of the hpasmcli -s "show powersupply" command :
-#Power supply #1
-#        Present  : Yes
-#        Redundant: Yes
-#        Condition: Ok
-#        Hotplug  : Supported
-#Power supply #2
-#        Present  : Yes
-#        Redundant: Yes
-#        Condition: Ok
-#        Hotplug  : Supported
+#Processor: 0
+#	Name         : Intel Xeon
+#	Stepping     : 6
+#	Speed        : 2333 MHz
+#	Bus          : 1333 MHz
+#	Core         : 2
+#	Thread       : 2
+#	Socket       : 1
+#	Level2 Cache : 4096 KBytes
+#	Status       : Ok
+#
+#Processor: 1
+#	Name         : Intel Xeon
+#	Stepping     : 6
+#	Speed        : 2333 MHz
+#	Bus          : 1333 MHz
+#	Core         : 2
+#	Thread       : 2
+#	Socket       : 2
+#	Level2 Cache : 4096 KBytes
+#	Status       : Ok
+#
+#Processor total  : 2
+#
+#Memory installed : 20480 MBytes
+#ECC supported    : Yes
 ##############################################################################################
