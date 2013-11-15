@@ -44,41 +44,20 @@ if(-f $module_conf_file) {
 ################################################################################
 my $message_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'powersupply';
+my $service_name = 'cpu';
 my $error_str = '';
 my $info_str = '';
 my $ok_str = '';
 my $warning_str = '';
 
 ################################################################################
-my @a = `$hpasmcli_prog -s "show powermeter"`;
+my @a = `$hpasmcli_prog -s "show server"`;
 my $retcode = $? >>=8;
 if($retcode == 0) {
 	chomp(@a = @a);
 	my $s = "@a";
 	$s =~ s/\s+/ /g;
-	$ok_str = "OK: $s"; 
-}
-@a = `$hpasmcli_prog -s "show powersupply"`;
-$retcode = $? >>=8;
-if($retcode == 0) {
-	chomp(@a = @a);
-	my $s = "@a";
-	$s =~ s/\s+/ /g;
 	$info_str = "INFO: $s"; 
-	my @b = grep(/Condition/, @a);
-	my $status;
-	for my $i (0..$#b) {
-		#print STDERR "$i $b[$i]\n";
-		$status = trim((split(/:/, $b[$i]))[1]);
-		#print STDERR "$i status=[$status]\n";
-		if($status eq 'Ok') {
-			$ok_str .= " OK: The condition of powersypply ".($i + 1)." is Ok.";
-		}
-		else {
-			$error_str .= " ERROR: The condition of powersypply ".($i + 1)." is $status (!= Ok)!";
-		}
-	}
 }
 
 if($error_str ne '') {
