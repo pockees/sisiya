@@ -43,7 +43,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
-my $statusid = $SisIYA_Config::statusids{'ok'};
+my $statusid = $SisIYA_Config::statusids{'info'};
 my $service_name = 'ram';
 my $error_str = '';
 my $info_str = '';
@@ -57,7 +57,24 @@ if($retcode == 0) {
 	chomp(@a = @a);
 	my $s = "@a";
 	$s =~ s/\s+/ /g;
-	$info_str = "INFO: $s"; 
+	my @b = grep(/Module/, split(/Cartridge/, $s));
+	#print STDERR @b;
+	my $status;
+	for my $i (0..$#b) {
+		#print STDERR "$i $b[$i]\n";
+		$status = trim((split(/:/, (split(/Status/, $b[$i]))[1]))[1]);
+		#print STDERR "status=[$status]\n";
+		if($status eq 'N/A') {
+			$info_str .= " INFO: Cartridge $b[$i].";
+		}
+		elsif($status eq 'Ok') {
+			$ok_str .= " OK: Cartridge $b[$i].";
+		}
+		else {
+			$error_str .= " ERROR: The status of RAM $i is $status (!= Ok)! Cartridge $b[$i].";
+		}
+	}
+
 }
 
 if($error_str ne '') {
@@ -71,30 +88,61 @@ if($warning_str ne '') {
 	$message_str .= "$warning_str";
 }
 if($ok_str ne '') {
+	if($statusid < $SisIYA_Config::statusids{'ok'}) {
+		$statusid = $SisIYA_Config::statusids{'ok'};
+	}
 	$message_str .= "$ok_str";
 }
 if($info_str ne '') {
 	$message_str .= "$info_str";
 }
 ################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
 sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 ################################################################################
-#hpasmcli -s "show powermeter"
+### Sample output of the hpasmcli -s "show dimm" command :
+#DIMM Configuration
+#------------------
+#Cartridge #:                  0
+#Module #:                     1
+#Present:                      Yes
+#Form Factor:                  fh
+#Memory Type:                  14h
+#Size:                         1024 MB
+#Speed:                        667 MHz
+#Supports Lock Step:           No
+#Configured for Lock Step:     No
+#Status:                       Ok
 #
-#Power Meter #1
-#        Power Reading  : 284
-################################################################################
-### Sample output of the hpasmcli -s "show powersupply" command :
-#Power supply #1
-#        Present  : Yes
-#        Redundant: Yes
-#        Condition: Ok
-#        Hotplug  : Supported
-#Power supply #2
-#        Present  : Yes
-#        Redundant: Yes
-#        Condition: Ok
-#        Hotplug  : Supported
+#Cartridge #:                  0
+#Module #:                     2
+#Present:                      Yes
+#Form Factor:                  fh
+#Memory Type:                  14h
+#Size:                         1024 MB
+#Speed:                        667 MHz
+#Supports Lock Step:           No
+#Configured for Lock Step:     No
+#Status:                       Ok
+#############################################################################
+### Sample output of the hpasmcli -s "show dimm" command :
+##
+#Cartridge #:    0
+#Processor #:    1
+#Module #:       2
+#Present:        Yes
+#Form Factor:    fh
+#Memory Type:    5h
+#Size:           8192 MB
+#Speed:          1333 MHz
+#Status:         N/A
+#
+#Cartridge #:    0
+#Processor #:    1
+#Module #:       4
+#Present:        Yes
+#Form Factor:    fh
+#Memory Type:    5h
+#Size:           8192 MB
+#Speed:          1333 MHz
+#Status:         N/A
 ##############################################################################################

@@ -98,8 +98,6 @@ if($info_str ne '') {
 	$message_str .= "$info_str";
 }
 ################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
 sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 ################################################################################
 #hpasmcli -s "show powermeter"
