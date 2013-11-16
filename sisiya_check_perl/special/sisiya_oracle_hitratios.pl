@@ -68,7 +68,7 @@ $ENV{'PATH'} = $env_oracle_bin.':'.$ENV{'PATH'};
 $ENV{'NLS_LANG'} = $env_nls_lang;
 
 ### bufer cache hit ratio
-my $sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_buffercache.sql';
+my $sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_buffercache.sql';
 my $x;
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
@@ -85,7 +85,7 @@ else {
 }
 
 ### dictionary hit ratio
-$sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_dictionary.sql';
+$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_dictionary.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -101,7 +101,7 @@ else {
 }
 
 ### library cache hit ratio
-$sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_library.sql';
+$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_library.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -117,7 +117,7 @@ else {
 }
 
 ### nowait cache hit ratio
-$sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_nowait.sql';
+$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_nowait.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -133,7 +133,7 @@ else {
 }
 
 ### sort cache hit ratio
-$sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_sort.sql';
+$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_sort.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -149,12 +149,12 @@ else {
 }
 
 ### total users
-$sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_totalusers.sql';
+$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_totalusers.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 my $total_users = trim($x); 
 
 ### SGA size
-$sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_hitratios_sgasize.sql';
+$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_sgasize.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 my $sga_size = trim($x); 
 $sga_size = get_size($sga_size);

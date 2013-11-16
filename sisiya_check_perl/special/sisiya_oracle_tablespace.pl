@@ -62,7 +62,7 @@ $ENV{'PATH'} = $env_oracle_bin.':'.$ENV{'PATH'};
 $ENV{'NLS_LANG'} = $env_nls_lang;
 
 my %tablespaces;
-my $sql_file = $SisIYA_Config::sisiya_special_dir.'/sisiya_oracle_tablespace.sql';
+my $sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_tablespace.sql';
 my @a = `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`;
 my @b;
 #print STDERR "@a\n";
