@@ -33,6 +33,8 @@ if(-f $SisIYA_Config::sisiya_functions) {
 ###############################################################################
 #### the default values
 our $hpasmcli_prog = '/sbin/hpasmcli';
+our %default_temperatures = ( 'warning' => 70, 'error' => 80 );
+our %temperatures;
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
@@ -54,10 +56,37 @@ my $warning_str = '';
 my @a = `$hpasmcli_prog -s "show temp"`;
 my $retcode = $? >>=8;
 if($retcode == 0) {
+	@a = grep(/#/, @a);
 	chomp(@a = @a);
-	my $s = "@a";
-	$s =~ s/\s+/ /g;
-	$info_str = "INFO: $s"; 
+	my ($tsensor_number, $tsensor_name, $warning_temperature, $error_temperature, $tsensor_temperature, $tsensor_threshold);
+	my $i=1;
+       	foreach(@a) {
+		$tsensor_temperature = (split(/\s+/, $_))[2];
+		if($tsensor_temperature ne '-') {
+			$tsensor_temperature = (split(/C/, $tsensor_temperature))[0];
+			#print STDERR "temperature=[$tsensor_temperature]\n";
+			$tsensor_number = (split(/\s+/, $_))[0];
+			$tsensor_name = (split(/\s+/, $_))[1];
+			$tsensor_threshold = (split(/C/, (split(/\s+/, $_))[1]))[0];
+			$warning_temperature = $default_temperatures{'warning'};
+			$error_temperature = $default_temperatures{'error'};
+			if(defined $temperatures{"$tsensor_name"}{'warning'}) {
+				$warning_temperature = $temperatures{"$tsensor_name"}{'warning'};
+			}
+			if(defined $temperatures{"$tsensor_name"}{'error'}) {
+				$error_temperature = $temperatures{"$tsensor_name"}{'error'};
+			}
+			if($tsensor_temperature >= $error_temperature) {
+				$error_str .= " ERROR: The temperature for the $tsensor_number $tsensor_name sensor is $tsensor_temperature (>= $error_temperature) Grad Celcius!"
+			}
+			elsif($tsensor_temperature >= $warning_temperature) {
+				$warning_str .= " WARNING: The temperature for the $tsensor_number $tsensor_name sensor is $tsensor_temperature (>= $warning_temperature) Grad Celcius!"
+			}
+			else {
+				$ok_str .= " OK: The temperature for the $tsensor_number $tsensor_name sensor is $tsensor_temperature Grad Celcius."
+			}
+		}
+	}
 }
 
 if($error_str ne '') {
