@@ -73,10 +73,10 @@ if($retcode == 0) {
 		$status = trim((split(/:/, $b[$i]))[1]);
 		#print STDERR "$i status=[$status]\n";
 		if($status eq 'Ok') {
-			$ok_str .= " OK: The condition of powersypply ".($i + 1)." is Ok.";
+			$ok_str .= " OK: The condition of powersupply ".($i + 1)." is Ok.";
 		}
 		else {
-			$error_str .= " ERROR: The condition of powersypply ".($i + 1)." is $status (!= Ok)!";
+			$error_str .= " ERROR: The condition of powersupply ".($i + 1)." is $status (!= Ok)!";
 		}
 	}
 }
