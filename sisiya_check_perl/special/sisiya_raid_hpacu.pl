@@ -192,7 +192,7 @@ if($retcode == 0) {
 		# find out which physical drives have problems and their location (bay number)
 		my ($drive_bay, $drive_status);
 		foreach(@b) {
-			print STDERR "faulty physical drive $i ...\n";
+			print STDERR "faulty physical drive ...\n";
 			$drive_bay = (split(/\s+/, (split(/:/, (split(/,/, $_))[0]))[4]))[1];
 			$drive_status = trim((split(/:/, (split(/,/, $_))[3]))[0]);
 			if($drive_status eq 'Rebuilding') {
@@ -200,12 +200,12 @@ if($retcode == 0) {
 			}
 			else {
 				$error_str .= "ERROR: The hard disk in the $drive_bay bay has status $drive_status!";
+			}
 		}
 	}
 	else {
 		$ok_str .= " OK: All $total_physical_drives physical drives are OK.";
 	}
-
 }
 
 if($error_str ne '') {
