@@ -37,7 +37,7 @@ our $uptime_prog = 'uptime';
 our $info_prog = '';
 ##our $info_prog="$SisIYA_Config::sisiya_base_dir/special/sisiya_system_info_hpasm.sh"
 our $version_file = "$SisIYA_Config::sisiya_base_dir/version.txt";
-our $ip_prog = 'ip';
+our $ip_prog = '/sbin/ip';
 #### end of the default values
 ################################################################################
 # override defaults if there is a corresponfing conf file
