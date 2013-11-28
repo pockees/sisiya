@@ -26,6 +26,9 @@ use SisIYA_Config;
 if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
 }
+if(-f $SisIYA_Config::sisiya_functions) {
+	require $SisIYA_Config::sisiya_functions;
+}
 #######################################################################################
 ###############################################################################
 #### the default values
@@ -39,60 +42,42 @@ if(-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
-
 my $message_str = '';
 my $statusid = $SisIYA_Config::statusids{'info'};
-my @users;
+my $service_name = 'users';
+my @a;
 
 if($SisIYA_Config::sisiya_osname eq 'HP-UX') {
-	chomp(@users = `who -R | grep "root"`);
+	@a = `who -R`;
 }
 else {
-	chomp(@users = `who | grep "root"`);
+	@a = `who`;
 }
-#print STDERR "Before:\n";
-#foreach(@users) {
-#	print STDERR "$_\n";
-#}
-my @a = @users;
-my $x;
-foreach my $user(@exception_users) {
-	# remove from the array
-	#print STDERR "Searching for $user logged in users list...\n";
-	foreach $x(@a) {
-		if(index($x, $user) != -1) {
-			#print STDERR "Removing $user from the logged in users list...\n";
-			@a = grep ! /$user/, @a;
+my $user_list = "@a";
+my @root_users = grep(/root/, @a);
+if($#root_users > -1) {
+	my @b = @a;
+	foreach my $exception_str(@exception_users) {
+		# remove from the array
+		foreach(@b) {
+			if(index($_, $exception_str) != -1) {
+				#print STDERR "Removing $exception_str from the logged in users list...\n";
+				@b = grep ! /$exception_str/, @b;
+			}
 		}
 	}
-}
-#print STDERR "After:\n";
-#foreach(@a) {
-#	print STDERR "$_\n";
-#}
-if(@a) {
-	$statusid = $SisIYA_Config::statusids{'warning'};
-	$message_str = "User root is logged in!";
-}
-chomp(@users = `who`);
-if(@users) {
-	my @only_usernames;
-	foreach(@users) {
-		push(@only_usernames, (split(/\s+/, $_))[0]);
-	}
-	my %h = map { $_, 1 } @only_usernames;
-	@only_usernames = keys %h;
-	@users = sort @only_usernames;
-	$message_str .= " User list: ";
-	foreach(@users) {
-		$message_str .= " $_";
-		#print STDERR "$_\n";
+	if($#b > -1) {
+		$statusid = $SisIYA_Config::statusids{'warning'};
+		$message_str = "WARNING: User root is logged in!"
 	}
 }
-else {
+if($#a == -1) {
 	$message_str = "No user is logged in.";
 }
+else {
+	$message_str .= " INFO: $user_list";
+	$message_str =~ s/\s+/ /g;
+}
 ################################################################################
-print "users$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-exit $statusid;
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 ################################################################################

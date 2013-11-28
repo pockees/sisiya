@@ -54,10 +54,12 @@ $ENV{'ORACLE_HOME'} = $env_oracle_home;
 $ENV{'PATH'} = $env_oracle_bin.':'.$ENV{'PATH'};
 $ENV{'NLS_LANG'} = $env_nls_lang;
 
-my $sql_file = $SisIYA_Config::sisiya_systems_conf_dir.'/sisiya_baan_jobs_status.sql';
-my $s = $_[0].',0';
+my $sql_file = $SisIYA_Config::sisiya_systems_conf_dir.'/sisiya_baan_jobs_status_oracle.sql';
 if(-f $sql_file) {
 	my @a = `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`;
-	print STDERR @a;
+	print @a;
+	#foreach(@a) {
+	#	$_ =~ s/\s+/ /g;
+	#}	
+	#print STDERR @a;
 }
-
