@@ -66,7 +66,7 @@ if($retcode != 0) {
 	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
 }
 
-print STDERR @a;
+#print STDERR @a;
 
 my @jobs;
 my ($job_code, $job_status, $job_description, $last_time, $next_time);
@@ -81,7 +81,7 @@ foreach(@a) {
 }
 my $info_str;
 for my $i (0..$#jobs) {
-	print STDERR "code=[$jobs[$i]{'code'}] status=[$jobs[$i]{'status'}] description=[$jobs[$i]{'description'}] last=[$jobs[$i]{'last_time'}] next=[$jobs[$i]{'next_time'}]\n";
+	#print STDERR "code=[$jobs[$i]{'code'}] status=[$jobs[$i]{'status'}] description=[$jobs[$i]{'description'}] last=[$jobs[$i]{'last_time'}] next=[$jobs[$i]{'next_time'}]\n";
 	$info_str = "$jobs[$i]{'description'} last execution time $jobs[$i]{'last_time'}, next execution time $jobs[$i]{'next_time'}";
 	if($jobs[$i]{'status'} == 1) {
 		$ok_str .= " OK: $jobs[$i]{'code'} ($info_str) is free.";
