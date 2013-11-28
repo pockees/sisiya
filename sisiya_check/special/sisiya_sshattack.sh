@@ -92,7 +92,7 @@ else
 	cat $log_file | while read line
 	do
 		declare -i i=0
-		whil test $i -lt $number_of_strings
+		while test $i -lt $number_of_strings
 		do	
 			str=`echo $line | grep -i "${strings[$i]}"`
 			if test -n "$str" ; then

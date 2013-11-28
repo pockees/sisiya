@@ -35,7 +35,8 @@ if(-f $SisIYA_Config::sisiya_functions) {
 our $licmon_prog = '/infor/baan/bse/bin/licmon6.1';
 our %users = ( 'error' => 100, 'warning' => 95 );
 our $env_bse = '/infor/erpln/bse';
-our $slmcmd_prog = '/infor/slm/bin/SlmCmd';
+our $env_slmhome = '/infor/slm';
+our $slmcmd_prog = "$env_slmhome/bin/SlmCmd";
 our @slm_servers = ( 'localhost' );
 our $env_bse_tmp = "$env_bse/tmp";
 #### end of the default values
@@ -61,6 +62,7 @@ my @a;
 ### set environment variables
 $ENV{'BSE'} = $env_bse;
 $ENV{'BSE_TMP'} = $env_bse_tmp;
+$ENV{'SLMHOME'} = $env_slmhome;
 if(! -f $licmon_prog) {
 	if(! -f $slmcmd_prog) {
 		exit;
