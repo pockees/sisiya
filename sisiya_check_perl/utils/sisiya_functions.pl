@@ -19,16 +19,6 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 #######################################################################################
-
-sub get_serviceid
-{
-	my $sid;
-
-	my @a = split(/$SisIYA_Config::FS/, $_[0]);
-	$sid = $SisIYA_Config::serviceids{$a[0]};
-	return $sid;
-}
-
 sub get_formated_size
 {
 	my $x1 = int($_[0] / $_[1]);
@@ -40,6 +30,22 @@ sub get_formated_size
 	return "$x1$_[2]";
 }
 
+sub get_serviceid
+{
+	return $SisIYA_Config::serviceids{ (split(/$SisIYA_Config::FS/, $_[0]))[0] };
+}
+
+
+sub get_sisiya_date
+{
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+	
+	$year = 1900 + $year;
+	#	print "$sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst\n";
+	my $str = $year.sprintf("%.2d%.2d%.2d%.2d%.2d", $mon, $mday, $hour, $min, $sec);
+	return $str;
+
+}
 sub get_size
 {
 	my $x;
@@ -97,7 +103,6 @@ sub get_size_k
 	return get_formated_size($_[0], 1125899906842624, 'EB');
 }
 
-
 sub ltrim 
 { 
 	my $s = shift; 
@@ -111,6 +116,17 @@ sub rtrim
 	$s =~ s/\s+$//; 
 	return $s; 
 }
+
+sub send_message_data
+{
+	my $sock = new IO::Socket::INET (PeerAddr => $SisIYA_Config::sisiya_server, PeerPort => $SisIYA_Config::sisiya_port, Proto => 'tcp',);
+	die "$0 :Could not create TCP socket to ".$SisIYA_Config::sisiya_server.":".$SisIYA_Config::sisiya_port." with the following error : $!\n" unless $sock;
+
+	print $sock $_[0];
+
+	close($sock);
+}
+
 # Parameters:
 # 1: field seperator
 # 2: service name
@@ -128,4 +144,5 @@ sub trim
 	$s =~ s/^\s+|\s+$//g; 
 	return $s 
 }
+
 1;

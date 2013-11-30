@@ -98,9 +98,13 @@ function getTotalNumberOfSystems($location, $groups=0, $nsystems)
 		for($i=0;$i<$row_count;$i++) {
 			$row=$db->fetchRow($result,$i);
 			if($str == '')
-				$str .= $row[1].' '.$row[0].' %'.(int)(100 * $row[1] / $nsystems);
+				#$str .= $row[1].' '.$row[0].' %'.(int)(100 * $row[1] / $nsystems);
+				#$str .= $row[1].' '.$row[0].' %'.round(100 * $row[1] / $nsystems, 0, PHP_ROUND_HALF_UP);
+				$str .= $row[1].' (%'.round(100 * $row[1] / $nsystems, 0, PHP_ROUND_HALF_UP).') '.$row[0];
 			else
-				$str .= ', '.$row[1].' '.$row[0].' %'.(int)(100 * $row[1] / $nsystems);
+				#$str .= ', '.$row[1].' '.$row[0].' %'.(int)(100 * $row[1] / $nsystems);
+				#$str .= ', '.$row[1].' '.$row[0].' %'.round(100 * $row[1] / $nsystems, 0, PHP_ROUND_HALF_UP);
+				$str .= ', '.$row[1].' (%'.round(100 * $row[1] / $nsystems, 0, PHP_ROUND_HALF_UP).') '.$row[0];
 		}
 	}
 	$db->freeResult($result);

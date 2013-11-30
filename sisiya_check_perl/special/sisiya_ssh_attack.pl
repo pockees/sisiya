@@ -63,12 +63,12 @@ close $file;
 my $s;
 my @b;
 foreach my $x (@strings) {
-	print STDERR "Searching for [$x] in $log_file...\n";
+	#print STDERR "Searching for [$x] in $log_file...\n";
 	@b = grep(/$x/, @a);
-	print STDERR @b;
+	#print STDERR @b;
 	chomp(@b = @b);
 	$s = "@b";
-	print STDERR "s=[$s]\n";
+	#print STDERR "s=[$s]\n";
 	if($s ne '') {
 		$error_messages .= " ERROR: $x ($s)!";
 	}

@@ -32,12 +32,13 @@ if( $#ARGV != 0 ) {
 	exit 1;
 }
 
-#my $conf_file = $ARGV[0];
-#my $expire = $ARGV[1];
 my $expire = $ARGV[0];
 
 if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
+}
+if(-f $SisIYA_Config::sisiya_functions) {
+	require $SisIYA_Config::sisiya_functions;
 }
 
 #foreach ($SisIYA_Config::sisiya_base_dir, $SisIYA_Config::sisiya_common_dir, $SisIYA_Config::sisiya_special_dir) {
@@ -47,45 +48,15 @@ if(-f $SisIYA_Config::sisiya_local_conf) {
 #	}
 #}
 
-sub get_serviceid
-{
-	my $sid;
-
-	my @a = split(/$SisIYA_Config::FS/, $_[0]);
-	$sid = $SisIYA_Config::serviceids{$a[0]};
-	return $sid;
-}
-
-sub get_sisiya_date
-{
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-	
-	$year = 1900 + $year;
-	#	print "$sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst\n";
-	my $str = $year.sprintf("%.2d%.2d%.2d%.2d%.2d", $mon, $mday, $hour, $min, $sec);
-	return $str;
-
-}
-
-sub send_message_data
-{
-	my $sock = new IO::Socket::INET (PeerAddr => $SisIYA_Config::sisiya_server, PeerPort => $SisIYA_Config::sisiya_port, Proto => 'tcp',);
-	die "$0 :Could not create TCP socket to ".$SisIYA_Config::sisiya_server.":".$SisIYA_Config::sisiya_port." with the following error : $!\n" unless $sock;
-
-	print $sock $_[0];
-
-	close($sock);
-}
-
 opendir(my $dh, $SisIYA_Config::sisiya_common_dir) || die "$0 : Cannot open directory: $SisIYA_Config::sisiya_common_dir! $!";
 my @scripts = grep { /^sisiya_*/ && -x "$SisIYA_Config::sisiya_common_dir/$_" } readdir($dh);
 closedir($dh);
 
-my $s;
 my $statusid;
 my $serviceid;
+my $s;
 
-my $date_str = get_sisiya_date;
+my $date_str = get_sisiya_date();
 
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
@@ -102,9 +73,6 @@ foreach my $f (@scripts) {
 	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
 	$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
 }
-
-print STDERR "systems dir: $SisIYA_Config::sisiya_systems_dir\n";
-
 if(opendir($dh, $SisIYA_Config::sisiya_systems_dir)) {
 	@scripts = grep { /^sisiya_*/ && -x "$SisIYA_Config::sisiya_systems_dir/$_" } readdir($dh);
 	closedir($dh);
@@ -119,10 +87,9 @@ if(opendir($dh, $SisIYA_Config::sisiya_systems_dir)) {
 		$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
 	}
 }
-
 $xml_str .= '</system></sisiya_messages>';
 
-#print $xml_str;
+print STDERR $xml_str;
 send_message_data $xml_str;
 exit 0;
 

@@ -253,7 +253,7 @@ sub use_sensors
 	my $sensor;
 	my ($crit, $high);
 	chomp(@a = @a);
-	@a = grep(/[°|\+]/, @a);
+	@a = grep(/C /, grep(/[°|\+]/, @a));
 	#print STDERR "@a\n";
 	for my $i (0..$#a) {
 		$sensor = (split(/:/, $a[$i]))[0];

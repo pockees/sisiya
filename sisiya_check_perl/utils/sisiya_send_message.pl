@@ -41,56 +41,18 @@ my $message_str = $ARGV[3];
 if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
 }
-
-sub get_statusid
-{
-	return $SisIYA_Config::statusids{$_[0]};
+if(-f $SisIYA_Config::sisiya_functions) {
+	require $SisIYA_Config::sisiya_functions;
 }
 
-sub get_serviceid
-{
-	my $sid;
-
-	my @a = split(/$SisIYA_Config::FS/, $_[0]);
-	$sid = $SisIYA_Config::serviceids{$a[0]};
-	return $sid;
-}
-
-sub get_sisiya_date
-{
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-	
-	$year = 1900 + $year;
-	#	print "$sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst\n";
-	my $str = $year.sprintf("%.2d%.2d%.2d%.2d%.2d", $mon, $mday, $hour, $min, $sec);
-	return $str;
-
-}
-
-sub send_message_data
-{
-	my $sock = new IO::Socket::INET (PeerAddr => $SisIYA_Config::sisiya_server, PeerPort => $SisIYA_Config::sisiya_port, Proto => 'tcp',);
-	die "$0 :Could not create TCP socket to ".$SisIYA_Config::sisiya_server.":".$SisIYA_Config::sisiya_port." with the following error : $!\n" unless $sock;
-
-	print $sock $_[0];
-
-	close($sock);
-}
-
-my $statusid;
-my $serviceid;
-
-my $date_str = get_sisiya_date;
+my $date_str = get_sisiya_date();
+my $statusid = get_statusid($statusid_str);
+my $serviceid = get_serviceid($serviceid_str);
 
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
 $xml_str .= '<system><name>'.$SisIYA_Config::sisiya_hostname.'</name>';
-
-$statusid = get_statusid($statusid_str);
-$serviceid = get_serviceid($serviceid_str);
-#print STDERR "statusid_str=$statusid_str statusid = $statusid serviceid = $serviceid message=$message_str\n";
 $xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$message_str."</data></message>";
-
 $xml_str .= '</system></sisiya_messages>';
 
 #print STDERR $xml_str;
