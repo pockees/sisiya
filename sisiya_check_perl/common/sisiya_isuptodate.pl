@@ -79,6 +79,7 @@ if(-f $module_conf_file) {
 my $message_str = "INFO: Unsupported system for uptodate checking.";
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'info'};
+my $service_name = 'isuptodate';
 my $n = -1;
 
 if(-x $update_progs{'yum'}) {

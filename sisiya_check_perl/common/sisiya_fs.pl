@@ -74,10 +74,10 @@ sub get_filesystem_state
 	return $state;
 }
 #######################################################################################
-my $statusid;
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
+my $service_name = 'filesystem';
 my $error_str = '';
 my $ok_str = '';
 my $warning_str = '';
