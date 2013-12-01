@@ -40,9 +40,10 @@ if(-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
-
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
+my $service_name = 'dmesg';
 my $error_messages = '';
 my $warning_messages = '';
 my $ok_messages = '';

@@ -70,6 +70,7 @@ sub is_exception
 }
 
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'mysql_table_status';
 my $error_str = '';
@@ -92,7 +93,7 @@ if($#dbs > -1) {
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the mysql command! retcode=$retcode";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 
 	for $i (0..$#dbs) {
@@ -172,9 +173,9 @@ if($ok_str ne '') {
 if($info_str ne '') {
 	$message_str .= "$info_str";
 }
-################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
 #mysql mysql -e "check table db extended"
 #+----------+-------+----------+----------+
 #| Table    | Op    | Msg_type | Msg_text |

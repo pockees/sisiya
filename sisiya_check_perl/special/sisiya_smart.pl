@@ -46,6 +46,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'smart';
 my $error_str = '';
@@ -59,7 +60,7 @@ if($#disks > -1) {
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the smartctl command! retcode=$retcode";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 }
 my $temp;
@@ -108,11 +109,9 @@ if($warning_str ne '') {
 if($ok_str ne '') {
 	$message_str .= "$ok_str";
 }
-################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
 #smartctl -H -d ata /dev/sda
 #
 #smartctl 5.43 2012-06-30 r3573 [i686-linux-2.6.32-358.23.2.el6.i686] (local build)

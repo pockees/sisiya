@@ -43,8 +43,8 @@ if(-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
-
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'ssh_attack';
 my $error_messages = '';
@@ -54,7 +54,7 @@ my $ok_messages = '';
 if(! -f $log_file) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Could not find log file $log_file!";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $file;
 open($file, '<', $log_file) || die "$0: Could not open file $log_file! $!";
@@ -89,9 +89,6 @@ if($warning_messages ne '') {
 if($ok_messages ne '') {
 	$message_str .= " OK: $log_file does not contain any of $ok_messages";
 }
-
-# replace the ' with whitespace => no need anymore, it is replaced in sisiya_all.pl with \'
-#$message_str =~ s/\'/ /g; 
-################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################

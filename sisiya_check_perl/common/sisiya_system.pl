@@ -48,6 +48,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str;
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'system';
 
@@ -118,7 +119,7 @@ sub get_uptime_in_minutes
 		if($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = "ERROR: Error executing the uptime command $uptime_prog! retcode=$retcode";
-			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
 			$x = (split(/m/, $a[0]))[0];
@@ -194,8 +195,6 @@ if($info_prog ne '') {
 	chomp($x = `$info_prog`);
 	$message_str .= " Details: $x";
 }
-################################################################################
-#print "system$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################

@@ -26,6 +26,9 @@ use SisIYA_Config;
 if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
 }
+if(-f $SisIYA_Config::sisiya_functions) {
+	require $SisIYA_Config::sisiya_functions;
+}
 #######################################################################################
 ###############################################################################
 #### the default values
@@ -84,7 +87,9 @@ if(-f $module_conf_file) {
 
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'error'};
+my $service_name = 'ntpstat';
 my @a = `$ntpstat_prog 2>/dev/null`;
 my $retcode = $? >>=8;
 
@@ -141,7 +146,6 @@ elsif($retcode == 127) {
 		}
 	}
 }
-################################################################################
-print "ntpstat$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-exit $statusid;
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################

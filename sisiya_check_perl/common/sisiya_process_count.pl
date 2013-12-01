@@ -26,6 +26,9 @@ use SisIYA_Config;
 if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
 }
+if(-f $SisIYA_Config::sisiya_functions) {
+	require $SisIYA_Config::sisiya_functions;
+}
 #######################################################################################
 ###############################################################################
 #### the default values
@@ -40,7 +43,9 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
+my $service_name = 'process_count';
 my @a = `ps -ef`;
 my $n = @a;
 if($n >= $process_counts{'error'}) {
@@ -54,7 +59,6 @@ if($n >= $process_counts{'warning'}) {
 else {
 	$message_str = "OK: There are $n running processes.";
 }
-################################################################################
-print "process_count$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-exit $statusid;
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################

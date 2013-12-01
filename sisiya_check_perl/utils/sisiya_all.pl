@@ -70,6 +70,7 @@ foreach my $f (@scripts) {
 	$serviceid = get_serviceid($s);	
 	# replace ' with \', because it is a problem in the SQL statemnet
 	$s =~ s/'/\\\'/g;
+	$s = (split(/$SisIYA_Config::FS/, $s))[1];
 	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
 	$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
 }
@@ -83,14 +84,15 @@ if(opendir($dh, $SisIYA_Config::sisiya_systems_dir)) {
 		$serviceid = get_serviceid($s);	
 		# replace ' with \', because it is a problem in the SQL statemnet
 		$s =~ s/'/\\\'/g;
+		$s = (split(/$SisIYA_Config::FS/, $s))[1];
 		print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
 		$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
 	}
 }
 $xml_str .= '</system></sisiya_messages>';
 
-print STDERR $xml_str;
-send_message_data $xml_str;
+#print STDERR $xml_str;
+send_message_data($xml_str);
 exit 0;
 
 # <?xml version="1.0" encoding="utf-8"?>

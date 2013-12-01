@@ -51,6 +51,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'temperature';
 my $error_str = '';
@@ -66,7 +67,7 @@ sub use_acpi
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the acpi command! retcode=$retcode";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	my @a = grep(!/trip point/, @a_all);
 	#@a =(
@@ -216,7 +217,7 @@ sub use_sensors
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the acpi command! retcode=$retcode";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 #	@a = (
 #		"i5k_amb-isa-0000\n",
@@ -309,7 +310,7 @@ else {
 		if(! -f $acpi_prog) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = "ERROR: Directory $proc_acpi_dir, $acpi_prog and $sensors_prog programs does not exist!";
-			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
 			use_acpi();
@@ -336,11 +337,9 @@ if($ok_str ne '') {
 if($info_str ne '') {
 	$message_str .= "$info_str";
 }
-################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
 ##################################################################
 ### cat /proc/acpi/battery/C1BE/info
 ### or cat /proc/acpi/battery/BAT0/info

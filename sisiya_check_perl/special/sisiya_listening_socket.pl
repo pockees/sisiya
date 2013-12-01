@@ -63,6 +63,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'listening_socket';
 my $error_str = '';
@@ -115,7 +116,7 @@ if($#sockets > -1) {
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the netstat command! retcode=$retcode";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	my @b;
         my @c;
@@ -194,10 +195,9 @@ if($warning_str ne '') {
 if($ok_str ne '') {
 	$message_str .= " OK:$ok_str";
 }
-################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
 ################################################################################
 #Active Internet connections (only servers)
 #Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    

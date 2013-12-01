@@ -132,9 +132,10 @@ sub send_message_data
 # 2: service name
 # 3: statusid
 # 4: message string
+# 5: data string
 sub sisiya_exit
 {
-	print "$_[1]$_[0]<msg>$_[3]</msg><datamsg></datamsg>\n";
+	print "$_[1]$_[0]<msg>$_[3]</msg><datamsg>$_[4]</datamsg>\n";
 	exit $_[2];
 }
 

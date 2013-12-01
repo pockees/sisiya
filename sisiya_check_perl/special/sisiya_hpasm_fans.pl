@@ -43,6 +43,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'fanspeed';
 my $error_str = '';
@@ -92,9 +93,9 @@ if($ok_str ne '') {
 if($info_str ne '') {
 	$message_str .= "$info_str";
 }
-################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
 #hpasmcli -s "show powermeter"
 #
 #Power Meter #1

@@ -26,7 +26,9 @@ use SisIYA_Config;
 if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
 }
-
+if(-f $SisIYA_Config::sisiya_functions) {
+	require $SisIYA_Config::sisiya_functions;
+}
 ###############################################################################
 #### the default values
 # load avarage is specified by A * 100, where A is the normal load avarage. Example: In 
@@ -45,8 +47,9 @@ if(-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
-my $statusid = $SisIYA_Config::statusids{'info'};
 my $message_str = "INFO: Unsupported system for uptodate checking.";
+my $data_str = '';
+my $statusid = $SisIYA_Config::statusids{'info'};
 my $service_name = 'load';
 ################################################################################
 sub get_load_avarage
@@ -71,7 +74,7 @@ sub get_load_avarage
 		if($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = "ERROR: Error executing the uptime command $uptime_prog! retcode=$retcode";
-			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
 			$n = (split(/,/,(split(/:/, $a[0]))[2]))[0];
@@ -133,10 +136,9 @@ else {
 $message_str .= get_cpu_info();
 ### add cpu usage info
 $message_str .= get_cpu_usage();
-################################################################################
-print "load$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-exit $statusid;
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
 #
 #cat /proc/cpuinfo 
 #processor       : 0

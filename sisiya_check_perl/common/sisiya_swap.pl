@@ -65,6 +65,7 @@ if(-f $module_conf_file) {
 
 my $statusid;
 my $message_str;
+my $data_str = '';
 my $service_name = 'swap';
 my $retcode;
 my ($free_ram, $total_ram, $used_ram, $percent_ram);
@@ -99,7 +100,7 @@ elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = " ERROR: Could not execute swap command $sunos_swap_prog!";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
 		$total_swap = (split(/k/, (split(/,/, $a[0]))[1]))[0];
@@ -111,7 +112,7 @@ elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = " ERROR: Could not execute prtconf command $sunos_prtconf_prog!";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
 		my $s = (grep(/^Memory size:/, @a))[0];
@@ -123,7 +124,7 @@ elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
 		if($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = " ERROR: Could not execute vmstat command $sunos_vmstat_prog!";
-			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
 			$s = $a[3];
@@ -158,11 +159,9 @@ else {
 	#RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
 }
 
-################################################################################
-#print "swap$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
 # cat /proc/meminfo
 # cat /proc/meminfo 
 # MemTotal:        4019664 kB

@@ -45,6 +45,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'mailq';
 
@@ -53,7 +54,7 @@ my $retcode = $? >>=8;
 if($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $mailq_prog command! retcode=$retcode";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $queue_count;
 if($a[0] eq "Mail queue is empty\n") {
@@ -74,8 +75,6 @@ else {
 	$statusid = $SisIYA_Config::statusids{'ok'};
 	$message_str = "OK: There are no mails in the queue.";
 }
-################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################

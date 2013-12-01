@@ -55,6 +55,7 @@ sub get_array_list
 }
 
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'softraid';
 my $error_str = '';
@@ -68,7 +69,7 @@ my $retcode = $? >>=8;
 if($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $mdadm_prog command! retcode=$retcode";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $i = 0;
 foreach(@a) {
@@ -130,11 +131,9 @@ if($warning_str ne '') {
 if($ok_str ne '') {
 	$message_str .= "$ok_str";
 }
-################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
 ## mdadm --detail --scan
 #ARRAY /dev/md1 metadata=1.0 name=appsrv20.elan-prj.com:1 UUID=531144cd:d44f532e:8a100058:bc5d4ccc
 #ARRAY /dev/md0 metadata=1.1 name=appsrv20.elan-prj.com:0 UUID=b31e8f9a:e77953a1:19016817:5050b4fa

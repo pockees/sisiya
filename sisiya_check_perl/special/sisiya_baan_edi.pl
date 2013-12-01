@@ -52,6 +52,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'baan_edi';
 my $error_str = '';
@@ -62,7 +63,7 @@ my $warning_str = '';
 if($baan_edi_db_prog eq '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There is no defined Baan EDI db script!";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 
 my %table_row_counts = ( 'ecedi700' => 0, 'ecedi750' => 0, 'ecedi751' => 0 ); 
@@ -73,7 +74,7 @@ my $retcode = $? >>=8;
 if($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $baan_edi_db_prog command! retcode=$retcode";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $n;
 my $table_name;
@@ -127,8 +128,6 @@ if($ok_str ne '') {
 if($info_str ne '') {
 	$message_str .= " $info_str";
 }
-################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################

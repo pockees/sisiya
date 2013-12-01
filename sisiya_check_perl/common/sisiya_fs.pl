@@ -76,6 +76,8 @@ sub get_filesystem_state
 #######################################################################################
 my $statusid;
 my $message_str = '';
+my $data_str = '';
+my $statusid = $SisIYA_Config::statusids{'ok'};
 my $error_str = '';
 my $ok_str = '';
 my $warning_str = '';
@@ -166,7 +168,6 @@ for my $k (keys %file_systems) {
 	}
 }
 
-$statusid = $SisIYA_Config::statusids{'ok'};
 if($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = $error_str;
@@ -180,10 +181,9 @@ if($warning_str ne '') {
 if($ok_str ne '') {
 	$message_str .= $ok_str;
 }
-################################################################################
-print "filesystem$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-exit $statusid;
-################################################################################
+##################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+##################################################################################
 #echo "df_command=[$df_command] grep_prog=[$grep_prog]"
 #######################################################################
 ### OpenSolaris 5.11 (2009.06)

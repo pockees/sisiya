@@ -44,6 +44,7 @@ if(-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'baan_jobs_status';
 my $error_str = '';
@@ -54,16 +55,15 @@ my $warning_str = '';
 if($baan_jobs_status_db_prog eq '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There is no defined Baan Jobs status db script!";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 
-#$ok_str = "OK: yapım aşamasında";
 my @a = `$baan_jobs_status_db_prog`;
 my $retcode = $? >>=8;
 if($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $baan_jobs_status_db_prog command! retcode=$retcode";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
+	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 
 #print STDERR @a;
@@ -125,8 +125,6 @@ if($ok_str ne '') {
 if($info_str ne '') {
 	$message_str .= " $info_str";
 }
-################################################################################
-#print "listening_socket$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
-#exit $statusid;
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str);
-################################################################################
+###################################################################################
+sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+###################################################################################
