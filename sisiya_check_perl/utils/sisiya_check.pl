@@ -25,18 +25,14 @@ use IO::Socket;
 use SisIYA_Config;
 #use diagnostics;
 
-if( $#ARGV != 3 ) {
-	#print "Usage : $0 serviceid_str statusid_str expire message_str\n";
+if( ($#ARGV < 0) || ($#ARGV > 1) ) {
+	#print "Usage : $0 SisIYA_client_conf.pm expire\n";
 	print "Usage : $0 expire\n";
+	print "Usage : $0 check_script expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
 
-my $serviceid_str = $ARGV[0];
-my $statusid_str = $ARGV[1];
-my $expire = $ARGV[2];
-my $message_str = $ARGV[3];
-#print STDERR "statusid_str=$statusid_str serviceid_str=$serviceid_str expire=$expire message=$message_str\n";
 
 if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
@@ -45,14 +41,60 @@ if(-f $SisIYA_Config::sisiya_functions) {
 	require $SisIYA_Config::sisiya_functions;
 }
 
+#foreach ($SisIYA_Config::sisiya_base_dir, $SisIYA_Config::sisiya_common_dir, $SisIYA_Config::sisiya_special_dir) {
+#	if (! -d $_) {
+#		print "$0: No such directory : $_\n";
+#		exit 1;
+#	}
+#}
+my $expire;
+if($#ARGV == 1) {
+	print STDERR "Running single script $ARGV[0]\n";
+	$expire; = $ARGV[1];
+	exit
+}
+$expire; = $ARGV[0];
+opendir(my $dh, $SisIYA_Config::sisiya_common_dir) || die "$0 : Cannot open directory: $SisIYA_Config::sisiya_common_dir! $!";
+my @scripts = grep { /^sisiya_*/ && -x "$SisIYA_Config::sisiya_common_dir/$_" } readdir($dh);
+closedir($dh);
+
+my $statusid;
+my $serviceid;
+my $s;
+
 my $date_str = get_sisiya_date();
-my $statusid = $SisIYA_Config::statusids{$statusid_str};
-my $serviceid = get_serviceid($serviceid_str);
 
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
 $xml_str .= '<system><name>'.$SisIYA_Config::sisiya_hostname.'</name>';
-$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$message_str."</data></message>";
+
+foreach my $f (@scripts) {
+	print STDERR "[$f] ...\n";
+	#chomp($s = `/usr/bin/perl -I./ $SisIYA_Config::sisiya_common_dir/$f`);
+	chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_common_dir/$f`);
+	$statusid = $? >> 8;
+	$serviceid = get_serviceid($s);	
+	# replace ' with \', because it is a problem in the SQL statemnet
+	$s =~ s/'/\\\'/g;
+	$s = (split(/$SisIYA_Config::FS/, $s))[1];
+	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
+	$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
+}
+if(opendir($dh, $SisIYA_Config::sisiya_systems_dir)) {
+	@scripts = grep { /^sisiya_*/ && -x "$SisIYA_Config::sisiya_systems_dir/$_" } readdir($dh);
+	closedir($dh);
+	foreach my $f (@scripts) {
+		print STDERR "[$f] ...\n";
+		chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_systems_dir/$f`);
+		$statusid = $? >> 8;
+		$serviceid = get_serviceid($s);	
+		# replace ' with \', because it is a problem in the SQL statemnet
+		$s =~ s/'/\\\'/g;
+		$s = (split(/$SisIYA_Config::FS/, $s))[1];
+		print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
+		$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
+	}
+}
 $xml_str .= '</system></sisiya_messages>';
 
 #print STDERR $xml_str;

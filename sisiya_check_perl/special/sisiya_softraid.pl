@@ -105,7 +105,7 @@ for $i (0..$#raid_arrays) {
 		if( ($state eq 'active') || ($state eq 'clean') ) {
 			$ok_str .= " OK: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs).";
 		}
-		elsif(($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)')) {
+		elsif(($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)') || ($state eq 'clean, checking')) {
 			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs)!";
 		}
 		elsif( ($state eq 'active, resyncing') || ($state eq 'clean,resyncing') ) {
