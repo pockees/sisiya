@@ -90,10 +90,15 @@ sub get_cpu_usage
 
 	if($SisIYA_Config::sisiya_osname eq 'Linux') {
 		my @a = `top -b -n 1`;
-		$s = (grep(/^%[C,c]pu[0-9,(]/, @a))[0];
+		# starts with Cpu(s): or %Cpu(s):
+		$s = (grep(/^.*[C,c]pu[0-9,(]/, @a))[0];
 	}
-	if($s ne '') {
+	# the grep above undefines the $s
+	if((defined $s) && ($s ne '')) {
 		$s = " Usage: $s";
+	}
+	else {
+		$s = '';
 	}
 	return $s;
 }
