@@ -26,13 +26,11 @@ use SisIYA_Config;
 #use diagnostics;
 
 if( ($#ARGV < 0) || ($#ARGV > 1) ) {
-	#print "Usage : $0 SisIYA_client_conf.pm expire\n";
 	print "Usage : $0 expire\n";
 	print "Usage : $0 check_script expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
-
 
 if(-f $SisIYA_Config::sisiya_local_conf) {
 	require $SisIYA_Config::sisiya_local_conf;
@@ -47,54 +45,70 @@ if(-f $SisIYA_Config::sisiya_functions) {
 #		exit 1;
 #	}
 #}
-my $expire;
-if($#ARGV == 1) {
-	print STDERR "Running single script $ARGV[0]\n";
-	$expire; = $ARGV[1];
-	exit
+
+# Parameter	: script name
+# Return	: xml message string
+sub run_script
+{
+	my $expire = $_[1];
+	my ($status_id, $service_id, $s);
+
+	print STDERR "[$_[0]] ...\n";
+	chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $_[0]`);
+	$status_id = $? >> 8;
+	$service_id = get_serviceid($s);	
+	# replace ' with \', because it is a problem in the SQL statemnet
+	$s =~ s/'/\\\'/g;
+	$s = (split(/$SisIYA_Config::FS/, $s))[1];
+	$s = '<message><serviceid>'.$service_id.'</serviceid><statusid>'.$status_id.'</statusid><expire>'.$expire.'</expire><data>'.$s.'</data></message>';
+	print STDERR "statusid = $status_id serviceid = $service_id message=$s\n";
+	return $s;	
+
 }
-$expire; = $ARGV[0];
-opendir(my $dh, $SisIYA_Config::sisiya_common_dir) || die "$0 : Cannot open directory: $SisIYA_Config::sisiya_common_dir! $!";
-my @scripts = grep { /^sisiya_*/ && -x "$SisIYA_Config::sisiya_common_dir/$_" } readdir($dh);
-closedir($dh);
 
-my $statusid;
-my $serviceid;
-my $s;
+# Parameter	: Script directory
+# Return	: XML string
+sub process_checks
+{
+	my $dir_str = $_[0];
+	my $expire  = $_[1];
+	my ($status_id, $service_id);
+	my $s = '';
 
+	if(opendir(my $dh, $dir_str)) {
+		my @scripts = grep { /^sisiya_*/ && -x "$dir_str/$_" } readdir($dh);
+		closedir($dh);
+		foreach my $f (@scripts) {
+			$s .= run_script("$dir_str/$f", $expire); 
+		}
+	}
+	return $s;
+}
+
+# record the start time
 my $date_str = get_sisiya_date();
+my $expire;
+my $xml_s_str = '';
+
+if($#ARGV == 1) {
+	$expire = $ARGV[1];
+	$xml_s_str = run_script($ARGV[0], $expire);
+}
+else {
+	$expire = $ARGV[0];
+	$xml_s_str  = process_checks($SisIYA_Config::sisiya_common_dir, $expire);
+	$xml_s_str .= process_checks($SisIYA_Config::sisiya_systems_dir, $expire);
+}
+
+if($xml_s_str eq '') {
+	print STDERR "There is no SisIYA message to be send!\n";
+	exit 1;
+}
 
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
 $xml_str .= '<system><name>'.$SisIYA_Config::sisiya_hostname.'</name>';
-
-foreach my $f (@scripts) {
-	print STDERR "[$f] ...\n";
-	#chomp($s = `/usr/bin/perl -I./ $SisIYA_Config::sisiya_common_dir/$f`);
-	chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_common_dir/$f`);
-	$statusid = $? >> 8;
-	$serviceid = get_serviceid($s);	
-	# replace ' with \', because it is a problem in the SQL statemnet
-	$s =~ s/'/\\\'/g;
-	$s = (split(/$SisIYA_Config::FS/, $s))[1];
-	print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
-	$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
-}
-if(opendir($dh, $SisIYA_Config::sisiya_systems_dir)) {
-	@scripts = grep { /^sisiya_*/ && -x "$SisIYA_Config::sisiya_systems_dir/$_" } readdir($dh);
-	closedir($dh);
-	foreach my $f (@scripts) {
-		print STDERR "[$f] ...\n";
-		chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $SisIYA_Config::sisiya_systems_dir/$f`);
-		$statusid = $? >> 8;
-		$serviceid = get_serviceid($s);	
-		# replace ' with \', because it is a problem in the SQL statemnet
-		$s =~ s/'/\\\'/g;
-		$s = (split(/$SisIYA_Config::FS/, $s))[1];
-		print STDERR "statusid = $statusid serviceid = $serviceid message=$s\n";
-		$xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$s."</data></message>";
-	}
-}
+$xml_str .= $xml_s_str;
 $xml_str .= '</system></sisiya_messages>';
 
 #print STDERR $xml_str;

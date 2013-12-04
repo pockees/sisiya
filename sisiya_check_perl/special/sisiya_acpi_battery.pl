@@ -131,9 +131,10 @@ sub use_acpi
 		}
 	}
 	@a = `$acpi_prog -a`;
-	my $s = "@a";
 	$retcode = $? >>=8;
 	if($retcode == 0) {
+		my $s = "@a";
+		chomp($s = $s);
 		$info_str = "INFO: $s."; 
 	}
 
