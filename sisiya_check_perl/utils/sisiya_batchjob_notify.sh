@@ -42,7 +42,7 @@ message_str="$org_message"
 data_message_str=""
 ###################################################################################################
 #echo "sisiya_hostname=$sisiya_hostname serviceid=$serviceid statusid=$statusid expire=$expire str=$message_str"
-echo "perl -I$base_dir ${send_message_prog} $service_str $status_str $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+#echo "perl -I$base_dir ${send_message_prog} $service_str $status_str $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 perl -I$base_dir ${send_message_prog} $service_str $status_str $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 sleep 1
 exit 0
