@@ -53,7 +53,7 @@ sub run_script
 	my $expire = $_[1];
 	my ($status_id, $service_id, $s);
 
-	print STDERR "[$_[0]] ...\n";
+	#print STDERR "[$_[0]] ...\n";
 	chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $_[0]`);
 	$status_id = $? >> 8;
 	$service_id = get_serviceid($s);	
@@ -61,7 +61,7 @@ sub run_script
 	$s =~ s/'/\\\'/g;
 	$s = (split(/$SisIYA_Config::FS/, $s))[1];
 	$s = '<message><serviceid>'.$service_id.'</serviceid><statusid>'.$status_id.'</statusid><expire>'.$expire.'</expire><data>'.$s.'</data></message>';
-	print STDERR "statusid = $status_id serviceid = $service_id message=$s\n";
+	#print STDERR "statusid = $status_id serviceid = $service_id message=$s\n";
 	return $s;	
 
 }
