@@ -1,2 +1,2 @@
 #!/bin/bash
-chown root:root -R /opt/sisiya-client-checks /etc/cron.d/sisiya_client_checks
+chown root:root -R /opt/sisiya-client-checks /etc/cron.d/sisiya-client-checks

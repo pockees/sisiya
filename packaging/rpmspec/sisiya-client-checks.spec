@@ -1,7 +1,7 @@
 %define name sisiya-client-checks
 
 %define version 0.6.0
-%define release 23
+%define release 24
 
 %define install_dir /opt/%{name}
 
@@ -34,7 +34,7 @@ make "DESTDIR=%{buildroot}" install_sisiya_client_checks
 %files
 %defattr(-,root,root)
 %dir %attr(0755,root,root) 				/etc/cron.d
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_client_checks
+%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-client-checks
 #%attr(0644,root,root) 		%doc 			README NEWS ChangeLog AUTHORS INSTALL TODO
 %dir %attr(0755,root,root) 				%{install_dir}
 %attr(0644,root,root) 					%{install_dir}/version.txt
