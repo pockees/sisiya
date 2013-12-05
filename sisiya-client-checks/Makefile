@@ -11,7 +11,7 @@ install: install_sisiya_client_checks install_sisiya_client_systems
 
 install_sisiya_client_checks:
 	install -d $(dst_cron)
-	install -m 600 etc/cron.d/sisiya_client_checks		$(dst_cron)
+	install -m 600 etc/cron.d/sisiya-client-checks		$(dst_cron)
 	install -m 700 -d $(dst_sisiya_client_checks)/misc
 	install -m 700 -d $(dst_sisiya_client_checks)/common
 	install -m 700 -d $(dst_sisiya_client_checks)/special
