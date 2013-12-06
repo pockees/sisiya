@@ -112,7 +112,15 @@ $xml_str .= $xml_s_str;
 $xml_str .= '</system></sisiya_messages>';
 
 #print STDERR $xml_str;
-send_message_data($xml_str);
+if($SisIYA_Config::export_to_xml == 1) {
+	if(open (my $file, '>', $SisIYA_Config::export_xml_file)) {
+		print { $file } $xml_str;
+		close($file);
+	}
+}
+if($SisIYA_Config::send_to_server == 1) {
+	send_message_data($xml_str);
+}
 exit 0;
 
 # <?xml version="1.0" encoding="utf-8"?>

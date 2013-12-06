@@ -26,6 +26,11 @@
 
 package SisIYA_Config;
 
+# This switch is used for sending the check results to the SisIYA server.
+# When disabled (set to 0) then the rusults are not send. This way
+# you can use SisIYA only to check your system and export to the results to a XML
+# file (see below the export_ variables).
+our $send_to_server = 1;
 ### SisIYA Server's name or IP address
 our $sisiya_server = '127.0.0.1';
 #### SisIYA server port on which the SisIYA daemon is listenening 
@@ -55,6 +60,13 @@ our $send_message_prog 		= "$sisiya_utils_dir/sisiya_send_message_xml.pl";
 our $send_message2_prog		= "$sisiya_utils_dir/sisiya_send_message2_xml.pl";
 our $sisiyac_prog 		= "$sisiya_utils_dir/sisiyac_xml.pl";
 our $sisiya_functions 		= "$sisiya_utils_dir/sisiya_functions.pl";
+# This option enables exporting of the check results into a XML file. 
+# In order to enable this feuture set export_to_xml to 1 in the SisIYA_Config_local.pl
+# and adjust the rest of export_ variables as well according to your needs.
+our $export_to_xml		= 0;
+our $export_xml_file		= '/tmp/sisiya-client-checks.xml';
+our $export_xml_owner		= 'erdalmutlu:users';
+our $export_xml_permissions	= '640';
 
 our %statusids = (
 	'info' 		=> 1,	# 2^0 
