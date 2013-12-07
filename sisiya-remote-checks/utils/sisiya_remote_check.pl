@@ -22,6 +22,7 @@
 use strict;
 use warnings;
 use IO::Socket;
+use SisIYA_Config;
 use SisIYA_Remote_Config;
 #use diagnostics;
 
@@ -33,12 +34,18 @@ if( ($#ARGV < 0) || ($#ARGV > 1) ) {
 	exit 1;
 }
 
-if(-f $SisIYA_Remote_Config::sisiya_local_conf) {
-	require $SisIYA_Remote_Config::sisiya_local_conf;
+if(-f $SisIYA_Remote_Config::local_conf) {
+	require $SisIYA_Remote_Config::local_conf;
 }
-#if(-f $SisIYA_Remote_Config::sisiya_functions) {
-#	require $SisIYA_Remote_Config::sisiya_functions;
-#}
+if(-f $SisIYA_Remote_Config::client_conf) {
+	require $SisIYA_Remote_Config::client_conf;
+}
+if(-f $SisIYA_Remote_Config::client_local_conf) {
+	require $SisIYA_Remote_Config::client_local_conf;
+}
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
+}
 
 # Parameter	: script name
 # Return	: xml message string
@@ -46,16 +53,12 @@ sub run_script
 {
 	my $expire = $_[1];
 	my ($status_id, $service_id, $s);
+	my $systems_file = "dbs_systems.xml";
 
 	#print STDERR "[$_[0]] ...\n";
-	chomp($s = `/usr/bin/perl -I$SisIYA_Remote_Config::sisiya_base_dir $_[0]`);
+	chomp($s = `/usr/bin/perl -I$SisIYA_Remote_Config::conf_dir -I$SisIYA_Config::base_dir $_[0] $systems_file $expire`);
 	$status_id = $? >> 8;
-	$service_id = get_serviceid($s);	
-	# replace ' with \', because it is a problem in the SQL statemnet
-	$s =~ s/'/\\\'/g;
-	$s = (split(/$SisIYA_Remote_Config::FS/, $s))[1];
-	$s = '<message><serviceid>'.$service_id.'</serviceid><statusid>'.$status_id.'</statusid><expire>'.$expire.'</expire><data>'.$s.'</data></message>';
-	#print STDERR "statusid = $status_id serviceid = $service_id message=$s\n";
+	print STDERR "statusid = $status_id message=$s\n";
 	return $s;	
 }
 
@@ -79,7 +82,7 @@ sub process_checks
 }
 
 # record the start time
-my $date_str = get_sisiya_date();
+my $date_str = get_timestamp();
 my $expire;
 my $xml_s_str = '';
 
@@ -89,7 +92,7 @@ if($#ARGV == 1) {
 }
 else {
 	$expire = $ARGV[0];
-	$xml_s_str  = process_checks($SisIYA_Remote_Config::sisiya_remote_checks_scripts_dir, $expire);
+	$xml_s_str  = process_checks($SisIYA_Remote_Config::scripts_dir, $expire);
 }
 
 if($xml_s_str eq '') {
@@ -99,7 +102,6 @@ if($xml_s_str eq '') {
 
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
-$xml_str .= '<system><name>'.$SisIYA_Remote_Config::sisiya_hostname.'</name>';
 $xml_str .= $xml_s_str;
 $xml_str .= '</system></sisiya_messages>';
 
