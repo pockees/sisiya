@@ -23,11 +23,11 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 ###############################################################################
 #### the default values
@@ -41,7 +41,7 @@ our $uptime_prog = 'uptime';
 #######################################################################################
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -55,7 +55,7 @@ my $service_name = 'load';
 sub get_load_avarage
 {
 	my $n = 0;
-	if($SisIYA_Config::sisiya_osname eq 'Linux') {
+	if($SisIYA_Config::osname eq 'Linux') {
 		#cat /proc/loadavg 
 		#0.04 0.09 0.13 1/410 11983
 		my $x;
@@ -66,7 +66,7 @@ sub get_load_avarage
 		#chomp($x);
 		$n = (split(/ /, $x))[0];
 	}
-	elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
+	elsif($SisIYA_Config::osname eq 'SunOS') {
 		# uptime
 		# 10:16am  up  3 users,  load average: 0.01, 0.02, 0.01
 		my @a = `$uptime_prog`;
@@ -74,7 +74,7 @@ sub get_load_avarage
 		if($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = "ERROR: Error executing the uptime command $uptime_prog! retcode=$retcode";
-			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
 			$n = (split(/,/,(split(/:/, $a[0]))[2]))[0];
@@ -88,7 +88,7 @@ sub get_cpu_usage
 {
 	my $s = '';
 
-	if($SisIYA_Config::sisiya_osname eq 'Linux') {
+	if($SisIYA_Config::osname eq 'Linux') {
 		my @a = `top -b -n 1`;
 		# starts with Cpu(s): or %Cpu(s):
 		$s = (grep(/^.*[C,c]pu[0-9,(]/, @a))[0];
@@ -106,7 +106,7 @@ sub get_cpu_usage
 sub get_cpu_info
 {
 	my $s = '';
-	if($SisIYA_Config::sisiya_osname eq 'Linux') {
+	if($SisIYA_Config::osname eq 'Linux') {
 		chomp(my @a =`cat /proc/cpuinfo`);
 		my @b = grep(/^processor/, @a);
 		my $cpu_count = @b;
@@ -141,7 +141,7 @@ $message_str .= get_cpu_info();
 ### add cpu usage info
 $message_str .= get_cpu_usage();
 ###################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
 #
 #cat /proc/cpuinfo 

@@ -23,11 +23,11 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 ## the default values
 # uptimes are given in minutes
@@ -35,13 +35,13 @@ our %uptimes = ('error' => 1440, 'warning' => 4320);
 our $uptime_prog = 'uptime';
 ### to get information about the server
 our $info_prog = '';
-##our $info_prog="$SisIYA_Config::sisiya_base_dir/special/sisiya_system_info_hpasm.sh"
-our $version_file = "$SisIYA_Config::sisiya_base_dir/version.txt";
+##our $info_prog="$SisIYA_Config::base_dir/special/system_info_hpasm.sh"
+our $version_file = "$SisIYA_Config::base_dir/version.txt";
 our $ip_prog = '/sbin/ip';
 #### end of the default values
 ################################################################################
 # override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -101,7 +101,7 @@ sub get_uptime_in_minutes
 	my $uptime_in_minutes = 0;
 
 	#chomp($x = `/bin/cat /proc/uptime`);
-	if($SisIYA_Config::sisiya_osname eq 'Linux') {
+	if($SisIYA_Config::osname eq 'Linux') {
 		my $file;
 		open($file, '<', '/proc/uptime') || die "$0: Could not open file /proc/uptime! $!";
 		$x = <$file>;
@@ -111,7 +111,7 @@ sub get_uptime_in_minutes
 			#$uptime_in_minutes = int($a[0] / 60);
 		$uptime_in_minutes = int( (split(/\./, $x))[0] / 60 ); 
 	}
-	if($SisIYA_Config::sisiya_osname eq 'SunOS') {
+	if($SisIYA_Config::osname eq 'SunOS') {
 		#uptime   
 		# 11:52am  up  1 user,  load average: 0.04, 0.02, 0.04
 		my @a = `$uptime_prog`;
@@ -119,7 +119,7 @@ sub get_uptime_in_minutes
 		if($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = "ERROR: Error executing the uptime command $uptime_prog! retcode=$retcode";
-			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
 			$x = (split(/m/, $a[0]))[0];
@@ -150,7 +150,7 @@ else {
 	$message_str = 'OK:The system is up since '.minutes2string($uptime_in_minutes);
 }
 my $x;
-if($SisIYA_Config::sisiya_osname eq 'HP-UX') {
+if($SisIYA_Config::osname eq 'HP-UX') {
 	chomp($x = `/bin/uname -srm`);
 }
 else {
@@ -159,7 +159,7 @@ else {
 my $file;
 $message_str .= " Info: $x";
 # add OS version
-if($SisIYA_Config::sisiya_osname eq 'Linux') {
+if($SisIYA_Config::osname eq 'Linux') {
 	if(open($file, '<', '/etc/issue.net')) {
 		$x = <$file>;
 		chomp($x);
@@ -196,5 +196,5 @@ if($info_prog ne '') {
 	$message_str .= " Details: $x";
 }
 ###################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

@@ -23,11 +23,11 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 ###############################################################################
 #### the default values
@@ -41,7 +41,7 @@ our %swap_percents = ( 'warning' => 30, 'error' => 50);
 #######################################################################################
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -70,7 +70,7 @@ my $service_name = 'swap';
 my $retcode;
 my ($free_ram, $total_ram, $used_ram, $percent_ram);
 my ($free_swap, $total_swap, $used_swap, $percent_swap);
-if($SisIYA_Config::sisiya_osname eq 'Linux') {
+if($SisIYA_Config::osname eq 'Linux') {
 	my $file;
 	open($file, '<', '/proc/meminfo') || die "$0: Could not open file /proc/meminfo! $!";
 	my @lines = <$file>;
@@ -94,13 +94,13 @@ if($SisIYA_Config::sisiya_osname eq 'Linux') {
 #	print STDERR "RAM: total=$total_ram free=$free_ram used=$total_ram\n";
 #	print STDERR "formated RAM total=".get_size_k($total_ram)."\n";
 }
-elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
+elsif($SisIYA_Config::osname eq 'SunOS') {
 	my @a = `$sunos_swap_prog -s`;
 	$retcode = $? >>=8;
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = " ERROR: Could not execute swap command $sunos_swap_prog!";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
 		$total_swap = (split(/k/, (split(/,/, $a[0]))[1]))[0];
@@ -112,7 +112,7 @@ elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = " ERROR: Could not execute prtconf command $sunos_prtconf_prog!";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
 		my $s = (grep(/^Memory size:/, @a))[0];
@@ -124,7 +124,7 @@ elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
 		if($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = " ERROR: Could not execute vmstat command $sunos_vmstat_prog!";
-			sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
 			$s = $a[3];
@@ -160,7 +160,7 @@ else {
 }
 
 ###################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
 # cat /proc/meminfo
 # cat /proc/meminfo 

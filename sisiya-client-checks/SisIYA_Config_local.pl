@@ -1,17 +1,17 @@
 package SisIYA_Config;
 
-#$sisiya_server	= 'sisiyad.example.org';
+#$server		= 'sisiyad.example.org';
 #
-#$sisiya_base_dir	= '/ev/erdalmutlu/git/sisiya/sisiya_check_perl';
-#$sisiya_local_conf	= "$sisiya_base_dir/SisIYA_Config_local.pl";
-#$sisiya_common_dir	= "$sisiya_base_dir/common";
-#$sisiya_misc_dir 	= "$sisiya_base_dir/misc";
-#$sisiya_special_dir	= "$sisiya_base_dir/special";
-#$sisiya_utils_dir 	= "$sisiya_base_dir/bin";
-#$sisiya_systems_dir	= "/ev/erdalmutlu/downloads/sisiya/deneme";
-#$sisiya_systems_conf_dir	= "$sisiya_systems_dir/conf";
-#$send_message_prog 	= "$sisiya_utils_dir/sisiya_send_message_xml.pl";
-#$send_message2_prog	= "$sisiya_utils_dir/sisiya_send_message2_xml.pl";
-#$sisiyac_prog 	= "$sisiya_utils_dir/sisiyac_xml.pl";
-#$sisiya_functions 	= "$sisiya_utils_dir/sisiya_functions.pl";
+#$base_dir		= '/ev/erdalmutlu/git/sisiya/check_perl';
+#$local_conf		= "$base_dir/SisIYA_Config_local.pl";
+#$common_dir		= "$base_dir/common";
+#$misc_dir 		= "$base_dir/misc";
+#$special_dir		= "$base_dir/special";
+#$utils_dir 		= "$base_dir/bin";
+#$systems_dir		= "/ev/erdalmutlu/downloads/sisiya/deneme";
+#$systems_conf_dir	= "$systems_dir/conf";
+#$send_message_prog 	= "$utils_dir/send_message_xml.pl";
+#$send_message2_prog	= "$utils_dir/send_message2_xml.pl";
+#$sisiyac_prog 		= "$utils_dir/sisiyac_xml.pl";
+#$functions	 	= "$utils_dir/functions.pl";
 1;

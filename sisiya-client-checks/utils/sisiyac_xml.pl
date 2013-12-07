@@ -24,12 +24,12 @@ use warnings;
 use IO::Socket;
 
 if(($#ARGV+1) != 3) {
-	printf("Usage: %s sisiya_server sisiya_port sisiya_message\n",$0);
+	printf("Usage: %s server port message\n",$0);
 	printf("---------------------- or ----------------------------------\n");
-	printf("Usage: %s sisiya_server sisiya_port message_file\n",$0);
+	printf("Usage: %s server port message_file\n",$0);
 	printf("	server         : The name or IP address of the SisIYA server to connect.\n");
 	printf("	port           : The port on which the SisIYA server is listening.\n");
-	printf("	sisiya_message : The SisIYA message string that is going to be transfered to the SisIYA server.\n");
+	printf("	message : The SisIYA message string that is going to be transfered to the SisIYA server.\n");
 	printf("	file contents  : Every line is a SisIYA message string.\n");
 	printf("	For more information please refer to the project's website : http://sisiya.sourceforge.net\n");
 	exit(1);

@@ -1,0 +1,106 @@
+#!/usr/bin/perl -w
+#
+#    Copyright (C) Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#######################################################################################
+#BEGIN {push @INC, '..'}
+## or run : perl -I..
+use strict;
+use warnings;
+use IO::Socket;
+use SisIYA_Remote_Config;
+#use diagnostics;
+
+if( ($#ARGV < 0) || ($#ARGV > 1) ) {
+	print "Usage : $0 expire\n";
+	print "Usage : $0 check_script expire\n";
+	print "The expire parameter must be given in minutes.\n";
+	print "When run without check_name parameter all remote checks are excecuted.";
+	exit 1;
+}
+
+if(-f $SisIYA_Remote_Config::sisiya_local_conf) {
+	require $SisIYA_Remote_Config::sisiya_local_conf;
+}
+#if(-f $SisIYA_Remote_Config::sisiya_functions) {
+#	require $SisIYA_Remote_Config::sisiya_functions;
+#}
+
+# Parameter	: script name
+# Return	: xml message string
+sub run_script
+{
+	my $expire = $_[1];
+	my ($status_id, $service_id, $s);
+
+	#print STDERR "[$_[0]] ...\n";
+	chomp($s = `/usr/bin/perl -I$SisIYA_Remote_Config::sisiya_base_dir $_[0]`);
+	$status_id = $? >> 8;
+	$service_id = get_serviceid($s);	
+	# replace ' with \', because it is a problem in the SQL statemnet
+	$s =~ s/'/\\\'/g;
+	$s = (split(/$SisIYA_Remote_Config::FS/, $s))[1];
+	$s = '<message><serviceid>'.$service_id.'</serviceid><statusid>'.$status_id.'</statusid><expire>'.$expire.'</expire><data>'.$s.'</data></message>';
+	#print STDERR "statusid = $status_id serviceid = $service_id message=$s\n";
+	return $s;	
+}
+
+# Parameter	: Script directory
+# Return	: XML string
+sub process_checks
+{
+	my $dir_str = $_[0];
+	my $expire  = $_[1];
+	my ($status_id, $service_id);
+	my $s = '';
+
+	if(opendir(my $dh, $dir_str)) {
+		my @scripts = grep { /^sisiya_*/ && -x "$dir_str/$_" } readdir($dh);
+		closedir($dh);
+		foreach my $f (@scripts) {
+			$s .= run_script("$dir_str/$f", $expire); 
+		}
+	}
+	return $s;
+}
+
+# record the start time
+my $date_str = get_sisiya_date();
+my $expire;
+my $xml_s_str = '';
+
+if($#ARGV == 1) {
+	$expire = $ARGV[1];
+	$xml_s_str = run_script($ARGV[0], $expire);
+}
+else {
+	$expire = $ARGV[0];
+	$xml_s_str  = process_checks($SisIYA_Remote_Config::sisiya_remote_checks_scripts_dir, $expire);
+}
+
+if($xml_s_str eq '') {
+	print STDERR "There is no SisIYA message to be send!\n";
+	exit 1;
+}
+
+my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
+$xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
+$xml_str .= '<system><name>'.$SisIYA_Remote_Config::sisiya_hostname.'</name>';
+$xml_str .= $xml_s_str;
+$xml_str .= '</system></sisiya_messages>';
+
+exit 0;

@@ -23,11 +23,11 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 ###############################################################################
 #### the default values
@@ -44,7 +44,7 @@ our %exception_list;
 ################################################################################
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -85,7 +85,7 @@ my %file_systems;
 my $fs_state;
 my $percent_error;
 my $percent_warning;
-if($SisIYA_Config::sisiya_osname eq 'Linux') {
+if($SisIYA_Config::osname eq 'Linux') {
 	#my @a = `$df_prog -TPk`;
 	my @a = grep(/^\//, `$df_prog -TPkl`);
 	my $found;
@@ -115,7 +115,7 @@ if($SisIYA_Config::sisiya_osname eq 'Linux') {
 		}
 	}
 }
-elsif($SisIYA_Config::sisiya_osname eq 'SunOS') {
+elsif($SisIYA_Config::osname eq 'SunOS') {
 	#my @a = `$df_prog -TPk`;
 	my @a = grep(/^\//, `$df_prog -k`);
 	my $found;
@@ -182,7 +182,7 @@ if($ok_str ne '') {
 	$message_str .= $ok_str;
 }
 ##################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ##################################################################################
 #echo "df_command=[$df_command] grep_prog=[$grep_prog]"
 #######################################################################

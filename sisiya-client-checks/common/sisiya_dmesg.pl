@@ -23,8 +23,8 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
 #######################################################################################
 ###############################################################################
@@ -34,7 +34,7 @@ our @warning_strings = ('warn', 'notice', 'not responding', 'NIC Link i Up');
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -49,7 +49,7 @@ my $warning_messages = '';
 my $ok_messages = '';
 my $x;
 foreach(@error_strings) {
-	if($SisIYA_Config::sisiya_osname eq 'AIX') {
+	if($SisIYA_Config::osname eq 'AIX') {
 		### AIX does not have dmesg command. I use alog instead. alog -L lists log types.
 		#str=`alog -o -t console | head -n 1`
 		#use the following command to clear the log file : errclear -i /var/adm/ras/errlog 0
@@ -68,7 +68,7 @@ foreach(@error_strings) {
 }
 
 foreach(@warning_strings) {
-	if($SisIYA_Config::sisiya_osname eq 'AIX') {
+	if($SisIYA_Config::osname eq 'AIX') {
 		### AIX does not have dmesg command. I use alog instead. alog -L lists log types.
 		#str=`alog -o -t console | head -n 1`
 		#use the following command to clear the log file : errclear -i /var/adm/ras/errlog 0
@@ -99,8 +99,6 @@ if($ok_messages ne '') {
 	$message_str .= " OK: dmesg does not contain any of $ok_messages";
 }
 
-# replace the ' with whitespace => no need anymore, it is replaced in sisiya_all.pl with \'
-#$message_str =~ s/\'/ /g; 
 ################################################################################
 print "dmesg$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
 exit $statusid;

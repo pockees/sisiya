@@ -3,7 +3,7 @@
 #
 ## This file is the config for SisIYA check programs.
 ##
-##    Copyright (C) 2003 - 2013  Erdal Mutlu
+##    Copyright (C) Erdal Mutlu
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of the GNU General Public License as published by
@@ -32,34 +32,34 @@ package SisIYA_Config;
 # file (see below the export_ variables).
 our $send_to_server = 1;
 ### SisIYA Server's name or IP address
-our $sisiya_server = '127.0.0.1';
+our $server = '127.0.0.1';
 #### SisIYA server port on which the SisIYA daemon is listenening 
-our $sisiya_port = 8888;
+our $port = 8888;
 
-our $sisiya_hostname;
-chomp($sisiya_hostname = `hostname`);
+our $hostname;
+chomp($hostname = `hostname`);
 
-our $sisiya_osname;
-chomp($sisiya_osname = `uname -s`);
+our $osname;
+chomp($osname = `uname -s`);
 
-our $sisiya_osrelease;
-chomp($sisiya_osrelease = `uname -r`);
+our $osrelease;
+chomp($osrelease = `uname -r`);
 
 # field seperator
 our $FS = '~';
 
-our $sisiya_base_dir		= '/opt/sisiya-client-checks';
-our $sisiya_local_conf		= "$sisiya_base_dir/SisIYA_Config_local.pl";
-our $sisiya_common_dir		= "$sisiya_base_dir/common";
-our $sisiya_misc_dir 		= "$sisiya_base_dir/misc";
-our $sisiya_special_dir		= "$sisiya_base_dir/special";
-our $sisiya_utils_dir 		= "$sisiya_base_dir/utils";
-our $sisiya_systems_dir		= "$sisiya_base_dir/systems/$sisiya_hostname";
-our $sisiya_systems_conf_dir 	= "$sisiya_systems_dir/conf";
-our $send_message_prog 		= "$sisiya_utils_dir/sisiya_send_message_xml.pl";
-our $send_message2_prog		= "$sisiya_utils_dir/sisiya_send_message2_xml.pl";
-our $sisiyac_prog 		= "$sisiya_utils_dir/sisiyac_xml.pl";
-our $sisiya_functions 		= "$sisiya_utils_dir/sisiya_functions.pl";
+our $base_dir			= '/opt/sisiya-client-checks';
+our $local_conf			= "$base_dir/SisIYA_Config_local.pl";
+our $common_dir			= "$base_dir/common";
+our $misc_dir 			= "$base_dir/misc";
+our $special_dir		= "$base_dir/special";
+our $utils_dir 			= "$base_dir/utils";
+our $systems_dir		= "$base_dir/systems/$hostname";
+our $systems_conf_dir 		= "$systems_dir/conf";
+our $send_message_prog 		= "$utils_dir/send_message_xml.pl";
+our $send_message2_prog		= "$utils_dir/send_message2_xml.pl";
+our $sisiyac_prog 		= "$utils_dir/sisiyac_xml.pl";
+our $functions 			= "$utils_dir/sisiya_functions.pl";
 # This option enables exporting of the check results into a XML file. 
 # In order to enable this feuture set export_to_xml to 1 in the SisIYA_Config_local.pl
 # and adjust the rest of export_ variables as well according to your needs.

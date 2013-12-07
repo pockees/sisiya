@@ -23,11 +23,11 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 #######################################################################################
 ###############################################################################
@@ -43,7 +43,7 @@ our $env_oracle_bin = '/opt/oracle/product/8.1.7/bin';
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -63,7 +63,7 @@ $ENV{'PATH'} = $env_oracle_bin.':'.$ENV{'PATH'};
 $ENV{'NLS_LANG'} = $env_nls_lang;
 
 my %tablespaces;
-my $sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_tablespace.sql';
+my $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_tablespace.sql';
 my @a = `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`;
 my @b;
 #print STDERR "@a\n";
@@ -103,5 +103,5 @@ if($ok_str ne '') {
 	$message_str .= " $ok_str";
 }
 ###################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

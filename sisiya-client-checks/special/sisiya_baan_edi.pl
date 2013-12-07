@@ -23,17 +23,17 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 #######################################################################################
 ###############################################################################
 #### the default values
 our $baan_edi_db_prog = '';
-##our $baan_edi_db_prog="$SisIYA_Config::sisiya_utils_dir/sisiya_baan_edi_oracle.pl"
+##our $baan_edi_db_prog="$SisIYA_Config::utils_dir/sisiya_baan_edi_oracle.pl"
 ######
 # this program should print the row numbers of ecedi700, ecedi750 and ecedi751 Baan EDI
 # tables for the corresponding company in the form of table_name,row_count each line.
@@ -45,7 +45,7 @@ our $baan_edi_db_prog = '';
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -63,7 +63,7 @@ my $warning_str = '';
 if($baan_edi_db_prog eq '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There is no defined Baan EDI db script!";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 
 my %table_row_counts = ( 'ecedi700' => 0, 'ecedi750' => 0, 'ecedi751' => 0 ); 
@@ -74,7 +74,7 @@ my $retcode = $? >>=8;
 if($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $baan_edi_db_prog command! retcode=$retcode";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $n;
 my $table_name;
@@ -129,5 +129,5 @@ if($info_str ne '') {
 	$message_str .= " $info_str";
 }
 ###################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

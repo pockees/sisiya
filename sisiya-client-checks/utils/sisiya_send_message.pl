@@ -38,20 +38,20 @@ my $expire = $ARGV[2];
 my $message_str = $ARGV[3];
 #print STDERR "statusid_str=$statusid_str serviceid_str=$serviceid_str expire=$expire message=$message_str\n";
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 
-my $date_str = get_sisiya_date();
+my $date_str = get_timestamp();
 my $statusid = $SisIYA_Config::statusids{$statusid_str};
 my $serviceid = get_serviceid($serviceid_str);
 
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
-$xml_str .= '<system><name>'.$SisIYA_Config::sisiya_hostname.'</name>';
+$xml_str .= '<system><name>'.$SisIYA_Config::hostname.'</name>';
 $xml_str .= "<message><serviceid>".$serviceid."</serviceid><statusid>".$statusid."</statusid><expire>".$expire."</expire><data>".$message_str."</data></message>";
 $xml_str .= '</system></sisiya_messages>';
 

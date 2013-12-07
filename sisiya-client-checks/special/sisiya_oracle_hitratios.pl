@@ -23,11 +23,11 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 #######################################################################################
 ###############################################################################
@@ -49,7 +49,7 @@ our $env_oracle_bin = '/opt/oracle/product/8.1.7/bin';
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -69,7 +69,7 @@ $ENV{'PATH'} = $env_oracle_bin.':'.$ENV{'PATH'};
 $ENV{'NLS_LANG'} = $env_nls_lang;
 
 ### bufer cache hit ratio
-my $sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_buffercache.sql';
+my $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_buffercache.sql';
 my $x;
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
@@ -86,7 +86,7 @@ else {
 }
 
 ### dictionary hit ratio
-$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_dictionary.sql';
+$sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_dictionary.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -102,7 +102,7 @@ else {
 }
 
 ### library cache hit ratio
-$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_library.sql';
+$sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_library.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -118,7 +118,7 @@ else {
 }
 
 ### nowait cache hit ratio
-$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_nowait.sql';
+$sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_nowait.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -134,7 +134,7 @@ else {
 }
 
 ### sort cache hit ratio
-$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_sort.sql';
+$sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_sort.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -150,12 +150,12 @@ else {
 }
 
 ### total users
-$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_totalusers.sql';
+$sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_totalusers.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 my $total_users = trim($x); 
 
 ### SGA size
-$sql_file = $SisIYA_Config::sisiya_misc_dir.'/sisiya_oracle_hitratios_sgasize.sql';
+$sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_sgasize.sql';
 chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 my $sga_size = trim($x); 
 $sga_size = get_size($sga_size);
@@ -175,5 +175,5 @@ if($ok_str ne '') {
 }
 $message_str .= " Number of active users is $total_users.  SGA size is $sga_size";
 ###################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

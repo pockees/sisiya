@@ -36,7 +36,7 @@ sub get_serviceid
 }
 
 
-sub get_sisiya_date
+sub get_timestamp
 {
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 	
@@ -119,8 +119,8 @@ sub rtrim
 
 sub send_message_data
 {
-	my $sock = new IO::Socket::INET (PeerAddr => $SisIYA_Config::sisiya_server, PeerPort => $SisIYA_Config::sisiya_port, Proto => 'tcp',);
-	die "$0 :Could not create TCP socket to ".$SisIYA_Config::sisiya_server.":".$SisIYA_Config::sisiya_port." with the following error : $!\n" unless $sock;
+	my $sock = new IO::Socket::INET (PeerAddr => $SisIYA_Config::server, PeerPort => $SisIYA_Config::port, Proto => 'tcp',);
+	die "$0 :Could not create TCP socket to ".$SisIYA_Config::server.":".$SisIYA_Config::port." with the following error : $!\n" unless $sock;
 
 	print $sock $_[0];
 
@@ -133,7 +133,7 @@ sub send_message_data
 # 3: statusid
 # 4: message string
 # 5: data string
-sub sisiya_exit
+sub print_and_exit
 {
 	print "$_[1]$_[0]<msg>$_[3]</msg><datamsg>$_[4]</datamsg>\n";
 	exit $_[2];

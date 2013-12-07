@@ -23,11 +23,11 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 #######################################################################################
 ###############################################################################
@@ -45,7 +45,7 @@ our %default_charged_percents = ( 'warning' => 25, 'error' => 15 );
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -68,7 +68,7 @@ sub use_acpi
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the acpi command! retcode=$retcode";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	#@a =(
 	#	"Battery 0: Charging, 99%, 00:02:24 until charged\n",
@@ -239,7 +239,7 @@ if(! -d $proc_acpi_battery_dir) {
 	if(! -f $acpi_prog) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Both directory $proc_acpi_battery_dir and acpi program $acpi_prog does not exist!";
-		sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
 		use_acpi();
@@ -266,7 +266,7 @@ if($info_str ne '') {
 	$message_str .= "$info_str";
 }
 ###################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
 ##################################################################
 ### cat /proc/acpi/battery/C1BE/info

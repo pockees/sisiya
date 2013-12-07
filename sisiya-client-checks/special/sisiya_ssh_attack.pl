@@ -23,11 +23,11 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 #######################################################################################
 ###############################################################################
@@ -37,7 +37,7 @@ our @strings = ('bad username', 'illegal', 'Invalid user', 'failed password for'
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::sisiya_systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
 if(-f $module_conf_file) {
 	require $module_conf_file;
@@ -54,7 +54,7 @@ my $ok_messages = '';
 if(! -f $log_file) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Could not find log file $log_file!";
-	sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $file;
 open($file, '<', $log_file) || die "$0: Could not open file $log_file! $!";
@@ -90,5 +90,5 @@ if($ok_messages ne '') {
 	$message_str .= " OK: $log_file does not contain any of $ok_messages";
 }
 ###################################################################################
-sisiya_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

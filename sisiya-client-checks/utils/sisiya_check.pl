@@ -29,17 +29,19 @@ if( ($#ARGV < 0) || ($#ARGV > 1) ) {
 	print "Usage : $0 expire\n";
 	print "Usage : $0 check_script expire\n";
 	print "The expire parameter must be given in minutes.\n";
+	print "When run without check_scripts parameter all checks in the common directory and";
+	print "the checks defined in the systems/hostname directory are excecuted.";
 	exit 1;
 }
 
-if(-f $SisIYA_Config::sisiya_local_conf) {
-	require $SisIYA_Config::sisiya_local_conf;
+if(-f $SisIYA_Config::local_conf) {
+	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::sisiya_functions) {
-	require $SisIYA_Config::sisiya_functions;
+if(-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
 }
 
-#foreach ($SisIYA_Config::sisiya_base_dir, $SisIYA_Config::sisiya_common_dir, $SisIYA_Config::sisiya_special_dir) {
+#foreach ($SisIYA_Config::base_dir, $SisIYA_Config::common_dir, $SisIYA_Config::special_dir) {
 #	if (! -d $_) {
 #		print "$0: No such directory : $_\n";
 #		exit 1;
@@ -54,7 +56,7 @@ sub run_script
 	my ($status_id, $service_id, $s);
 
 	#print STDERR "[$_[0]] ...\n";
-	chomp($s = `/usr/bin/perl -I$SisIYA_Config::sisiya_base_dir $_[0]`);
+	chomp($s = `/usr/bin/perl -I$SisIYA_Config::base_dir $_[0]`);
 	$status_id = $? >> 8;
 	$service_id = get_serviceid($s);	
 	# replace ' with \', because it is a problem in the SQL statemnet
@@ -63,7 +65,6 @@ sub run_script
 	$s = '<message><serviceid>'.$service_id.'</serviceid><statusid>'.$status_id.'</statusid><expire>'.$expire.'</expire><data>'.$s.'</data></message>';
 	#print STDERR "statusid = $status_id serviceid = $service_id message=$s\n";
 	return $s;	
-
 }
 
 # Parameter	: Script directory
@@ -86,7 +87,7 @@ sub process_checks
 }
 
 # record the start time
-my $date_str = get_sisiya_date();
+my $date_str = get_timestamp();
 my $expire;
 my $xml_s_str = '';
 
@@ -96,8 +97,8 @@ if($#ARGV == 1) {
 }
 else {
 	$expire = $ARGV[0];
-	$xml_s_str  = process_checks($SisIYA_Config::sisiya_common_dir, $expire);
-	$xml_s_str .= process_checks($SisIYA_Config::sisiya_systems_dir, $expire);
+	$xml_s_str  = process_checks($SisIYA_Config::common_dir, $expire);
+	$xml_s_str .= process_checks($SisIYA_Config::systems_dir, $expire);
 }
 
 if($xml_s_str eq '') {
@@ -107,7 +108,7 @@ if($xml_s_str eq '') {
 
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
-$xml_str .= '<system><name>'.$SisIYA_Config::sisiya_hostname.'</name>';
+$xml_str .= '<system><name>'.$SisIYA_Config::hostname.'</name>';
 $xml_str .= $xml_s_str;
 $xml_str .= '</system></sisiya_messages>';
 
