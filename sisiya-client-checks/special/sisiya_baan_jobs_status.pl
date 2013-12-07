@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -39,7 +39,7 @@ our $baan_jobs_status_db_prog = '';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -52,7 +52,7 @@ my $info_str = '';
 my $ok_str = '';
 my $warning_str = '';
 
-if($baan_jobs_status_db_prog eq '') {
+if ($baan_jobs_status_db_prog eq '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There is no defined Baan Jobs status db script!";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -60,7 +60,7 @@ if($baan_jobs_status_db_prog eq '') {
 
 my @a = `$baan_jobs_status_db_prog`;
 my $retcode = $? >>=8;
-if($retcode != 0) {
+if ($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $baan_jobs_status_db_prog command! retcode=$retcode";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -71,7 +71,7 @@ if($retcode != 0) {
 my @jobs;
 my ($job_code, $job_status, $job_description, $last_time, $next_time);
 chomp(@a = @a);
-foreach(@a) {
+foreach (@a) {
 	$job_code = trim((split(/\|/, $_))[0]);
 	$job_status = trim((split(/\|/, $_))[1]);
 	$job_description = (split(/\|/, $_))[2];
@@ -83,25 +83,25 @@ my $info_str;
 for my $i (0..$#jobs) {
 	#print STDERR "code=[$jobs[$i]{'code'}] status=[$jobs[$i]{'status'}] description=[$jobs[$i]{'description'}] last=[$jobs[$i]{'last_time'}] next=[$jobs[$i]{'next_time'}]\n";
 	$info_str = "$jobs[$i]{'description'} last execution time $jobs[$i]{'last_time'}, next execution time $jobs[$i]{'next_time'}";
-	if($jobs[$i]{'status'} == 1) {
+	if ($jobs[$i]{'status'} == 1) {
 		$ok_str .= " OK: $jobs[$i]{'code'} ($info_str) is free.";
 	}
-	elsif($jobs[$i]{'status'} == 2) {
+	elsif ($jobs[$i]{'status'} == 2) {
 		$ok_str .= " OK: $jobs[$i]{'code'} ($info_str) is waiting.";
 	}
-	elsif($jobs[$i]{'status'} == 3) {
+	elsif ($jobs[$i]{'status'} == 3) {
 		$ok_str .= " OK: $jobs[$i]{'code'} ($info_str) is running.";
 	}
-	elsif($jobs[$i]{'status'} == 4) {
+	elsif ($jobs[$i]{'status'} == 4) {
 		$warning_str .= " WARNING: $jobs[$i]{'code'} ($info_str) is canceled!";
 	}
-	elsif($jobs[$i]{'status'} == 5) {
+	elsif ($jobs[$i]{'status'} == 5) {
 		$error_str .= " ERROR: $jobs[$i]{'code'} ($info_str) has got runtime error!";
 	}
-	elsif($jobs[$i]{'status'} == 6) {
+	elsif ($jobs[$i]{'status'} == 6) {
 		$ok_str .= " OK: $jobs[$i]{'code'} ($info_str) is in queue.";
 	}
-	elsif($jobs[$i]{'status'} == 7) {
+	elsif ($jobs[$i]{'status'} == 7) {
 		$error_str .= " ERROR: $jobs[$i]{'code'} ($info_str) is blocked!";
 	}
 	else {
@@ -109,20 +109,20 @@ for my $i (0..$#jobs) {
 	}
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= " $warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= " $ok_str";
 }
-if($info_str ne '') {
+if ($info_str ne '') {
 	$message_str .= " $info_str";
 }
 ###################################################################################

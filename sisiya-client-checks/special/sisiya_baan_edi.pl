@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -47,7 +47,7 @@ our $baan_edi_db_prog = '';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -60,7 +60,7 @@ my $info_str = '';
 my $ok_str = '';
 my $warning_str = '';
 
-if($baan_edi_db_prog eq '') {
+if ($baan_edi_db_prog eq '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There is no defined Baan EDI db script!";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -71,7 +71,7 @@ my %table_row_counts = ( 'ecedi700' => 0, 'ecedi750' => 0, 'ecedi751' => 0 );
 #my @a = ( "ecedi700,19\n", "ecedi750,3\n", "ecedi751,8\n" );
 my @a = `$baan_edi_db_prog`;
 my $retcode = $? >>=8;
-if($retcode != 0) {
+if ($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $baan_edi_db_prog command! retcode=$retcode";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -79,7 +79,7 @@ if($retcode != 0) {
 my $n;
 my $table_name;
 chomp(@a = @a);
-foreach(@a) {
+foreach (@a) {
 	$table_name = (split(/,/, $_))[0];
 	$n = (split(/,/, $_))[1];
 	$table_row_counts{$table_name} = $n;
@@ -87,7 +87,7 @@ foreach(@a) {
 
 $table_name = 'ecedi750';
 $n = $table_row_counts{$table_name};
-if($n > 0) {
+if ($n > 0) {
 	$error_str .= "ERROR: There are $n error messages in the EDI table $table_name!"; 
 }
 else {
@@ -96,7 +96,7 @@ else {
 
 $table_name = 'ecedi751';
 $n = $table_row_counts{$table_name};
-if($n > 0) {
+if ($n > 0) {
 	$warning_str .= " WARNING: There are $n messages saved to be received in the EDI table $table_name!"; 
 }
 else {
@@ -105,27 +105,27 @@ else {
 
 $table_name = 'ecedi700';
 $n = $table_row_counts{$table_name};
-if($n > 0) {
+if ($n > 0) {
 	$warning_str .= " WARNING: There are $n messages to be generated in the EDI table $table_name!"; 
 }
 else {
 	$ok_str .= " OK: There are no messages to be generated in the EDI table $table_name."; 
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= " $warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= " $ok_str";
 }
-if($info_str ne '') {
+if ($info_str ne '') {
 	$message_str .= " $info_str";
 }
 ###################################################################################

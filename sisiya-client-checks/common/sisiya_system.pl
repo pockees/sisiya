@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 ## the default values
@@ -43,7 +43,7 @@ our $ip_prog = '/sbin/ip';
 # override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -66,27 +66,27 @@ sub minutes2string
 	#print "days = $days hours = $hours minutes = $minutes\n";
 
 	my $str = '';
-	if($days > 0) {
+	if ($days > 0) {
 		$str = "$days day";
-		if($days > 1) {
+		if ($days > 1) {
 			$str .= 's';
 		}
 	}
-	if($hours > 0) {
-		if($str ne '') {
+	if ($hours > 0) {
+		if ($str ne '') {
 			$str .= ' ';
 		}
 		$str .= "$hours hour";
-		if($hours > 1) {
+		if ($hours > 1) {
 			$str .= 's';
 		}
 	}
-	if($minutes > 0) {
-		if($str ne '') {
+	if ($minutes > 0) {
+		if ($str ne '') {
 			$str .= ' ';
 		}
 		$str .= "$minutes minute";
-		if($minutes > 1) {
+		if ($minutes > 1) {
 			$str .= 's';
 		}
 	}
@@ -101,7 +101,7 @@ sub get_uptime_in_minutes
 	my $uptime_in_minutes = 0;
 
 	#chomp($x = `/bin/cat /proc/uptime`);
-	if($SisIYA_Config::osname eq 'Linux') {
+	if ($SisIYA_Config::osname eq 'Linux') {
 		my $file;
 		open($file, '<', '/proc/uptime') || die "$0: Could not open file /proc/uptime! $!";
 		$x = <$file>;
@@ -111,12 +111,12 @@ sub get_uptime_in_minutes
 			#$uptime_in_minutes = int($a[0] / 60);
 		$uptime_in_minutes = int( (split(/\./, $x))[0] / 60 ); 
 	}
-	if($SisIYA_Config::osname eq 'SunOS') {
+	if ($SisIYA_Config::osname eq 'SunOS') {
 		#uptime   
 		# 11:52am  up  1 user,  load average: 0.04, 0.02, 0.04
 		my @a = `$uptime_prog`;
 		my $retcode = $? >>=8;
-		if($retcode != 0) {
+		if ($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = "ERROR: Error executing the uptime command $uptime_prog! retcode=$retcode";
 			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -138,11 +138,11 @@ sub get_uptime_in_minutes
 ###############################################################################
 my $uptime_in_minutes = get_uptime_in_minutes;
 
-if($uptime_in_minutes < $uptimes{'error'}) {
+if ($uptime_in_minutes < $uptimes{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = 'ERROR:The system was restarted '.minutes2string($uptime_in_minutes).' (< '.minutes2string($uptimes{'error'}).') ago!';
 }
-elsif($uptime_in_minutes < $uptimes{'warning'}) {
+elsif ($uptime_in_minutes < $uptimes{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = 'WARNING:The system was restarted '.minutes2string($uptime_in_minutes).' (< '.minutes2string($uptimes{'warning'}).') ago!';
 }
@@ -150,7 +150,7 @@ else {
 	$message_str = 'OK:The system is up since '.minutes2string($uptime_in_minutes);
 }
 my $x;
-if($SisIYA_Config::osname eq 'HP-UX') {
+if ($SisIYA_Config::osname eq 'HP-UX') {
 	chomp($x = `/bin/uname -srm`);
 }
 else {
@@ -159,8 +159,8 @@ else {
 my $file;
 $message_str .= " Info: $x";
 # add OS version
-if($SisIYA_Config::osname eq 'Linux') {
-	if(open($file, '<', '/etc/issue.net')) {
+if ($SisIYA_Config::osname eq 'Linux') {
+	if (open($file, '<', '/etc/issue.net')) {
 		$x = <$file>;
 		chomp($x);
 		close($file);
@@ -168,8 +168,8 @@ if($SisIYA_Config::osname eq 'Linux') {
 	}
 }
 # add SisIYA version
-if($version_file ne '') {
-	if(open($file, '<', $version_file)) {
+if ($version_file ne '') {
+	if (open($file, '<', $version_file)) {
 		$x = <$file>;
 		chomp($x);
 		close($file);
@@ -179,9 +179,9 @@ if($version_file ne '') {
 # add IP information
 my @a = `$ip_prog -4 a`;
 my $retcode = $? >>=8;
-if($retcode == 0) {
+if ($retcode == 0) {
 	@a = grep(/inet/, @a);
-	foreach(@a) {
+	foreach (@a) {
 		$_ = (split(/\s+/, $_))[2];
 	}
 	#print STDERR "@a\n";
@@ -191,7 +191,7 @@ if($retcode == 0) {
 }
 
 # add other information via an external info
-if($info_prog ne '') {
+if ($info_prog ne '') {
 	chomp($x = `$info_prog`);
 	$message_str .= " Details: $x";
 }

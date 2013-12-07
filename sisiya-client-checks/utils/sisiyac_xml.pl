@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-#    Copyright (C) 2003 - 2013  Erdal Mutlu
+#    Copyright (C)   Erdal Mutlu
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ use warnings;
 
 use IO::Socket;
 
-if(($#ARGV+1) != 3) {
+if (($#ARGV+1) != 3) {
 	printf("Usage: %s server port message\n",$0);
 	printf("---------------------- or ----------------------------------\n");
 	printf("Usage: %s server port message_file\n",$0);
@@ -43,7 +43,7 @@ my $message = $ARGV[2];
 my $sock = new IO::Socket::INET (PeerAddr => $server_ip,PeerPort => $port,Proto => 'tcp',);
 die "$0 :Could not create TCP socket to $server_ip:$port with the following error : $!\n" unless $sock;
 
-if(-e $message) {
+if (-e $message) {
 	open FILE, "< $message" or die "$0 : Could not open file $message for reading! Error: $!";
 	while(<FILE>) { 	# reads a line and stores it in '$_'
 		chomp; 		# remove new-line chars, same as 'chomp $_;'

@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -45,7 +45,7 @@ our $env_oracle_bin = '/opt/oracle/product/8.1.7/bin';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -67,7 +67,7 @@ my $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_tablespace.sql';
 my @a = `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`;
 my @b;
 #print STDERR "@a\n";
-foreach(@a) {
+foreach (@a) {
 	chomp($_);
 	@b = split(/[ \t]+/, $_);
 	$tablespaces{$b[0]}{'total'} = $b[1]; 
@@ -77,10 +77,10 @@ foreach(@a) {
 }
 for my $k (keys %tablespaces) {
 	#print STDERR "-----> : key=[$k] total=[$tablespaces{$k}{'total'}] used=[$tablespaces{$k}{'used'}] free=[$tablespaces{$k}{'free'}] percent=[$tablespaces{$k}{'percent'}]\n";
-		if($tablespaces{$k}{'percent'} >= $percents{'error'}) {
+		if ($tablespaces{$k}{'percent'} >= $percents{'error'}) {
 			$error_str .= "ERROR: $k $tablespaces{$k}{'percent'}\% (>= $percents{'error'}) of ".get_size_k($tablespaces{$k}{'total'})." is full!";
 		}
-		elsif($tablespaces{$k}{'percent'} >= $percents{'warning'}) {
+		elsif ($tablespaces{$k}{'percent'} >= $percents{'warning'}) {
 			$warning_str .= "WARNING: $k $tablespaces{$k}{'percent'}\% (>= $percents{'warning'}) of ".get_size($tablespaces{$k}{'total'})." is full!";
 		}
 		else {
@@ -89,17 +89,17 @@ for my $k (keys %tablespaces) {
 }
 
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= " $warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= " $ok_str";
 }
 ###################################################################################

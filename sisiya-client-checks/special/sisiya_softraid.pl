@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -38,7 +38,7 @@ our $mdadm_prog = '/sbin/mdadm';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -46,7 +46,7 @@ sub get_array_list
 {
 	my @a;
 	my $i = 0;
-	foreach(@_) {
+	foreach (@_) {
 		$a[$i] = (split(/\s+/, $_))[1];
 		#print STDERR "$a[$i]\n";
 		$i++;
@@ -66,13 +66,13 @@ my @a;
 
 @a = `$mdadm_prog --detail --scan`;
 my $retcode = $? >>=8;
-if($retcode != 0) {
+if ($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $mdadm_prog command! retcode=$retcode";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $i = 0;
-foreach(@a) {
+foreach (@a) {
 	$raid_arrays[$i++] = (split(/\s+/, $_))[1];
 }
 my $state;
@@ -87,7 +87,7 @@ my $rebuild_status;
 for $i (0..$#raid_arrays) {
 	@a = `$mdadm_prog --detail $raid_arrays[$i]`;
 	$retcode = $? >>=8;
-	if($retcode != 0) {
+	if ($retcode != 0) {
 		$error_str .= " ERROR: Could not get info about $raid_arrays[$i]!";
 	}
 	else {
@@ -102,13 +102,13 @@ for $i (0..$#raid_arrays) {
 		$spare_devs = trim(( split(/:/, ( grep(/Spare Devices :/, @a) )[0]) )[1]);
 		#print STDERR "$state\n";
 
-		if( ($state eq 'active') || ($state eq 'clean') ) {
+		if ( ($state eq 'active') || ($state eq 'clean') ) {
 			$ok_str .= " OK: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs).";
 		}
-		elsif(($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)') || ($state eq 'clean, checking')) {
+		elsif (($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)') || ($state eq 'clean, checking')) {
 			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs)!";
 		}
-		elsif( ($state eq 'active, resyncing') || ($state eq 'clean,resyncing') ) {
+		elsif ( ($state eq 'active, resyncing') || ($state eq 'clean,resyncing') ) {
 			$rebuild_status = trim(( split(/:/, ( grep(/Rebuild status :/, @a) )[0]) )[1]);
 			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs) Rebuild status $rebuild_status.";
 		}
@@ -118,17 +118,17 @@ for $i (0..$#raid_arrays) {
 	}
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= "$warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= "$ok_str";
 }
 ###################################################################################

@@ -25,7 +25,7 @@ use IO::Socket;
 use SisIYA_Config;
 #use diagnostics;
 
-if( $#ARGV != 3 ) {
+if ( $#ARGV != 3 ) {
 	#print "Usage : $0 serviceid_str statusid_str expire message_str\n";
 	print "Usage : $0 expire\n";
 	print "The expire parameter must be given in minutes.\n";
@@ -38,10 +38,10 @@ my $expire = $ARGV[2];
 my $message_str = $ARGV[3];
 #print STDERR "statusid_str=$statusid_str serviceid_str=$serviceid_str expire=$expire message=$message_str\n";
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 

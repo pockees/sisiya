@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 ###############################################################################
@@ -41,14 +41,14 @@ our $hpasmcli_prog = '/sbin/hpasmcli';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
 
 my @a = `$hpasmcli_prog -s "show server"`;
 my $retcode = $? >>=8;
-if($retcode != 0) {
+if ($retcode != 0) {
 	print '';
 }
 else {

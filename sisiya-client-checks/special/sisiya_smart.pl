@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -41,7 +41,7 @@ our @disks;
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -54,10 +54,10 @@ my $ok_str = '';
 my $warning_str = '';
 my @a;
 my $retcode;
-if($#disks > -1) {
+if ($#disks > -1) {
 	`$smartctl_prog -h >/dev/null`;
 	$retcode = $? >>=8;
-	if($retcode != 0) {
+	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the smartctl command! retcode=$retcode";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -70,7 +70,7 @@ for $i (0..$#disks) {
 	#@a = `$smartctl_prog -a -d ata  $disks[$i]{'device'} 2>/dev/null`;
 	@a = `$smartctl_prog -a -d auto  $disks[$i]{'device'} 2>/dev/null`;
 	$retcode = $? >>=8;
-	if($retcode == 2) {
+	if ($retcode == 2) {
 		$error_str .= " ERROR: Could not get info about $disks[$i]{'device'}! retcode=$retcode";
 	}
 	else {
@@ -81,32 +81,32 @@ for $i (0..$#disks) {
 		$s .= ' '.(grep(/^Firmware Version:/, @a))[0];
 		$s .= ' '.(grep(/^User Capacity:/, @a))[0];
 		#print STDERR "model=[$s]\n";
-		if($temp >= $disks[$i]{'error'}) {
+		if ($temp >= $disks[$i]{'error'}) {
 			$error_str .= " ERROR: $temp C (>= $disks[$i]{'error'}) on $disks[$i]{'device'} $s!";
 		}	
-		elsif($temp >= $disks[$i]{'warning'}) {
+		elsif ($temp >= $disks[$i]{'warning'}) {
 			$warning_str .= " WARNING: $temp C (>= $disks[$i]{'warning'}) on $disks[$i]{'device'} $s!";
 		}
 		else {
 			$ok_str .= " OK: $temp C on $disks[$i]{'device'} $s.";
 		}
-		if($retcode != 0) {
+		if ($retcode != 0) {
 			$warning_str .= " WARNING: $disks[$i]{'device'} smartctl return code=$retcode (<> 0)!";
 		}
 	}
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= "$warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= "$ok_str";
 }
 ###################################################################################

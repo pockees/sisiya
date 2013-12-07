@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 ###############################################################################
@@ -43,7 +43,7 @@ our %swap_percents = ( 'warning' => 30, 'error' => 50);
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -70,13 +70,13 @@ my $service_name = 'swap';
 my $retcode;
 my ($free_ram, $total_ram, $used_ram, $percent_ram);
 my ($free_swap, $total_swap, $used_swap, $percent_swap);
-if($SisIYA_Config::osname eq 'Linux') {
+if ($SisIYA_Config::osname eq 'Linux') {
 	my $file;
 	open($file, '<', '/proc/meminfo') || die "$0: Could not open file /proc/meminfo! $!";
 	my @lines = <$file>;
 	close $file;
 	chomp(@lines);
-#	foreach(@lines) {
+#	foreach (@lines) {
 #		print STDERR "$_\n";
 #	}
 
@@ -94,10 +94,10 @@ if($SisIYA_Config::osname eq 'Linux') {
 #	print STDERR "RAM: total=$total_ram free=$free_ram used=$total_ram\n";
 #	print STDERR "formated RAM total=".get_size_k($total_ram)."\n";
 }
-elsif($SisIYA_Config::osname eq 'SunOS') {
+elsif ($SisIYA_Config::osname eq 'SunOS') {
 	my @a = `$sunos_swap_prog -s`;
 	$retcode = $? >>=8;
-	if($retcode != 0) {
+	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = " ERROR: Could not execute swap command $sunos_swap_prog!";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -109,7 +109,7 @@ elsif($SisIYA_Config::osname eq 'SunOS') {
 	}
 	@a = `$sunos_prtconf_prog`;
 	$retcode = $? >>=8;
-	if($retcode != 0) {
+	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = " ERROR: Could not execute prtconf command $sunos_prtconf_prog!";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -121,7 +121,7 @@ elsif($SisIYA_Config::osname eq 'SunOS') {
 		$free_ram = 0;
 		@a = `$sunos_vmstat_prog 1 2`;
 		$retcode = $? >>=8;
-		if($retcode != 0) {
+		if ($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = " ERROR: Could not execute vmstat command $sunos_vmstat_prog!";
 			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -134,21 +134,21 @@ elsif($SisIYA_Config::osname eq 'SunOS') {
 	}
 }
 $percent_swap = 0;
-if($total_swap != 0) {
+if ($total_swap != 0) {
 	$percent_swap = int(100 * $used_swap / $total_swap);
 }
 ### only for info
 $percent_ram = 0;
-if($total_ram != 0) {
+if ($total_ram != 0) {
 	$percent_ram = int(100 * $used_ram / $total_ram);
 }
 my $s = "SWAP: total=".get_size_k($total_swap)." used=".get_size_k($used_swap)." free=".get_size_k($free_swap).". RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
-if($percent_swap >= $swap_percents{'error'}) {
+if ($percent_swap >= $swap_percents{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Swap usage is ".$percent_swap."% (>= ".$swap_percents{'error'}.")! $s";
 	#	SWAP: total=".get_size_k($total_swap)." used=".get_size_k($used_swap)." free=".get_size_k($free_swap).". RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
 }
-elsif($percent_swap >= $swap_percents{'warning'}) {
+elsif ($percent_swap >= $swap_percents{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: Swap usage is ".$percent_swap."% (>= ".$swap_percents{'warning'}.")! $s";
 	#	RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';

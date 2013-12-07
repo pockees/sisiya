@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -40,7 +40,7 @@ our %mailq = ('error' => 5, 'warning' => 3);
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -51,23 +51,23 @@ my $service_name = 'mailq';
 
 my @a = qx/$mailq_prog/;
 my $retcode = $? >>=8;
-if($retcode != 0) {
+if ($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Error executing the $mailq_prog command! retcode=$retcode";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $queue_count;
-if($a[0] eq "Mail queue is empty\n") {
+if ($a[0] eq "Mail queue is empty\n") {
 	$queue_count = 0;
 }
 else {
 	$queue_count = grep(/^[A-Z0-9]/, @a);
 }
-if($queue_count >= $mailq{'error'}) {
+if ($queue_count >= $mailq{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There are $queue_count (>= $mailq{'error'}) number of mails waiting in the queue!";
 }
-if($queue_count >= $mailq{'warning'}) {
+if ($queue_count >= $mailq{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: There are $queue_count (>= $mailq{'warning'}) number of mails waiting in the queue!";
 }

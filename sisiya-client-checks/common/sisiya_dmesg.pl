@@ -23,7 +23,7 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
 #######################################################################################
@@ -36,7 +36,7 @@ our @warning_strings = ('warn', 'notice', 'not responding', 'NIC Link i Up');
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -48,8 +48,8 @@ my $error_messages = '';
 my $warning_messages = '';
 my $ok_messages = '';
 my $x;
-foreach(@error_strings) {
-	if($SisIYA_Config::osname eq 'AIX') {
+foreach (@error_strings) {
+	if ($SisIYA_Config::osname eq 'AIX') {
 		### AIX does not have dmesg command. I use alog instead. alog -L lists log types.
 		#str=`alog -o -t console | head -n 1`
 		#use the following command to clear the log file : errclear -i /var/adm/ras/errlog 0
@@ -59,7 +59,7 @@ foreach(@error_strings) {
 	else {
 		chomp($x = `dmesg | grep -i "$_" | head -n 1`);
 	}
-	if($x ne '') {
+	if ($x ne '') {
 		$error_messages .= " ERROR: [$x] contains [$_]!";
 	}
 	else {
@@ -67,8 +67,8 @@ foreach(@error_strings) {
 	}
 }
 
-foreach(@warning_strings) {
-	if($SisIYA_Config::osname eq 'AIX') {
+foreach (@warning_strings) {
+	if ($SisIYA_Config::osname eq 'AIX') {
 		### AIX does not have dmesg command. I use alog instead. alog -L lists log types.
 		#str=`alog -o -t console | head -n 1`
 		#use the following command to clear the log file : errclear -i /var/adm/ras/errlog 0
@@ -78,24 +78,24 @@ foreach(@warning_strings) {
 	else {
 		chomp($x = `dmesg | grep -i "$_" | head -n 1`);
 	}
-	if($x ne '') {
+	if ($x ne '') {
 		$warning_messages .= " WARNING: [$x] contains [$_]!";
 	}
 	else {
 		$ok_messages .= "[$_]";
 	}
 }
-if($error_messages ne '') {
+if ($error_messages ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = $error_messages;
 }
-if($warning_messages ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_messages ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}
 	$message_str .= $warning_messages;
 }
-if($ok_messages ne '') {
+if ($ok_messages ne '') {
 	$message_str .= " OK: dmesg does not contain any of $ok_messages";
 }
 

@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -57,18 +57,18 @@ sub get_synchronized_peer
 	#       polling server every 1024 s
 	#
 	###############################################################################
-	if(grep(/NTP/, @_)) {
-		if(index($_[0], '(') != -1) {
+	if (grep(/NTP/, @_)) {
+		if (index($_[0], '(') != -1) {
 			my @a = split(/\(/, $_[0]);
-			if(index($a[1], ')') != -1) {
+			if (index($a[1], ')') != -1) {
 				@a = split(/\)/, $a[1]);
 				return $a[0];
 			}
 		}	
 	}
 	else {
-		foreach(my $i = 0; $i < @_; $i++) {
-			if(substr($_[$i], 0, 1) eq '*') {
+		foreach (my $i = 0; $i < @_; $i++) {
+			if (substr($_[$i], 0, 1) eq '*') {
 				my @a = split(/ /, $_[$i]);
 				@a = split(/\*/, $a[0]);
 				return $a[1];
@@ -81,7 +81,7 @@ sub get_synchronized_peer
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 
@@ -93,7 +93,7 @@ my $service_name = 'ntpstat';
 my @a = `$ntpstat_prog 2>/dev/null`;
 my $retcode = $? >>=8;
 
-if($retcode == 0) {
+if ($retcode == 0) {
 	#######################################################       
 	# ntpstat 
 	#######################################################       
@@ -109,7 +109,7 @@ if($retcode == 0) {
 	$s =~ s/\)//g;
 	$message_str = "OK: The system clock is synchronized to $s.";
 }
-elsif($retcode == 1) {
+elsif ($retcode == 1) {
 	#######################################################       
 	# ntpstat 
 	#######################################################       
@@ -119,20 +119,20 @@ elsif($retcode == 1) {
 	#######################################################       
 	$message_str = "ERROR: The system clock is not synchronized!";
 }
-elsif($retcode == 2) {
+elsif ($retcode == 2) {
 	$message_str = "ERROR: The system clock is not synchronized! Could not contact the ntp daemon!";
 }
-elsif($retcode == 127) {
+elsif ($retcode == 127) {
 	@a = `$ntpq_prog -np 2>&1`;
 	$retcode = $? >>=8;
-	if(grep(/Connection refused/, @a)) {
+	if (grep(/Connection refused/, @a)) {
 		print STDERR "Connection refused\n";
 		$message_str = "ERROR: The system clock is not synchronized! The ntp daemon is not running!";
 	}
 	else {
-		if($retcode == 0) {
+		if ($retcode == 0) {
 			my $p = get_synchronized_peer(@a);
-			if($p ne '') {
+			if ($p ne '') {
 				$statusid = $SisIYA_Config::statusids{'ok'};
 				$message_str = "OK: The system clock is synchronized to $p.";
 			}

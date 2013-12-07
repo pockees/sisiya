@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -47,7 +47,7 @@ our %default_charged_percents = ( 'warning' => 25, 'error' => 15 );
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -65,7 +65,7 @@ sub use_acpi
 {
 	my @a = `$acpi_prog -bi`;
 	my $retcode = $? >>=8;
-	if($retcode != 0) {
+	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the acpi command! retcode=$retcode";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -101,25 +101,25 @@ sub use_acpi
 		#print STDERR "Processing battery $i... status=[$status]\n";
 		$warning_percent = $default_charged_percents{'warning'};
 		$error_percent = $default_charged_percents{'error'};
-		if(defined $charged_percents[$i]{'warning'}) {
+		if (defined $charged_percents[$i]{'warning'}) {
 			$warning_percent = $charged_percents[$j]{'warning'};
 		}
-		if(defined $charged_percents[$i]{'error'}) {
+		if (defined $charged_percents[$i]{'error'}) {
 			$error_percent = $charged_percents[$j]{'error'};
 		}
-		if($status eq 'Full') {
+		if ($status eq 'Full') {
 			$ok_str .= " OK: $a[$j]. $a[$j + 1].";
 		}
-		elsif($status eq 'Charging') {
+		elsif ($status eq 'Charging') {
 			$ok_str .= " OK: $a[$j]. $a[$j + 1].";
 		}
-		elsif($status eq 'Discharging') {
+		elsif ($status eq 'Discharging') {
 			$charged_percent = trim((split(/%/, (split(/,/, (split(/:/, $a[$j]))[1]))[1]))[0]);
 			#print STDERR "$j: charged percent = [$charged_percent]\n";
-			if($charged_percent <= $error_percent) {
+			if ($charged_percent <= $error_percent) {
 				$error_str .= " ERROR: $charged_percent\% (<= $error_percent\%)! $a[$j]! $a[$j + 1].";
 			}
-			elsif($charged_percent <= $warning_percent) {
+			elsif ($charged_percent <= $warning_percent) {
 				$warning_str .= " WARNING: $charged_percent\% (<= $warning_percent\%)! $a[$j]! $a[$j + 1].";
 			}
 			else {
@@ -132,7 +132,7 @@ sub use_acpi
 	}
 	@a = `$acpi_prog -a`;
 	$retcode = $? >>=8;
-	if($retcode == 0) {
+	if ($retcode == 0) {
 		my $s = "@a";
 		chomp($s = $s);
 		$info_str = "INFO: $s."; 
@@ -156,14 +156,14 @@ sub use_proc_dir
 	my $unit;
 	my $f;
 	my $fh;
-	if(opendir(my $dh, $proc_acpi_battery_dir)) {
+	if (opendir(my $dh, $proc_acpi_battery_dir)) {
 		my @battery_dirs = grep{!/^\./} readdir($dh);
 		closedir($dh);
 		foreach my $d (@battery_dirs) {
 			$f = $proc_acpi_battery_dir.'/'.$d.'/info';
 			#print STDERR "$f\n";
 			$retcode = open($fh, '<', $f);
-			if(! $retcode) {
+			if (! $retcode) {
 				next;
 			}
 			@a_info = <$fh>;
@@ -171,14 +171,14 @@ sub use_proc_dir
 			$f = $proc_acpi_battery_dir.'/'.$d.'/state';
 			#print STDERR "$f\n";
 			$retcode = open($fh, '<', $f);
-			if(! $retcode) {
+			if (! $retcode) {
 				next;
 			}
 			@a_state = <$fh>;
 			close $fh;
 			#print STDERR @a_info;
 			$status = trim((split(/:/, (grep(/^present/, @a_info))[0]))[1]);
-			if($status eq 'no') {
+			if ($status eq 'no') {
 				next;
 			}
 			$design_capacity = trim((split(/\s+/, (split(/:/, (grep(/^design capacity:/, @a_info))[0]))[1]))[1]);
@@ -188,27 +188,27 @@ sub use_proc_dir
 			$remaining_capacity = trim((split(/\s+/, (split(/:/, (grep(/^remaining capacity:/, @a_state))[0]))[1]))[1]);
 			$charged_percent = 100 * $remaining_capacity / $design_capacity;
 			#print STDERR "status=[$status] capacity_state=[$capacity_state] charging_state=[$charging_state] design capacity=[$design_capacity] remaining_capacity=[$remaining_capacity] charged_percent=[$charged_percent]\n";
-			if($capacity_state eq 'ok') {
+			if ($capacity_state eq 'ok') {
 				$ok_str .= " OK: The capacity state of the battery $d is ok.";
 			}
 			else {
 				$error_str .= " ERROR: The capacity state of the battery $d is $capacity_state!";
 			}
-			if($charging_state eq 'charging') {
+			if ($charging_state eq 'charging') {
 				$ok_str .= " OK: The charging state of the battery $d is charging ($charged_percent\%). Running on AC power.";
 			}
-			elsif($charging_state eq 'charged') {
+			elsif ($charging_state eq 'charged') {
 				$ok_str .= " OK: The charging state of the battery $d is charged ($charged_percent\%). Running on AC power.";
 			}
-			elsif($charging_state eq 'discharging') {
+			elsif ($charging_state eq 'discharging') {
 				$design_capacity_low = trim((split(/\s+/, (split(/:/, (grep(/^design capacity low:/, @a_info))[0]))[1]))[1]);
 				$design_capacity_warning = trim((split(/\s+/, (split(/:/, (grep(/^design capacity warning:/, @a_info))[0]))[1]))[1]);
 				$unit = trim((split(/\s+/, (split(/:/, (grep(/^remaining capacity:/, @a_state))[0]))[1]))[2]);
 				#print STDERR "design_capacity_low=[$design_capacity_low] design_capacity_warning=[$design_capacity_warning]\n";
-				if($remaining_capacity <= $design_capacity_low) {
+				if ($remaining_capacity <= $design_capacity_low) {
 					$error_str .= " ERROR: Running out of batter $d ($charged_percent\%) (Ramining capacity is $remaining_capacity $unit <= $design_capacity_low)!";
 				}
-				elsif($remaining_capacity <= $design_capacity_warning) {
+				elsif ($remaining_capacity <= $design_capacity_warning) {
 					$warning_str .= " WARNING: Running out of batter $d ($charged_percent\%) (Ramining capacity is $remaining_capacity $unit <= $design_capacity_warning)!";
 				}
 				else {
@@ -222,11 +222,11 @@ sub use_proc_dir
 			$info_str .= " INFO: $d battery details: @a_info"; 
 		}
 	}
-	if(opendir(my $dh, $proc_acpi_ac_adapter_dir)) {
+	if (opendir(my $dh, $proc_acpi_ac_adapter_dir)) {
 		$f = $proc_acpi_ac_adapter_dir.'/state';
 		#print STDERR "$f\n";
 		$retcode = open($fh, '<', $f);
-		if($retcode) {
+		if ($retcode) {
 			@a_state = <$fh>;
 			close $fh;
 			$status = trim((split(/:/, (grep(/^state/, @a_state))[0]))[1]);
@@ -235,8 +235,8 @@ sub use_proc_dir
 	}
 }
 ################################################################################
-if(! -d $proc_acpi_battery_dir) {
-	if(! -f $acpi_prog) {
+if (! -d $proc_acpi_battery_dir) {
+	if (! -f $acpi_prog) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Both directory $proc_acpi_battery_dir and acpi program $acpi_prog does not exist!";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -249,20 +249,20 @@ else {
 	use_proc_dir();
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= "$warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= "$ok_str";
 }
-if($info_str ne '') {
+if ($info_str ne '') {
 	$message_str .= "$info_str";
 }
 ###################################################################################

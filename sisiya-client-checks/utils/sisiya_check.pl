@@ -25,7 +25,7 @@ use IO::Socket;
 use SisIYA_Config;
 #use diagnostics;
 
-if( ($#ARGV < 0) || ($#ARGV > 1) ) {
+if ( ($#ARGV < 0) || ($#ARGV > 1) ) {
 	print "Usage : $0 expire\n";
 	print "Usage : $0 check_script expire\n";
 	print "The expire parameter must be given in minutes.\n";
@@ -34,10 +34,10 @@ if( ($#ARGV < 0) || ($#ARGV > 1) ) {
 	exit 1;
 }
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
@@ -76,7 +76,7 @@ sub process_checks
 	my ($status_id, $service_id);
 	my $s = '';
 
-	if(opendir(my $dh, $dir_str)) {
+	if (opendir(my $dh, $dir_str)) {
 		my @scripts = grep { /^sisiya_*/ && -x "$dir_str/$_" } readdir($dh);
 		closedir($dh);
 		foreach my $f (@scripts) {
@@ -91,7 +91,7 @@ my $date_str = get_timestamp();
 my $expire;
 my $xml_s_str = '';
 
-if($#ARGV == 1) {
+if ($#ARGV == 1) {
 	$expire = $ARGV[1];
 	$xml_s_str = run_script($ARGV[0], $expire);
 }
@@ -101,7 +101,7 @@ else {
 	$xml_s_str .= process_checks($SisIYA_Config::systems_dir, $expire);
 }
 
-if($xml_s_str eq '') {
+if ($xml_s_str eq '') {
 	print STDERR "There is no SisIYA message to be send!\n";
 	exit 1;
 }
@@ -113,13 +113,13 @@ $xml_str .= $xml_s_str;
 $xml_str .= '</system></sisiya_messages>';
 
 #print STDERR $xml_str;
-if($SisIYA_Config::export_to_xml == 1) {
-	if(open (my $file, '>', $SisIYA_Config::export_xml_file)) {
+if ($SisIYA_Config::export_to_xml == 1) {
+	if (open (my $file, '>', $SisIYA_Config::export_xml_file)) {
 		print { $file } $xml_str;
 		close($file);
 	}
 }
-if($SisIYA_Config::send_to_server == 1) {
+if ($SisIYA_Config::send_to_server == 1) {
 	send_message_data($xml_str);
 }
 exit 0;

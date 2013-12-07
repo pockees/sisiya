@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -38,7 +38,7 @@ our $hpasmcli_prog = '/sbin/hpasmcli';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -54,7 +54,7 @@ my $warning_str = '';
 ################################################################################
 my @a = `$hpasmcli_prog -s "show dimm"`;
 my $retcode = $? >>=8;
-if($retcode == 0) {
+if ($retcode == 0) {
 	chomp(@a = @a);
 	my $s = "@a";
 	$s =~ s/\s+/ /g;
@@ -65,10 +65,10 @@ if($retcode == 0) {
 		#print STDERR "$i $b[$i]\n";
 		$status = trim((split(/:/, (split(/Status/, $b[$i]))[1]))[1]);
 		#print STDERR "status=[$status]\n";
-		if($status eq 'N/A') {
+		if ($status eq 'N/A') {
 			$info_str .= " INFO: Cartridge $b[$i].";
 		}
-		elsif($status eq 'Ok') {
+		elsif ($status eq 'Ok') {
 			$ok_str .= " OK: Cartridge $b[$i].";
 		}
 		else {
@@ -78,23 +78,23 @@ if($retcode == 0) {
 
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= "$warning_str";
 }
-if($ok_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'ok'}) {
+if ($ok_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'ok'}) {
 		$statusid = $SisIYA_Config::statusids{'ok'};
 	}
 	$message_str .= "$ok_str";
 }
-if($info_str ne '') {
+if ($info_str ne '') {
 	$message_str .= "$info_str";
 }
 ###################################################################################

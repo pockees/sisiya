@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -46,7 +46,7 @@ our %temperatures;
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -64,7 +64,7 @@ sub use_acpi
 {
 	my @a_all = `$acpi_prog -ti`;
 	my $retcode = $? >>=8;
-	if($retcode != 0) {
+	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the acpi command! retcode=$retcode";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -116,22 +116,22 @@ sub use_acpi
 		$extra_info = "@trip_points";
 		$warning_temperature = $default_temperatures{'warning'};
 		$error_temperature = $default_temperatures{'error'};
-		if(defined $temperatures{"$i"}{'warning'}) {
+		if (defined $temperatures{"$i"}{'warning'}) {
 			$warning_temperature = $temperatures{"$i"}{'warning'};
 		}
-		if(defined $temperatures{"$i"}{'error'}) {
+		if (defined $temperatures{"$i"}{'error'}) {
 			$error_temperature = $temperatures{"$i"}{'error'};
 		}
-		if(($state eq 'ok') || ($state eq 'active')) {
+		if (($state eq 'ok') || ($state eq 'active')) {
 			$ok_str .= " OK: $a[$i]. $extra_info";
 		}
 		else {
 			$warning_str .= " WARNING: $a[$i]!. $extra_info";
 		}
-		if($temperature >= $error_temperature) {
+		if ($temperature >= $error_temperature) {
 			$error_str .= " ERROR: Temperature is $temperature C (>= $error_temperature) $a[$i]!";
 		}
-		elsif($temperature >= $warning_temperature) {
+		elsif ($temperature >= $warning_temperature) {
 			$warning_str .= " WARNING: Temperature is $temperature C (>= $warning_temperature) $a[$i]!";
 		}
 		#$info_str .= "INFO: @trip_points";
@@ -152,14 +152,14 @@ sub use_proc_dir
 	my $fh;
 	my @trip_points;
 	my $extra_info;
-	if(opendir(my $dh, $proc_acpi_dir)) {
+	if (opendir(my $dh, $proc_acpi_dir)) {
 		my @thermal_dirs = grep{!/^\./} readdir($dh);
 		closedir($dh);
 		foreach my $d (@thermal_dirs) {
 			$f = $proc_acpi_dir.'/'.$d.'/state';
 			#print STDERR "$f\n";
 			$retcode = open($fh, '<', $f);
-			if(! $retcode) {
+			if (! $retcode) {
 				next;
 			}
 			$s = <$fh>;
@@ -170,7 +170,7 @@ sub use_proc_dir
 			$f = $proc_acpi_dir.'/'.$d.'/temperature';
 			#print STDERR "$f\n";
 			$retcode = open($fh, '<', $f);
-			if(! $retcode) {
+			if (! $retcode) {
 				next;
 			}
 			$s = <$fh>;
@@ -179,7 +179,7 @@ sub use_proc_dir
 			$f = $proc_acpi_dir.'/'.$d.'/trip_points';
 			#print STDERR "$f\n";
 			$retcode = open($fh, '<', $f);
-			if(! $retcode) {
+			if (! $retcode) {
 				next;
 			}
 			@trip_points = <$fh>;
@@ -189,21 +189,21 @@ sub use_proc_dir
 
 			$warning_temperature = $default_temperatures{'warning'};
 			$error_temperature = $default_temperatures{'error'};
-			if(defined $temperatures{"$d"}{'warning'}) {
+			if (defined $temperatures{"$d"}{'warning'}) {
 				$warning_temperature = $temperatures{"$d"}{'warning'};
 			}
-			if(defined $temperatures{"$d"}{'error'}) {
+			if (defined $temperatures{"$d"}{'error'}) {
 				$error_temperature = $temperatures{"$d"}{'error'};
 			}
 
 			$temperature = (split(/\s+/, (split(/:/, $s))[1]))[1];
-			if(($state eq 'ok') || ($state eq 'active')) {
+			if (($state eq 'ok') || ($state eq 'active')) {
 				$ok_str .= " OK: Thermal : $d $temperature C. $extra_info";
 			}
-			if($temperature >= $error_temperature) {
+			if ($temperature >= $error_temperature) {
 				$error_str .= " ERROR: Thermal $d: Temperature is $temperature C (>= $error_temperature)!";
 			}
-			elsif($temperature >= $warning_temperature) {
+			elsif ($temperature >= $warning_temperature) {
 				$warning_str .= " WARNING: Thermal $d:Temperature is $temperature C (>= $warning_temperature)!";
 			}
 		}
@@ -214,7 +214,7 @@ sub use_sensors
 {
 	my @a = `$sensors_prog -A`;
 	my $retcode = $? >>=8;
-	if($retcode != 0) {
+	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the acpi command! retcode=$retcode";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -263,10 +263,10 @@ sub use_sensors
 		$extra_info = "";
 		$crit = 0;
 		$high = 0;
-		if(index($a[$i], '(') != -1) {
+		if (index($a[$i], '(') != -1) {
 			# get critical and/or high temperature values
 			#print STDERR "Getting crit and/or high temperature values from : $a[$i]\n"; 
-			if(index($a[$i], 'high') == -1) {
+			if (index($a[$i], 'high') == -1) {
 				$crit = trim((split(/[°|C]/, (split(/\+/, (split(/=/, $a[$i]))[1]))[1]))[0]);
 			}
 			else {
@@ -278,22 +278,22 @@ sub use_sensors
 		$warning_temperature = $default_temperatures{'warning'};
 		$error_temperature = $default_temperatures{'error'};
 		# set crit and high values instead of the overall defaults
-		if($high != 0) {
+		if ($high != 0) {
 			$warning_temperature = $high;
 		}
-		if($crit != 0) {
+		if ($crit != 0) {
 			$error_temperature = $crit;
 		}
-		if(defined $temperatures{$sensor}{'warning'}) {
+		if (defined $temperatures{$sensor}{'warning'}) {
 			$warning_temperature = $temperatures{$sensor}{'warning'};
 		}
-		if(defined $temperatures{$sensor}{'error'}) {
+		if (defined $temperatures{$sensor}{'error'}) {
 			$error_temperature = $temperatures{$sensor}{'error'};
 		}
-		if($temperature >= $error_temperature) {
+		if ($temperature >= $error_temperature) {
 			$error_str .= " ERROR: $sensor temperature is $temperature C (>= $error_temperature) $a[$i]!";
 		}
-		elsif($temperature >= $warning_temperature) {
+		elsif ($temperature >= $warning_temperature) {
 			$warning_str .= " WARNING: $sensor temperature is $temperature C (>= $warning_temperature) $a[$i]!";
 		}
 		else {
@@ -302,12 +302,12 @@ sub use_sensors
 	}
 }
 ################################################################################
-if( -f $sensors_prog) {
+if ( -f $sensors_prog) {
 	use_sensors();
 }
 else {
-	if(! -d $proc_acpi_dir) {
-		if(! -f $acpi_prog) {
+	if (! -d $proc_acpi_dir) {
+		if (! -f $acpi_prog) {
 			$statusid = $SisIYA_Config::statusids{'error'};
 			$message_str = "ERROR: Directory $proc_acpi_dir, $acpi_prog and $sensors_prog programs does not exist!";
 			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -321,20 +321,20 @@ else {
 	}
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= "$warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= "$ok_str";
 }
-if($info_str ne '') {
+if ($info_str ne '') {
 	$message_str .= "$info_str";
 }
 ###################################################################################

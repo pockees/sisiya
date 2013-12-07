@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -38,7 +38,7 @@ our @exception_users;
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -48,7 +48,7 @@ my $statusid = $SisIYA_Config::statusids{'info'};
 my $service_name = 'users';
 my @a;
 
-if($SisIYA_Config::osname eq 'HP-UX') {
+if ($SisIYA_Config::osname eq 'HP-UX') {
 	@a = `who -R`;
 }
 else {
@@ -56,23 +56,23 @@ else {
 }
 my $user_list = "@a";
 my @root_users = grep(/root/, @a);
-if($#root_users > -1) {
+if ($#root_users > -1) {
 	my @b = @a;
 	foreach my $exception_str(@exception_users) {
 		# remove from the array
-		foreach(@b) {
-			if(index($_, $exception_str) != -1) {
+		foreach (@b) {
+			if (index($_, $exception_str) != -1) {
 				#print STDERR "Removing $exception_str from the logged in users list...\n";
 				@b = grep ! /$exception_str/, @b;
 			}
 		}
 	}
-	if($#b > -1) {
+	if ($#b > -1) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 		$message_str = "WARNING: User root is logged in!"
 	}
 }
-if($#a == -1) {
+if ($#a == -1) {
 	$message_str = "No user is logged in.";
 }
 else {

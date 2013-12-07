@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -51,7 +51,7 @@ our $env_oracle_bin = '/opt/oracle/product/8.1.7/bin';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -75,10 +75,10 @@ chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
 my $s = sprintf("%.2f", $x);
-if($x <= $hitratios{'buffer_cache'}{'error'}) {
+if ($x <= $hitratios{'buffer_cache'}{'error'}) {
 	$error_str = "ERROR: Buffer cache hit ratio is $s\% <= $hitratios{'buffer_cache'}{'error'}\%!";
 }
-elsif($x <= $hitratios{'buffer_cache'}{'warning'}) {
+elsif ($x <= $hitratios{'buffer_cache'}{'warning'}) {
 	$warning_str = "WARNING: Buffer cache hit ratio is $s\% <= $hitratios{'buffer_cache'}{'warning'}\%!";
 }
 else {
@@ -91,10 +91,10 @@ chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
 $s = sprintf("%.2f", $x);
-if($x <= $hitratios{'dictionary'}{'error'}) {
+if ($x <= $hitratios{'dictionary'}{'error'}) {
 	$error_str .= " ERROR: Dictionary cache hit ratio is $s\% <= $hitratios{'dictionary'}{'error'}\%!";
 }
-elsif($x <= $hitratios{'dictionary'}{'warning'}) {
+elsif ($x <= $hitratios{'dictionary'}{'warning'}) {
 	$warning_str .= " WARNING: Dictionary cache hit ratio is $s\% <= $hitratios{'dictionary'}{'warning'}\%!";
 }
 else {
@@ -107,10 +107,10 @@ chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
 $s = sprintf("%.2f", $x);
-if($x <= $hitratios{'library'}{'error'}) {
+if ($x <= $hitratios{'library'}{'error'}) {
 	$error_str .= " ERROR: Library cache hit ratio is $s\% <= $hitratios{'library'}{'error'}\%!";
 }
-elsif($x <= $hitratios{'library'}{'warning'}) {
+elsif ($x <= $hitratios{'library'}{'warning'}) {
 	$warning_str .= " WARNING: Library cache hit ratio is $s\% <= $hitratios{'library'}{'warning'}\%!";
 }
 else {
@@ -123,10 +123,10 @@ chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
 $s = sprintf("%.2f", $x);
-if($x <= $hitratios{'nowait'}{'error'}) {
+if ($x <= $hitratios{'nowait'}{'error'}) {
 	$error_str .= " ERROR: Nowait hit ratio is $s\% <= $hitratios{'nowait'}{'error'}\%!";
 }
-elsif($x <= $hitratios{'nowait'}{'warning'}) {
+elsif ($x <= $hitratios{'nowait'}{'warning'}) {
 	$warning_str .= " WARNING: Nowait hit ratio is $s\% <= $hitratios{'nowait'}{'warning'}\%!";
 }
 else {
@@ -139,10 +139,10 @@ chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
 $s = sprintf("%.2f", $x);
-if($x <= $hitratios{'sort'}{'error'}) {
+if ($x <= $hitratios{'sort'}{'error'}) {
 	$error_str .= " ERROR: Sort hit ratio is $s\% <= $hitratios{'sort'}{'error'}\%!";
 }
-elsif($x <= $hitratios{'sort'}{'warning'}) {
+elsif ($x <= $hitratios{'sort'}{'warning'}) {
 	$warning_str .= " WARNING: Sort hit ratio is $s\% <= $hitratios{'sort'}{'warning'}\%!";
 }
 else {
@@ -160,17 +160,17 @@ chomp($x= `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`);
 my $sga_size = trim($x); 
 $sga_size = get_size($sga_size);
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= " $warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= " $ok_str";
 }
 $message_str .= " Number of active users is $total_users.  SGA size is $sga_size";

@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -39,7 +39,7 @@ our @strings = ('bad username', 'illegal', 'Invalid user', 'failed password for'
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -51,7 +51,7 @@ my $error_messages = '';
 my $warning_messages = '';
 my $ok_messages = '';
 
-if(! -f $log_file) {
+if (! -f $log_file) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: Could not find log file $log_file!";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -69,24 +69,24 @@ foreach my $x (@strings) {
 	chomp(@b = @b);
 	$s = "@b";
 	#print STDERR "s=[$s]\n";
-	if($s ne '') {
+	if ($s ne '') {
 		$error_messages .= " ERROR: $x ($s)!";
 	}
 	else {
 		$ok_messages .= "[$x]";
 	}
 }
-if($error_messages ne '') {
+if ($error_messages ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = $error_messages;
 }
-if($warning_messages ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_messages ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}
 	$message_str .= $warning_messages;
 }
-if($ok_messages ne '') {
+if ($ok_messages ne '') {
 	$message_str .= " OK: $log_file does not contain any of $ok_messages";
 }
 ###################################################################################

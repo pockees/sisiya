@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -58,7 +58,7 @@ our @sockets;
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -84,8 +84,8 @@ sub is_listening_socket
 	for my $i (0..$#netstat_list) {
 		$interface_port_str = "$sockets[$j]{'interface'}:$sockets[$j]{'port'}";
 		#print STDERR "$netstat_list[$i][0] [$netstat_list[$i][5]] [$netstat_list[$i][6]] $netstat_list[$i][3] $interface_port_str\n";
-		if($sockets[$j]{'protocol'} eq 'tcp') {
-			if(
+		if ($sockets[$j]{'protocol'} eq 'tcp') {
+			if (
 				($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
 			&& 	($netstat_list[$i][3] eq $interface_port_str)
 			&& 	($netstat_list[$i][5] eq 'LISTEN')
@@ -95,8 +95,8 @@ sub is_listening_socket
 					last;
 			}
 		}
-		elsif($sockets[$j]{'protocol'} eq 'udp') {
-			if(
+		elsif ($sockets[$j]{'protocol'} eq 'udp') {
+			if (
 				($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
 			&& 	($netstat_list[$i][3] eq $interface_port_str)
 			&& 	($netstat_list[$i][5] eq $sockets[$j]{'progname'})
@@ -110,10 +110,10 @@ sub is_listening_socket
 }
 
 my ($i, $j);
-if($#sockets > -1) {
+if ($#sockets > -1) {
 	@a = `$netstat_prog -nlp`;
 	my $retcode = $? >>=8;
-	if($retcode != 0) {
+	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$message_str = "ERROR: Error executing the netstat command! retcode=$retcode";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
@@ -125,22 +125,22 @@ if($#sockets > -1) {
 		$j = 0;
 		foreach my $k (@b) {
 			#print STDERR "$k ";
-			if(($j == 6) && ($netstat_list[$i][0] eq 'tcp')) {
+			if (($j == 6) && ($netstat_list[$i][0] eq 'tcp')) {
 				# extract the progname part of "PID/progname" string
 				# and only add the line if it has a valid progname
 				@c = split(/\//, $k);
-				if($#c == 1) {
+				if ($#c == 1) {
 					push @{$netstat_list[$i]}, $c[1];
 				}
 				else {
 					push @{$netstat_list[$i]}, $k;
 				}
 			}
-			elsif(($j == 5) && ($netstat_list[$i][0] eq 'udp')) {
+			elsif (($j == 5) && ($netstat_list[$i][0] eq 'udp')) {
 				# extract the progname part of "PID/progname" string
 				# and only add the line if it has a valid progname
 				@c = split(/\//, $k);
-				if($#c == 1) {
+				if ($#c == 1) {
 					push @{$netstat_list[$i]}, $c[1];
 				}
 				else {
@@ -156,13 +156,13 @@ if($#sockets > -1) {
 	}
 	for $i (0..$#sockets) {
 		#print STDERR "$sockets[$i]{'progname'}...\n";
-		if(is_listening_socket($i)) {
+		if (is_listening_socket($i)) {
 			#print STDERR "$sockets[$i]{'progname'} is OK\n";
 			$ok_str .= " $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
 		}
 		else {
 			#print STDERR "$sockets[$i]{'progname'} is NOT OK\n";
-			if($sockets[$i]{'onerror'} eq 'warn') {
+			if ($sockets[$i]{'onerror'} eq 'warn') {
 				$warning_str .= " $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
 			}
 			else {
@@ -182,17 +182,17 @@ if($#sockets > -1) {
 #	}
 #	print STDERR "\n";
 #}
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR:$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= " WARNING:$warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= " OK:$ok_str";
 }
 ###################################################################################

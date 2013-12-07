@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -38,7 +38,7 @@ our $hpasmcli_prog = '/sbin/hpasmcli';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -54,19 +54,19 @@ my $warning_str = '';
 ################################################################################
 my @a = `$hpasmcli_prog -s "show fans"`;
 my $retcode = $? >>=8;
-if($retcode == 0) {
+if ($retcode == 0) {
 	@a = grep(/#/, @a);
 	chomp(@a = @a);
 	my ($is_available, $fan_name, $fan_number, $fan_speed_status, $fan_value);
-       	foreach(@a) {
+       	foreach (@a) {
 		$is_available = (split(/\s+/, $_))[2];
 		#print STDERR "[$is_available]\n";
-		if($is_available eq 'Yes') {
+		if ($is_available eq 'Yes') {
 			$fan_name = (split(/\s+/, $_))[1];
 			$fan_number = (split(/\s+/, $_))[0];
 			$fan_speed_status = (split(/\s+/, $_))[3];
 			$fan_value = (split(/%/, (split(/\s+/, $_))[4]))[0];
-			if($fan_speed_status eq 'NORMAL') {
+			if ($fan_speed_status eq 'NORMAL') {
 				$ok_str .= "OK: The speed of the $fan_number $fan_name fan is $fan_value%.";
 			}
 			else {
@@ -77,20 +77,20 @@ if($retcode == 0) {
 
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "$error_str";
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= "$warning_str";
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= "$ok_str";
 }
-if($info_str ne '') {
+if ($info_str ne '') {
 	$message_str .= "$info_str";
 }
 ###################################################################################

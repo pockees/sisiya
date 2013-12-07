@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -39,7 +39,7 @@ our @progs;
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -58,7 +58,7 @@ sub is_running
 	my $found = 0;
 
 	for my $i (0..$#ps_list) {
-		if($prog eq $ps_list[$i]) {
+		if ($prog eq $ps_list[$i]) {
 			$found = 1;
 			last;
 		}
@@ -67,23 +67,23 @@ sub is_running
 }
 
 my $ps_params = '-eo comm';
-if($SisIYA_Config::osname eq 'OpenBSD') {
+if ($SisIYA_Config::osname eq 'OpenBSD') {
 	$ps_params = '-xeo comm';
 }
-#elsif($SisIYA_Config::osname eq 'HP-UX') {
+#elsif ($SisIYA_Config::osname eq 'HP-UX') {
 #	# see if I need to UNIX95="" ; export UNIX95
 #	$ps_params = '-eo comm';
 #}
-#elsif($SisIYA_Config::osname eq 'SunOS') {
+#elsif ($SisIYA_Config::osname eq 'SunOS') {
 #	$ps_params = '-eo comm';
 #}
-elsif($SisIYA_Config::osname eq 'Linux') {
+elsif ($SisIYA_Config::osname eq 'Linux') {
 	$ps_params = '-eo command';
 }
 
 chomp(@ps_list = `$ps_prog $ps_params`);
 for my $i (0..$#progs) {
-	if(is_running($progs[$i])) {
+	if (is_running($progs[$i])) {
 		$ok_str .= " $progs[$i]";
 	}
 	else {
@@ -91,17 +91,17 @@ for my $i (0..$#progs) {
 	}
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR:$error_str";
 }
-#if($warning_str ne '') {
-#	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+#if ($warning_str ne '') {
+#	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 #		$statusid = $SisIYA_Config::statusids{'warning'};
 #	}	
 #	$message_str .= " WARNING:$warning_str";
 #}
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= " OK:$ok_str";
 }
 ###################################################################################

@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -38,7 +38,7 @@ our %process_counts = ('error' => 1000, 'warning' => 800);
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -48,11 +48,11 @@ my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'process_count';
 my @a = `ps -ef`;
 my $n = @a;
-if($n >= $process_counts{'error'}) {
+if ($n >= $process_counts{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There are $n (>= $process_counts{'error'}) running processes!";
 }
-if($n >= $process_counts{'warning'}) {
+if ($n >= $process_counts{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: There are $n (>= $process_counts{'warning'}) running processes!";
 }

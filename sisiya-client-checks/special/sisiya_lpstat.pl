@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
@@ -38,7 +38,7 @@ our $lpstat_prog = 'lpstat';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 
@@ -56,16 +56,16 @@ my $device_name;
 my $device_status;
 
 @a = grep(/^printer/, @a);
-foreach(@a) {
+foreach (@a) {
 	#print STDERR "$_";
 	chomp($_ = $_);
 	@b = split(/ /, $_);
 	$device_name = $b[1];
-	if(index($_, 'idle.') != -1) {
+	if (index($_, 'idle.') != -1) {
 		$ok_str .= "OK: $device_name is idle.";
 	}
 	else {
-		if(index($_, 'now printing') != -1) {
+		if (index($_, 'now printing') != -1) {
 			$ok_str .= "OK: $device_name is printing.";
 		}
 		else {
@@ -76,17 +76,17 @@ foreach(@a) {
 	}
 
 }
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = $error_str;
 }
-#if($warning_str ne '') {
-#	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+#if ($warning_str ne '') {
+#	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 #		$statusid = $SisIYA_Config::statusids{'warning'};
 #	}	
 #	$message_str .= $warning_str;
 #}
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= $ok_str;
 }
 ###################################################################################

@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 ###############################################################################
@@ -46,7 +46,7 @@ our %exception_list;
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -57,13 +57,13 @@ sub get_filesystem_state
 	my $state = ''; # not defined
 	### check the filesystem state
 	#print STDERR "fs_type = $fs_type\n";
-	if( ($fs_type eq 'reiserfs') || ($fs_type eq 'vfat') || ($fs_type eq 'tmpfs') || ($fs_type eq 'fuseblk')) {
+	if ( ($fs_type eq 'reiserfs') || ($fs_type eq 'vfat') || ($fs_type eq 'tmpfs') || ($fs_type eq 'fuseblk')) {
 		#print STDERR "fs_type = $fs_type is not appicable.\n";
 		return $state;
 	}
 	my @a =   `$tune2fs_prog -l $fs_device 2>/dev/null`;
 	my $retcode = $? >>=8;
-	if($retcode == 0) {
+	if ($retcode == 0) {
 		@a = grep(/^Filesystem state/, @a);
 		chomp($a[0] = $a[0]);
 		#my @b = split(/:/, $a[0]);
@@ -85,7 +85,7 @@ my %file_systems;
 my $fs_state;
 my $percent_error;
 my $percent_warning;
-if($SisIYA_Config::osname eq 'Linux') {
+if ($SisIYA_Config::osname eq 'Linux') {
 	#my @a = `$df_prog -TPk`;
 	my @a = grep(/^\//, `$df_prog -TPkl`);
 	my $found;
@@ -93,16 +93,16 @@ if($SisIYA_Config::osname eq 'Linux') {
 		chomp($fs);
 		#print STDERR "fs=[$fs]\n";
 		$found = 0;
-		foreach(@exclude_list) {
-			if(index($fs, $_) != -1) {
+		foreach (@exclude_list) {
+			if (index($fs, $_) != -1) {
 				$found = 1;
 				last;
 			}	
 		}
-		if($found == 0) {
+		if ($found == 0) {
 			#printf STDERR "Adding fs=[$fs]\n";
 			my @b = split(/ +/, $fs);
-			#foreach(@b) {
+			#foreach (@b) {
 			#	printf STDERR "$_\n";
 			#}
 			$file_systems{$b[0]}{'type'} = $b[1]; 
@@ -115,7 +115,7 @@ if($SisIYA_Config::osname eq 'Linux') {
 		}
 	}
 }
-elsif($SisIYA_Config::osname eq 'SunOS') {
+elsif ($SisIYA_Config::osname eq 'SunOS') {
 	#my @a = `$df_prog -TPk`;
 	my @a = grep(/^\//, `$df_prog -k`);
 	my $found;
@@ -123,16 +123,16 @@ elsif($SisIYA_Config::osname eq 'SunOS') {
 		chomp($fs);
 		#print STDERR "fs=[$fs]\n";
 		$found = 0;
-		foreach(@exclude_list) {
-			if(index($fs, $_) != -1) {
+		foreach (@exclude_list) {
+			if (index($fs, $_) != -1) {
 				$found = 1;
 				last;
 			}	
 		}
-		if($found == 0) {
+		if ($found == 0) {
 			#printf STDERR "Adding fs=[$fs]\n";
 			my @b = split(/ +/, $fs);
-			#foreach(@b) {
+			#foreach (@b) {
 			#	printf STDERR "$_\n";
 			#}
 			$file_systems{$b[0]}{'type'} = $b[1]; 
@@ -149,36 +149,36 @@ for my $k (keys %file_systems) {
 	#print STDERR "-----> : key=[$k] type=[$file_systems{$k}{'type'}] total=[$file_systems{$k}{'total'}] used=[$file_systems{$k}{'used'}] available=[$file_systems{$k}{'available'}] capacity=[$file_systems{$k}{'capacity'}] mountded on=[$file_systems{$k}{'mounted_on'}]\n";
 	$percent_error = $percents{'error'};
 	$percent_warning = $percents{'warning'};
-	if(defined $exception_list{$file_systems{$k}{'mounted_on'}}) {
+	if (defined $exception_list{$file_systems{$k}{'mounted_on'}}) {
 		$percent_error = $exception_list{$file_systems{$k}{'mounted_on'}}{'error'};
 		$percent_warning = $exception_list{$file_systems{$k}{'mounted_on'}}{'warning'};
 	}
-	if($file_systems{$k}{'capacity'} >= $percent_error) {
+	if ($file_systems{$k}{'capacity'} >= $percent_error) {
 		$error_str .= "ERROR: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percent_error) of ".get_size_k($file_systems{$k}{'total'})." is full!";
 	}
-	elsif($file_systems{$k}{'capacity'} >= $percent_warning) {
+	elsif ($file_systems{$k}{'capacity'} >= $percent_warning) {
 		$warning_str .= "WARNING: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% (>= $percent_warning) of ".get_size_k($file_systems{$k}{'total'})." is full!";
 	}
 	else {
 		$ok_str .= "OK: $file_systems{$k}{'mounted_on'} ($file_systems{$k}{'type'}) $file_systems{$k}{'capacity'}% of ".get_size_k($file_systems{$k}{'total'})." is used.";
 	}
 	$fs_state = get_filesystem_state($k, $file_systems{$k}{'type'});
-	if( ($fs_state ne '') && ($fs_state ne 'clean') ) {
+	if ( ($fs_state ne '') && ($fs_state ne 'clean') ) {
 			$error_str .= " ERROR: The filesystem state for $file_systems{$k}{'mounted_on'} is $fs_state (<> clean)!";
 	}
 }
 
-if($error_str ne '') {
+if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = $error_str;
 }
-if($warning_str ne '') {
-	if($statusid < $SisIYA_Config::statusids{'warning'}) {
+if ($warning_str ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
 		$statusid = $SisIYA_Config::statusids{'warning'};
 	}	
 	$message_str .= $warning_str;
 }
-if($ok_str ne '') {
+if ($ok_str ne '') {
 	$message_str .= $ok_str;
 }
 ##################################################################################

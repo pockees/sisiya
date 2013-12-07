@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use SisIYA_Config;
 
-if(-f $SisIYA_Config::local_conf) {
+if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
-if(-f $SisIYA_Config::functions) {
+if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 ###############################################################################
@@ -72,7 +72,7 @@ sub use_zypper
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
 chomp($module_conf_file);
-if(-f $module_conf_file) {
+if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 ################################################################################
@@ -82,24 +82,24 @@ my $statusid = $SisIYA_Config::statusids{'info'};
 my $service_name = 'isuptodate';
 my $n = -1;
 
-if(-x $update_progs{'yum'}) {
+if (-x $update_progs{'yum'}) {
 	$n = use_yum();
 }
-elsif(-x $update_progs{'apt_check'}) {
+elsif (-x $update_progs{'apt_check'}) {
 	$n = use_apt_check();
 }
-elsif(-x $update_progs{'pacman'}) {
+elsif (-x $update_progs{'pacman'}) {
 	$n = use_pacman();
 }
-elsif(-x $update_progs{'zypper'}) {
+elsif (-x $update_progs{'zypper'}) {
 	$n = use_zypper();
 }
 
-if($n > 0) {
+if ($n > 0) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: The system is out of date! There are $n available updates.";
 }
-elsif($n == 0) {
+elsif ($n == 0) {
 	$statusid = $SisIYA_Config::statusids{'ok'};
 	$message_str = "OK: The system is uptodate.";
 }
