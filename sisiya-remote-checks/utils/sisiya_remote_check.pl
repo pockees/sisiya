@@ -37,9 +37,9 @@ if( ($#ARGV < 0) || ($#ARGV > 1) ) {
 if(-f $SisIYA_Remote_Config::local_conf) {
 	require $SisIYA_Remote_Config::local_conf;
 }
-if(-f $SisIYA_Remote_Config::client_conf) {
-	require $SisIYA_Remote_Config::client_conf;
-}
+#if(-f $SisIYA_Remote_Config::client_conf) {
+#	require $SisIYA_Remote_Config::client_conf;
+#}
 if(-f $SisIYA_Remote_Config::client_local_conf) {
 	require $SisIYA_Remote_Config::client_local_conf;
 }
@@ -58,7 +58,7 @@ sub run_script
 	#print STDERR "[$_[0]] ...\n";
 	chomp($s = `/usr/bin/perl -I$SisIYA_Remote_Config::conf_dir -I$SisIYA_Config::base_dir $_[0] $systems_file $expire`);
 	$status_id = $? >> 8;
-	print STDERR "statusid = $status_id message=$s\n";
+	#print STDERR "statusid = $status_id message=$s\n";
 	return $s;	
 }
 
@@ -103,6 +103,10 @@ if($xml_s_str eq '') {
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
 $xml_str .= $xml_s_str;
-$xml_str .= '</system></sisiya_messages>';
+$xml_str .= '</sisiya_messages>';
+
+print STDERR $xml_str;
+
+send_message_data($xml_str);
 
 exit 0;

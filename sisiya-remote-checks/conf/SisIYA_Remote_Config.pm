@@ -27,9 +27,9 @@
 package SisIYA_Remote_Config;
 
 our $client_conf 		= '/opt/sisiya-client-checks/SisIYA_Config.pm';
-our $client_local_conf	 	= '/opt/sisiya-client-checks/SisIYA_Config_local.pm';
+our $client_local_conf	 	= '/opt/sisiya-client-checks/SisIYA_Config_local.pl';
 our $base_dir		 	= '/opt/sisiya-remote-checks';
-our $local_conf			= "$base_dir/SisIYA_Remote_Config_local.pm";
+our $local_conf			= "$base_dir/SisIYA_Remote_Config_local.pl";
 our $conf_dir 			= "$base_dir/conf";
 our $misc_dir 			= "$base_dir/misc";
 our $scripts_dir	 	= "$base_dir/scripts";
