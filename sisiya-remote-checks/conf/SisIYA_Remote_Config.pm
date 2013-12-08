@@ -34,4 +34,15 @@ our $conf_dir 			= "$base_dir/conf";
 our $misc_dir 			= "$base_dir/misc";
 our $scripts_dir	 	= "$base_dir/scripts";
 our $utils_dir	 		= "$base_dir/utils";
+
+our %check_progs = (
+		'dig'		=> '/usr/bin/dig',
+		'curl'		=> '/usr/bin/curl',
+		'ping'		=> '/bin/ping',
+		'snmpget'	=> '/usr/bin/snmpget',
+		'snmpwalk'	=> '/usr/bin/snmpwalk',
+		'smbclient'	=> '/usr/bin/smbclient',
+		'wget'		=> '/usr/bin/wget',
+		'vicfg-hostops'	=> '/usr/bin/vicfg-hostops'
+	);
 1;

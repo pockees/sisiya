@@ -53,7 +53,7 @@ sub run_script
 {
 	my $expire = $_[1];
 	my ($status_id, $service_id, $s);
-	my $systems_file = "dbs_systems.xml";
+	my $systems_file = "$SisIYA_Remote_Config::conf_dir/dns_systems.xml";
 
 	#print STDERR "[$_[0]] ...\n";
 	chomp($s = `/usr/bin/perl -I$SisIYA_Remote_Config::conf_dir -I$SisIYA_Config::base_dir $_[0] $systems_file $expire`);

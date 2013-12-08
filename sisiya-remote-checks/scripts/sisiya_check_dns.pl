@@ -23,6 +23,8 @@ use strict;
 use warnings;
 use SisIYA_Config;
 use SisIYA_Remote_Config;
+use XML::Simple;
+#use Data::Dumper;
 
 if( $#ARGV != 1 ) {
 	print "Usage : $0 dns_systems.xml expire\n";
@@ -45,6 +47,37 @@ if(-f $SisIYA_Config::functions) {
 
 my $systems_file = $ARGV[0];
 my $expire = $ARGV[1];
+my $retcode;
+
+my $xml = new XML::Simple;
+my $data = $xml->XMLin($systems_file);
+	#print STDERR Dumper($data);
+	#print STDERR "$data->{'record'}\n";
+	#ip_to_query,hostname_to_query, isactive, port, timeout, system_name, number_of_tries
+foreach my $h (@{$data->{'record'}}) {
+	print STDERR "Checking system_name=[$h->{'system_name'}] hostname=[$h->{'hostname'}] isactive=[$h->{'isactive'}] hostname_to_query=[$h->{'hostname_to_query'}] ip_to_query=[$h->{'ip_to_query'}] port=[$h->{'port'}] timeout=[$h->{'timeout'}] number_of_tries=[$h->{'number_of_tries'}] ...\n";
+	if ($h->{'isactive'} eq 'f' ) {
+		print STDERR "Skipping ...\n";
+		next;
+	}
+	print STDERR "$SisIYA_Remote_Config::check_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} $h->{'hostname_to_query'} \@$h->{'hostname'}\n";
+	`$SisIYA_Remote_Config::check_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} $h->{'hostname_to_query'} \@$h->{'hostname'} >/dev/null 2>&1`;
+	$retcode = $? >>=8;
+	if($retcode != 0) {
+		print STDERR "FAILED\n";
+	}
+	else {
+		print STDERR "OK\n";
+	}
+	print STDERR "$SisIYA_Remote_Config::check_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} -x $h->{'ip_to_query'} \@$h->{'hostname'}\n";
+	`$SisIYA_Remote_Config::check_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} -x $h->{'ip_to_query'} \@$h->{'hostname'} >/dev/null 2>&1`;
+	$retcode = $? >>=8;
+	if($retcode != 0) {
+		print STDERR "FAILED\n";
+	}
+	else {
+		print STDERR "OK\n";
+	}
+
+}
 #######################################################################################
-print STDERR "Checking DNS servers in the $systems_file expire = $expire ...\n";
-print "Checking DNS servers...\n";
