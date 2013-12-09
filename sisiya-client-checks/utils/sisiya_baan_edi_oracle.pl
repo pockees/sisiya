@@ -56,7 +56,7 @@ $ENV{'NLS_LANG'} = $env_nls_lang;
 
 sub exec_sql
 {
-	my $sql_file = $SisIYA_Config::systems_conf_dir.'/baan_edi_oracle_'.$_[0].'.sql';
+	my $sql_file = $SisIYA_Config::systems_conf_dir.'/sisiya_baan_edi_oracle_'.$_[0].'.sql';
 	my $s = $_[0].',0';
 	if (-f $sql_file) {
 		my @a = `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`;

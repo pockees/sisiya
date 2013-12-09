@@ -79,7 +79,6 @@ foreach (@a) {
 	$last_time = (split(/\|/, $_))[4];
 	push @jobs, {'code' => $job_code, 'status' => $job_status, 'description' => $job_description, 'next_time' => $next_time, 'last_time' => $last_time};
 }
-my $info_str;
 for my $i (0..$#jobs) {
 	#print STDERR "code=[$jobs[$i]{'code'}] status=[$jobs[$i]{'status'}] description=[$jobs[$i]{'description'}] last=[$jobs[$i]{'last_time'}] next=[$jobs[$i]{'next_time'}]\n";
 	$info_str = "$jobs[$i]{'description'} last execution time $jobs[$i]{'last_time'}, next execution time $jobs[$i]{'next_time'}";
