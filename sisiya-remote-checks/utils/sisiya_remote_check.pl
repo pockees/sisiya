@@ -25,12 +25,13 @@ use IO::Socket;
 use SisIYA_Config;
 use SisIYA_Remote_Config;
 #use diagnostics;
-
+print STDERR "n=$#ARGV\n";
 if( ($#ARGV < 0) || ($#ARGV > 1) ) {
+	print "Usage : $0 check_name expire\n";
 	print "Usage : $0 expire\n";
-	print "Usage : $0 check_script expire\n";
 	print "The expire parameter must be given in minutes.\n";
-	print "When run without check_name parameter all remote checks are excecuted.";
+	print "When run only with one parameter eg expire then all remote checks which are enabled for auto run in the SisIYA_Remote_Config.pm\n";
+       	print "(or overwritten in the SisIYA_Remote_Config_local.pl) are excecuted.\n";
 	exit 1;
 }
 
@@ -47,52 +48,71 @@ if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-# Parameter	: script name
+# Parameter	: check name, expire
 # Return	: xml message string
 sub run_script
 {
+	my $check_name = $_[0];
 	my $expire = $_[1];
+	my $script_file = "$SisIYA_Remote_Config::scripts_dir/$SisIYA_Remote_Config::checks{$check_name}{'script'}";
+	my $systems_file = "$SisIYA_Remote_Config::conf_dir/$SisIYA_Remote_Config::checks{$check_name}{'conf'}";
 	my ($status_id, $service_id, $s);
-	my $systems_file = "$SisIYA_Remote_Config::conf_dir/dns_systems.xml";
+	#my $systems_file = "$SisIYA_Remote_Config::conf_dir/dns_systems.xml";
 
 	#print STDERR "[$_[0]] ...\n";
-	chomp($s = `/usr/bin/perl -I$SisIYA_Remote_Config::conf_dir -I$SisIYA_Config::base_dir $_[0] $systems_file $expire`);
+	chomp($s = `$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Remote_Config::conf_dir -I$SisIYA_Config::base_dir $script_file $systems_file $expire`);
 	$status_id = $? >> 8;
 	#print STDERR "statusid = $status_id message=$s\n";
 	return $s;	
 }
 
-# Parameter	: Script directory
+# Parameter	: expire
 # Return	: XML string
 sub process_checks
 {
-	my $dir_str = $_[0];
-	my $expire  = $_[1];
+	my $expire  = $_[0];
 	my ($status_id, $service_id);
 	my $s = '';
 
-	if(opendir(my $dh, $dir_str)) {
-		my @scripts = grep { /^sisiya_*/ && -x "$dir_str/$_" } readdir($dh);
-		closedir($dh);
-		foreach my $f (@scripts) {
-			$s .= run_script("$dir_str/$f", $expire); 
+	foreach my $check_name (keys %SisIYA_Remote_Config::checks) {	
+		if( $SisIYA_Remote_Config::checks{$check_name}{'auto'} == 1 ) {
+			print STDERR "Checking $check_name ...\n";
+			# excecute $0 in background
+			print STDERR "$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Config::base_dir -I$SisIYA_Remote_Config::conf_dir $0 $check_name $expire\n";
+			system($SisIYA_Remote_Config::external_progs{'bash'}, $SisIYA_Remote_Config::external_progs{'perl'}, "-I$SisIYA_Config::base_dir", "-I$SisIYA_Remote_Config::conf_dir", "$0", $check_name, $expire, '&');
+		}
+		else {
+			print STDERR "Skipping $check_name ...\n";
 		}
 	}
+
+#	if(opendir(my $dh, $tr)) {
+#		my @scripts = grep { /^sisiya_check_*.pl/ && -x "$dir_str/$_" } readdir($dh);
+#		my $check_name;
+#		closedir($dh);
+#		foreach my $f (@scripts) {
+#			$check_name = $f;
+#			$check_name =~ s/sisiya_check_//;
+#			$check_name =~ s/\.pl//;
+#			$s .= run_script("$dir_str/$f", $SisIYA_RemoteConfig::conf_dir/$check_name.'_system.xml', $expire); 
+#		}
+#	}
 	return $s;
 }
 
 # record the start time
 my $date_str = get_timestamp();
-my $expire;
 my $xml_s_str = '';
 
 if($#ARGV == 1) {
-	$expire = $ARGV[1];
-	$xml_s_str = run_script($ARGV[0], $expire);
+	$xml_s_str = run_script($ARGV[0], $ARGV[1]);
 }
 else {
-	$expire = $ARGV[0];
-	$xml_s_str  = process_checks($SisIYA_Remote_Config::scripts_dir, $expire);
+	$xml_s_str  = process_checks($ARGV[0]);
+}
+
+if ($#ARGV == 1) {
+	exit 0;
 }
 
 if($xml_s_str eq '') {
@@ -105,7 +125,7 @@ $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';
 $xml_str .= $xml_s_str;
 $xml_str .= '</sisiya_messages>';
 
-print STDERR $xml_str;
+#print STDERR $xml_str;
 
 send_message_data($xml_str);
 

@@ -64,17 +64,17 @@ foreach my $h (@{$data->{'record'}}) {
 		print STDERR "Skipping ...\n";
 		next;
 	}
-	`$SisIYA_Remote_Config::check_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} $h->{'hostname_to_query'} \@$h->{'hostname'} >/dev/null 2>&1`;
+	`$SisIYA_Remote_Config::external_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} $h->{'hostname_to_query'} \@$h->{'hostname'} >/dev/null 2>&1`;
 	$retcode = $? >>=8;
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		print STDERR "FAILED\n";
+		#print STDERR "FAILED\n";
 		$s = "ERROR: Could query $h->{'hostname_to_query'} on $h->{'hostname'}!";
 	}
 	else {
 		$s = "OK: Checked $h->{'hostname_to_query'} on $h->{'hostname'}.";
 	}
-	`$SisIYA_Remote_Config::check_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} -x $h->{'ip_to_query'} \@$h->{'hostname'} >/dev/null 2>&1`;
+	`$SisIYA_Remote_Config::external_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} -x $h->{'ip_to_query'} \@$h->{'hostname'} >/dev/null 2>&1`;
 	$retcode = $? >>=8;
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
