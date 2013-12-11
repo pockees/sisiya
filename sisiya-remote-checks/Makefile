@@ -7,7 +7,7 @@ dst_cron=$(root_dir)/etc/cron.d
 #dst_man=$(root_dir)/usr/share/man
 ###########################################################################
 
-install: 
+all: 
 	install -d $(dst_cron)
 	install -m 750 -d $(dst_sisiya_base)/conf
 	install -m 700 -d $(dst_sisiya_base)/misc
