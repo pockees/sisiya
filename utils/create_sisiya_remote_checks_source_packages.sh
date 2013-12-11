@@ -40,8 +40,8 @@ if test ! -f $rpm_spec_file ; then
 	exit 1
 fi
  
-version_str=`cat $rpm_spec_file | grep define | grep version | awk '{print $3}'`
-release_str=`cat $rpm_spec_file | grep define | grep release | awk '{print $3}'`
+version_str=`cat $rpm_spec_file | grep "define version" | awk '{print $3}'`
+release_str=`cat $rpm_spec_file | grep "define release" | awk '{print $3}'`
 
 if test ! -d $sisiya_dir ; then
 	echo "Directory $sisiya_dir does not exist. Exiting..."
@@ -105,7 +105,7 @@ echo "------"
 deb_dir="deb/$package_dir"
 rm -rf $deb_dir 
 mkdir -p $deb_dir/opt/${package_str} 
-for f in coonf misc scripts version.txt SisIYA_Remote_Config.pm SisIYA_Remote_Config_local.pl utils
+for f in conf misc scripts version.txt SisIYA_Remote_Config.pm SisIYA_Remote_Config_local.pl utils
 do
 	cp -a $package_dir/$f ${deb_dir}/opt/${package_str}/ 
 done

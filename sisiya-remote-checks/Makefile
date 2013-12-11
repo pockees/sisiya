@@ -9,7 +9,7 @@ dst_cron=$(root_dir)/etc/cron.d
 
 install: 
 	install -d $(dst_cron)
-	install -m 750 -d $(dst_sisiya_base)/confs
+	install -m 750 -d $(dst_sisiya_base)/conf
 	install -m 700 -d $(dst_sisiya_base)/misc
 	install -m 700 -d $(dst_sisiya_base)/scripts
 	install -m 700 -d $(dst_sisiya_base)/utils

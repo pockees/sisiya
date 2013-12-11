@@ -40,8 +40,8 @@ if test ! -f $rpm_spec_file ; then
 	exit 1
 fi
  
-version_str=`cat $rpm_spec_file | grep define | grep version | awk '{print $3}'`
-release_str=`cat $rpm_spec_file | grep define | grep release | awk '{print $3}'`
+version_str=`cat $rpm_spec_file | grep "define version" | awk '{print $3}'`
+release_str=`cat $rpm_spec_file | grep "define release" | awk '{print $3}'`
 
 if test ! -d $sisiya_dir ; then
 	echo "Directory $sisiya_dir does not exist. Exiting..."
