@@ -5,7 +5,7 @@ Priority: optional
 Architecture: all
 Essential: no
 Depends: 
-Pre-Depends: perl, libxml-simple-perl  
+Pre-Depends: perl, libxml-simple-peral, sisiya-client-checks (>=0.6.0)  
 Recommends: 
 Suggests: 
 Installed-Size: 1024
