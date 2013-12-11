@@ -78,10 +78,8 @@ else
 
 	fi
 fi
-# clean up
-#find $package_dir -type d -name template	| while read -r d; do  rm -r $d ; done
-#find $package_dir -type d -name CVS		| while read -r d; do  rm -r $d ; done
-#find $package_dir -type d -name .svn		| while read -r d; do  rm -r $d ; done
+
+ls -l $package_dir/
 
 ################################################################################################################################################3
 ### create RPM source package
@@ -107,7 +105,7 @@ for f in conf misc scripts version.txt utils
 do
 	cp -a $package_dir/$f ${deb_dir}/opt/${package_str}/ 
 done
-mkdir $deb_dir/DEBIAN ${deb_dir}/opt/${package_str}/systems 
+mkdir $deb_dir/DEBIAN
 cat $sisiya_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_dir/DEBIAN/control 
 cat $sisiya_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_dir/DEBIAN/postinst 
 chmod 755 $deb_dir/DEBIAN/postinst
