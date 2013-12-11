@@ -4,8 +4,8 @@ Section: system-tools
 Priority: optional
 Architecture: all
 Essential: no
-Depends: perl, libxml-simple-perl
-Pre-Depends:  
+Depends: 
+Pre-Depends: perl, libxml-simple-perl  
 Recommends: 
 Suggests: 
 Installed-Size: 1024
@@ -13,4 +13,4 @@ Maintainer: Erdal Mutlu <erdal@sisiya.org>
 Conflicts: 
 Replaces: 
 Provides: 
-Description: This is the SisIYA remote checks package. This package is used to check services remotely. It is usually installed where the SisIYA daemon is installed.
+Description: The SisIYA remote check programs that are run from a central server. 

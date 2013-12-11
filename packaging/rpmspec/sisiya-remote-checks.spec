@@ -19,7 +19,7 @@
 %define www_group www
 %endif
 
-Summary: The SisIYA remote check programs that are run from a central server. This is normally the server where SisIYA daemon runs.
+Summary: The SisIYA remote check programs that are run from a central server. 
 Name:%{name} 
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
