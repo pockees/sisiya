@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+<record><system_name>server1.example.org</system_name><isactive>f</isactive><hostname>server1.example.org</hostname><community>public</community><snmp_version>2c</snmp_version><username></username><password></password></record>
+</systems>

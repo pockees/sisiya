@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+	<record><system_name>ups1.example.org</system_name><isactive>f</isactive><hostname>ups1.example.org</hostname><snmp_version>2c</snmp_version><community>public</community><username></username><password></password></record>
+</systems>

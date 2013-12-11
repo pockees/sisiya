@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <systems>
-	<record><system_name>lfwzagora</system_name><isactive>t</isactive><hostname>lfwzagora.altiniplik.com.tr</hostname><hostname_to_query>dns5.ics-group.com.tr</hostname_to_query><ip_to_query>10.10.15.1</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
-	<record><system_name>lfwiris</system_name><isactive>t</isactive><hostname>lfwiris.iristekstil.com.tr</hostname><hostname_to_query>dns3.ics-group.com.tr</hostname_to_query><ip_to_query>10.10.12.1</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
-	<record><system_name>lfwics</system_name><isactive>t</isactive><hostname>lfwics.istanbulcorap.com.tr</hostname><hostname_to_query>dns1.ics-group.com.tr</hostname_to_query><ip_to_query>10.10.14.1</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
-	<record><system_name>lfwalt</system_name><isactive>t</isactive><hostname>lfwalt.altiniplik.com.tr</hostname><hostname_to_query>dns2.ics-group.com.tr</hostname_to_query><ip_to_query>10.11.0.1</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
-	<record><system_name>alt</system_name><isactive>t</isactive><hostname>alt.altiniplik.com.tr</hostname><hostname_to_query>alt.altin.com</hostname_to_query><ip_to_query>10.11.0.3</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
-	<record><system_name>ics3</system_name><isactive>t</isactive><hostname>ics3.istanbulcorap.com.tr</hostname><hostname_to_query>ics3.altin.com</hostname_to_query><ip_to_query>10.10.14.2</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
-	<record><system_name>sunucu01</system_name><isactive>t</isactive><hostname>sunucu01.altiniplik.com.tr</hostname><hostname_to_query>mail.ics-group.com.tr</hostname_to_query><ip_to_query>212.154.127.58</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
+<record><system_name>server1.example.org</system_name><isactive>f</isactive><hostname>server1.example.org</hostname><hostname_to_query>www.example.org</hostname_to_query><ip_to_query>10.10.10.22</ip_to_query><port>53</port><timeout>2</timeout><number_of_tries>1</number_of_tries></record>
 </systems>
-

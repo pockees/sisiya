@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+<record><system_name>server1</system_name><isactive>f</isactive><hostname>server1.example.org</hostname><packets_to_send>3</packets_to_send><timeout_to_wait>3</timeout_to_wait></record>
+</systems>
