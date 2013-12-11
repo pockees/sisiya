@@ -33,7 +33,7 @@ Vendor: Erdal Mutlu
 Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
 Url: http://www.sisiya.org
-Requires: bash, sisiya-client-checks >= 0.6, bind-utils, curl, expect, ftp, iputils, net-snmp, net-snmp-utils, samba-client, wget
+Requires: bash, sisiya-client-checks >= 0.6, bind-utils, curl, expect, ftp, iputils, net-snmp, net-snmp-utils, perl, perl-XML-Simple, samba-client, wget
 %description 
 Summary: The SisIYA server / remote check programs that are run from a central server. This is normally the server where SisIYA daemon runs.
 
