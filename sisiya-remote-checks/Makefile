@@ -14,6 +14,7 @@ install:
 	install -m 700 -d $(dst_sisiya_base)/scripts
 	install -m 700 -d $(dst_sisiya_base)/utils
 	install -m 600 etc/cron.d/sisiya-remote-checks		$(dst_cron)
+	install -m 600 conf/class_path	 			$(dst_sisiya_base)/conf/
 	install -m 600 conf/SisIYA_Remote_Config.pm 		$(dst_sisiya_base)/conf/
 	install -m 600 conf/SisIYA_Remote_Config_local.pl 	$(dst_sisiya_base)/conf/
 	install -m 600 version.txt 				$(dst_sisiya_base)/
