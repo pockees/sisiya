@@ -56,7 +56,6 @@ done
 
 package_dir="${package_str}-${version_str}-$release_str"
 rm -rf $package_dir
-mkdir -p $package_dir/systems
 cp -a ${sisiya_dir}/$package_str/* $package_dir/
 echo "${version_str}-$release_str" > $package_dir/version.txt
 
@@ -66,17 +65,15 @@ if test $# -eq 1 ; then
 	echo "Creating source package for general usage..."
 else
 	echo "Creating source package for you..."
-	### remove default files, this directory is owned by the sisiya-client-systems package
-	rm -rf $package_dir/systems/*
 
 	local_dir=$2
  	if test ! -d $local_dir ; then
 		echo "$0 : Local configuration directory (local_confs_dir) does not exist!"
 		exit 1
 	fi
-	if test -f ${local_dir}/$package_str/SisIYA_Config_local.pl ; then
-		echo "I am using your own SisIYA_Config_local.pl file (${local_dir}/sisiya-client-checks/SisIYA_Config_local.pl) ..."
-		cp -f ${local_dir}/$package_str/SisIYA_Config_local.pl $package_dir/
+	if test -f ${local_dir}/$package_str/conf/SisIYA_Remote_Config_local.pl ; then
+		echo "I am using your own SisIYA_Remote_Config_local.pl file (${local_dir}/$package_str/SisIYA_Remote_Config_local.pl) ..."
+		cp -f ${local_dir}/$package_str/conf/SisIYA_Remote_Config_local.pl $package_dir/conf/
 
 	fi
 fi
@@ -105,7 +102,7 @@ echo "------"
 deb_dir="deb/$package_dir"
 rm -rf $deb_dir 
 mkdir -p $deb_dir/opt/${package_str} 
-for f in conf misc scripts version.txt SisIYA_Remote_Config.pm SisIYA_Remote_Config_local.pl utils
+for f in conf misc scripts version.txt utils
 do
 	cp -a $package_dir/$f ${deb_dir}/opt/${package_str}/ 
 done
