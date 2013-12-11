@@ -1,0 +1,16 @@
+Package: sisiya-remote-checks
+Version: __VERSION__
+Section: system-tools 
+Priority: optional
+Architecture: all
+Essential: no
+Depends: perl
+Pre-Depends:  
+Recommends: 
+Suggests: 
+Installed-Size: 1024
+Maintainer: Erdal Mutlu <erdal@sisiya.org>
+Conflicts: 
+Replaces: 
+Provides: 
+Description: This is the SisIYA remote checks package. This package is used to check services remotely. It is usually installed where the SisIYA daemon is installed.
