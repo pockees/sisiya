@@ -5,7 +5,7 @@
 
 %define install_dir /opt/%{name}
 
-Summary: The SisIYA client programs and checks.
+Summary: The SisIYA client checks.
 Name:%{name} 
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
@@ -17,8 +17,8 @@ Source0: %{name}-%{version}-%{release}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
-Packager: Erdal Mutlu <emutlu@users.sourceforge.net>
-Url: http://sisiya.sourceforge.net
+Packager: Erdal Mutlu <erdal@sisiya.org>
+Url: http://www.sisiya.org
 Requires: bash, perl
 %description 
 The SisIYA client programs and checks. This package is installed on every server that is going to be monitored by SisIYA.
