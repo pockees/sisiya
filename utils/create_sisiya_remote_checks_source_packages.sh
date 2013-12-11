@@ -56,6 +56,7 @@ done
 
 package_dir="${package_str}-${version_str}-$release_str"
 rm -rf $package_dir
+mkdir -p $package_dir
 cp -a ${sisiya_dir}/$package_str/* $package_dir/
 echo "${version_str}-$release_str" > $package_dir/version.txt
 
