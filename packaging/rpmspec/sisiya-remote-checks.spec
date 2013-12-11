@@ -43,7 +43,7 @@ Summary: The SisIYA server / remote check programs that are run from a central s
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DESTDIR==%{buildroot}" install
+make "DESTDIR=%{buildroot}" install
 
 %post
 # change ownership of some files and directories so that sisiya-webui package can access them in order to change conf files
