@@ -87,7 +87,7 @@ sub check_http
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		#print STDERR "FAILED\n";
-		$s = "ERROR: The HTTP server is not running! retcode=$retcode";
+		$s .= "ERROR: The HTTP server is not running! retcode=$retcode";
 	}
 	else {
 		my $info_str = '';
@@ -99,6 +99,7 @@ sub check_http
 		}
 		if ($info_str ne '') {
 			$info_str = "INFO: $info_str";
+			chomp($info_str = $info_str);
 		}
 		my $http_status_code = (split(/\s+/, (grep(/^HTTP\//, @a))[0]))[1];
 		if ( ($http_status_code == 200) || ($http_status_code == 302) ) {
@@ -117,20 +118,21 @@ sub check_http
 			$s = "ERROR: Unknown status $http_status_code! $info_str";
 		}
 	}
-	$s .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
-	return $s;
+	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
+	return $x_str;
 }
+
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 #print STDERR Dumper($data);
 my $xml_str = '';
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_http($expire, $h->{'system_name'}, $h->{'isactive'}, $h->{'virtual_host'}, $h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
+		$xml_str .= check_http($h->{'system_name'}, $h->{'isactive'}, $h->{'virtual_host'}, $h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
 	}
 }
 else {
-	$xml_str = check_http($expire, $data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
+	$xml_str = check_http($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
 }
 
 #print STDERR $xml_str."\n";

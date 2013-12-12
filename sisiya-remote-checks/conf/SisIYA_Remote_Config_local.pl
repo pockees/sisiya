@@ -1,7 +1,7 @@
 ##!/usr/bin/perl -w
 #
 #
-## This file is the config for SisIYA remote check programs.
+## This file is the local config for SisIYA remote check programs.
 ##
 ##    Copyright (C) Erdal Mutlu
 ##
@@ -21,4 +21,5 @@
 ##
 ##
 ##################################################################################
+package SisIYA_Remote_Config;
 1;
