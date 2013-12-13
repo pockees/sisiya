@@ -45,46 +45,62 @@ if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-my $systems_file = $ARGV[0];
-my $expire = $ARGV[1];
-my $serviceid = get_serviceid('dns');
-my $statusid;
-my $retcode;
-my $xml_str;
-my $s;
+my $systems_file	= $ARGV[0];
+my $expire 		= $ARGV[1];
+my $serviceid 		= get_serviceid('dns');
+
+sub check_dns
+{
+	my $isactive 		= $_[1];
+	if ($isactive eq 'f' ) {
+		return '';
+	}
+	my $system_name 	= $_[0];
+	my $hostname		= $_[2];
+	my $hostname_to_query	= $_[3];
+	my $ip_to_query		= $_[4];
+	my $port		= $_[5];
+	my $timeout		= $_[6];
+	my $number_of_tries	= $_[7];
+
+	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] hostname_to_query=[$hostname_to_query] ip_to_query=[$ip_to_query] port=[$port] timeout=[$timeout] number_of_tries=[$number_of_tries] ...\n";
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $x_str .= "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
+	my $s = '';
+	`$SisIYA_Remote_Config::external_progs{'dig'} -p $port +timeout=$timeout +tries=$number_of_tries $hostname_to_query \@$hostname >/dev/null 2>&1`;
+	my $retcode = $? >>=8;
+	if($retcode != 0) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s = "ERROR: Could not query $hostname_to_query on $hostname!";
+	}
+	else {
+		$s = "OK: Checked $hostname_to_query on $hostname.";
+	}
+	`$SisIYA_Remote_Config::external_progs{'dig'} -p $port +timeout=$timeout +tries=$number_of_tries -x $ip_to_query \@$hostname >/dev/null 2>&1`;
+	$retcode = $? >>=8;
+	if($retcode != 0) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s .= "ERROR: Could query $ip_to_query on $hostname!";
+	}
+	else {
+		$s .= "OK: Checked $ip_to_query on $hostname.";
+	}
+	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
+	return $x_str;
+}
+
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
-	#print STDERR Dumper($data);
-foreach my $h (@{$data->{'record'}}) {
-	#print STDERR "Checking system_name=[$h->{'system_name'}] hostname=[$h->{'hostname'}] isactive=[$h->{'isactive'}] hostname_to_query=[$h->{'hostname_to_query'}] ip_to_query=[$h->{'ip_to_query'}] port=[$h->{'port'}] timeout=[$h->{'timeout'}] number_of_tries=[$h->{'number_of_tries'}] ...\n";
-	if ($h->{'isactive'} eq 'f' ) {
-		#print STDERR "Skipping ...\n";
-		next;
+
+#print STDERR Dumper($data);
+my $xml_str = '';
+if( ref($data->{'record'}) eq 'ARRAY' ) {
+	foreach my $h (@{$data->{'record'}}) {
+		$xml_str .= check_dns($h->{'system_name'}, $h->{'isactive'}, $h->{'hostname'}, $h->{'hostname_to_query'}, $h->{'ip_to_query'}, $h->{'port'}, $h->{'timeout'}, $h->{'number_of_tries'});
 	}
-	$statusid = $SisIYA_Config::statusids{'ok'};
-	$xml_str .= "<system><name>$h->{'system_name'}</name><message><serviceid>$serviceid</serviceid>";
-	$s = '';
-	`$SisIYA_Remote_Config::external_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} $h->{'hostname_to_query'} \@$h->{'hostname'} >/dev/null 2>&1`;
-	$retcode = $? >>=8;
-	if($retcode != 0) {
-		$statusid = $SisIYA_Config::statusids{'error'};
-		#print STDERR "FAILED\n";
-		$s = "ERROR: Could not query $h->{'hostname_to_query'} on $h->{'hostname'}!";
-	}
-	else {
-		$s = "OK: Checked $h->{'hostname_to_query'} on $h->{'hostname'}.";
-	}
-	`$SisIYA_Remote_Config::external_progs{'dig'} -p $h->{'port'} +timeout=$h->{'timeout'} +tries=$h->{'number_of_tries'} -x $h->{'ip_to_query'} \@$h->{'hostname'} >/dev/null 2>&1`;
-	$retcode = $? >>=8;
-	if($retcode != 0) {
-		$statusid = $SisIYA_Config::statusids{'error'};
-		$s .= "ERROR: Could query $h->{'ip_to_query'} on $h->{'hostname'}!";
-	}
-	else {
-		$s .= "OK: Checked $h->{'ip_to_query'} on $h->{'hostname'}.";
-	}
-	$xml_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
-	#print STDERR $xml_str;
+}
+else {
+	$xml_str .= check_dns($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'hostname'}, $data->{'record'}->{'hostname_to_query'}, $data->{'record'}->{'ip_to_query'}, $data->{'record'}->{'port'}, $data->{'record'}->{'timeout'}, $data->{'record'}->{'number_of_tries'});
 }
 print $xml_str;
 #######################################################################################

@@ -22,4 +22,27 @@
 ##
 ##################################################################################
 package SisIYA_Remote_Config;
+
+# In order to disable the automatic (via cron) running of a specific script uncomment
+# the corresponding line. All scripts are set to be run automaticaly in the SisIYA_Remote_Config.pm
+#$checks{'dns'}{'auto'}		= 0;
+#$checks{'http'}{'auto'}	= 0;
+#$checks{'hpilo2'}{'auto'}	= 0;
+#$checks{'https'}{'auto'}	= 0;
+#$checks{'imap'}{'auto'}	= 0;
+#$checks{'ping'}{'auto'}	= 0;
+#$checks{'pop3'}{'auto'}	= 0;
+#$checks{'printer'}{'auto'}	= 0;
+#$checks{'qnap'}{'auto'}	= 0;
+#$checks{'sensor'}{'auto'}	= 0;
+#$checks{'smb'}{'auto'}		= 0;
+#$checks{'smtp'}{'auto'}	= 0;
+#$checks{'ssh'}{'auto'}		= 0;
+#$checks{'switch'}{'auto'}	= 0;
+#$checks{'telekutu'}{'auto'}	= 0;
+#$checks{'telnet'}{'auto'}	= 0;
+#$checks{'ups_cs121'}{'auto'}	= 0;
+#$checks{'ups_netagent'}{'auto'} = 0;
+#$checks{'ups'}{'auto'}i	= 0;
+#$checks{'vmware'}{'auto'}	= 0;
 1;
