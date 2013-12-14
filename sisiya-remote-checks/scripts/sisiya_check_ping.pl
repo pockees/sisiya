@@ -63,22 +63,20 @@ sub check_ping
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $x_str .= "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
 	my $s = '';
-	my @a = `$SisIYA_Remote_Config::external_progs{'ping'} -q -c $packets_to_send -w $timeout_to_wait $hostname >/dev/null 2>&1`;
+	my @a = `$SisIYA_Remote_Config::external_progs{'ping'} -q -c $packets_to_send -w $timeout_to_wait $hostname`;
 	my $retcode = $? >>=8;
-	print STDERR "retcode=$retcode\n";
 	if($retcode == 1) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$s = "ERROR: The system is unreachable!";
 	}
 	else {
-		print STDERR @a;
-
+		my $info_str = (grep(/^$packets_to_send packets/, @a))[0];
 		if($retcode == 0) {
-			$s = "OK: The system is reachable.";
+			$s = "OK: $info_str";
 		}
 		else {
 			$statusid = $SisIYA_Config::statusids{'warning'};
-			$s = "WARNING: The system is unreachable!";
+			$s = "WARNING: The system has network problems! $info_str";
 		}
 	}
 	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
@@ -100,5 +98,4 @@ else {
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'packets_to_send'}, 
 				$data->{'record'}->{'timeout_to_wait'});
 }
-print STDERR $xml_str."\n";
 print $xml_str;

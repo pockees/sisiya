@@ -64,10 +64,10 @@ sub get_http_protocol_description
 				505 => 'Server error: HTTP version not supported!'
 			 );
 	if ( exists($http_protocol_str{$_[0]})) {
-		return $http_protocol_str{$_[0]};
+		return "HTTP code $_[0]: $http_protocol_str{$_[0]}";
 	}
 	else {
-		return 'Unknown status code.';
+		return 'Unknown HTTP status code: $_[0]';
 	}
 }
 
@@ -132,18 +132,20 @@ sub check_http_protocol
 			chomp($info_str = $info_str);
 		}
 		my $http_status_code = (split(/\s+/, (grep(/^HTTP\//, @a))[0]))[1];
-		print STDERR "http_status_code = [$http_status_code]\n";
-		if (($http_status_code >= 200) && (http_status_code < 300)) {
+		#if (($http_status_code >= 200) && ($http_status_code < 300)) {
+		if (($http_status_code >= 200) && ($http_status_code < 400)) {
 			$statusid = $SisIYA_Config::statusids{'ok'};
-			$s = "ERROR: The service is not running! ".get_http_protocol_description($http_status_code)." retcode=$retcode";
+			$s = "OK: ".get_http_protocol_description($http_status_code);
 		}
-		elsif ( ($http_status_code >= 300) && (http_status_code < 400)) {
-			$statusid = $SisIYA_Config::statusids{'warning'};
-			$s = "ERROR: The service is not running! ".get_http_protocol_description($http_status_code)." retcode=$retcode";
-		}
+		#elsif ( ($http_status_code >= 300) && ($http_status_code < 400)) {
+		#	$statusid = $SisIYA_Config::statusids{'warning'};
+		#	$s = "WARNING: The service is not running! ".get_http_protocol_description($http_status_code)." retcode=$retcode";
+		#}
 		else {
-			$statusid = $SisIYA_Config::statusids{'error'};
-			$s = "ERROR: The service has problem ! ".get_http_protocol_description($http_status_code)." retcode=$retcode";
+			#$statusid = $SisIYA_Config::statusids{'error'};
+			#$s = "ERROR: The service has problem ! ".get_http_protocol_description($http_status_code)." retcode=$retcode";
+			$statusid = $SisIYA_Config::statusids{'warning'};
+			$s = "WARNING: The service has problems! ".get_http_protocol_description($http_status_code)." retcode=$retcode";
 		}
 	}
 	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
