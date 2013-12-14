@@ -54,8 +54,8 @@ my $xml_str = '';
 #print STDERR Dumper($data);
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_http_protocol($h->{'isactive'}, $serviceid, $expire, 0, $h->{'system_name'}, $h->{'isactive'}, 
-						$h->{'virtual_host'}, $h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
+		$xml_str .= check_http_protocol($h->{'isactive'}, $serviceid, $expire, 0, $h->{'system_name'}, $h->{'virtual_host'}, 
+						$h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
 	}
 }
 else {

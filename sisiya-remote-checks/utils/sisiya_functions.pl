@@ -104,12 +104,13 @@ sub check_http_protocol
 	if (grep(/^HASH/, $username) == 0) {
 	       $params = "$params --user \"$username:$password\"";
 	}	       
-	#print STDERR "$SisIYA_Remote_Config::external_progs{'curl'} $params http://$virtual_host:$http_port$'index_file'\n";
 	my @a;
        	if ($ssl == 1) {
+		print STDERR "$SisIYA_Remote_Config::external_progs{'curl'} $params https://$virtual_host:$http_port$index_file\n";
 		@a = `$SisIYA_Remote_Config::external_progs{'curl'} $params https://$virtual_host:$http_port$index_file 2>/dev/null`;
 	}
 	else {
+		print STDERR "$SisIYA_Remote_Config::external_progs{'curl'} $params http://$virtual_host:$http_port$index_file\n";
 		@a = `$SisIYA_Remote_Config::external_progs{'curl'} $params http://$virtual_host:$http_port$index_file 2>/dev/null`;
 	}
 	my $s = '';

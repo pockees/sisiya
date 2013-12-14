@@ -1,7 +1,7 @@
 %define name sisiya-remote-checks
 
 %define version 0.6.0
-%define release 3
+%define release 4
 
 %define install_dir /opt/%{name}
 
