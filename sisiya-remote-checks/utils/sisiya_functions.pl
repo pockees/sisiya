@@ -77,9 +77,9 @@ sub check_http_protocol
 	if ($isactive eq 'f' ) {
 		return '';
 	}
-	my $ssl 		= $_[1];
-	my $serviceid 		= $_[2];
-	my $expire 		= $_[3];
+	my $serviceid 		= $_[1];
+	my $expire 		= $_[2];
+	my $ssl 		= $_[3];
 	my $system_name 	= $_[4];
 	my $virtual_host	= $_[5];
 	my $index_file		= $_[6];

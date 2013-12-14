@@ -35,9 +35,6 @@ if( $#ARGV != 1 ) {
 if(-f $SisIYA_Remote_Config::local_conf) {
 	require $SisIYA_Remote_Config::local_conf;
 }
-#if(-f $SisIYA_Remote_Config::client_conf) {
-#	require $SisIYA_Remote_Config::client_conf;
-#}
 if(-f $SisIYA_Remote_Config::client_local_conf) {
 	require $SisIYA_Remote_Config::client_local_conf;
 }
@@ -49,3 +46,59 @@ my $systems_file	= $ARGV[0];
 my $expire 		= $ARGV[1];
 my $serviceid 		= get_serviceid('ping');
 
+sub check_ping
+{
+	my $isactive 		= $_[0];
+	if ($isactive eq 'f' ) {
+		return '';
+	}
+	my $serviceid	 	= $_[1];
+	my $expire	 	= $_[2];
+	my $system_name 	= $_[3];
+	my $hostname		= $_[4];
+	my $packets_to_send	= $_[5];
+	my $timeout_to_wait	= $_[6];
+
+	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] packets_to_send=[$packets_to_send] timeout_to_wait=[$timeout_to_wait]...\n";
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $x_str .= "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
+	my $s = '';
+	my @a = `$SisIYA_Remote_Config::external_progs{'ping'} -q -c $packets_to_send -w $timeout_to_wait $hostname >/dev/null 2>&1`;
+	my $retcode = $? >>=8;
+	print STDERR "retcode=$retcode\n";
+	if($retcode == 1) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s = "ERROR: The system is unreachable!";
+	}
+	else {
+		print STDERR @a;
+
+		if($retcode == 0) {
+			$s = "OK: The system is reachable.";
+		}
+		else {
+			$statusid = $SisIYA_Config::statusids{'warning'};
+			$s = "WARNING: The system is unreachable!";
+		}
+	}
+	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
+	return $x_str;
+}
+
+my $xml = new XML::Simple;
+my $data = $xml->XMLin($systems_file);
+my $xml_str = '';
+#print STDERR Dumper($data);
+if( ref($data->{'record'}) eq 'ARRAY' ) {
+	foreach my $h (@{$data->{'record'}}) {
+		$xml_str .= check_ping($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, 
+					$h->{'packets_to_send'}, $h->{'timeout_to_wait'});
+	}
+}
+else {
+	$xml_str .= check_ping($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
+				$data->{'record'}->{'hostname'}, $data->{'record'}->{'packets_to_send'}, 
+				$data->{'record'}->{'timeout_to_wait'});
+}
+print STDERR $xml_str."\n";
+print $xml_str;

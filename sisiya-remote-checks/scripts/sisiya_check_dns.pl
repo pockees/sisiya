@@ -91,16 +91,17 @@ sub check_dns
 
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
-
-#print STDERR Dumper($data);
 my $xml_str = '';
+#print STDERR Dumper($data);
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_dns($h->{'system_name'}, $h->{'isactive'}, $h->{'hostname'}, $h->{'hostname_to_query'}, $h->{'ip_to_query'}, $h->{'port'}, $h->{'timeout'}, $h->{'number_of_tries'});
+		$xml_str .= check_dns($h->{'system_name'}, $h->{'isactive'}, $h->{'hostname'}, $h->{'hostname_to_query'}, 
+					$h->{'ip_to_query'}, $h->{'port'}, $h->{'timeout'}, $h->{'number_of_tries'});
 	}
 }
 else {
-	$xml_str .= check_dns($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'hostname'}, $data->{'record'}->{'hostname_to_query'}, $data->{'record'}->{'ip_to_query'}, $data->{'record'}->{'port'}, $data->{'record'}->{'timeout'}, $data->{'record'}->{'number_of_tries'});
+	$xml_str .= check_dns($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'hostname'}, 
+				$data->{'record'}->{'hostname_to_query'}, $data->{'record'}->{'ip_to_query'}, 
+				$data->{'record'}->{'port'}, $data->{'record'}->{'timeout'}, $data->{'record'}->{'number_of_tries'});
 }
 print $xml_str;
-#######################################################################################
