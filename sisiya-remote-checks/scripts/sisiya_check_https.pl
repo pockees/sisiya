@@ -27,7 +27,7 @@ use XML::Simple;
 #use Data::Dumper;
 
 if( $#ARGV != 1 ) {
-	print "Usage : $0 http_systems.xml expire\n";
+	print "Usage : $0 https_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -47,9 +47,9 @@ if(-f $SisIYA_Config::functions) {
 
 my $systems_file	= $ARGV[0];
 my $expire 		= $ARGV[1];
-my $serviceid 		= get_serviceid('http');
+my $serviceid 		= get_serviceid('https');
 
-sub check_http
+sub check_https
 {
 	my $isactive 		= $_[1];
 	if ($isactive eq 'f' ) {
@@ -58,10 +58,10 @@ sub check_http
 	my $system_name 	= $_[0];
 	my $virtual_host	= $_[2];
 	my $index_file		= $_[3];
-	my $http_port		= $_[4];
+	my $https_port		= $_[4];
 	my $username 		= $_[5];
 	my $password		= $_[6];
-	#print STDERR "check_http: Checking system_name=[$system_name] isactive=[$isactive] virtual_host=[$virtual_host] index_file=[$index_file] http_port=[$http_port] username=[$username] password=[$password]...\n";
+	#print STDERR "check_http: Checking system_name=[$system_name] isactive=[$isactive] virtual_host=[$virtual_host] index_file=[$index_file] https_port=[$https_port] username=[$username] password=[$password]...\n";
 
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $x_str = "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
@@ -81,8 +81,8 @@ sub check_http
 	if (grep(/^HASH/, $username) == 0) {
 	       $params = "$params --user \"$username:$password\"";
 	}	       
-	#print STDERR "$SisIYA_Remote_Config::external_progs{'curl'} $params http://$virtual_host:$http_port$'index_file'\n";
-	my @a = `$SisIYA_Remote_Config::external_progs{'curl'} $params http://$virtual_host:$http_port$index_file 2>/dev/null`;
+	#print STDERR "$SisIYA_Remote_Config::external_progs{'curl'} $params http://$virtual_host:$https_port$'index_file'\n";
+	my @a = `$SisIYA_Remote_Config::external_progs{'curl'} $params https://$virtual_host:$https_port$index_file 2>/dev/null`;
 	my $retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
@@ -105,15 +105,19 @@ sub check_http
 			$s = "OK: The service is running. $info_str";
 		}
 		elsif ($http_status_code == 401) {
+			$statusid = $SisIYA_Config::statusids{'warning'};
 			$s = "WARNING: Unauthorized access to $virtual_host$index_file! $info_str";
 		}
 		elsif ($http_status_code == 403) {
+			$statusid = $SisIYA_Config::statusids{'warning'};
 			$s = "WARNING: It is forbidden to get $virtual_host$index_file! $info_str";
 		}
 		elsif ($http_status_code == 404) {
+			$statusid = $SisIYA_Config::statusids{'warning'};
 			$s = "WARNING: $index_file could not be found! $info_str";
 		}
 		else {
+			$statusid = $SisIYA_Config::statusids{'error'};
 			$s = "ERROR: Unknown status $http_status_code! $info_str";
 		}
 	}
@@ -127,11 +131,13 @@ my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_http($h->{'system_name'}, $h->{'isactive'}, $h->{'virtual_host'}, $h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
+		#$xml_str .= check_https($h->{'system_name'}, $h->{'isactive'}, $h->{'virtual_host'}, $h->{'index_file'}, $h->{'https_port'}, $h->{'username'}, $h->{'password'});
+		$xml_str .= check_http_protocol($h->{'isactive'}, 1, $serviceid, $expire, $h->{'system_name'}, $h->{'isactive'}, $h->{'virtual_host'}, $h->{'index_file'}, $h->{'https_port'}, $h->{'username'}, $h->{'password'});
 	}
 }
 else {
-	$xml_str = check_http($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
+	#$xml_str = check_https($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'https_port'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
+	$xml_str = check_http_protocol($data->{'record'}->{'isactive'}, 1, $serviceid, $expire, $data->{'record'}->{'system_name'}, $data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'https_port'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
 }
 
 #print STDERR $xml_str."\n";

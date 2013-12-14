@@ -44,6 +44,9 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+if(-f $SisIYA_Remote_Config::functions) {
+	require $SisIYA_Remote_Config::functions;
+}
 
 my $systems_file	= $ARGV[0];
 my $expire 		= $ARGV[1];
@@ -105,15 +108,19 @@ sub check_http
 			$s = "OK: The service is running. $info_str";
 		}
 		elsif ($http_status_code == 401) {
+			$statusid = $SisIYA_Config::statusids{'warning'};
 			$s = "WARNING: Unauthorized access to $virtual_host$index_file! $info_str";
 		}
 		elsif ($http_status_code == 403) {
+			$statusid = $SisIYA_Config::statusids{'warning'};
 			$s = "WARNING: It is forbidden to get $virtual_host$index_file! $info_str";
 		}
 		elsif ($http_status_code == 404) {
+			$statusid = $SisIYA_Config::statusids{'warning'};
 			$s = "WARNING: $index_file could not be found! $info_str";
 		}
 		else {
+			$statusid = $SisIYA_Config::statusids{'error'};
 			$s = "ERROR: Unknown status $http_status_code! $info_str";
 		}
 	}
@@ -127,11 +134,13 @@ my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_http($h->{'system_name'}, $h->{'isactive'}, $h->{'virtual_host'}, $h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
+		#$xml_str .= check_http($h->{'system_name'}, $h->{'isactive'}, $h->{'virtual_host'}, $h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
+		$xml_str .= check_http_protocol($h->{'isactive'}, 0, $serviceid, $expire, $h->{'system_name'}, $h->{'isactive'}, $h->{'virtual_host'}, $h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
 	}
 }
 else {
-	$xml_str = check_http($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
+	#$xml_str = check_http_protocol($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
+	$xml_str = check_http_protocol($data->{'record'}->{'isactive'}, 0, $serviceid, $expire, $data->{'record'}->{'system_name'}, $data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
 }
 
 #print STDERR $xml_str."\n";

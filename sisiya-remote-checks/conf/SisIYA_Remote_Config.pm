@@ -39,6 +39,7 @@ our $local_conf			= "$conf_dir/SisIYA_Remote_Config_local.pl";
 our $misc_dir 			= "$base_dir/misc";
 our $scripts_dir	 	= "$base_dir/scripts";
 our $utils_dir	 		= "$base_dir/utils";
+our $functions	 		= "$utils_dir/sisiya_functions.pl";
 
 our %external_progs = (
 		'bash'		=> '/bin/bash',
