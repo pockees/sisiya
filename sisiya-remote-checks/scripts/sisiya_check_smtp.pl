@@ -24,6 +24,7 @@ use warnings;
 use SisIYA_Config;
 use SisIYA_Remote_Config;
 use XML::Simple;
+use Net::SMTP;
 #use Data::Dumper;
 
 if( $#ARGV != 1 ) {
@@ -45,7 +46,55 @@ if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-my $systems_file	= $ARGV[0];
-my $expire 		= $ARGV[1];
-my $serviceid 		= get_serviceid('smtp');
 
+sub check_smtp
+{
+	my $isactive		= $_[0];
+	if ($isactive eq 'f' ) {
+		return '';
+	}
+	my $serviceid 		= $_[1];
+	my $expire 		= $_[2];
+	my $system_name 	= $_[3];
+	my $hostname		= $_[4];
+	my $port		= $_[5];
+
+	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] port=[$port] ...\n";
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $x_str = "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
+	my $s = '';
+	my $smtp = Net::SMTP->new( Host => $hostname, Hello => $SisIYA_Config::hostname, Timeout => 3, Debug => 0);
+	#print STDERR "banner=[".$smtp->banner."] domain=[".$smtp->domain."]\n";
+	$smtp->quit();
+
+	if($smtp) {
+		$s = "OK: ".$smtp->banner;
+		chomp($s = $s);
+		#print STDERR "s=[$s]\n";
+	}
+	else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s = "ERROR: Service is not running!";
+	}
+	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
+	return $x_str;
+}
+
+my $systems_file = $ARGV[0];
+my $expire = $ARGV[1];
+my $serviceid = get_serviceid('smtp');
+my $xml = new XML::Simple;
+my $data = $xml->XMLin($systems_file);
+my $xml_str = '';
+#print STDERR Dumper($data);
+if( ref($data->{'record'}) eq 'ARRAY' ) {
+	foreach my $h (@{$data->{'record'}}) {
+		$xml_str .= check_smtp($h->{'isactive'}, $serviceid, $expire, 0, $h->{'system_name'}, $h->{'hostname'}, $h->{'port'});
+	}
+}
+else {
+	$xml_str .= check_smtp($data->{'record'}->{'isactive'}, $serviceid, $expire, 0, $data->{'record'}->{'system_name'}, 
+				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'});
+}
+print STDERR $xml_str."\n";
+print $xml_str;
