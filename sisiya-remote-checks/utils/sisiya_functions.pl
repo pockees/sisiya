@@ -124,15 +124,13 @@ sub check_http_protocol
 	}
 	else {
 		my $info_str = '';
-		if ( grep(/^Server/, @a) != 0 ) {
-			$info_str = (grep(/^Server/, @a))[0];
-			#print "info=[$info_str]\n";
-			$info_str = (split(/:/, (grep(/^Server/, @a))[0]))[1];
-			#print "info=[$info_str]\n";
-		}
-		if ($info_str ne '') {
-			$info_str = "INFO: $info_str";
+		my @b = grep(/^Server:/, @a);
+		if ( $#b != -1 ) {
+			$info_str = (split(/:/, $b[0]))[1];
 			chomp($info_str = $info_str);
+			$info_str =~ s/\r//g;
+			$info_str = "INFO:$info_str";
+			#print STDERR "info=[$info_str]\n";
 		}
 		my $http_status_code = (split(/\s+/, (grep(/^HTTP\//, @a))[0]))[1];
 		#if (($http_status_code >= 200) && ($http_status_code < 300)) {
@@ -150,6 +148,7 @@ sub check_http_protocol
 			$statusid = $SisIYA_Config::statusids{'warning'};
 			$s = "WARNING: The service has problems! ".get_http_protocol_description($http_status_code)." retcode=$retcode";
 		}
+		$s .= $info_str;
 	}
 	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
 	return $x_str;
