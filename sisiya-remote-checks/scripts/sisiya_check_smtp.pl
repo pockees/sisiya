@@ -89,12 +89,11 @@ my $xml_str = '';
 #print STDERR Dumper($data);
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_smtp($h->{'isactive'}, $serviceid, $expire, 0, $h->{'system_name'}, $h->{'hostname'}, $h->{'port'});
+		$xml_str .= check_smtp($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'port'});
 	}
 }
 else {
-	$xml_str .= check_smtp($data->{'record'}->{'isactive'}, $serviceid, $expire, 0, $data->{'record'}->{'system_name'}, 
+	$xml_str .= check_smtp($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'});
 }
-print STDERR $xml_str."\n";
 print $xml_str;

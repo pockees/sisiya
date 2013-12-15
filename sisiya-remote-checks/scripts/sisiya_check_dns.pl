@@ -100,7 +100,7 @@ if( ref($data->{'record'}) eq 'ARRAY' ) {
 	}
 }
 else {
-	$xml_str .= check_dns($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'hostname'}, 
+	$xml_str = check_dns($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'hostname'}, 
 				$data->{'record'}->{'hostname_to_query'}, $data->{'record'}->{'ip_to_query'}, 
 				$data->{'record'}->{'port'}, $data->{'record'}->{'timeout'}, $data->{'record'}->{'number_of_tries'});
 }

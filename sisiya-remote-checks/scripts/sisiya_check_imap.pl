@@ -24,6 +24,7 @@ use warnings;
 use SisIYA_Config;
 use SisIYA_Remote_Config;
 use XML::Simple;
+use Socket;
 #use Data::Dumper;
 
 if( $#ARGV != 1 ) {
@@ -45,7 +46,62 @@ if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-my $systems_file	= $ARGV[0];
-my $expire 		= $ARGV[1];
-my $serviceid 		= get_serviceid('imap');
+sub check_imap
+{
+	my $isactive		= $_[0];
+	if ($isactive eq 'f' ) {
+		return '';
+	}
+	my $serviceid 		= $_[1];
+	my $expire 		= $_[2];
+	my $system_name 	= $_[3];
+	my $hostname		= $_[4];
+	my $port		= $_[5];
+	my $username		= $_[6];
+	my $password		= $_[7];
 
+	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] port=[$port] ...\n";
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $x_str = "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
+	my $s = '';
+
+	# create the socket, connect to the port
+	if (socket(SOCKET, PF_INET, SOCK_STREAM, (getprotobyname('tcp'))[2]) == -1) {
+		return '';
+	}
+	if (connect( SOCKET, pack_sockaddr_in($port, inet_aton($hostname))) == -1) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s = "ERROR: Service is not running!";
+	}
+	else {
+		my $line = <SOCKET>;
+		chomp($line = $line);
+		$line =~ s/\r//g;
+		$line =~ s/\* OK //g;
+		#print STDERR "$line\n";
+		$s = "OK: ".$line;
+		#print SOCKET "A001 LOGOUT\n";
+		close SOCKET;
+	}
+
+	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
+	return $x_str;
+}
+
+my $systems_file = $ARGV[0];
+my $expire = $ARGV[1];
+my $serviceid = get_serviceid('imap');
+my $xml = new XML::Simple;
+my $data = $xml->XMLin($systems_file);
+my $xml_str = '';
+#print STDERR Dumper($data);
+if( ref($data->{'record'}) eq 'ARRAY' ) {
+	foreach my $h (@{$data->{'record'}}) {
+		$xml_str .= check_imap($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'port'});
+	}
+}
+else {
+	$xml_str = check_imap($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
+				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'}, $data->{'record'}->{'port'});
+}
+print $xml_str;
