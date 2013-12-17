@@ -88,6 +88,6 @@ if( ref($data->{'record'}) eq 'ARRAY' ) {
 }
 else {
 	$xml_str = check_imap($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
-				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'}, $data->{'record'}->{'port'});
+				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'});
 }
 print $xml_str;
