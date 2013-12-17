@@ -19,6 +19,45 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 #######################################################################################
+use Socket;
+
+######################################################################################################
+# An alternative to the Net:SMTP, but without timeout option. We can switch version if we implement it
+# with timeout option.
+######################################################################################################
+sub connect_to_socket_and_read_line
+{
+	$server 	= $_[0] || 'localhost';
+	$port		= $_[1] || 25;
+	$proto_name 	= $_[2] || 'tcp';
+	# create the socket, connect to the port
+	if (socket(SOCKET, PF_INET, SOCK_STREAM, (getprotobyname($proto_name))[2]) == -1) {
+		return '';
+	}
+	if (connect( SOCKET, pack_sockaddr_in($port, inet_aton($hostname))) == -1) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s = "ERROR: Service is not running!";
+	}
+	else {
+		my $line = <SOCKET>;
+		close SOCKET;
+		chomp($line = $line);
+		$line =~ s/\r//g;
+		#	$line =~ s/\* OK //g;
+		print STDERR "[$line]\n";
+		my $status_code = (split(/\s+/, $line))[0];
+		if ($status_code == 220) {
+			$line =~ s/^220 //; 
+			$s = "OK: ".$line;
+		}
+		else {
+			$statusid = $SisIYA_Config::statusids{'warning'};
+			$s = "WARNING: Service has problems! Status code = $status_code != 220!";
+		}
+
+	}
+	return $line;
+}
 
 sub get_http_protocol_description
 {
@@ -73,19 +112,11 @@ sub get_http_protocol_description
 
 sub check_http_protocol
 {
-	my $isactive 		= $_[0];
+	my ($isactive, $serviceid, $expire, $ssl, $system_name, $virtual_host, $index_file, $http_port, $username, $password) = @_;
+
 	if ($isactive eq 'f' ) {
 		return '';
 	}
-	my $serviceid 		= $_[1];
-	my $expire 		= $_[2];
-	my $ssl 		= $_[3];
-	my $system_name 	= $_[4];
-	my $virtual_host	= $_[5];
-	my $index_file		= $_[6];
-	my $http_port		= $_[7];
-	my $username 		= $_[8];
-	my $password		= $_[9];
 	#print STDERR "check_http: Checking system_name=[$system_name] isactive=[$isactive] virtual_host=[$virtual_host] index_file=[$index_file] http_port=[$http_port] username=[$username] password=[$password]...\n";
 
 	my $x_str = "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";

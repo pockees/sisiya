@@ -52,8 +52,7 @@ if(-f $SisIYA_Config::functions) {
 # Return	: xml message string
 sub run_script
 {
-	my $check_name = $_[0];
-	my $expire = $_[1];
+	my ($check_name, $expire) = @_;
 	my $script_file = "$SisIYA_Remote_Config::scripts_dir/$SisIYA_Remote_Config::checks{$check_name}{'script'}";
 	my $systems_file = "$SisIYA_Remote_Config::conf_dir/$SisIYA_Remote_Config::checks{$check_name}{'conf'}";
 	my ($service_id, $s);
