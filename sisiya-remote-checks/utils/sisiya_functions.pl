@@ -25,36 +25,25 @@ use Socket;
 # An alternative to the Net:SMTP, but without timeout option. We can switch version if we implement it
 # with timeout option.
 ######################################################################################################
+
 sub connect_to_socket_and_read_line
 {
-	$server 	= $_[0] || 'localhost';
-	$port		= $_[1] || 25;
-	$proto_name 	= $_[2] || 'tcp';
+	my ($server, $port, $timeout, $proto_name) = @_;
 	# create the socket, connect to the port
 	if (socket(SOCKET, PF_INET, SOCK_STREAM, (getprotobyname($proto_name))[2]) == -1) {
+		print STDERR "connect_to_socket_and_read_line: ERROR: Could not create socket of type $proto_name!";
 		return '';
 	}
-	if (connect( SOCKET, pack_sockaddr_in($port, inet_aton($hostname))) == -1) {
-		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = "ERROR: Service is not running!";
-	}
-	else {
-		my $line = <SOCKET>;
+	my $line;
+	if (!connect( SOCKET, pack_sockaddr_in($port, inet_aton($server)))) {
+		print STDERR "connect_to_socket_and_read_line: ERROR: Could not connect to $server:$port!";
+		return '';
+	} else {
+		$line = <SOCKET>;
 		close SOCKET;
 		chomp($line = $line);
 		$line =~ s/\r//g;
-		#	$line =~ s/\* OK //g;
-		print STDERR "[$line]\n";
-		my $status_code = (split(/\s+/, $line))[0];
-		if ($status_code == 220) {
-			$line =~ s/^220 //; 
-			$s = "OK: ".$line;
-		}
-		else {
-			$statusid = $SisIYA_Config::statusids{'warning'};
-			$s = "WARNING: Service has problems! Status code = $status_code != 220!";
-		}
-
+		#print STDERR "[$line]\n";
 	}
 	return $line;
 }
@@ -112,7 +101,7 @@ sub get_http_protocol_description
 
 sub check_http_protocol
 {
-	my ($isactive, $serviceid, $expire, $ssl, $system_name, $virtual_host, $index_file, $http_port, $username, $password) = @_;
+	my ($isactive, $serviceid, $expire, $system_name, $virtual_host, $index_file, $http_port, $username, $password, $ssl) = @_;
 
 	if ($isactive eq 'f' ) {
 		return '';

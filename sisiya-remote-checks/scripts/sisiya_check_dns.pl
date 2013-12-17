@@ -45,9 +45,8 @@ if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-my $systems_file	= $ARGV[0];
-my $expire 		= $ARGV[1];
-my $serviceid 		= get_serviceid('dns');
+my ($systems_file, $expire) = @ARGV;
+my $serviceid = get_serviceid('dns');
 
 sub check_dns
 {

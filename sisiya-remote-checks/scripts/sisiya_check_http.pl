@@ -45,8 +45,7 @@ if(-f $SisIYA_Remote_Config::functions) {
 	require $SisIYA_Remote_Config::functions;
 }
 
-my $systems_file = $ARGV[0];
-my $expire = $ARGV[1];
+my ($systems_file, $expire) = @ARGV;
 my $serviceid = get_serviceid('http');
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
@@ -54,14 +53,12 @@ my $xml_str = '';
 #print STDERR Dumper($data);
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_http_protocol($h->{'isactive'}, $serviceid, $expire, 0, $h->{'system_name'}, $h->{'virtual_host'}, 
-						$h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'});
+		$xml_str .= check_http_protocol($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'virtual_host'}, 
+						$h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'}, 0);
 	}
-}
-else {
-	$xml_str = check_http_protocol($data->{'record'}->{'isactive'}, $serviceid, $expire, 0, $data->{'record'}->{'system_name'}, 
+} else {
+	$xml_str = check_http_protocol($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
 					$data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, 
-					$data->{'record'}->{'username'}, $data->{'record'}->{'password'}); 
+					$data->{'record'}->{'username'}, $data->{'record'}->{'password'}, 0); 
 }
-#print STDERR $xml_str."\n";
 print $xml_str;

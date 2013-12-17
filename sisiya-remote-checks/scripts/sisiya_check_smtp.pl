@@ -77,43 +77,14 @@ sub check_smtp
 		$s = "ERROR: Service is not running!";
 	}
 
-	######################################################################################################
-	# An alternative to the Net:SMTP, but without timeout option. We can switch version if we implement it
-	# with timeout option.
-	######################################################################################################
-	# create the socket, connect to the port
-	if (socket(SOCKET, PF_INET, SOCK_STREAM, (getprotobyname('tcp'))[2]) == -1) {
-		return '';
-	}
-	if (connect( SOCKET, pack_sockaddr_in($port, inet_aton($hostname))) == -1) {
-		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = "ERROR: Service is not running!";
-	}
-	else {
-		my $line = <SOCKET>;
-		close SOCKET;
-		chomp($line = $line);
-		$line =~ s/\r//g;
-		#	$line =~ s/\* OK //g;
-		print STDERR "[$line]\n";
-		my $status_code = (split(/\s+/, $line))[0];
-		if ($status_code == 220) {
-			$line =~ s/^220 //; 
-			$s = "OK: ".$line;
-		}
-		else {
-			$statusid = $SisIYA_Config::statusids{'warning'};
-			$s = "WARNING: Service has problems! Status code = $status_code != 220!";
-		}
-
-	}
 	###################################################################################################
 	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
 	return $x_str;
 }
 
-my $systems_file = $ARGV[0];
-my $expire = $ARGV[1];
+my ($systems_file, $expire) = @ARGV;
+#my $systems_file = $ARGV[0];
+#my $expire = $ARGV[1];
 my $serviceid = get_serviceid('smtp');
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
@@ -128,5 +99,4 @@ else {
 	$xml_str .= check_smtp($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'});
 }
-print STDERR $xml_str;
 print $xml_str;

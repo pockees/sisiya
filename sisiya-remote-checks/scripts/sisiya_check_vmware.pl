@@ -44,8 +44,7 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
-
-my $systems_file	= $ARGV[0];
-my $expire 		= $ARGV[1];
-my $serviceid 		= get_serviceid('vmware');
+	
+my ($systems_file, $expire) = @ARGV;
+my $serviceid = get_serviceid('vmware');
 

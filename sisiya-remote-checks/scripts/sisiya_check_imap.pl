@@ -45,51 +45,37 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+if(-f $SisIYA_Remote_Config::functions) {
+	require $SisIYA_Remote_Config::functions;
+}
 
 sub check_imap
 {
-	my $isactive		= $_[0];
+	my ($isactive, $serviceid, $expire, $system_name, $hostname, $port) = @_;
+
 	if ($isactive eq 'f' ) {
 		return '';
 	}
-	my $serviceid 		= $_[1];
-	my $expire 		= $_[2];
-	my $system_name 	= $_[3];
-	my $hostname		= $_[4];
-	my $port		= $_[5];
-	my $username		= $_[6];
-	my $password		= $_[7];
 
 	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] port=[$port] ...\n";
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $x_str = "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
 	my $s = '';
-
-	# create the socket, connect to the port
-	if (socket(SOCKET, PF_INET, SOCK_STREAM, (getprotobyname('tcp'))[2]) == -1) {
-		return '';
-	}
-	if (connect( SOCKET, pack_sockaddr_in($port, inet_aton($hostname))) == -1) {
+	my $line = connect_to_socket_and_read_line($hostname, $port, 5, 'tcp');
+	if ($line eq '') {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$s = "ERROR: Service is not running!";
-	}
-	else {
-		my $line = <SOCKET>;
-		chomp($line = $line);
-		$line =~ s/\r//g;
+	} else {
 		$line =~ s/\* OK //g;
 		#print STDERR "$line\n";
 		$s = "OK: ".$line;
-		#print SOCKET "A001 LOGOUT\n";
-		close SOCKET;
 	}
 
 	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
 	return $x_str;
 }
 
-my $systems_file = $ARGV[0];
-my $expire = $ARGV[1];
+my ($systems_file, $expire) = @ARGV;
 my $serviceid = get_serviceid('imap');
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
