@@ -1,0 +1,1058 @@
+﻿body {
+	text-align:center;
+	font-family: Calibri, Helvetica, sans-serif;
+}
+
+/* for scrolling text */
+
+#scrollingContainer{
+		width:98%;	/* 170 pixels in width */
+		height:350px;	/* Height of box */
+		border:0px; /* 1px solid #000;	/* Black border around box */
+		background-color: transparent; /* #E2EBED;	/* Light blue background color */
+		padding:2px;	/* A little bit of space between border of box and text inside */
+		float:left;	/* I want the text to wrap around the box */
+		margin-right:2px;	/* Right margin of 10 pixels */
+		font-size:0.9em;	/* Smaller font size than the rest of the page */
+		overflow:hidden;	/* Hide overflow content */
+	}
+
+
+#style_header {
+	border: medium double #336699;
+	position: relative;
+	width: 99%;
+	left: 0px;
+	top: 0px;
+	background-color:#ECF0F2; /*#CAE3E7;*/
+}
+ 
+#style_header_before {
+	background-color:#C5D8EB;
+	color: #003366;
+}
+
+#style_header_main{
+	background-color: transparent;
+	color: #4E6B78;;
+	width: 100%;
+}
+
+#style_header_main_left {
+	float:left;
+	width:190px;
+	background-color:transparent;
+	z-index:1;
+}
+
+#style_header_main_center {
+	position: absolute;
+	background-color: transparent; 
+	text-align: center; 
+	width:99%; 
+	top: 10px;"
+}
+
+#style_header_main_right {
+	float: right;
+	width: 250px;
+	background-color: transparent;
+	z-index: 1;
+	text-align: right;
+	color: #4E6B78;
+	font-size: small;
+}
+#style_header_main_bottom {
+	border: 1px hidden #2B547F;
+	/* border-color: #2B547F; */
+	clear: both;
+	background: #3C76B2;
+	text-align: center;
+	position: relative;
+	padding: 0.70em;
+	color: #808080;
+}
+
+#style_header_main_menu {
+	position:relative;
+	top:-30px;
+	left:-62px;
+}
+
+#style_footer
+{
+	position: fixed;
+	width: 98%;
+	height: 20px;
+	border: medium #336699 double;
+	color: #4E6B78;
+	background-image:url('../images/footer_background.png');
+	bottom: 4px;
+}
+#div_content
+{
+	font face="Calibri";
+	position: relative;
+	top: 5px;
+	left: #4E6B78;
+}
+#div_content_center
+{
+	position: relative;
+	top: 0px;
+	bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	color: #4E6B78;
+	font-size: small;
+}
+
+
+#div_content_left
+{
+	position: relative;
+	left:0px;
+	z-index:1;
+}
+
+#div_content_right
+{
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	left:130px;
+}
+
+#div_content_right_main
+{
+	position: relative;
+	top:5px;
+}
+
+.background{
+	position:absolute;
+	z-index:-1;
+	top:-30px;
+}	
+
+
+.top_of_page
+{
+	font-size: large;
+	color: #233366;
+	text-decoration: underline;
+}
+
+.div_container
+{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	/*width:800px;*/
+	/*height:600px;*/
+/*	background-color: black;*/
+	
+}
+
+.div_center
+{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	width:300px;
+}
+
+.div_debug
+{
+	position: relative;
+	padding-bottom: 50px;
+}
+
+.div_gui_header
+{
+	position: relative;
+	top:0px;
+	height:80px;
+	width: 100%;
+	border: medium #336699 double;
+	background-color: #C5D8EB;
+}
+
+.div_gui_menu
+{
+	position: relative;
+	height: auto;
+	width: 100%;
+	background-color: #0000FF;
+	float: left;
+	clip: rect(auto, auto, 1px, auto);
+}
+
+.div_header
+{
+/*	position: relative; */
+	top:0px;
+	height:60px;
+	width: 100%;
+	border: medium #336699 double;
+	/*background-color: #abd; */
+	/*background-color: #C5D8EB;*/
+/*	background-color: #FFFF00; */
+}
+.div_right_text_align
+{
+	text-align:right;
+}
+
+.div_relative { position:relative; }
+.div_absolute { position:absolute; }
+
+.div_float_left
+{
+	float:left;
+/*	background-color:#746;*/
+}
+
+.div_float_center
+{
+	text-align:center;
+	/* float:center; */
+/*	background-color:#746;*/
+}
+
+.div_zindex_1
+{
+	z-index:1;
+}
+
+.div_zindex_2
+{
+	z-index:2;
+}
+
+.div_float_bottom
+{
+	position: relative;
+	float: bottom;
+}
+
+.div_gui_float_right
+{
+/*	position: relative; */
+	float: right;
+	text-align: right;
+/*	background-color:#F08080;*/
+	/*
+	font-size: small;
+	color: #003366;
+	*/
+}
+
+.div_subheader_right
+{
+/*	position: absolute; */
+	float: right;
+	width:100%;
+	/*background-color:#00ffaa;*/
+}
+
+.div_subheader_left
+{
+/*	position: absolute; */
+	float:left;
+/*	background-color:#7b6;*/
+}
+
+.div_subheader_center
+{
+	clear:both;
+/*	background-color:#0ac;*/
+}
+
+.div_float_right
+{
+/*	position: relative; */
+	float: right;
+/*	background-color:#F08080;*/
+	/*
+	font-size: small;
+	text-align: right;
+	color: #003366;
+	*/
+}
+
+.div_header_center
+{
+/*	position: absolute; */
+	left-margin:auto;
+	right-margin:auto;
+	width:100%;
+	top: 15px;
+	font-size: large;
+/*	background-color:#778899;*/
+}
+
+.gui_div_subheader_center
+{
+	position: relative;
+	left-margin:auto;
+	right-margin:auto;
+	width:100%;
+	font-size: large;
+	/*background-color:#779999;*/
+/*	border: medium #336699 double;*/
+}
+
+a.icon:link	{text-decoration: none; color: #00f} /* unvisited link */
+a.icon:visited	{text-decoration: none; color: #00f} /* visited link */
+a.icon:hover	{text-decoration: none; color: #0af} /* mouse over link */
+a.icon:active	{text-decoration: none; color: #00f} /* selected link */
+
+
+a.language:link		{text-decoration: none; color: #00f} /* unvisited link */
+a.language:visited	{text-decoration: none; color: #00f} /* visited link */
+a.language:hover	{text-decoration: none; color: #0af} /* mouse over link */
+a.language:active	{text-decoration: none; color: #00f} /* selected link */
+
+a.page_number:link	{text-decoration: none; color: #00f} /* unvisited link */
+a.page_number:visited	{text-decoration: none; color: #00f} /* visited link */
+a.page_number:hover	{text-decoration: none; color: #0af} /* mouse over link */
+a.page_number:active	{text-decoration: none; color: #00f} /* selected link */
+
+p.language
+{
+	font-size: large;
+	color: #003366;
+}
+
+.div_header_language
+{
+	position: relative;
+	float: right;
+	vertical-align: bottom;
+	text-align: right;
+	color: #003366;
+	right: 4px; 
+	bottom: 0px; 
+	height: 20px;
+	font-size: xx-small;
+}
+
+.div_header_right_bottom_login
+{
+	font-size: small;
+	height: 24px;
+	font-style: normal;
+	vertical-align: top;
+	text-align: center;
+
+}
+
+.div_content
+{
+	position: relative;
+	top: 5px;
+	left: 1px;
+	width:97%;
+	color: #003366;
+
+}
+
+ .div_content_center
+{
+	position: relative;
+	top: 0px;
+	bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
+
+}
+
+ .div_content_left
+{
+	position: absolute;
+	left: 4px;
+	width:65%;
+	top: 10px;
+	text-align:justify;
+	/*max-width: 600px;*/
+}
+
+ .div_content_separator
+{
+	position: relative;
+	left: 66%;
+	height:600px;
+	width: 2%;
+	top: 10px;
+	/*background-image:url('../images/vertical_line.png');*/
+}
+
+
+.div_content_left_org
+{
+	position: absolute;
+	/*
+	width: 175px;
+	height: 520px;
+	*/
+	top: -6px;
+	left: -15px;
+	z-index:1;
+}
+
+.div_content_right
+{
+	position: absolute;
+	top: 10px;
+	right: 14px;
+	width: 30%;
+	/*left:130px;*/
+	text-align:justify;
+	background:#DDE3E3;
+	/*max-width: 400px;*/
+}
+
+.image_left_max
+{
+	width: 100%;
+	height: auto;
+	max-width: 600px;
+	max-height: 300px;
+}
+
+.image_right_max
+{
+	width: 100%;
+	height: auto;
+	max-width: 400px;
+	max-height: auto;
+}
+
+.div_content_right_inner
+{
+	position: relative;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 14px;
+	margin-right: 14px;
+}
+
+.div_content_right_main
+{
+	position: relative;
+	top:5px;
+}
+
+.div_logged_user
+{
+	color: #003366;
+}
+
+
+.div_page_numbers
+{
+	position : relative;
+	width: 100%;
+	text-align: center;
+	color: #003366;
+}
+
+.div_footer
+{
+	position : relative;
+	width: 100%;
+	top:5px;
+	height:50px;
+	border: medium #336699 double;
+	color: #003366;
+	background-color: #C5D8EB;
+}
+
+
+
+.div_footer_old
+{
+	position : relative;
+	float: bottom;
+	top:10px;
+	width: 100%;
+	bottom: 1%;
+	border: medium #336699 double;
+	text-align: center;
+	color: #003366;
+	background-color: #C5D8EB;
+}
+
+
+.small_link
+{
+	color: #008080;
+	font-size:xx-small ;
+}
+
+#password
+{
+	width:180px;
+}
+
+#username
+{
+	width:180px;
+}
+
+.div_login_info
+{
+	color:red;
+	font-size:large;
+}
+
+.xx_small_font
+{
+	font-size: xx-small;
+}
+.small_font
+{
+	font-size: small;
+}
+
+.transparent_button
+{
+	color: #003366;
+	border:0px;
+	background: transparent;
+}
+
+caption.general {
+	margin: auto;
+	background-color: #abd;
+	/*text-transform: uppercase;*/
+	text-align:center;  
+}
+
+
+table.general {
+/* 
+	margin-left: 2px;
+        margin-right: 2%;
+        margin-top:12px;
+*/
+	margin-left:auto; 
+	margin-right:auto;
+        border: thin solid #abd;
+        border-style: solid;
+        border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+        border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+        caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+        empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+ /*       table-layout: auto;*/ /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	font-size: normal;
+	font-weight: normal; /* normal,lighter,bold,900 */
+	text-align:left;
+}
+
+table.general               	td 		{ border: thin solid #ccc; color:#003366; width:50%;}
+table.general   tr.tf_row	td.column_max  {text-align:left; vertical-align:center; width:auto;}
+table.general       tr.header th 		{ text-align: center; border: thin solid #ccc; background-color:#abd}
+/*table.general       tr.row  	th 		{  } */
+table.general       tr.row  	td		{ background-color:transparent;}
+table.general       tr.row  	td.center	{ background-color:transparent; text-align: center;}
+table.general       tr.row  	td.label	{ background-color:#abd;}
+table.general       tr.row  	td.password	{ text-align:left;}
+table.general       tr.footer td 		{ background-color:gray ; }
+table.general       td.label 			{ background-color: #abd; }
+
+table.general	a:link		{text-decoration: none; color: #003366;}	/* unvisited link */
+table.general	a:visited 	{text-decoration: none; color: #003366;}	/* visited link */
+table.general	a:hover 	{text-decoration: none; color: blue}	/* mouse over link */
+table.general	a:active 	{text-decoration: none; color: #003366;}	/* selected link */
+
+input.id
+{
+	width:50px;
+	text-align:left;
+	border:0;
+}
+
+input.date
+{
+	width:100px;
+	text-align:left;
+	border:0;
+}
+input.readonly
+{
+	/*background-color: #DCDCDC;*/
+	background-color: white;
+}
+
+input.text
+{
+	width:200px;
+	text-align: justify;
+	border:0;
+}
+
+input.password
+{
+	width:200px;
+	text-align: justify;
+	border:0;
+}
+
+input.text_large
+{
+	width:300px;
+	text-align: justify;
+	border:0;
+}
+
+
+input.text_wide
+{
+	width:600px;
+	text-align: justify;
+	border:0;
+}
+.underline
+{
+	text-decoration:underline;
+}
+
+.bold
+{
+	font-weight: bold;
+}
+
+table.system_overview {
+	margin-left: auto;
+	margin-right: auto;
+
+	border-collapse:collapse;
+	/*border-style: none;*/
+	border-style: solid;
+	border: thin solid #ddd;
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.system_overview 		td		{ color: #003366; }
+table.system_overview tr.header td		{ background-color: #ddd; text-align: center; font-size: normal;}
+table.system_overview tr.row 	td		{ background-color: white; }
+table.system_overview tr.row	td.effectsfalse	{ background-color: #b1d090;}
+table.system_overview tr.footer td		{ background-color: #ddd; font-size: x-small; }
+
+table.header_system_info {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	/*border-style: thin solid black;*/
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 5em;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.tx0 {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	/*border: thin solid black;*/
+	border-style: none;
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 0px;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+table.tx0 		td.left		{ text-align:left; }
+table.tx0 		td.center	{ text-align:center; }
+table.tx0 		td.right	{ text-align:right; }
+
+
+
+table.tx1 {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	/*border: thin solid black;*/
+	border-style: none;
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 0px;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+table.tx1 		td.left		{ text-align:left; }
+table.tx1 		td.center	{ text-align:center; }
+
+
+
+table.header_system_service_history {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border-width:2px;
+	border-style: thin solid black;
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 5em; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+
+table.header_system_services {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	/*border-style: thin solid black;*/
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 5em; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+
+table.system_detailed_view {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #ddd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	font-size: small;
+	text-align:left;
+}
+table.system_detailed_view 		td 		{ border: thin solid #ccc; color: black; }
+table.system_detailed_view tr.header	td 		{ background-color: #ddd; text-align: center; }
+table.system_detailed_view tr.subheader	td 		{ background-color: #ddd; text-align: center; }
+table.system_detailed_view tr.row 	td 		{ background-color: white; }
+/*table.system_detailed_view tr.row	td.ok		{ background-color: green; }*/
+/*table.system_detailed_view tr.row	td.warning	{ background-color: yellow; }*/
+/*table.system_detailed_view tr.row	td.error	{ background-color: red; }*/
+table.system_detailed_view tr.row	td.effectsfalse	{ background-color: green; }
+table.system_detailed_view tr.row	td.ok		{ color: green; }
+table.system_detailed_view tr.row	td.center	{ text-align:center; }
+table.system_detailed_view tr.row	td.warning	{ color: orange; }
+table.system_detailed_view tr.row	td.error	{ color: red; }
+table.system_detailed_view tr.footer	td 		{ background-color: #ddd; font-size: small;}
+
+table.system_service_history {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #ddd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	font-size: small;
+	text-align:left;
+}
+
+table.system_service_history 			td		{ border: thin solid #ccc; color: black; }
+table.system_service_history	tr.header	td		{ background-color: #ddd; text-align: center; }
+table.system_service_history	tr.subheader	td		{ background-color: #ddd; text-align: center; }
+table.system_service_history	tr.row	 	td		{ background-color: white; }
+table.system_service_history	tr.footer	td		{ background-color: #ddd; font-size: small;}
+
+
+table.system_infos {
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #ddd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	text-align: left;
+}
+
+table.system_infos 		td { border: thin solid #ccc; color: black; }
+table.system_infos	tr.header td { background-color: #ddd; text-align: center; }
+table.system_infos	tr.row 	td { background-color: white; }
+table.system_infos	tr.footer td { background-color: #ddd; }
+table.system_infos	td.label { background-color: #ddd; }
+
+table.system_services {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #fdd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	text-align: left;
+	font-size: small;
+}
+
+table.system_services			td 		{ border: thin solid #ccc; color: black; }
+table.system_services	tr.header	td 		{ background-color: #ddd; text-align: center; }
+table.system_services	tr.row 		td 		{ background-color: white; }
+table.system_services	tr.row		td.ok		{ color: green; }
+table.system_services	tr.row		td.warning	{ color: orange; }
+table.system_services	tr.row		td.error	{ color: red; }
+/*table.system_services	tr.row		td.ok		{ background-color: green; }*/
+/*table.system_services	tr.row		td.warning	{ background-color: yellow; }*/
+/*table.system_services	tr.row		td.error	{ background-color: red; }*/
+table.system_services	tr.footer 	td 		{ background-color: #ddd; }
+
+
+img
+{
+	border-style: none;
+}
+
+img.up
+{
+	z-index:10;
+}
+
+img.center
+{
+	vertical-align:text-bottom; /* baseline, text-top, middle, text-top, text-bottom */
+}
+
+
+table.packages {
+	margin-left: auto;
+	margin-right: auto;
+
+	border: thin solid #ddd;
+	border-style: solid;
+	border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	text-align: left;
+}
+
+table.packages 		td { border: thin solid #ccc; color: black; }
+table.packages	tr.header td { background-color: #ddd; text-align: center; }
+table.packages	tr.row 	td { background-color: white; }
+table.packages	tr.footer td { background-color: #ddd; }
+table.packages	td.label { background-color: #ddd; }
+
+
+table.navigation {
+/* 
+	margin-left: 2px;
+        margin-right: 2%;
+        margin-top:12px;
+*/
+	margin-left:auto; 
+	margin-right:auto;
+	width:100%;
+        border: thin solid #abd;
+        border-style: solid;
+        border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+        border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+        caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+        empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+ /*       table-layout: auto;*/ /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	font-size: normal;
+	font-weight: normal; /* normal,lighter,bold,900 */
+	text-align:left;
+}
+
+table.navigation               	td 		{  }
+table.navigation       tr.header th 		{ text-align: center; border: thin solid #ccc; background-color:#abd}
+/*table.navigation       tr.row  	th 		{  } */
+table.navigation       tr.row  	td		{ background-color:transparent;}
+table.navigation       tr.row  	td.center	{ background-color:transparent; text-align: center;}
+table.navigation       tr.row  	td.label	{ background-color:#abd;}
+table.navigation       tr.row  	td.password	{ text-align:left;}
+table.navigation       tr.footer td 		{ background-color:gray ; }
+table.navigation       td.label 		{ background-color: #abd; }
+
+table.navigation	a:link		{text-decoration: none; color: #333333}	/* unvisited link */
+table.navigation	a:visited 	{text-decoration: none; color: #333333}	/* visited link */
+table.navigation	a:hover 	{text-decoration: none; color: #333333}	/* mouse over link */
+table.navigation	a:active 	{text-decoration: none; color: #333333}	/* selected link */
+
+caption.dashboard {
+	margin: auto;
+	background-color: #abd;
+	/*text-transform: uppercase;*/
+	text-align:center;  
+}
+
+table.dashboard {
+/* 
+	margin-left: 2px;
+        margin-right: 2%;
+        margin-top:12px;
+*/
+	margin-left:auto; 
+	margin-right:auto;
+        border: thin solid #abd;
+        border-style: solid;
+        border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+        border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+        caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+        empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+ /*       table-layout: auto;*/ /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	font-size: small;
+	font-weight: normal; /* normal,lighter,bold,900 */
+	text-align:left;
+}
+
+table.dashboard               	td 		{ border:thin solid #abd;}
+table.dashboard       tr.header th 		{ text-align: center; border: thin solid #ccc; background-color:#abd}
+/*table.dashboard       tr.row  	th 		{  } */
+table.dashboard       tr.row  	td		{ background-color:transparent;}
+table.dashboard       tr.row  	td.center	{ background-color:transparent; text-align: center;}
+table.dashboard       tr.row  	td.right	{ background-color:transparent; text-align: right;}
+table.dashboard       tr.row  	td.label	{ background-color:#abd;}
+table.dashboard       tr.row  	td.password	{ text-align:left;}
+table.dashboard       tr.footer td 		{ background-color:gray ; }
+table.dashboard       td.label 		{ background-color: #abd; }
+
+table.dashboard	a:link		{text-decoration: none; color: #333333}	/* unvisited link */
+table.dashboard	a:visited 	{text-decoration: none; color: #333333}	/* visited link */
+table.dashboard	a:hover 	{text-decoration: none; color: #333333}	/* mouse over link */
+table.dashboard	a:active 	{text-decoration: none; color: #333333}	/* selected link */
+
+
+table.dashboard_layout {
+/* 
+	margin-left: 2px;
+        margin-right: 2%;
+        margin-top:12px;
+*/
+	margin-left:auto; 
+	margin-right:auto;
+        border: thin solid #abd;
+        border-style: solid;
+        border-collapse: separate; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+        border-spacing: 3px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+        caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+        empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+ /*       table-layout: auto;*/ /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	font-size: normal;
+	font-weight: normal; /* normal,lighter,bold,900 */
+	text-align:left;
+}
+
+table.dashboard_layout               	td 		{ }
+table.dashboard_layout       tr.header th 		{ text-align: center; border: thin solid #ccc; background-color:#abd}
+/*table.dashboard_layout       tr.row  	th 		{  } */
+table.dashboard_layout       tr.row  	td		{ background-color:transparent; vertical-align:top;}
+table.dashboard_layout       tr.row  	td.center	{ background-color:transparent; text-align: center;}
+table.dashboard_layout       tr.row  	td.right	{ background-color:transparent; text-align: right;}
+table.dashboard_layout       tr.row  	td.label	{ background-color:#abd;}
+table.dashboard_layout       tr.row  	td.password	{ text-align:left;}
+table.dashboard_layout       tr.footer td 		{ background-color:gray ; }
+table.dashboard_layout       td.label 		{ background-color: #abd; }
+
+table.dashboard_layout	a:link		{text-decoration: none; color: #333333}	/* unvisited link */
+table.dashboard_layout	a:visited 	{text-decoration: none; color: #333333}	/* visited link */
+table.dashboard_layout	a:hover 	{text-decoration: none; color: #333333}	/* mouse over link */
+table.dashboard_layout	a:active 	{text-decoration: none; color: #333333}	/* selected link */
+
+table.service_view_header {
+/* 
+	margin-left: 2px;
+        margin-right: 2%;
+        margin-top:12px;
+*/
+	margin-left:auto; 
+	margin-right:auto;
+	width:100%;
+        border: none; /*thin solid #abd;*/
+        border-style: none;
+        border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+        border-spacing: 1px; /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+        caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+        empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+ /*       table-layout: auto;*/ /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+	font-size: normal;
+	font-weight: normal; /* normal,lighter,bold,900 */
+	text-align:left;
+}
+
+table.service_view_header               	td 		{ }
+table.service_view_header       tr.header th 		{ text-align: center; border: thin solid #ccc; background-color:#abd}
+/*table.service_view_header       tr.row  	th 		{  } */
+table.service_view_header       tr.row  	td		{ background-color:transparent;}
+table.service_view_header       tr.row  	td.center	{ background-color:transparent; text-align: center;}
+table.service_view_header       tr.row  	td.right	{ background-color:transparent; text-align: right;}
+table.service_view_header       tr.row  	td.label	{ background-color:#abd;}
+table.service_view_header       tr.row  	td.password	{ text-align:left;}
+table.service_view_header       tr.footer td 		{ background-color:gray ; }
+table.service_view_header       td.label 		{ background-color: #abd; }
+
+table.service_view_header	a:link		{text-decoration: none; color: #333333}	/* unvisited link */
+table.service_view_header	a:visited 	{text-decoration: none; color: #333333}	/* visited link */
+table.service_view_header	a:hover 	{text-decoration: none; color: #333333}	/* mouse over link */
+table.service_view_header	a:active 	{text-decoration: none; color: #333333}	/* selected link */
+
+table.switch_view {
+	margin-left: auto;
+	margin-right: auto;
+
+	border-collapse:collapse;
+	/*border-style: none;*/
+	border-style: solid;
+	border: thin solid #ddd;
+	caption-side: top; /* top bottom left right */ /*Sets the position of the table caption*/
+	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
+	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
+}
+
+table.switch_view 		td		{ color: black; }
+table.switch_view tr.header td		{ background-color: #ddd; text-align: center; font-size: normal;}
+table.switch_view tr.row 	td		{ background-color: gray; }
+table.switch_view tr.row	td.effectsfalse	{ background-color: #b1d090;}
+table.switch_view tr.row	td.empty	{ background-color: gray;}
+table.switch_view tr.footer td		{ background-color: #ddd; font-size: x-small; }
+
+
+.div_h500 { 
+	height:800px;
+}
+.div_1a {
+	float:left;
+	width:220px;
+}
+.div_1b {
+	float:left;
+	width:220px;
+}
+.div_1c {
+	float:right;
+	width:220px;
+	height:600px;
+}
+
+

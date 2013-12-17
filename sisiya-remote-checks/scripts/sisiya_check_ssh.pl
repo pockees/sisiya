@@ -44,7 +44,48 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+if(-f $SisIYA_Remote_Config::functions) {
+	require $SisIYA_Remote_Config::functions;
+}
+
+sub check_ssh
+{
+	my ($isactive, $serviceid, $expire, $system_name, $hostname, $port) = @_;
+
+	if ($isactive eq 'f' ) {
+		return '';
+	}
+
+	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] port=[$port] ...\n";
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $x_str = "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
+	my $s = '';
+	my $line = connect_to_socket_and_read_line($hostname, $port, 5, 'tcp');
+	if ($line eq '') {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s = "ERROR: Service is not running!";
+	} else {
+		#print STDERR "$line\n";
+		$s = "OK: ".$line;
+	}
+
+	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
+	return $x_str;
+}
 
 my ($systems_file, $expire) = @ARGV;
-my $serviceid = get_serviceid('ssh');
-
+my $serviceid = get_serviceid('sshd');
+my $xml = new XML::Simple;
+my $data = $xml->XMLin($systems_file);
+my $xml_str = '';
+#print STDERR Dumper($data);
+if( ref($data->{'record'}) eq 'ARRAY' ) {
+	foreach my $h (@{$data->{'record'}}) {
+		$xml_str .= check_ssh($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'port'});
+	}
+}
+else {
+	$xml_str = check_ssh($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
+				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'}, $data->{'record'}->{'port'});
+}
+print $xml_str;

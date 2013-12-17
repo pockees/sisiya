@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packages>
+	<package><name>SisIYA_client_checks_MSWindows</name><version>0.5.1-23</version><file>Windows/SisIYA_client_checks-0.5.1-23_general.exe</file></package>
+	<package><name>SisIYA_client_checks_Linux</name><version>0.5.1-1</version><file>Windows/SisIYA_client_checks.exe</file></package>
+	<package><name>SisIYA_client_checks_Unix</name><version>0.5.1-1</version><file>Windows/SisIYA_client_checks.exe</file></package>
+</packages>

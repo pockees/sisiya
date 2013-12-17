@@ -1,0 +1,31 @@
+﻿/* blue grades - root level; text properties for states: normal, hover, click */
+.TM0i0 {
+	font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;;
+	color: #FFFFFF;
+	font-size: 11px;
+	font-weight: normal;
+	font-style: normal;
+	text-decoration: none;
+	padding: 3px;
+}
+
+/* blue grades - root level; box properties for states: normal, hover, click */
+.TM0o0 {
+	border-style: ridge;
+	border-width: 1px;
+	border-color: transparent #FFFFFF transparent #FFFFFF;
+	background: #7E9FA9; /*#5B92B9;*/
+/*// #3C76B2;*/	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+}
+
+/* blue grades - root level; box properties for states: normal, hover, click */
+.TM0o1 {
+	background:#577680; /* #407195; */
+	border: 1px #FFFFFF outset; /* #4D99E6; */
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+}
+

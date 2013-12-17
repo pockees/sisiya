@@ -1,0 +1,29 @@
+<html>
+<head>
+<script type="text/javascript">
+function yourOS() {
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf("win") != -1) {
+        return "Windows";
+    } else if (ua.indexOf("mac") != -1) {
+        return "Macintosh";
+    } else if (ua.indexOf("linux") != -1) {
+        return "Linux";
+    } else if (ua.indexOf("x11") != -1) {
+        return "Unix";
+    } else {
+        return "Computers";
+    }
+}
+</script>
+<body>
+<h1>Welcome to GiantCo Computers</h2>
+<h2>We love 
+<script type="text/javascript">document.write(yourOS())</script>
+<noscript>Computers</noscript>
+Users!</h2>
+</body>
+</html>
+
+        
+ 
