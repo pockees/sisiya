@@ -66,6 +66,16 @@ our %mibs = (
 	'printer_status'	=> 'iso.3.6.1.2.1.25.3.5.1.1.1',	# HOST-RESOURCES-MIB::hrPrinterStatus 
 	'printer_state' 	=> 'iso.3.6.1.2.1.25.3.5.1.2.1'		# HOST-RESOURCES-MIB::hrPrinterDetectedERRORState 
 );
+our @pages = (
+	{'name' => 'engine',		'mib' => '1.3.6.1.4.1.11.2.3.9.4.2.1.4.1.2.5.0'},
+	{'name' => 'duplex',		'mib' => '1.3.6.1.4.1.11.2.3.9.4.2.1.4.1.2.22'},
+	{'name' => 'pcl', 		'mib' => '1.3.6.1.4.1.11.2.3.9.4.2.1.3.3.3.5'},
+	{'name' => 'postscript',	'mib' => '1.3.6.1.4.1.11.2.3.9.4.2.1.3.3.4.5'},
+	{'name' => 'color',		'mib' => '1.3.6.1.4.1.11.2.3.9.4.2.1.4.1.2.7.0'},
+	{'name' => 'mono',		'mib' => '1.3.6.1.4.1.11.2.3.9.4.2.1.4.1.2.6.0'},
+	{'name' => 'pagecount',		'mib' => '1.3.6.1.2.1.43.10.2.1.4.1.1'}
+);
+# push @pages, {'name' => 'engine',            'mib' => '1.3.6.1.4.1.11.2.3.9.4.2.1.4.1.2.5.0'}; 
 # One can override there default values in the $SisIYA_RemoteConfig::conf_dir/printer_system_$system_name.pl
 # end of default values
 ############################################################################################################
@@ -81,7 +91,7 @@ sub check_printer_device
 	}
 	my $printer_status = get_snmp_value('-OvQe', $hostname, $snmp_version, $community, $mibs{'printer_status'});
 	my $printer_state = get_snmp_value('-OvQe', $hostname, $snmp_version, $community, $mibs{'printer_state'});
-	print STDERR "device_status=[$device_status] printer_status=[$printer_status] printer_state=[$printer_state]\n";
+	#print STDERR "device_status=[$device_status] printer_status=[$printer_status] printer_state=[$printer_state]\n";
 	if ($device_status == 1) { # unknown
 		$statusid = $SisIYA_Config::statusids{'warning'};
 		$s = 'WARNING: Device status is unknown!';
@@ -126,32 +136,56 @@ sub check_printer_device
 		$s = "WARNING: The device is testing! device_status=[$device_status] printer_status=[$printer_status] printer_state=[$printer_state]";
 	} elsif ($device_status == 5) { # down
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = "ERROR: The device is testing! device_status=[$device_status] printer_status=[$printer_status] printer_state=[$printer_state]";
+		if (($printer_state eq ' "@"') || ($printer_state eq '"@"')) { 
+			$s = 'ERROR: No paper!';
+		} elsif ($printer_state eq ' 01 ') { 
+			$s = 'ERROR: Warming up!';
+		} elsif ($printer_state eq ' 08 ') { 
+			$s = 'ERROR: Cover or door is open!';
+		} elsif ($printer_state eq ' """') { 
+			$s = 'ERROR: Toner is almost empty?!';
+		} else {
+			$s = "ERROR: Unknown device state! device_status=[$device_status] printer_status=[$printer_status] printer_state=[$printer_state]";
+		}
+		$s .= ' Device status is ';
+		if ($printer_status == 1) {
+			$s .= 'other.';
+		} elsif ($printer_status == 2) {
+			$s .= 'unknown.';
+		} elsif ($printer_status == 3) {
+			$s .= 'idle.';
+		} elsif ($printer_status == 4) {
+			$s .= 'printing.';
+		} elsif ($printer_status == 5) {
+			$s .= 'warmup.';
+		} else {
+			$s = "WARNING: Unknown device status! device_status=[$device_status] printer_status=[$printer_status] printer_state=[$printer_state]";
+		}
+	} else {
+		$statusid = $SisIYA_Config::statusids{'warning'};
+		$s = "WARNING: Undermined device status! device_status=[$device_status] printer_status=[$printer_status] printer_state=[$printer_state]";
 	}
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
-sub check_switch_fans
+sub check_printer_page_counts
 {
+	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
+	my $serviceid = get_serviceid('printer');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $s = '';
+
+	if ($#pages == -1) {
+		return '';
+	}
+	for my $i (0..$#pages) {
+		print STDERR "Checking $pages[$i]{'name'} $pages[$i]{'mib'} ...\n";
+	}
 	return '';
 }
 
-sub check_switch_load
-{
-	return '';
-}
 
-sub check_switch_process_count
-{
-	return '';
-}
-
-sub check_switch_ram
-{
-	return '';
-}
-
-sub check_switch
+sub check_printer
 {
 	my ($isactive, $expire, $system_name, $hostname, $snmp_version, $community, $username, $password) = @_;
 
@@ -165,10 +199,7 @@ sub check_switch
 		return '';
 	}
 	$s .= check_printer_device($expire, $hostname, $snmp_version, $community, $username, $password);
-	$s .= check_switch_fans($expire, $hostname, $snmp_version, $community, $username, $password);
-	$s .= check_switch_load($expire, $hostname, $snmp_version, $community, $username, $password);
-	$s .= check_switch_process_count($expire, $hostname, $snmp_version, $community, $username, $password);
-	$s .= check_switch_ram($expire, $hostname, $snmp_version, $community, $username, $password);
+	$s .= check_printer_page_counts($expire, $hostname, $snmp_version, $community, $username, $password);
 
 	if ($s eq '') {
 		return '';
@@ -183,12 +214,12 @@ my $xml_str = '';
 #print STDERR Dumper($data);
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_switch($h->{'isactive'}, $expire, $h->{'system_name'}, $h->{'hostname'}, 
+		$xml_str .= check_printer($h->{'isactive'}, $expire, $h->{'system_name'}, $h->{'hostname'}, 
 					$h->{'snmp_version'}, $h->{'community'}, $h->{'username'}, $h->{'password'});
 	}
 }
 else {
-	$xml_str = check_switch($data->{'record'}->{'isactive'}, $expire, $data->{'record'}->{'system_name'}, 
+	$xml_str = check_printer($data->{'record'}->{'isactive'}, $expire, $data->{'record'}->{'system_name'}, 
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'snmp_version'}, $data->{'record'}->{'community'},
 				$data->{'record'}->{'username'}, $data->{'record'}->{'password'});
 }
