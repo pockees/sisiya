@@ -65,8 +65,7 @@ sub check_dns
 	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] hostname_to_query=[$hostname_to_query] ip_to_query=[$ip_to_query] port=[$port] timeout=[$timeout] number_of_tries=[$number_of_tries] ...\n";
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $x_str .= "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
-	my $s = '';
-	`$SisIYA_Remote_Config::external_progs{'dig'} -p $port +timeout=$timeout +tries=$number_of_tries $hostname_to_query \@$hostname >/dev/null 2>&1`;
+	my $s = `$SisIYA_Remote_Config::external_progs{'dig'} -OvQ -v $snmp_version $check_system -c $snmp_comm system.sysDescr.0 2>&1`;
 	my $retcode = $? >>=8;
 	if($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};

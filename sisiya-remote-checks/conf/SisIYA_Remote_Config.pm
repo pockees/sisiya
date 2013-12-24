@@ -1,4 +1,4 @@
-##!/usr/bin/perl -w
+#!/usr/bin/perl -w
 #
 #
 ## This file is the config for SisIYA remote check programs.

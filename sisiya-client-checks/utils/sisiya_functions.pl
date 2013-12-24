@@ -30,6 +30,47 @@ sub get_formated_size
 	return "$x1$_[2]";
 }
 
+sub minutes2string
+{
+	my ($days, $hours, $minutes);
+	my $total_minutes = $_[0];
+
+	$days = int($total_minutes / 1440);
+	$total_minutes = $total_minutes - $days * 1440;
+
+	$hours = int($total_minutes / 60);
+	$minutes = $total_minutes - $hours * 60;
+
+	#print "days = $days hours = $hours minutes = $minutes\n";
+
+	my $str = '';
+	if ($days > 0) {
+		$str = "$days day";
+		if ($days > 1) {
+			$str .= 's';
+		}
+	}
+	if ($hours > 0) {
+		if ($str ne '') {
+			$str .= ' ';
+		}
+		$str .= "$hours hour";
+		if ($hours > 1) {
+			$str .= 's';
+		}
+	}
+	if ($minutes > 0) {
+		if ($str ne '') {
+			$str .= ' ';
+		}
+		$str .= "$minutes minute";
+		if ($minutes > 1) {
+			$str .= 's';
+		}
+	}
+	return "$str";
+}
+
 sub get_serviceid
 {
 	return $SisIYA_Config::serviceids{ (split(/$SisIYA_Config::FS/, $_[0]))[0] };

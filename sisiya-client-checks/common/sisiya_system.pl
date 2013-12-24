@@ -52,49 +52,6 @@ my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'system';
 
-sub minutes2string
-{
-	my ($days, $hours, $minutes);
-	my $total_minutes = $_[0];
-
-	$days = int($total_minutes / 1440);
-	$total_minutes = $total_minutes - $days * 1440;
-
-	$hours = int($total_minutes / 60);
-	$minutes = $total_minutes - $hours * 60;
-
-	#print "days = $days hours = $hours minutes = $minutes\n";
-
-	my $str = '';
-	if ($days > 0) {
-		$str = "$days day";
-		if ($days > 1) {
-			$str .= 's';
-		}
-	}
-	if ($hours > 0) {
-		if ($str ne '') {
-			$str .= ' ';
-		}
-		$str .= "$hours hour";
-		if ($hours > 1) {
-			$str .= 's';
-		}
-	}
-	if ($minutes > 0) {
-		if ($str ne '') {
-			$str .= ' ';
-		}
-		$str .= "$minutes minute";
-		if ($minutes > 1) {
-			$str .= 's';
-		}
-	}
-
-	#return "$_[0] minutes";
-	return "$str";
-}
-
 sub get_uptime_in_minutes
 {
 	my $x;
@@ -147,7 +104,7 @@ elsif ($uptime_in_minutes < $uptimes{'warning'}) {
 	$message_str = 'WARNING:The system was restarted '.minutes2string($uptime_in_minutes).' (< '.minutes2string($uptimes{'warning'}).') ago!';
 }
 else {
-	$message_str = 'OK:The system is up since '.minutes2string($uptime_in_minutes);
+	$message_str = 'OK:The system is up for '.minutes2string($uptime_in_minutes);
 }
 my $x;
 if ($SisIYA_Config::osname eq 'HP-UX') {

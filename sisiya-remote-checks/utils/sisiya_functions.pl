@@ -25,6 +25,59 @@ use Socket;
 # An alternative to the Net:SMTP, but without timeout option. We can switch version if we implement it
 # with timeout option.
 ######################################################################################################
+sub get_snmp_value
+{
+	my ($options, $hostname, $version, $community, $mib) = @_;
+
+	my $str = `$SisIYA_Remote_Config::external_progs{'snmpget'} $options -v $version -c $community $hostname $mib 2>&1`;
+	my $retcode = $? >>=8;
+	if ($retcode != 0) {
+		return '';
+	}
+	chomp($str = $str);
+	return "$str";
+}
+
+sub check_snmp_system
+{
+	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
+	my $serviceid = get_serviceid('system');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $s = '';
+	my $str = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, 'system.sysDescr.0');
+	if ($str eq '') {
+		return '';
+	}
+	my ($system_description, $system_location);  
+	if (grep(/No Such Object available/, $str)) {
+		return '';
+	} elsif (grep(/No more variables/, $str)) {
+		return '';
+	}
+	chomp($system_description = $str);
+	$str = `$SisIYA_Remote_Config::external_progs{'snmpget'} -OvQ -v $snmp_version $hostname -c $community system.sysLocation.0 2>&1`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($system_location = $str);
+	}
+	$str = `$SisIYA_Remote_Config::external_progs{'snmpget'} -OvQ -v $snmp_version $hostname -c $community system.sysUpTime.0 2>&1`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		my @a = split(/:/, $str);
+		my $up_in_minutes = $a[0] * 1440  + $a[1] * 60 + $a[2];
+		if ($up_in_minutes <= $uptimes{'error'}) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$s = "ERROR: The systems was restarted ".minutes2string($up_in_minutes). " (<= ".minutes2string($uptimes{'error'}).") ago!";
+		} elsif ($up_in_minutes <= $uptimes{'warning'}) {
+			$statusid = $SisIYA_Config::statusids{'warning'};
+			$s = "WARNING: The systems was restarted ".minutes2string($up_in_minutes). " (<= ".minutes2string($uptimes{'warning'}).") ago!";
+		} else {
+			$s = "OK: The system is up for ".minutes2string($up_in_minutes). ".";
+		}
+	}
+	$s = "$s Description: $system_description Location: $system_location.";
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
+}
 
 sub connect_to_socket_and_read_line
 {
