@@ -171,17 +171,26 @@ sub check_printer_device
 sub check_printer_page_counts
 {
 	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
-	my $serviceid = get_serviceid('printer');
-	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $serviceid = get_serviceid('printer_pagecounts');
+	my $statusid = $SisIYA_Config::statusids{'info'};
 	my $s = '';
+	my $n;
 
 	if ($#pages == -1) {
 		return '';
 	}
 	for my $i (0..$#pages) {
-		print STDERR "Checking $pages[$i]{'name'} $pages[$i]{'mib'} ...\n";
+		#print STDERR "Checking $pages[$i]{'name'} $pages[$i]{'mib'} ...\n";
+		$n = get_snmp_value('-OvQe', $hostname, $snmp_version, $community, $pages[$i]{'mib'});
+		#print STDERR "$pages[$i]{'name'} = [$s]\n";
+		if ($n ne '') {
+			$s .= "Total number of $pages[$i]{'name'} pages is $n."; 
+		}
 	}
-	return '';
+	if ($s eq '') {
+		return '';
+	}
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
 
