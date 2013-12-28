@@ -115,7 +115,7 @@ sub check_printer_device
 		} elsif ($printer_state eq ' A0 ') { 
 			$s = 'WARNING: No paper!';
 		} else {
-			$s = 'WARNING: Unknown state = [$printer_state]!';
+			$s = "WARNING: Unknown state = [$printer_state]!";
 		}
 		$s .= ' Device status is ';
 		if ($printer_status == 1) {

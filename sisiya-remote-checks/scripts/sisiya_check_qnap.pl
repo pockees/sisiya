@@ -44,7 +44,46 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+if(-f $SisIYA_Remote_Config::functions) {
+	require $SisIYA_Remote_Config::functions;
+}
+###########################################################################################################
+# default values
+our %uptimes = ('error' => 1440, 'warning' => 4320);
+# end of default values
+############################################################################################################
+
+sub check_qnap
+{
+	my ($isactive, $expire, $system_name, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	if ($isactive eq 'f' ) {
+		return '';
+	}
+
+	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] snmp_version=[$snmp_version] community=[$community] username=[$username] password=[$password]...\n";
+	my $s = check_snmp_system($expire, $hostname, $snmp_version, $community, $username, $password);
+	if ($s eq '') {
+		return '';
+	}
+	return "<system><name>$system_name</name>$s</system>";
+}
 
 my ($systems_file, $expire) = @ARGV;
 my $serviceid = get_serviceid('qnap');
-
+my $xml = new XML::Simple;
+my $data = $xml->XMLin($systems_file);
+my $xml_str = '';
+#print STDERR Dumper($data);
+if( ref($data->{'record'}) eq 'ARRAY' ) {
+	foreach my $h (@{$data->{'record'}}) {
+		$xml_str .= check_qnap($h->{'isactive'}, $expire, $h->{'system_name'}, $h->{'hostname'}, 
+					$h->{'snmp_version'}, $h->{'community'}, $h->{'username'}, $h->{'password'});
+	}
+}
+else {
+	$xml_str = check_qnap($data->{'record'}->{'isactive'}, $expire, $data->{'record'}->{'system_name'}, 
+				$data->{'record'}->{'hostname'}, $data->{'record'}->{'snmp_version'}, $data->{'record'}->{'community'},
+				$data->{'record'}->{'username'}, $data->{'record'}->{'password'});
+}
+print $xml_str;
