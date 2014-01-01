@@ -27,7 +27,7 @@ use Socket;
 ######################################################################################################
 sub get_snmp_value
 {
-	my ($options, $hostname, $version, $community, $mib) = @_;
+	my ($options, $hostname, $version, $community, $mib, $username, $password) = @_;
 
 	my $str = `$SisIYA_Remote_Config::external_progs{'snmpget'} $options -v $version -c $community $hostname $mib 2>&1`;
 	my $retcode = $? >>=8;
@@ -44,7 +44,7 @@ sub check_snmp_system
 	my $serviceid = get_serviceid('system');
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $s = '';
-	my $str = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, 'system.sysDescr.0');
+	my $str = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, 'system.sysDescr.0', $username, $password);
 	if ($str eq '') {
 		return '';
 	}
