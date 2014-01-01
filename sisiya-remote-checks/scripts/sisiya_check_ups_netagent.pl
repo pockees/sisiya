@@ -55,7 +55,11 @@ our %mibs = (
 	'battery_capacity'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.2.2.1.0',
 	'battery_replacement_status'	=> '1.3.6.1.4.1.318.1.1.1.2.2.4.0',
 	'battery_status'		=> 'SNMPv2-SMI::mib-2.33.1.2.1.0',
-	'firmware' 			=> 'SNMPv2-SMI::enterprises.935.1.1.1.1.2.4.0'
+	'estimated_time_on_battery'	=> 'SNMPv2-SMI::enterprises.935.1.1.1.2.2.4.0',
+	'time_spend_on_battery'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.2.1.2.0',
+	'firmware' 			=> 'SNMPv2-SMI::enterprises.935.1.1.1.1.2.4.0',
+	'ups_input_ac_status'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.3.1.1.0',
+	'ups_status'			=> 'SNMPv2-SMI::enterprises.935.1.1.1.4.1.1.0'
 );
 our @tsensors = (
 	{ 'name' => 'internal', 'warning' => 30, 'error' => 35, 'mib' => 'SNMPv2-SMI::enterprises.935.1.1.1.2.1.2.0' },
@@ -72,7 +76,7 @@ our %thresholds = (
 	'output_voltage_lower'		=> { 'warning' => 205,	'error' => 200 },	# in voltage
 	'output_voltage_upper'		=> { 'warning' => 235,	'error' => 240 },	# in voltage
 	'estimated_time_on_battery'	=> { 'warning' => 600,	'error' => 300 },	# in minutes
-	'time_on_battery' 		=> { 'warning' => 600,	'error' => 300 }	# in minutes
+	'time_spend_on_battery' 	=> { 'warning' => 600,	'error' => 300 }	# in minutes
 );
 # One can override there default values in the $SisIYA_RemoteConfig::conf_dir/printer_system_$system_name.pl
 # end of default values
@@ -150,6 +154,58 @@ sub check_ups_battery_replacement_status
 	}
 }
 
+sub check_ups_estimated_time_on_battery
+{
+	my ($statusid_ref, $error_str_ref, $warning_str_ref, $ok_str_ref, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'estimated_time_on_battery'}, $username, $password);
+	if ($s eq '') {
+		return;
+	}
+	my $time = $s;
+	if ($time == 0) {
+		$$ok_str_ref .= 'OK: The estimated time on battery is 0. The UPS must be online.';
+	} else {
+		if ($time <= $thresholds{'estimated_time_on_battery'}{'error'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'error'};
+			$$error_str_ref .= "ERROR: The estimated time on battery is $time (<= $thresholds{'estimated_time_on_battery'}{'error'})!";
+		} elsif ($time <= $thresholds{'estimated_time_on_battery'}{'warning'}) {
+			if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+				$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+			}
+			$$warning_str_ref .= "WARNING: The estimated time on battery is $time (<= $thresholds{'estimated_time_on_battery'}{'warning'})!";
+		} else {
+			$$ok_str_ref .= "OK: The estimated time on battery is $time.";
+		}
+	}
+}
+
+sub check_ups_time_spend_on_battery
+{
+	my ($statusid_ref, $error_str_ref, $warning_str_ref, $ok_str_ref, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'time_spend_on_battery'}, $username, $password);
+	if ($s eq '') {
+		return;
+	}
+	my $time = $s;
+	if ($time == 0) {
+		$$ok_str_ref .= ' OK: The time spend on battery is 0. The UPS must be online.';
+	} else {
+		if ($time <= $thresholds{'time_spend_on_battery'}{'error'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'error'};
+			$$error_str_ref .= " ERROR: The time spend on battery is $time (<= $thresholds{'time_spend_on_battery'}{'error'})!";
+		} elsif ($time <= $thresholds{'time_spend_on_battery'}{'warning'}) {
+			if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+				$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+			}
+			$$warning_str_ref .= " WARNING: The time spend on battery is $time (<= $thresholds{'time_spend_on_battery'}{'warning'})!";
+		} else {
+			$$ok_str_ref .= " OK: The time spend on battery is $time.";
+		}
+	}
+}
+
 
 sub check_ups_battery
 {
@@ -164,8 +220,95 @@ sub check_ups_battery
 	check_ups_battery_status(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
 	check_ups_battery_replacement_status(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
 
-	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$error_str $warning_str $ok_str</msg><datamsg></datamsg></data></message>";
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$error_str$warning_str$ok_str</msg><datamsg></datamsg></data></message>";
 }
+
+sub check_ups_battery_times
+{
+	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
+	my $error_str = '';
+	my $warning_str = '';
+	my $ok_str = '';
+	my $serviceid = get_serviceid('ups_timeonbattery');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+
+	check_ups_estimated_time_on_battery(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+	check_ups_time_spend_on_battery(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$error_str$warning_str$ok_str</msg><datamsg></datamsg></data></message>";
+}
+
+sub check_ups_status
+{
+	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
+	my $serviceid = get_serviceid('ups_status');
+	my $statusid = $SisIYA_Config::statusids{'error'};
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'ups_status'}, $username, $password);
+	if ($s eq '') {
+		return;
+	}
+	my $status = $s;
+	if ($status == 1) {
+		$s = "ERROR: The UPS status is unknown!";
+	} elsif ($status == 2) {
+		$statusid = $SisIYA_Config::statusids{'ok'};
+		$s = "OK: The UPS is online.";
+	} elsif ($status == 3) {
+		$statusid = $SisIYA_Config::statusids{'warning'};
+		$s = "WARNING: The UPS status is battery!";
+	} elsif ($status == 4) {
+		$s = "ERROR: The UPS is on smart boost!";
+	} elsif ($status == 5) {
+		$s = "ERROR: The UPS is timed sleeping!";
+	} elsif ($status == 6) {
+		$s = "ERROR: The UPS is on software bypass!";
+	} elsif ($status == 7) {
+		$s = "ERROR: The UPS is rebooting!";
+	} elsif ($status == 8) {
+		$s = "ERROR: The UPS is standby!";
+	} elsif ($status == 9) {
+		$s = "ERROR: The UPS is on buck!";
+	} else {
+		$s = "ERROR: The UPS status=$status is unknown!";
+	}
+
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
+}
+
+sub check_ups_input_ac_status
+{
+	my ($statusid_ref, $error_str_ref, $warning_str_ref, $ok_str_ref, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'ups_input_ac_status'}, $username, $password);
+	if ($s eq '') {
+		return '';
+	}
+	if ($s == 1) {
+		$$ok_str_ref .= "OK: The AC status in normal.";
+	} else {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: Unknown AC status = $s!";
+	}
+}
+
+sub check_ups_input
+{
+	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
+	my $error_str = '';
+	my $warning_str = '';
+	my $ok_str = '';
+	my $serviceid = get_serviceid('ups_input');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+
+	check_ups_input_ac_status(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+	#check_ups_input_voltage(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+	#check_ups_input_frequency(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$error_str$warning_str$ok_str</msg><datamsg></datamsg></data></message>";
+}
+
+
 
 sub check_ups_netagent
 {
@@ -181,6 +324,9 @@ sub check_ups_netagent
 		return '';
 	}
 	$s .= check_ups_battery($expire, $hostname, $snmp_version, $community, $username, $password);
+	$s .= check_ups_battery_times($expire, $hostname, $snmp_version, $community, $username, $password);
+	$s .= check_ups_status($expire, $hostname, $snmp_version, $community, $username, $password);
+	$s .= check_ups_input($expire, $hostname, $snmp_version, $community, $username, $password);
 	return "<system><name>$system_name</name>$s</system>";
 }
 
@@ -200,5 +346,5 @@ else {
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'snmp_version'}, $data->{'record'}->{'community'},
 				$data->{'record'}->{'username'}, $data->{'record'}->{'password'});
 }
-#print STDERR $xml_str;
+print STDERR $xml_str;
 print $xml_str;
