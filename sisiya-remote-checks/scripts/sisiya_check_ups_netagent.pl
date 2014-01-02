@@ -56,9 +56,15 @@ our %mibs = (
 	'battery_replacement_status'	=> '1.3.6.1.4.1.318.1.1.1.2.2.4.0',
 	'battery_status'		=> 'SNMPv2-SMI::mib-2.33.1.2.1.0',
 	'estimated_time_on_battery'	=> 'SNMPv2-SMI::enterprises.935.1.1.1.2.2.4.0',
-	'time_spend_on_battery'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.2.1.2.0',
 	'firmware' 			=> 'SNMPv2-SMI::enterprises.935.1.1.1.1.2.4.0',
+	'time_spend_on_battery'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.2.1.2.0',
 	'ups_input_ac_status'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.3.1.1.0',
+	'ups_input_frequency'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.4.2.2.0',
+	'ups_input_voltage'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.3.2.1.0',
+	'ups_output_frequency'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.4.2.2.0',
+	'ups_output_load'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.4.2.3.0',
+	'ups_output_status'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.4.1.1.0',
+	'ups_output_voltage'		=> 'SNMPv2-SMI::enterprises.935.1.1.1.4.2.1.0',
 	'ups_status'			=> 'SNMPv2-SMI::enterprises.935.1.1.1.4.1.1.0'
 );
 our @tsensors = (
@@ -71,6 +77,7 @@ our %thresholds = (
 	'input_frequency_upper'		=> { 'warning' => 53,	'error' => 60 },	# in Hz
 	'output_frequency_lower'	=> { 'warning' => 47,	'error' => 40 },	# in Hz
 	'output_frequency_upper'	=> { 'warning' => 53,	'error' => 60 },	# in Hz
+	'output_load' 			=> { 'warning' => 45,	'error' => 50 },	# in %
 	'input_voltage_lower'		=> { 'warning' => 205,	'error' => 200 },	# in voltage
 	'input_voltage_upper'		=> { 'warning' => 235,	'error' => 240 },	# in volatge
 	'output_voltage_lower'		=> { 'warning' => 205,	'error' => 200 },	# in voltage
@@ -292,6 +299,67 @@ sub check_ups_input_ac_status
 	}
 }
 
+sub check_ups_input_voltage
+{
+	my ($statusid_ref, $error_str_ref, $warning_str_ref, $ok_str_ref, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'ups_input_voltage'}, $username, $password);
+	if ($s eq '') {
+		return '';
+	}
+	my $v = $s / 10;
+	if ($v >= $thresholds{'input_voltage_upper'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The input voltage is ".$v."V (>= $thresholds{'input_voltage_upper'}{'error'})!";
+	} elsif ($v <= $thresholds{'input_voltage_lower'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The input voltage is ".$v."V (<= $thresholds{'input_voltage_lower'}{'error'})!";
+	} elsif ($v >= $thresholds{'input_voltage_upper'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The input voltage is ".$v."V (>= $thresholds{'input_voltage_upper'}{'warning'})!";
+	} elsif ($v <= $thresholds{'input_voltage_lower'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The input voltage is ".$v."V (<= $thresholds{'input_voltage_lower'}{'warning'})!";
+	} else {
+		$$ok_str_ref .= "OK: The input voltage is ".$v."V.";
+	}
+}
+
+sub check_ups_input_frequency
+{
+	my ($statusid_ref, $error_str_ref, $warning_str_ref, $ok_str_ref, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'ups_input_frequency'}, $username, $password);
+	if ($s eq '') {
+		return '';
+	}
+	my $v = $s / 10;
+	if ($v >= $thresholds{'input_frequency_upper'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The input frequency is ".$v."Hz (>= $thresholds{'input_frequency_upper'}{'error'})!";
+	} elsif ($v <= $thresholds{'input_frequency_lower'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The input frequency is ".$v."Hz (<= $thresholds{'input_frequency_lower'}{'error'})!";
+	} elsif ($v >= $thresholds{'input_frequency_upper'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The input frequency is ".$v."Hz (>= $thresholds{'input_frequency_upper'}{'warning'})!";
+	} elsif ($v <= $thresholds{'input_frequency_lower'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The input frequency is ".$v."Hz (<= $thresholds{'input_frequency_lower'}{'warning'})!";
+	} else {
+		$$ok_str_ref .= "OK: The input frequency is ".$v."Hz.";
+	}
+}
+
+
 sub check_ups_input
 {
 	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
@@ -302,12 +370,111 @@ sub check_ups_input
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 
 	check_ups_input_ac_status(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
-	#check_ups_input_voltage(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
-	#check_ups_input_frequency(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+	check_ups_input_voltage(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+	check_ups_input_frequency(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$error_str$warning_str$ok_str</msg><datamsg></datamsg></data></message>";
 }
 
+sub check_ups_output_load
+{
+	my ($statusid_ref, $error_str_ref, $warning_str_ref, $ok_str_ref, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'ups_output_load'}, $username, $password);
+	if ($s eq '') {
+		return '';
+	}
+	my $v = $s;
+	if ($v >= $thresholds{'output_load'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The output load is ".$v."% (>= $thresholds{'output_load'}{'error'})!";
+	} elsif ($v >= $thresholds{'output_load'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The load is ".$v."% (>= $thresholds{'output_load'}{'warning'})!";
+	} else {
+		$$ok_str_ref .= "OK: The output load is ".$v."%.";
+	}
+}
+
+sub check_ups_output_voltage
+{
+	my ($statusid_ref, $error_str_ref, $warning_str_ref, $ok_str_ref, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'ups_output_voltage'}, $username, $password);
+	if ($s eq '') {
+		return '';
+	}
+	my $v = $s / 10;
+	if ($v >= $thresholds{'output_voltage_upper'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The output voltage is ".$v."V (>= $thresholds{'output_voltage_upper'}{'error'})!";
+	} elsif ($v <= $thresholds{'output_voltage_lower'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The output voltage is ".$v."V (<= $thresholds{'output_voltage_lower'}{'error'})!";
+	} elsif ($v >= $thresholds{'output_voltage_upper'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The output voltage is ".$v."V (>= $thresholds{'output_voltage_upper'}{'warning'})!";
+	} elsif ($v <= $thresholds{'output_voltage_lower'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The output voltage is ".$v."V (<= $thresholds{'output_voltage_lower'}{'warning'})!";
+	} else {
+		$$ok_str_ref .= "OK: The output voltage is ".$v."V.";
+	}
+}
+
+sub check_ups_output_frequency
+{
+	my ($statusid_ref, $error_str_ref, $warning_str_ref, $ok_str_ref, $hostname, $snmp_version, $community, $username, $password) = @_;
+
+	my $s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'ups_output_frequency'}, $username, $password);
+	if ($s eq '') {
+		return '';
+	}
+	my $v = $s / 10;
+	if ($v >= $thresholds{'output_frequency_upper'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The output frequency is ".$v."Hz (>= $thresholds{'output_frequency_upper'}{'error'})!";
+	} elsif ($v <= $thresholds{'output_frequency_lower'}{'error'}) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$$error_str_ref .= "ERROR: The output frequency is ".$v."Hz (<= $thresholds{'output_frequency_lower'}{'error'})!";
+	} elsif ($v >= $thresholds{'output_frequency_upper'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The output frequency is ".$v."Hz (>= $thresholds{'output_frequency_upper'}{'warning'})!";
+	} elsif ($v <= $thresholds{'output_frequency_lower'}{'warning'}) {
+		if ($$statusid_ref < $SisIYA_Config::statusids{'warning'}) {
+			$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		}
+		$$warning_str_ref .= "WARNING: The output frequency is ".$v."Hz (<= $thresholds{'output_frequency_lower'}{'warning'})!";
+	} else {
+		$$ok_str_ref .= "OK: The output frequency is ".$v."Hz.";
+	}
+}
+
+
+
+sub check_ups_output
+{
+	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
+	my $error_str = '';
+	my $warning_str = '';
+	my $ok_str = '';
+	my $serviceid = get_serviceid('ups_output');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+
+	check_ups_output_load(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+	check_ups_output_voltage(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+	check_ups_output_frequency(\$statusid, \$error_str, \$warning_str, \$ok_str, $hostname, $snmp_version, $community, $username, $password);
+
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$error_str$warning_str$ok_str</msg><datamsg></datamsg></data></message>";
+}
 
 
 sub check_ups_netagent
@@ -327,6 +494,7 @@ sub check_ups_netagent
 	$s .= check_ups_battery_times($expire, $hostname, $snmp_version, $community, $username, $password);
 	$s .= check_ups_status($expire, $hostname, $snmp_version, $community, $username, $password);
 	$s .= check_ups_input($expire, $hostname, $snmp_version, $community, $username, $password);
+	$s .= check_ups_output($expire, $hostname, $snmp_version, $community, $username, $password);
 	return "<system><name>$system_name</name>$s</system>";
 }
 
