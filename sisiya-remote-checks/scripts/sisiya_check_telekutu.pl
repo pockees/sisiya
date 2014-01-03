@@ -44,7 +44,67 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+if(-f $SisIYA_Remote_Config::functions) {
+	require $SisIYA_Remote_Config::functions;
+}
+
+sub check_telekutu_system
+{
+	my ($expire, $system_name, $hostname, $index_file, $http_port, $username, $password) = @_;
+
+
+	print STDERR "Checking system_name=[$system_name] hostname=[$hostname] index_file=[$index_file] http_port=[$http_port] username=[$username] password=[$password] ...\n";
+	my $serviceid = get_serviceid('system');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $params = '--max-time 4 --include';
+	if (grep(/^HASH/, $username) == 0) {
+	       $params = "$params --user \"$username:$password\"";
+	}	       
+	my @a = `$SisIYA_Remote_Config::external_progs{'curl'} $params http://$hostname:$http_port$index_file 2>/dev/null`;
+	my $s;
+	my $retcode = $? >>=8;
+	if($retcode != 0) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s = "ERROR: Could not connect to $hostname!";
+	} else {
+		$s = "OK: connected";
+		print STDERR (grep(/Host Name/i, @a))[0];
+	}
+
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
+}
+
+sub check_telekutu
+{
+	my ($isactive, $serviceid, $expire, $system_name, $hostname, $index_file, $http_port, $username, $password) = @_;
+
+	if ($isactive eq 'f' ) {
+		return '';
+	}
+
+	print STDERR "Checking system_name=[$system_name] hostname=[$hostname] serviceid=[$serviceid] isactive=[$isactive] index_file=[$index_file] http_port=[$http_port] username=[$username] password=[$password] ...\n";
+	my $s = check_telekutu_system($expire, $hostname, $index_file, $http_port, $username, $password);
+	if ($s eq '') {
+		return '';
+	}
+	#$s .= check_telekutu_line($expire, $hostname, $index_file, $http_port, $username, $password);
+	return "<system><name>$system_name</name>$s</system>";
+}
 
 my ($systems_file, $expire) = @ARGV;
-my $serviceid 		= get_serviceid('telekutu');
-
+my $xml = new XML::Simple;
+my $data = $xml->XMLin($systems_file);
+my $xml_str = '';
+#print STDERR Dumper($data);
+if( ref($data->{'record'}) eq 'ARRAY' ) {
+	foreach my $h (@{$data->{'record'}}) {
+		$xml_str .= check_telekutu($h->{'isactive'},  $expire, $h->{'system_name'}, $h->{'hostname'}, 
+						$h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'}, 0);
+	}
+} else {
+	$xml_str = check_telekutu($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
+					$data->{'record'}->{'hostname'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, 
+					$data->{'record'}->{'username'}, $data->{'record'}->{'password'}, 0); 
+}
+print STDERR $xml_str;
+print $xml_str;

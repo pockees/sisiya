@@ -514,5 +514,4 @@ else {
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'snmp_version'}, $data->{'record'}->{'community'},
 				$data->{'record'}->{'username'}, $data->{'record'}->{'password'});
 }
-print STDERR $xml_str;
 print $xml_str;

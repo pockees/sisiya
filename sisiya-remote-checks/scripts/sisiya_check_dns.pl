@@ -45,26 +45,17 @@ if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-my ($systems_file, $expire) = @ARGV;
-my $serviceid = get_serviceid('dns');
 
 sub check_dns
 {
-	my $isactive 		= $_[1];
+	my ($isactive, $serviceid, $expire, $system_name, $hostname, $hostname_to_query, $ip_to_query, $port, $timeout, $number_of_tries) = @_;
+
 	if ($isactive eq 'f' ) {
 		return '';
 	}
-	my $system_name 	= $_[0];
-	my $hostname		= $_[2];
-	my $hostname_to_query	= $_[3];
-	my $ip_to_query		= $_[4];
-	my $port		= $_[5];
-	my $timeout		= $_[6];
-	my $number_of_tries	= $_[7];
 
 	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] hostname_to_query=[$hostname_to_query] ip_to_query=[$ip_to_query] port=[$port] timeout=[$timeout] number_of_tries=[$number_of_tries] ...\n";
 	my $statusid = $SisIYA_Config::statusids{'ok'};
-	my $x_str .= "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
 	my $s;
 	`$SisIYA_Remote_Config::external_progs{'dig'} -p $port +timeout=$timeout +tries=$number_of_tries -x $hostname_to_query \@$hostname >/dev/null 2>&1`;
 	my $retcode = $? >>=8;
@@ -84,22 +75,23 @@ sub check_dns
 	else {
 		$s .= "OK: Checked $ip_to_query on $hostname.";
 	}
-	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
-	return $x_str;
+	return "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
 }
 
+my ($systems_file, $expire) = @ARGV;
+my $serviceid = get_serviceid('dns');
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 #print STDERR Dumper($data);
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_dns($h->{'system_name'}, $h->{'isactive'}, $h->{'hostname'}, $h->{'hostname_to_query'}, 
+		$xml_str .= check_dns($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'hostname_to_query'}, 
 					$h->{'ip_to_query'}, $h->{'port'}, $h->{'timeout'}, $h->{'number_of_tries'});
 	}
 }
 else {
-	$xml_str = check_dns($data->{'record'}->{'system_name'}, $data->{'record'}->{'isactive'}, $data->{'record'}->{'hostname'}, 
+	$xml_str = check_dns($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, $data->{'record'}->{'hostname'}, 
 				$data->{'record'}->{'hostname_to_query'}, $data->{'record'}->{'ip_to_query'}, 
 				$data->{'record'}->{'port'}, $data->{'record'}->{'timeout'}, $data->{'record'}->{'number_of_tries'});
 }

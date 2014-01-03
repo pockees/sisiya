@@ -104,15 +104,13 @@ for $i (0..$#raid_arrays) {
 
 		if ( ($state eq 'active') || ($state eq 'clean') ) {
 			$ok_str .= " OK: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs).";
-		}
-		elsif (($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)') || ($state eq 'clean, checking')) {
+		} elsif (($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)') || ($state eq 'clean, checking') || ( $state eq 'clean, degraded, resyncing (DELAYED)')) {
 			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs)!";
-		}
-		elsif ( ($state eq 'active, resyncing') || ($state eq 'clean,resyncing') ) {
-			$rebuild_status = trim(( split(/:/, ( grep(/Rebuild status :/, @a) )[0]) )[1]);
+		} elsif ( ($state eq 'active, resyncing') || ($state eq 'clean,resyncing') || ($state eq 'active, degraded, recovering')) {
+			$rebuild_status = (split(/:/, (grep(/Rebuild status :/i, @a))[0]))[1];
+			#Rebuild Status : 7% complete
 			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs) Rebuild status $rebuild_status.";
-		}
-		else {
+		} else {
 			$error_str .= " ERROR: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs)!";
 		}
 	}
@@ -172,3 +170,20 @@ print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data
 #       1       8       49        1      active sync   /dev/sdd1
 #       5       8       65        2      active sync   /dev/sde1
 #       4       8       81        3      active sync   /dev/sdf1
+########################################################################33
+#Personalities : [raid1] 
+#md2 : active raid1 sdb3[2] sda3[1]
+#      465726272 blocks super 1.1 [2/1] [_U]
+#      	resync=DELAYED
+#      bitmap: 4/4 pages [16KB], 65536KB chunk
+#
+#md1 : active raid1 sdb2[2] sda2[1]
+#      2046912 blocks super 1.1 [2/1] [_U]
+#      	resync=DELAYED
+#      
+#md0 : active raid1 sdb1[2] sda1[1]
+#      20479872 blocks super 1.0 [2/1] [_U]
+#      [===================>.]  recovery = 97.3% (19931456/20479872) finish=0.3min speed=30214K/sec
+#      bitmap: 1/1 pages [4KB], 65536KB chunk
+#
+#unused devices: <none>
