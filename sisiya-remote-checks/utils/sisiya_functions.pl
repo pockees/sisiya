@@ -38,6 +38,24 @@ sub get_snmp_value
 	return "$str";
 }
 
+sub check_uptime
+{
+	my ($statusid_ref, $up_in_minutes, $uptime_warning, $uptime_error) = @_;
+	my $s;
+
+	if ($up_in_minutes <= $uptime_error) {
+		$$statusid_ref = $SisIYA_Config::statusids{'error'};
+		$s = "ERROR: The systems was restarted ".minutes2string($up_in_minutes). " (<= ".minutes2string($uptime_error).") ago!";
+	} elsif ($up_in_minutes <= $uptime_warning) {
+		$$statusid_ref = $SisIYA_Config::statusids{'warning'};
+		$s = "WARNING: The systems was restarted ".minutes2string($up_in_minutes). " (<= ".minutes2string($uptime_warning).") ago!";
+	} else {
+		$$statusid_ref = $SisIYA_Config::statusids{'ok'};
+		$s = "OK: The system is up for ".minutes2string($up_in_minutes). ".";
+	}
+	return $s;
+}
+
 sub check_snmp_system
 {
 	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
@@ -65,15 +83,7 @@ sub check_snmp_system
 	if ($retcode == 0) {
 		my @a = split(/:/, $str);
 		my $up_in_minutes = $a[0] * 1440  + $a[1] * 60 + $a[2];
-		if ($up_in_minutes <= $uptimes{'error'}) {
-			$statusid = $SisIYA_Config::statusids{'error'};
-			$s = "ERROR: The systems was restarted ".minutes2string($up_in_minutes). " (<= ".minutes2string($uptimes{'error'}).") ago!";
-		} elsif ($up_in_minutes <= $uptimes{'warning'}) {
-			$statusid = $SisIYA_Config::statusids{'warning'};
-			$s = "WARNING: The systems was restarted ".minutes2string($up_in_minutes). " (<= ".minutes2string($uptimes{'warning'}).") ago!";
-		} else {
-			$s = "OK: The system is up for ".minutes2string($up_in_minutes). ".";
-		}
+		$s = check_uptime(\$statusid, $up_in_minutes, $uptimes{'warning'}, $uptimes{'error'});
 	}
 	$s = "$s Description: $system_description Location: $system_location.";
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";

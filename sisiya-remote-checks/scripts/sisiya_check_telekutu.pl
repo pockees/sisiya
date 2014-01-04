@@ -56,17 +56,17 @@ our %uptimes = ('error' => 1440, 'warning' => 4320);
 
 sub check_telekutu
 {
-	my ($isactive, $serviceid, $expire, $system_name, $hostname, $index_file, $http_port, $username, $password) = @_;
+	my ($isactive, $expire, $system_name, $hostname, $index_file, $http_port, $username, $password) = @_;
 
 	if ($isactive eq 'f' ) {
 		return '';
 	}
 
-	print STDERR "Checking system_name=[$system_name] hostname=[$hostname] serviceid=[$serviceid] isactive=[$isactive] index_file=[$index_file] http_port=[$http_port] username=[$username] password=[$password] ...\n";
 
 	my $serviceid = get_serviceid('system');
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $params = '--max-time 4 --include';
+	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] serviceid=[$serviceid] isactive=[$isactive] index_file=[$index_file] http_port=[$http_port] username=[$username] password=[$password] ...\n";
 	if (grep(/^HASH/, $username) == 0) {
 	       $params = "$params --user \"$username:$password\"";
 	}	       
@@ -77,8 +77,6 @@ sub check_telekutu
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$s = "ERROR: Could not connect to $hostname!";
 	} else {
-		$s = "OK: connected";
-		print STDERR (grep(/Host Name/i, @a))[0];
 		my $hostname_str 	= (split(/</, (split(/>/, (split(/:/,	(grep(/Host Name/i, 		@a))[0]))[1]))[2]))[0];
 		my $product_str 	= (split(/</, (split(/>/, (split(/:/,	(grep(/Product Name/i, 		@a))[0]))[1]))[2]))[0];
 		my $sw_str 		= (split(/</, (split(/>/, (split(/:/,	(grep(/Software Version/i, 	@a))[0]))[1]))[2]))[0];
@@ -91,23 +89,16 @@ sub check_telekutu
 		my ($up_days, $up_hours, $up_minutes, $uptime);
 		if (grep(/day/, $str)) {
 			$up_days 	= (split(/\s+/, $str))[0];
-			$up_hours 	= (split(/:/,   $str))[0];
-			$up_minutes 	= (split(/:/,   $str))[1];
+			$up_hours 	= (split(/\s+/, (split(/:/, $str))[0]))[3];
+			$up_minutes 	= (split(/:/, $str))[1];
 		} else {
 			$up_days 	= 0;
 			$up_hours 	= (split(/:/, (split(/\s+/, $str))[3]))[0];
 			$up_minutes 	= (split(/:/, (split(/\s+/, $str))[3]))[1];
 		}
-		$up_in_minutes = 1440 * $up_days + 60 * $up_hours + $up_minutes;
-		if ($up_in_minutes <= $uptimes{'error'}) {
-			$statusid = $SisIYA_Config::statusids{'error'};
-			$s = "ERROR: The systems was restarted ".minutes2string($up_in_minutes). " (<= ".minutes2string($uptimes{'error'}).") ago!";
-		} elsif ($up_in_minutes <= $uptimes{'warning'}) {
-			$statusid = $SisIYA_Config::statusids{'warning'};
-			$s = "WARNING: The systems was restarted ".minutes2string($up_in_minutes). " (<= ".minutes2string($uptimes{'warning'}).") ago!";
-		} else {
-			$s = "OK: The system is up for ".minutes2string($up_in_minutes). ".";
-		}
+		my $up_in_minutes = 1440 * $up_days + 60 * $up_hours + $up_minutes;
+		$s = check_uptime(\$statusid, $up_in_minutes, $uptimes{'warning'}, $uptimes{'error'});
+		$s .= "INFO: Hostname: $hostname_str Product name: $product_str Software version: $sw_str Serial number: $sn_str Hardware version: $hw_str User ID: $uid_str.";
 		$x_str = "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 
 		# check line status
@@ -137,9 +128,8 @@ if( ref($data->{'record'}) eq 'ARRAY' ) {
 						$h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'}, 0);
 	}
 } else {
-	$xml_str = check_telekutu($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
+	$xml_str = check_telekutu($data->{'record'}->{'isactive'}, $expire, $data->{'record'}->{'system_name'}, 
 					$data->{'record'}->{'hostname'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, 
 					$data->{'record'}->{'username'}, $data->{'record'}->{'password'}, 0); 
 }
-print STDERR $xml_str;
 print $xml_str;
