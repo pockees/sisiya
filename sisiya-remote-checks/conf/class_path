@@ -18,8 +18,9 @@
 #
 #
 #################################################################################
-SISIYA_CONF=/opt/sisiya-remote-checks/conf
-SISIYA_LIB=/opt/sisiya-remote-checks/lib
+BASE_DIR=/opt/sisiya-remote-checks
+SISIYA_CONF=$BASE_DIR/conf
+SISIYA_LIB=$BASE_DIR/lib
 #J2EE_HOME=/usr/lib/java
 #JDK_HOME=/usr/lib/java
 JRE_HOME=/opt/java/jre
