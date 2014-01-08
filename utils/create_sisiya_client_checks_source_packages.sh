@@ -91,7 +91,7 @@ fi
 rpm_dir="rpm/$package_dir"
 rm -rf $rpm_dir
 cp -a $package_dir $rpm_dir
-cp ${sisiya_dir}/packaging/rpmspec/${package_str}.spec $rpm_dir
+cat $sisiya_dir/packaging/rpmspec/${package_str}.spec   | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_dir/${package_str}.spec
 (cd rpm ; tar cfz ${package_dir}.tar.gz $package_dir)
 rm -rf $rpm_dir
 echo "RPM packaging info :"
