@@ -34,14 +34,14 @@ sisiya_dir=$1
 
 package_str="sisiya-client-checks"
 
-rpm_spec_file="${sisiya_dir}/packaging/rpmspec/${package_str}.spec"
-if test ! -f $rpm_spec_file ; then
-	echo "$0 : RPM Spec file $rpm_spec_file does not exist!"
+version_file=${sisiya_dir}/$package_str/version.txt
+if test ! -f $version_file ; then
+	echo "$0: Version file $version_file does not exist!"
 	exit 1
 fi
- 
-version_str=`cat $rpm_spec_file | grep "define version" | awk '{print $3}'`
-release_str=`cat $rpm_spec_file | grep "define release" | awk '{print $3}'`
+str=`cat $version_file`
+version_str=`echo $str | cut -d "-" -f 1`
+release_str=`echo $str | cut -d "-" -f 2`
 
 if test ! -d $sisiya_dir ; then
 	echo "Directory $sisiya_dir does not exist. Exiting..."

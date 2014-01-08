@@ -12,11 +12,13 @@ public class SISIYACheckDB
 {
 	final static String progName = "SISIYACheckDB";
 	final static String rbName = "SISIYACheckDB";
-	final int status_ok = 0;
-	final int status_error = 1; 
 
+	String status_ok;
+	String status_error; 
 	String server_str;
+	String expire_str;
 
+	ResourceBundle rb;
 	ResourceBundle rb_server;
  
 	String jdbc_driver_str = null;
@@ -28,55 +30,63 @@ public class SISIYACheckDB
 	/*
 	* Default constructor
 	*/
-	SISIYACheckDB(String server_str)
+	SISIYACheckDB(String server_str, String expire_str)
 	{
 		this.server_str = server_str;
+		this.expire_str = expire_str;
 
 		rb_server = ResourceBundle.getBundle(server_str + "_" + rbName);
+		rb = ResourceBundle.getBundle(rbName);
+		getStatusCodes();
 	}
  
-	public static int main(String args[])
+	public static void main(String args[])
 		throws SQLException
 	{
 
-		if(args.length != 1) {
-			System.err.println("Usage   : " + progName + " server_name");
-			System.err.println("Example : " + progName + " db1");
+		if(args.length != 2) {
+			System.err.println("Usage   : " + progName + " server_name expire");
+			System.err.println("Example : " + progName + " db1 10");
 			System.exit(1);
 		}
 
-		SISIYACheckDB SISIYAcheckdb = new SISIYACheckDB(args[0]);
-		return(SISIYAcheckdb.check());
+		SISIYACheckDB SISIYAcheckdb = new SISIYACheckDB(args[0], args[0]);
+		SISIYAcheckdb.check();
 	}		       
 
 	/*
 	* check: Check all DBs speciefied in the server_SISIYACheckDB.properties file.
 	*/
-	public int check()
+	public void check()
 	{
-		int ndbtypes, i, j, ndbs, serviceid;
+		int ndbtypes, i, j, ndbs;
 		boolean errorFlag; 
   
 		PrintWriter err = new PrintWriter(System.err, true);
+		StringBuffer messages_sb = new StringBuffer();
+		StringBuffer error_message_sb;
 		String message_str = "";
-		statusid = status_error;
+		String statusid_str = status_error;
 
 		ndbtypes = (new Integer(rb_server.getString(rbName + ".dbtypes_count"))).intValue();
 		for (i = 0; i < ndbtypes; i++) {
 			ndbs = (new Integer(rb_server.getString(rbName + ".dbtype" + i + "_count"))).intValue();
 			String dbtype_str = rb_server.getString(rbName + ".dbtype" + i + "_type");
+			String serviceid_str = rb_server.getString(rbName + ".dbtype" + i + "_serviceid");
 			String jdbc_driver_str = rb_server.getString(rbName + ".dbtype" + i + "_jdbc_driver");
 
+			error_message_sb = null;
 			try {
 				loadDriver(err, jdbc_driver_str);
 			}
 			catch(SQLException e) {
 				errorFlag = true;
-				err.println(progName + ": SQLException caught");
+				error_message_sb = new StringBuffer();
+				error_message_sb.append("SQLException caught:");
 				while(e != null) {
-					err.println(progName + ": SQL State :" + e.getSQLState());
-					err.println(progName + ": Message   :" + e.getMessage());
-					err.println(progName + ": Error Code:" + e.getErrorCode());
+					error_message_sb.append(" SQL State :" + e.getSQLState());
+					error_message_sb.append(" Message   :" + e.getMessage());
+					error_message_sb.append(" Error Code:" + e.getErrorCode());
 					e = e.getNextException();
 				}
 			}
@@ -85,7 +95,7 @@ public class SISIYACheckDB
 	
 			StringBuffer sbOk = new StringBuffer();
 			StringBuffer sbError = new StringBuffer();
-			statusid = status_ok;
+			statusid_str = status_ok;
 			String message = "";
 			for(j = 0; j < ndbs; j++) {
 				String dbname_str = rb_server.getString(rbName + ".dbtype" + i + "_name_" + j);
@@ -114,21 +124,25 @@ public class SISIYACheckDB
 					db_version_str = loginToDB(err, jdbc_url_str, user_str, password_str); 
 				} catch (SQLException e) {
 					errorFlag = true; 
-					err.println(progName + ": SQLException caught");
+					if (error_message_sb == null) 
+						error_message_sb = new StringBuffer();
+					error_message_sb.append("SQLException caught: ");
 					while(e != null) {
-						err.println(progName + ": server=" + server_str + " user=" + user_str + " db=" + dbname_str);
-						err.println(progName + ": SQL State :" + e.getSQLState());
-						err.println(progName + ": Message   :" + e.getMessage());
-						err.println(progName + ": Error Code:" + e.getErrorCode());
-						e=e.getNextException();
+						error_message_sb.append(" server=" + server_str + " user=" + user_str + " db=" + dbname_str);
+						error_message_sb.append(" SQL State :" + e.getSQLState());
+						error_message_sb.append(": Message   :" + e.getMessage());
+						error_message_sb.append(": Error Code:" + e.getErrorCode());
+						e = e.getNextException();
 					}
 				} catch (ConnectException e) {
+					if (error_message_sb == null) 
+						error_message_sb = new StringBuffer();
 					errorFlag = true; 
-					err.println(progName + ": ConnectException caught");
-					err.println(progName + ": Message :" + e.getMessage());
+					error_message_sb.append(" ConnectException caught");
+					error_message_sb.append(" Message :" + e.getMessage());
 				}  
 				if (errorFlag) {
-					statusid = status_error;
+					statusid_str = status_error;
 					if (sbError.toString().compareTo("") == 0)
 						sbError.append("ERROR:");
 					sbError.append(" " + user_str + "@" + dbname_str);	
@@ -138,13 +152,13 @@ public class SISIYACheckDB
 					sbOk.append(" " + user_str + "@" + dbname_str);	
 				} 
 			}
-			if(statusid == status_ok) 
+			if(statusid_str.equals(status_ok)) 
 				message_str = sbOk.toString() + "(" + db_version_str + ")";
 			else  
-				message_str = sbError.toString() + " " + sbOk.toString();
+				message_str = sbError.toString() + error_message_sb.toString() + " " + sbOk.toString();
+			messages_sb.append("<message><serviceid>" + serviceid_str + "</serviceid><statusid>" + statusid_str + "</statusid><expire>" + expire_str + "</expire><data><msg>" + message_str + "</msg><datamsg></datamsg></data></message>");
 		}
-		System.out.println(message_str);
-		return(statusid);
+		System.out.println(messages_sb.toString());
 	}
 
 	/**
@@ -166,6 +180,14 @@ public class SISIYACheckDB
 		err.println(progName+" :(loginToDB): Driver Minor Version     : "+dbmd.getDriverMinorVersion());
 		*/
 		return(dbmd.getDatabaseProductName() + "(" + dbmd.getDatabaseProductVersion() + ")");
+	}
+	/*
+	* getStatusCodes: Retrieves status codes from SISIYA_client.conf
+	 */
+	private void getStatusCodes()
+	{
+		status_ok=rb.getString("status_ok");
+		status_error=rb.getString("status_error");
 	}
 
 	private void loadDriver(PrintWriter err,String driver)
