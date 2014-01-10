@@ -63,7 +63,6 @@ chgrp -R %{www_group}	%{install_dir}/conf
 %attr(0750,root,root) 		%dir 			%{install_dir}/scripts
 %attr(0750,root,root) 		%dir 			%{install_dir}/src
 %attr(0750,root,root) 		%dir			%{install_dir}/utils
-%attr(0660,root,root) 		%config(noreplace)	%{install_dir}/conf/class_path
 %attr(0660,root,root)		%config(noreplace) 	%{install_dir}/conf/SisIYA_Remote_Config.pm
 %attr(0660,root,root)		%config(noreplace) 	%{install_dir}/conf/SisIYA_Remote_Config_local.pl
 %attr(0660,root,root)		%config(noreplace) 	%{install_dir}/conf/*.properties
