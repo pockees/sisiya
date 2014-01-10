@@ -15,7 +15,7 @@ public class SISIYACheckDB
 
 	String status_ok;
 	String status_error; 
-	String server_str;
+	String system_str;
 	String expire_str;
 
 	ResourceBundle rb;
@@ -30,12 +30,13 @@ public class SISIYACheckDB
 	/*
 	* Default constructor
 	*/
-	SISIYACheckDB(String server_str, String expire_str)
+	SISIYACheckDB(String system_str, String properties_file, String expire_str)
 	{
-		this.server_str = server_str;
+		this.system_str = system_str;
 		this.expire_str = expire_str;
 
-		rb_server = ResourceBundle.getBundle(server_str + "_" + rbName);
+		//rb_server = ResourceBundle.getBundle(system_str + "_" + rbName);
+		rb_server = ResourceBundle.getBundle(properties_file);
 		rb = ResourceBundle.getBundle(rbName);
 		getStatusCodes();
 	}
@@ -44,13 +45,13 @@ public class SISIYACheckDB
 		throws SQLException
 	{
 
-		if(args.length != 2) {
-			System.err.println("Usage   : " + progName + " server_name expire");
-			System.err.println("Example : " + progName + " db1 10");
+		if(args.length != 3) {
+			System.err.println("Usage   : " + progName + " system_name system_properties_file expire");
+			System.err.println("Example : " + progName + " db1 db1_SISIYACheckDB.properties 10");
 			System.exit(1);
 		}
 
-		SISIYACheckDB SISIYAcheckdb = new SISIYACheckDB(args[0], args[0]);
+		SISIYACheckDB SISIYAcheckdb = new SISIYACheckDB(args[0], args[1], args[2]);
 		SISIYAcheckdb.check();
 	}		       
 
@@ -101,9 +102,9 @@ public class SISIYACheckDB
 				String dbname_str = rb_server.getString(rbName + ".dbtype" + i + "_name_" + j);
 				String jdbc_url_str; 
 
-				try {
+				//try {
 					jdbc_url_str = rb_server.getString(rbName + ".dbtype" + i + "_jdbc_url_" + j);
-				} catch (MissingResourceException E) {
+				/*} catch (MissingResourceException E) {
 					long port;
 					try {
 						port = (new Long(rb_server.getString(rbName + ".dbtype" + i + "_port_" + j))).longValue();
@@ -111,10 +112,11 @@ public class SISIYACheckDB
 						port = -1;
 					}
 					if (port != -1)
-						jdbc_url_str = "jdbc:" + dbtype_str + "://" + server_str + ":" + port + "/" + dbname_str;
+						jdbc_url_str = "jdbc:" + dbtype_str + "://" + system_str + ":" + port + "/" + dbname_str;
 					else
-						jdbc_url_str = "jdbc:" + dbtype_str + "://" + server_str + "/" + dbname_str;
+						jdbc_url_str = "jdbc:" + dbtype_str + "://" + system_str + "/" + dbname_str;
 				} 
+				*/
 
 				String user_str = rb_server.getString(rbName + ".dbtype" + i + "_user_" + j);
 				String password_str = rb_server.getString(rbName + ".dbtype" + i + "_password_" + j);
@@ -128,7 +130,7 @@ public class SISIYACheckDB
 						error_message_sb = new StringBuffer();
 					error_message_sb.append("SQLException caught: ");
 					while(e != null) {
-						error_message_sb.append(" server=" + server_str + " user=" + user_str + " db=" + dbname_str);
+						error_message_sb.append(" server=" + system_str + " user=" + user_str + " db=" + dbname_str);
 						error_message_sb.append(" SQL State :" + e.getSQLState());
 						error_message_sb.append(": Message   :" + e.getMessage());
 						error_message_sb.append(": Error Code:" + e.getErrorCode());

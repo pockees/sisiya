@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright (C) 2003 - __YEAR__ Erdal Mutlu
+    Copyright (C) 2003 - 2013 Erdal Mutlu
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -186,26 +186,27 @@ function getAllConfs()
 	$confs=array(
 			0  => array('value' => 'airport',		'option' => 'airport'),
 			1  => array('value' => 'pdu',			'option' => 'apc'),
-			2  => array('value' => 'dns',			'option' => 'dns'),
-			3  => array('value' => 'ftp',			'option' => 'ftp'),
-			4  => array('value' => 'hpilo2',		'option' => 'hpilo2'),
-			5  => array('value' => 'https',			'option' => 'https'),
-			6  => array('value' => 'http',			'option' => 'http'),
-			7  => array('value' => 'imap',			'option' => 'imap'),
-			8  => array('value' => 'ping',			'option' => 'ping'),
-			9  => array('value' => 'pop3',			'option' => 'pop3'),
-			10 => array('value' => 'printer',		'option' => 'printer'),
-			11 => array('value' => 'qnap',			'option' => 'qnap'),
-			12 => array('value' => 'sensor',		'option' => 'sensor'),
-			13 => array('value' => 'smb',			'option' => 'smb'),
-			14 => array('value' => 'smtp',			'option' => 'smtp'),
-			15 => array('value' => 'ssh',			'option' => 'ssh'),
-			16 => array('value' => 'switch',		'option' => 'switch'),
-			17 => array('value' => 'telekutu',		'option' => 'telekutu'),
-			18 => array('value' => 'telnet',		'option' => 'telnet'),
-			19 => array('value' => 'ups',			'option' => 'ups'),
-			20 => array('value' => 'upsnetagent',		'option' => 'upsnetagent'),
-			21 => array('value' => 'vmware',		'option' => 'vmware')
+			2  => array('value' => 'dbs',			'option' => 'dbs'),
+			3  => array('value' => 'dns',			'option' => 'dns'),
+			4  => array('value' => 'ftp',			'option' => 'ftp'),
+			5  => array('value' => 'hpilo2',		'option' => 'hpilo2'),
+			6  => array('value' => 'https',			'option' => 'https'),
+			7  => array('value' => 'http',			'option' => 'http'),
+			8  => array('value' => 'imap',			'option' => 'imap'),
+			9  => array('value' => 'ping',			'option' => 'ping'),
+			10  => array('value' => 'pop3',			'option' => 'pop3'),
+			11 => array('value' => 'printer',		'option' => 'printer'),
+			12 => array('value' => 'qnap',			'option' => 'qnap'),
+			13 => array('value' => 'sensor',		'option' => 'sensor'),
+			14 => array('value' => 'smb',			'option' => 'smb'),
+			15 => array('value' => 'smtp',			'option' => 'smtp'),
+			16 => array('value' => 'ssh',			'option' => 'ssh'),
+			17 => array('value' => 'switch',		'option' => 'switch'),
+			18 => array('value' => 'telekutu',		'option' => 'telekutu'),
+			19 => array('value' => 'telnet',		'option' => 'telnet'),
+			20 => array('value' => 'ups',			'option' => 'ups'),
+			21 => array('value' => 'ups_netagent',		'option' => 'ups_netagent'),
+			22 => array('value' => 'vmware',		'option' => 'vmware')
 	);
 	return $confs;
 }

@@ -42,21 +42,14 @@ if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-my ($systems_file, $expire) = @ARGV;
-my $serviceid = get_serviceid('ping');
 
 sub check_ping
 {
-	my $isactive 		= $_[0];
+	my ($isactive, $serviceid, $expire, $system_name, $hostname, $packets_to_send, $timeout_to_wait) = @_;
+
 	if ($isactive eq 'f' ) {
 		return '';
 	}
-	my $serviceid	 	= $_[1];
-	my $expire	 	= $_[2];
-	my $system_name 	= $_[3];
-	my $hostname		= $_[4];
-	my $packets_to_send	= $_[5];
-	my $timeout_to_wait	= $_[6];
 
 	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] packets_to_send=[$packets_to_send] timeout_to_wait=[$timeout_to_wait]...\n";
 	my $statusid = $SisIYA_Config::statusids{'ok'};
@@ -82,6 +75,8 @@ sub check_ping
 	return $x_str;
 }
 
+my ($systems_file, $expire) = @ARGV;
+my $serviceid = get_serviceid('ping');
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';

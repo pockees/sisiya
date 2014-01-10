@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<systems>
+	<record><system_name>dbserver1</system_name><isactive>f</isactive><resource_bundle>dbserver1_SISIYACheckDB</resource_bundle></record>
+</systems>

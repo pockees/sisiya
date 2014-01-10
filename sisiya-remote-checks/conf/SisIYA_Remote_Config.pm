@@ -35,6 +35,7 @@ our $client_conf 		= '/opt/sisiya-client-checks/SisIYA_Config.pm';
 our $client_local_conf	 	= '/opt/sisiya-client-checks/SisIYA_Config_local.pl';
 our $base_dir		 	= '/opt/sisiya-remote-checks';
 our $conf_dir 			= "$base_dir/conf";
+our $lib_dir			= "$base_dir/lib";
 our $local_conf			= "$conf_dir/SisIYA_Remote_Config_local.pl";
 our $misc_dir 			= "$base_dir/misc";
 our $scripts_dir	 	= "$base_dir/scripts";
@@ -45,6 +46,7 @@ our %external_progs = (
 		'bash'		=> '/bin/bash',
 		'dig'		=> '/usr/bin/dig',
 		'curl'		=> '/usr/bin/curl',
+		'java'		=> '/usr/bin/java',
 		'perl'		=> '/usr/bin/perl',
 		'ping'		=> '/bin/ping',
 		'snmpget'	=> '/usr/bin/snmpget',
@@ -55,6 +57,7 @@ our %external_progs = (
 	);
 # the XML configuration files are located in the conf_dir
 our %checks = (
+		'dbs' 		=> { 'auto' => 1, 'conf' => 'dbs_systems.xml', 		'script' => 'sisiya_check_dbs.pl' 		},
 		'dns' 		=> { 'auto' => 1, 'conf' => 'dns_systems.xml', 		'script' => 'sisiya_check_dns.pl' 		},
 		'ftp'		=> { 'auto' => 1, 'conf' => 'ftp_systems.xml', 		'script' => 'sisiya_check_ftp.pl' 		},
 		'hpilo2'	=> { 'auto' => 1, 'conf' => 'hpilo2_systems.xml',	'script' => 'sisiya_check_hpilo2.pl' 		},
@@ -77,4 +80,8 @@ our %checks = (
 		'ups'		=> { 'auto' => 1, 'conf' => 'ups_systems.xml',		'script' => 'sisiya_check_ups.pl' 		},
 		'vmware'	=> { 'auto' => 1, 'conf' => 'vmware_systems.xml',	'script' => 'sisiya_check_vmware.pl' 		}
 	);
+# Environment variables
+our %env = (
+	'CLASSPATH'	=> "$conf_dir:$lib_dir:/opt/java/jre:/usr/lib/jdbc/mysql-connector-java-3.1.11-bin.jar:/usr/lib/jdbc/pg74.216.jdbc2.jar:/usr/lib/jdbc/ojdbc14.jar:/usr/lib/jdbc/jtds-1.3.1.jar"
+);
 1;

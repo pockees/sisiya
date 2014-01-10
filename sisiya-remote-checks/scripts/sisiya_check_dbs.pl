@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w 
+#!/usr/bin/perl -w
 #
 #    Copyright (C) Erdal Mutlu
 #
@@ -27,7 +27,7 @@ use XML::Simple;
 #use Data::Dumper;
 
 if( $#ARGV != 1 ) {
-	print "Usage : $0 smb_systems.xml expire\n";
+	print "Usage : $0 dbs_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -35,55 +35,48 @@ if( $#ARGV != 1 ) {
 if(-f $SisIYA_Remote_Config::local_conf) {
 	require $SisIYA_Remote_Config::local_conf;
 }
-#if(-f $SisIYA_Remote_Config::client_conf) {
-#	require $SisIYA_Remote_Config::client_conf;
-#}
 if(-f $SisIYA_Remote_Config::client_local_conf) {
 	require $SisIYA_Remote_Config::client_local_conf;
 }
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+if(-f $SisIYA_Remote_Config::functions) {
+	require $SisIYA_Remote_Config::functions;
+}
 
-sub check_smb
+sub check_dbs
 {
-	my ($isactive, $serviceid, $expire, $system_name, $hostname, $share, $username, $password) = @_;
+	my ($isactive, $expire, $system_name, $resource_bundle) = @_;
 
 	if ($isactive eq 'f' ) {
 		return '';
 	}
 
-	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] share=[$share] username=[$username] password=[$password]...\n";
-	my $statusid = $SisIYA_Config::statusids{'ok'};
-	my $s = '';
-	my @a = `(echo "quit") | $SisIYA_Remote_Config::external_progs{'smbclient'} //$hostname/$share -U "$username%$password" 2>&1`;
+	#print STDERR "Checking system_name=[$system_name] isactive=[$isactive] resource_bundle=[$resource_bundle] ...\n";
+	### set environment variables
+	$ENV{'CLASSPATH'} = $SisIYA_Remote_Config::env{'CLASSPATH'};
+	my @a = `$SisIYA_Remote_Config::external_progs{'java'} SISIYACheckDB $system_name $resource_bundle $expire`;
 	my $retcode = $? >>=8;
 	if($retcode == 1) {
-		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = "ERROR: The service is not running!";
-	}
-	else {
-		$s = (grep(/^Domain/, @a))[0];
-		$s = "OK: $s";
-	}
-	return "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
+		print STDERR "Could not execute java\n";
+		return '';
+	} 
+	my $s = "@a";
+	$s = "<system><name>$system_name</name>$s</system>";
+	return $s;
 }
 
 my ($systems_file, $expire) = @ARGV;
-my $serviceid = get_serviceid('smb');
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 #print STDERR Dumper($data);
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_smb($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, 
-					$h->{'share'}, $h->{'username'}, $h->{'password'});
+		$xml_str .= check_dbs($h->{'isactive'}, $expire, $h->{'system_name'}, $h->{'resource_bundle'});
 	}
-}
-else {
-	$xml_str .= check_smb($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
-				$data->{'record'}->{'hostname'}, $data->{'record'}->{'share'}, 
-				$data->{'record'}->{'username'}, $data->{'record'}->{'password'});
+} else {
+	$xml_str = check_dbs($data->{'record'}->{'isactive'}, $expire, $data->{'record'}->{'system_name'}, $data->{'record'}->{'resource_bundle'}); 
 }
 print $xml_str;
