@@ -187,4 +187,59 @@ sub trim
 	return $s 
 }
 
+# Return codes: -1 = error, 1 = ok
+sub get_pid_from_file
+{
+	my ($pid_file) = @_;
+	my $pid = -1;
+	if (-f $pid_file) {
+		#print STDERR "PID file $pid_file exists! Checking with ps command...\n";
+		if (open(my $file, '<', $pid_file)) {
+			$pid = <$file>;
+			chomp($pid);
+			close($file);
+		}
+	}
+	return $pid;
+}
+
+# Return codes: 0 = error, 1 = ok
+sub put_pid_in_file
+{
+	my ($pid, $pid_file) = @_;
+	if (open(my $file, '>', $pid_file)) {
+		print { $file } $pid;
+		close($file);
+		return 1;
+	}
+	return $0;
+}
+
+#
+# This function checks whether the specified program is running or
+# not according to the PID, which is recorded in the PID file.
+# If the programm is running or something is wrong returns 0 (false).
+# If the programm is not running writes the PID of the running program
+# in the PID file and returns 1 (true).
+sub lock_using_pid_file
+{
+	my ($prog_name, $pid_file, $ps_prog) = @_;
+
+	# get the PID from the file
+	my $pid = get_pid_from_file($pid_file);
+	if (($pid > -1)) {
+		my @a = `$ps_prog -eo pid,command`;
+	 	if (grep(/$prog_name/, grep(/$pid/, @a))) {
+			#print STDERR "$prog_name IS RUNNING WITH PID=$pid!\n";
+			return 0;
+		}
+	}
+	return put_pid_in_file($$, $pid_file);
+}
+
+sub unlock_using_pid_file
+{
+	my ($pid_file) = @_;
+	return unlink $pid_file;
+}
 1;

@@ -39,6 +39,7 @@ our $lib_dir			= "$base_dir/lib";
 our $local_conf			= "$conf_dir/SisIYA_Remote_Config_local.pl";
 our $misc_dir 			= "$base_dir/misc";
 our $scripts_dir	 	= "$base_dir/scripts";
+our $tmp_dir			= "/tmp";
 our $utils_dir	 		= "$base_dir/utils";
 our $functions	 		= "$utils_dir/sisiya_functions.pl";
 
@@ -49,6 +50,7 @@ our %external_progs = (
 		'java'		=> '/usr/bin/java',
 		'perl'		=> '/usr/bin/perl',
 		'ping'		=> '/bin/ping',
+		'ps'		=> '/bin/ps',
 		'snmpget'	=> '/usr/bin/snmpget',
 		'snmpwalk'	=> '/usr/bin/snmpwalk',
 		'smbclient'	=> '/usr/bin/smbclient',

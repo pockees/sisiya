@@ -237,4 +237,24 @@ sub check_http_protocol
 	return $x_str;
 }
 
+sub lock_check
+{
+	my ($check_name) = @_;
+
+	my $script_name = $SisIYA_Remote_Config::checks{$check_name}{'script'};
+	my $pid_file = "$SisIYA_Remote_Config::tmp_dir/".$script_name.".lock";
+	my $ps_prog = $SisIYA_Remote_Config::external_progs{'ps'};
+
+	return lock_using_pid_file($script_name, $pid_file, $ps_prog);
+}
+
+sub unlock_check
+{
+	my ($check_name) = @_;
+
+	my $script_name = $SisIYA_Remote_Config::checks{$check_name}{'script'};
+	my $pid_file = "$SisIYA_Remote_Config::tmp_dir/".$script_name.".lock";
+	return unlock_using_pid_file($pid_file);
+}
+
 1;

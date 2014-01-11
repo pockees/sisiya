@@ -26,8 +26,10 @@ use SisIYA_Remote_Config;
 use XML::Simple;
 #use Data::Dumper;
 
+my $check_name = 'dbs';
+
 if( $#ARGV != 1 ) {
-	print "Usage : $0 dbs_systems.xml expire\n";
+	print "Usage : $0 ".$check_name."_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -72,6 +74,10 @@ my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 #print STDERR Dumper($data);
+if (lock_check($check_name) == 0) {
+	print STDERR "Could not get lock for $check_name! The script must be running!\n";
+	exit 1;
+}
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
 		$xml_str .= check_dbs($h->{'isactive'}, $expire, $h->{'system_name'}, $h->{'resource_bundle'});
@@ -79,4 +85,5 @@ if( ref($data->{'record'}) eq 'ARRAY' ) {
 } else {
 	$xml_str = check_dbs($data->{'record'}->{'isactive'}, $expire, $data->{'record'}->{'system_name'}, $data->{'record'}->{'resource_bundle'}); 
 }
+unlock_check($check_name);
 print $xml_str;
