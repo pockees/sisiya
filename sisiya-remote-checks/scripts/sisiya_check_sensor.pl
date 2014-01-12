@@ -46,6 +46,9 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+if(-f $SisIYA_Remote_Config::functions) {
+	require $SisIYA_Remote_Config::functions;
+}
 
 my ($systems_file, $expire) = @ARGV;
 my $serviceid = get_serviceid($check_name);
