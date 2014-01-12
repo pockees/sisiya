@@ -28,8 +28,10 @@ use Net::SMTP;
 #use Socket;
 #use Data::Dumper;
 
+my $check_name = 'smtp';
+
 if( $#ARGV != 1 ) {
-	print "Usage : $0 smtp_systems.xml expire\n";
+	print "Usage : $0 ".$check_name."_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -85,18 +87,22 @@ sub check_smtp
 my ($systems_file, $expire) = @ARGV;
 #my $systems_file = $ARGV[0];
 #my $expire = $ARGV[1];
-my $serviceid = get_serviceid('smtp');
+my $serviceid = get_serviceid($check_name);
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 #print STDERR Dumper($data);
-if( ref($data->{'record'}) eq 'ARRAY' ) {
+if (lock_check($check_name) == 0) {
+	print STDERR "Could not get lock for $check_name! The script must be running!\n";
+	exit 1;
+}
+if (ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
 		$xml_str .= check_smtp($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'port'});
 	}
-}
-else {
+} else {
 	$xml_str .= check_smtp($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'});
 }
+unlock_check($check_name);
 print $xml_str;

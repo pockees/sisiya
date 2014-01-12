@@ -26,8 +26,10 @@ use SisIYA_Remote_Config;
 use XML::Simple;
 #use Data::Dumper;
 
+my $check_name = 'https';
+
 if( $#ARGV != 1 ) {
-	print "Usage : $0 https_systems.xml expire\n";
+	print "Usage : $0 ".$check_name."_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -46,11 +48,15 @@ if(-f $SisIYA_Remote_Config::functions) {
 }
 
 my ($systems_file, $expire) = @ARGV;
-my $serviceid = get_serviceid('https');
+my $serviceid = get_serviceid($check_name);
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 #print STDERR Dumper($data);
+if (lock_check($check_name) == 0) {
+	print STDERR "Could not get lock for $check_name! The script must be running!\n";
+	exit 1;
+}
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
 		$xml_str .= check_http_protocol($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'},  $h->{'virtual_host'}, 
@@ -62,5 +68,6 @@ else {
 					$data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'https_port'}, 
 					$data->{'record'}->{'username'}, $data->{'record'}->{'password'}, 1); 
 }
+unlock_check($check_name);
 #print STDERR $xml_str."\n";
 print $xml_str;

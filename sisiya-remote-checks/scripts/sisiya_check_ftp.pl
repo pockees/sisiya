@@ -26,8 +26,10 @@ use SisIYA_Remote_Config;
 use XML::Simple;
 #use Data::Dumper;
 
+my $check_name = 'ftp';
+
 if( $#ARGV != 1 ) {
-	print "Usage : $0 ftp_systems.xml expire\n";
+	print "Usage : $0 ".$check_name."_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -44,8 +46,11 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+if(-f $SisIYA_Remote_Config::functions) {
+	require $SisIYA_Remote_Config::functions;
+}
 
 my ($systems_file, $expire) = @ARGV;
-my $serviceid 		= get_serviceid('ftp');
+my $serviceid = get_serviceid($check_name);
 1;
 #######################################################################################

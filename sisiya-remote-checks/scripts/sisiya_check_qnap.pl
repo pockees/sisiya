@@ -26,8 +26,10 @@ use SisIYA_Remote_Config;
 use XML::Simple;
 #use Data::Dumper;
 
+my $check_name = 'qnap';
+
 if( $#ARGV != 1 ) {
-	print "Usage : $0 qnap_systems.xml expire\n";
+	print "Usage : $0 ".$check_name."_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -70,11 +72,15 @@ sub check_qnap
 }
 
 my ($systems_file, $expire) = @ARGV;
-my $serviceid = get_serviceid('qnap');
+my $serviceid = get_serviceid($check_name);
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 #print STDERR Dumper($data);
+if (lock_check($check_name) == 0) {
+	print STDERR "Could not get lock for $check_name! The script must be running!\n";
+	exit 1;
+}
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
 		$xml_str .= check_qnap($h->{'isactive'}, $expire, $h->{'system_name'}, $h->{'hostname'}, 
@@ -86,4 +92,5 @@ else {
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'snmp_version'}, $data->{'record'}->{'community'},
 				$data->{'record'}->{'username'}, $data->{'record'}->{'password'});
 }
+unlock_check($check_name);
 print $xml_str;

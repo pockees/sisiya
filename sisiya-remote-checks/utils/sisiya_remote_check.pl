@@ -75,15 +75,14 @@ sub process_checks
 
 	foreach my $check_name (keys %SisIYA_Remote_Config::checks) {	
 		if( $SisIYA_Remote_Config::checks{$check_name}{'auto'} == 1 ) {
-			print STDERR "Checking $check_name ...\n";
+			#print STDERR "Checking $check_name ...\n";
 			# excecute $0 in background
-			print STDERR "$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Config::base_dir -I$SisIYA_Remote_Config::conf_dir $0 $check_name $expire\n";
+			#print STDERR "$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Config::base_dir -I$SisIYA_Remote_Config::conf_dir $0 $check_name $expire\n";
 			#system($SisIYA_Remote_Config::external_progs{'bash'}, $SisIYA_Remote_Config::external_progs{'perl'}, "-I$SisIYA_Config::base_dir", "-I$SisIYA_Remote_Config::conf_dir", "$0", $check_name, $expire, '&');
 			system("$SisIYA_Remote_Config::external_progs{'bash'} -c \"$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Config::base_dir -I$SisIYA_Remote_Config::conf_dir $0  $check_name $expire\" &");
-		}
-		else {
-			print STDERR "Skipping $check_name ...\n";
-		}
+		} #else {
+		#	print STDERR "Skipping $check_name ...\n";
+		#}
 	}
 	return $s;
 }
@@ -104,7 +103,7 @@ if ($#ARGV == 0) {
 }
 
 if($xml_s_str eq '') {
-	print STDERR "There is no SisIYA message to be send!\n";
+	#print STDERR "There is no SisIYA message to be send!\n";
 	exit 1;
 }
 

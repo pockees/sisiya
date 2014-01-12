@@ -27,8 +27,10 @@ use XML::Simple;
 use Socket;
 #use Data::Dumper;
 
+my $check_name = 'imap';
+
 if( $#ARGV != 1 ) {
-	print "Usage : $0 imap_systems.xml expire\n";
+	print "Usage : $0 ".$check_name."_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -76,11 +78,15 @@ sub check_imap
 }
 
 my ($systems_file, $expire) = @ARGV;
-my $serviceid = get_serviceid('imap');
+my $serviceid = get_serviceid($check_name);
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 #print STDERR Dumper($data);
+if (lock_check($check_name) == 0) {
+	print STDERR "Could not get lock for $check_name! The script must be running!\n";
+	exit 1;
+}
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
 		$xml_str .= check_imap($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'port'});
@@ -90,4 +96,5 @@ else {
 	$xml_str = check_imap($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'port'});
 }
+unlock_check($check_name);
 print $xml_str;

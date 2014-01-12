@@ -26,8 +26,10 @@ use SisIYA_Remote_Config;
 use XML::Simple;
 #use Data::Dumper;
 
+my $check_name = 'telekutu';
+
 if( $#ARGV != 1 ) {
-	print "Usage : $0 telekutu_systems.xml expire\n";
+	print "Usage : $0 ".$check_name."_systems.xml expire\n";
 	print "The expire parameter must be given in minutes.\n";
 	exit 1;
 }
@@ -122,7 +124,11 @@ my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 #print STDERR Dumper($data);
-if( ref($data->{'record'}) eq 'ARRAY' ) {
+if (lock_check($check_name) == 0) {
+	print STDERR "Could not get lock for $check_name! The script must be running!\n";
+	exit 1;
+}
+if (ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
 		$xml_str .= check_telekutu($h->{'isactive'},  $expire, $h->{'system_name'}, $h->{'hostname'}, 
 						$h->{'index_file'}, $h->{'http_port'}, $h->{'username'}, $h->{'password'}, 0);
@@ -132,4 +138,5 @@ if( ref($data->{'record'}) eq 'ARRAY' ) {
 					$data->{'record'}->{'hostname'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'http_port'}, 
 					$data->{'record'}->{'username'}, $data->{'record'}->{'password'}, 0); 
 }
+unlock_check($check_name);
 print $xml_str;

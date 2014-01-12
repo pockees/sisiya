@@ -1,2 +1,2 @@
 #### SisIYA : Remote checks.
-0-59/5 * * * * root /usr/bin/perl -I/opt/sisiya-remote-checks/conf -I/opt/sisiya-client-checks /opt/sisiya-remote-checks/utils/sisiya_remote_check.pl 10 2>/dev/null
+0-59/5 * * * * root /usr/bin/perl -I/opt/sisiya-remote-checks/conf -I/opt/sisiya-client-checks /opt/sisiya-remote-checks/utils/sisiya_remote_check.pl 10 
