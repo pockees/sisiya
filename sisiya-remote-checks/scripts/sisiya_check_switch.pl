@@ -46,16 +46,6 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
-
-if(-f $SisIYA_Remote_Config::local_conf) {
-	require $SisIYA_Remote_Config::local_conf;
-}
-if(-f $SisIYA_Remote_Config::client_local_conf) {
-	require $SisIYA_Remote_Config::client_local_conf;
-}
-if(-f $SisIYA_Config::functions) {
-	require $SisIYA_Config::functions;
-}
 if(-f $SisIYA_Remote_Config::functions) {
 	require $SisIYA_Remote_Config::functions;
 }

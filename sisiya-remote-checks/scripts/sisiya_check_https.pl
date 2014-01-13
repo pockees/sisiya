@@ -57,13 +57,12 @@ if (lock_check($check_name) == 0) {
 	print STDERR "Could not get lock for $check_name! The script must be running!\n";
 	exit 1;
 }
-if( ref($data->{'record'}) eq 'ARRAY' ) {
+if (ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
 		$xml_str .= check_http_protocol($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'},  $h->{'virtual_host'}, 
 						$h->{'index_file'}, $h->{'https_port'}, $h->{'username'}, $h->{'password'}, 1);
 	}
-}
-else {
+} else {
 	$xml_str = check_http_protocol($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
 					$data->{'record'}->{'virtual_host'}, $data->{'record'}->{'index_file'}, $data->{'record'}->{'https_port'}, 
 					$data->{'record'}->{'username'}, $data->{'record'}->{'password'}, 1); 

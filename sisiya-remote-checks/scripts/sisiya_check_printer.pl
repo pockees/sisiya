@@ -46,16 +46,6 @@ if(-f $SisIYA_Remote_Config::client_local_conf) {
 if(-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
-
-if(-f $SisIYA_Remote_Config::local_conf) {
-	require $SisIYA_Remote_Config::local_conf;
-}
-if(-f $SisIYA_Remote_Config::client_local_conf) {
-	require $SisIYA_Remote_Config::client_local_conf;
-}
-if(-f $SisIYA_Config::functions) {
-	require $SisIYA_Config::functions;
-}
 if(-f $SisIYA_Remote_Config::functions) {
 	require $SisIYA_Remote_Config::functions;
 }
@@ -227,13 +217,12 @@ if (lock_check($check_name) == 0) {
 	print STDERR "Could not get lock for $check_name! The script must be running!\n";
 	exit 1;
 }
-if( ref($data->{'record'}) eq 'ARRAY' ) {
+if (ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
 		$xml_str .= check_printer($h->{'isactive'}, $expire, $h->{'system_name'}, $h->{'hostname'}, 
 					$h->{'snmp_version'}, $h->{'community'}, $h->{'username'}, $h->{'password'});
 	}
-}
-else {
+} else {
 	$xml_str = check_printer($data->{'record'}->{'isactive'}, $expire, $data->{'record'}->{'system_name'}, 
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'snmp_version'}, $data->{'record'}->{'community'},
 				$data->{'record'}->{'username'}, $data->{'record'}->{'password'});

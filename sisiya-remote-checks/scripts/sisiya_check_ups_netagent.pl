@@ -26,7 +26,7 @@ use SisIYA_Remote_Config;
 use XML::Simple;
 #use Data::Dumper;
 
-my $check_name = 'http_netagent';
+my $check_name = 'ups_netagent';
 
 if( $#ARGV != 1 ) {
 	print "Usage : $0 ".$check_name."_systems.xml expire\n";
