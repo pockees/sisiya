@@ -23,33 +23,27 @@
 #
 #################################################################################
 if test $# -lt 1 ; then
-	echo "Usage: $0 sisiya_dir"
-	echo "Usage: $0 sisiya_dir local_confs_dir"
-	echo "Example: $0 /home/emutlu/sisiya"
-	echo "Example: $0 /home/emutlu/sisiya /home/emutlu/mydir"
+	echo "Usage: $0 sisiya_source.tar.gz"
+	echo "Usage: $0 sisiya_source.tar.gz local_confs_dir"
+	echo "Example: $0 sisiya-0.6.30.tar.gz"
+	echo "Example: $0 sisiya-0.6.30 /home/emutlu/mydir"
 	exit 1
 fi
 
-sisiya_dir=$1
+source_file=$1
+
+if test ! -f $source_file ; then
+	echo "$0: Source file $source_file does not exist!"
+	exit 1
+fi
 
 package_str="sisiya-client-checks"
 
-version_file=${sisiya_dir}/$package_str/version.txt
-if test ! -f $version_file ; then
-	echo "$0: Version file $version_file does not exist!"
-	exit 1
-fi
-str=`cat $version_file`
-version_str=`echo $str | cut -d "-" -f 1`
-release_str=`echo $str | cut -d "-" -f 2`
-
-if test ! -d $sisiya_dir ; then
-	echo "Directory $sisiya_dir does not exist. Exiting..."
-	exit 1
-fi
+version_str=`echo $source_file | cut -d "-" -f 2 | sed "s/tar.gz//"`
+release_str=1
 
 # create output directories
-for d in "rpm" "deb" "pacman"
+for d in "rpm" "deb" "pacman" "src" "tmp"
 do
 	mkdir -p $d
 done
