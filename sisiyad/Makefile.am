@@ -15,7 +15,7 @@ dst_db_scripts=$(install_root)/usr/local/sisiya_dbscripts
 bin_PROGRAMS=sisiyad
 
 ALL_INC=$(EDBC_INC) $(EDBC_UTILS_INC) $(SISIYAD_INC)
-ALL_LIBDIRS=-L$(EDBC_LIB_DIR)
+ALL_LIBDIRS=-L$(EDBC_LIB)
 ALL_LFLAGS=$(OPT_FLAGS) $(ALL_INC)
 ALL_LIBS=-ldl -ledbc
 
