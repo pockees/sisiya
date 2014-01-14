@@ -5,8 +5,8 @@ AC_PREREQ(2.53)
 dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
-AC_INIT([libedbc_mysql], [0.6.30], [erdal@sisiya.org])
-AM_INIT_AUTOMAKE(libedbc_mysql,$PACKAGE_VERSION)
+AC_INIT([libedbc_pgsql], [0.6.30], [erdal@sisiya.org])
+AM_INIT_AUTOMAKE(libedbc_pgsql,$PACKAGE_VERSION)
 AM_CONFIG_HEADER(include/config.h)
 
 #######################################################################################
@@ -49,19 +49,26 @@ AC_CANONICAL_HOST
 
 dnl Set some target options
 
-dnl MySQL
-MYSQL_INC=-I/usr/include/mysql
-MYSQL_LIB=-L/usr/lib/mysql
-MYSQL_LFLAGS=-lmysqlclient
+dnl PostgreSQL
+PGSQL_LIB=-L/usr/lib/pgsql
+PGSQL_LFLAGS=-lpq
 
 case "${host}" in
 	*86-*-linux*)
-		MYSQL_LIB=-L/usr/lib/mysql
+		PGSQL_LIB=-L/usr/lib/pgsql
 		;;
 	*86_64-*-linux*)
-		MYSQL_LIB=-L/usr/lib64/mysql
+		PGSQL_LIB=-L/usr/lib64/pgsql
 		;;
 esac
+PGSQL_INC=
+if test -d /usr/include/pgsql ; then
+	PGSQL_INC=-I/usr/include/pgsql
+elif test -d /usr/include/postgresql ; then
+	PGSQL_INC=-I/usr/include/postgresql
+elif test -d /usr/local/pgsql/include ; then
+	PGSQL_INC=-I/usr/local/pgsql/include
+fi
 
 dnl --------------------------------------------------
 dnl Check for libraries
@@ -96,7 +103,7 @@ dnl DEBUG="-ggdb -DDEBUG"
 
 
 dnl EDBC
-dnl LIB_NAME=libedbc_mysql
+dnl LIB_NAME=libedbc_pgsql
 LIB_NAME=$PACKAGE_NAME
 LIB_VER_MAJOR=0.6
 LIB_VER_MINOR=30
@@ -104,8 +111,8 @@ LIB_VER_MINOR=30
 EDBC_INC=../include
 EDBC_SRC=../src
 
-EDBC_MYSQL_SRC=./src
-EDBC_MYSQL_INC=./include
+EDBC_PGSQL_SRC=./src
+EDBC_PGSQL_INC=./include
 
 EDBC_UTILS_SRC=../utils/src
 EDBC_UTILS_INC=../utils/include
@@ -114,17 +121,17 @@ dnl substitutes
 AC_SUBST(DEBUG)
 AC_SUBST(EDBC_INC)
 AC_SUBST(EDBC_SRC)
-AC_SUBST(EDBC_MYSQL_INC)
-AC_SUBST(EDBC_MYSQL_SRC)
+AC_SUBST(EDBC_PGSQL_INC)
+AC_SUBST(EDBC_PGSQL_SRC)
 AC_SUBST(EDBC_LIB_DIR)
 AC_SUBST(EDBC_UTILS_INC)
 AC_SUBST(EDBC_UTILS_SRC)
 AC_SUBST(LIB_NAME)
 AC_SUBST(LIB_VER_MAJOR)
 AC_SUBST(LIB_VER_MINOR)
-AC_SUBST(MYSQL_INC)
-AC_SUBST(MYSQL_LIB)
-AC_SUBST(MYSQL_LFLAGS)
+AC_SUBST(PGSQL_INC)
+AC_SUBST(PGSQL_LIB)
+AC_SUBST(PGSQL_LFLAGS)
 AC_SUBST(WARN_FLAGS)
 
 dnl ### 
