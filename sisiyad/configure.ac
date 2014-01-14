@@ -5,8 +5,8 @@ AC_PREREQ(2.53)
 dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
-AC_INIT(configure.in,0.5.16-1,emutlu@users.sourceforge.net)
-AM_INIT_AUTOMAKE(sisiya,0.5.16-1)
+AC_INIT([sisiyad], [0.6.30], [erdal@sisiya.org])
+AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AM_CONFIG_HEADER(include/config.h)
 
 dnl --------------------------------------------------  
@@ -79,33 +79,29 @@ dnl Debug
 DEBUG=
 dnl DEBUG="-ggdb -DDEBUG"
 
-dnl old location of header and progs
-OLD_DIR=../src
-
-dnl Source and include dirs 
-SRC_DIR=./src
-INC_DIR=./include
+dnl sisiyad
+SISIYAD_INC=-I./include
+SISIYAD_SRC=./src
 
 dnl EDBC 
 EDBC_DIR=../edbc
-EDBC_INC_DIR=$EDBC_DIR/include
-EDBC_LIB_DIR=$EDBC_DIR/lib
-EDBC_UTILS_INC_DIR=$EDBC_DIR/utils/include
-EDBC_UTILS_SRC_DIR=$EDBC_DIR/utils/src
+EDBC_INC=-I$EDBC_DIR/include
+EDBC_LIB=$EDBC_DIR/lib
+EDBC_UTILS_INC=-I$EDBC_DIR/utils/include
+EDBC_UTILS_SRC=$EDBC_DIR/utils/src
 
 dnl substitutes
-AC_SUBST(OLD_DIR)
 AC_SUBST(WARN_FLAGS)
 AC_SUBST(OPT_FLAGS)
 AC_SUBST(DEBUG)
-AC_SUBST(INC_DIR)
-AC_SUBST(SRC_DIR)
+AC_SUBST(SISIYAD_INC)
+AC_SUBST(SISIYAD_SRC)
 AC_SUBST(EDBC_DIR)
-AC_SUBST(EDBC_INC_DIR)
-AC_SUBST(EDBC_SRC_DIR)
-AC_SUBST(EDBC_LIB_DIR)
-AC_SUBST(EDBC_UTILS_INC_DIR)
-AC_SUBST(EDBC_UTILS_SRC_DIR)
+AC_SUBST(EDBC_INC)
+AC_SUBST(EDBC_SRC)
+AC_SUBST(EDBC_LIB)
+AC_SUBST(EDBC_UTILS_INC)
+AC_SUBST(EDBC_UTILS_SRC)
 
 
 dnl ### 

@@ -14,12 +14,12 @@ dst_db_scripts=$(install_root)/usr/local/sisiya_dbscripts
 
 bin_PROGRAMS=sisiyad
 
-ALL_INC=-I$(EDBC_INC_DIR) -I$(EDBC_UTILS_INC_DIR) -I$(INC_DIR) -I$(OLD_DIR)
+ALL_INC=$(EDBC_INC) $(EDBC_UTILS_INC_DIR) $(SISIYAD_INC)
 ALL_LIBDIRS=-L$(EDBC_LIB_DIR)
 ALL_LFLAGS=$(OPT_FLAGS) $(ALL_INC)
 ALL_LIBS=-ldl -ledbc
 
-sisiyad_SOURCES=$(EDBC_UTILS_SRC_DIR)/trim.cpp $(EDBC_UTILS_SRC_DIR)/UpperLowerCase.cpp $(SRC_DIR)/Semaphore.cpp $(OLD_DIR)/misc.c $(SRC_DIR)/esignal.cpp $(SRC_DIR)/ConfFile.cpp $(SRC_DIR)/SisIYAServer.cpp $(SRC_DIR)/sisiyad.cpp
+sisiyad_SOURCES=$(EDBC_UTILS_SRC_DIR)/trim.cpp $(EDBC_UTILS_SRC_DIR)/UpperLowerCase.cpp $(SISIYAD_SRC)/Semaphore.cpp $(SISIYAD_SRC)/misc.c $(SISIYAD_SRC)/esignal.cpp $(SISIYAD_SRC)/ConfFile.cpp $(SISIYAD_SRC)/SisIYAServer.cpp $(SISIYAD_SRC)/sisiyad.cpp
 sisiyad_LDFLAGS=$(WARN_FLAGS) $(ALL_LFLAGS) $(ALL_LIBDIRS)
 AM_CXXFLAGS=$(WARN_FLAGS) $(OPT_FLAGS) $(ALL_INC)
 LIBS=$(ALL_LIBS)

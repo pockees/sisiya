@@ -6,7 +6,7 @@ dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
 AC_INIT([libedbc_pgsql], [0.6.30], [erdal@sisiya.org])
-AM_INIT_AUTOMAKE(libedbc_pgsql,$PACKAGE_VERSION)
+AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AM_CONFIG_HEADER(include/config.h)
 
 #######################################################################################
