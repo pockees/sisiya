@@ -21,7 +21,7 @@ LIB_SRC=$(EDBC_MYSQL_SRC)/MySQL_Connection.cpp $(EDBC_MYSQL_SRC)/MySQL_Statement
 LIB_OBJ=MySQL_Connection.o MySQL_Statement.o MySQL_DatabaseMetaData.o MySQL_ResultSet.o MySQL_ResultSetMetaData.o parseURL.o
 
 LIB_INC=-I$(EDBC_INC) -I$(EDBC_UTILS_INC) -I$(EDBC_MYSQL_INC)
-LIB_OBJ_FLAGS=-fPIC -c $(OPT) $(DEBUG) 
+LIB_OBJ_FLAGS=-fPIC -c $(WARN_FLAGS) $(DEBUG) 
 LIB_SO_FLAGS=$(MYSQL_LIB) $(MYSQL_LFLAGS) -rdynamic -shared -Wl,-soname
 DL=-ldl
 LC=-lc
@@ -31,11 +31,11 @@ all: lib.o shared_lib
 lib.o:
 	@echo "Compiling ..."
 #	@$(CC) $(LIB_INC) $(LIB_OBJ_FLAGS) $(LIB_SRC) 
-	$(CC) $(OPT) $(LIB_INC) $(LIB_OBJ_FLAGS) $(LIB_SRC) 
+	$(CC) $(WARN_FLAGS) $(LIB_INC) $(LIB_OBJ_FLAGS) $(LIB_SRC) 
 shared_lib:
 	@echo "Making the shared library $(LIB_NAME).so.$(LIB_VER_MAJOR).$(LIB_VER_MINOR) ..."
 #	@$(CC) $(LIB_INC) $(LIB_SO_FLAGS),$(LIB_NAME).so.$(LIB_VER_MAJOR) -o $(LIB_NAME).so.$(LIB_VER_MAJOR).$(LIB_VER_MINOR) $(LIB_OBJ) $(LC)
-	$(CC) $(OPT) $(LIB_INC) $(LIB_SO_FLAGS),$(LIB_NAME).so.$(LIB_VER_MAJOR) -o $(LIB_NAME).so.$(LIB_VER_MAJOR).$(LIB_VER_MINOR) $(LIB_OBJ) $(LC)
+	$(CC) $(WARN_FLAGS) $(LIB_INC) $(LIB_SO_FLAGS),$(LIB_NAME).so.$(LIB_VER_MAJOR) -o $(LIB_NAME).so.$(LIB_VER_MAJOR).$(LIB_VER_MINOR) $(LIB_OBJ) $(LC)
 static_lib:
 	@echo "Making the static library $(LIB_NAME).a ..."
 #	@$(AR) $(AR_OPT) $(LIB_NAME).a $(LIB_OBJ)
