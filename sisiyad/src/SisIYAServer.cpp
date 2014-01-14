@@ -811,7 +811,7 @@ bool SisIYAServer::extractMessageFields(const string m,int *serviceID,int *statu
 bool SisIYAServer::processSystemMessages(const string &sendTimestamp,const string &m)
 {
 	if(loglevel > 2)
-		syslog(LOG_INFO,"child server(%d) : processSystemMessages: length=%d Processing m=[%s]",childPID,m.length(),m.c_str());
+		syslog(LOG_INFO, "child server(%d) : processSystemMessages: length=%d Processing m=[%s]", childPID, (int)m.length(), m.c_str());
 	string systemName=extractXMLField(m,"name");
 	if(systemName.length() == 0)
 		return false;
@@ -842,7 +842,7 @@ bool SisIYAServer::processSystemMessages(const string &sendTimestamp,const strin
 
 		message_str=extractXMLField(x,string("message"));
 		if(loglevel > 2)
-			syslog(LOG_INFO,"child server(%d) : processSystemMessages: length=%d Processing message_str=[%s]",childPID,message_str.length(),message_str.c_str());
+			syslog(LOG_INFO, "child server(%d) : processSystemMessages: length=%d Processing message_str=[%s]", childPID, (int)message_str.length(), message_str.c_str());
 		if(message_str.length() == 0)
 			break;	// there are no more messages
 		if(extractMessageFields(message_str,&serviceID,&statusID,&expire,msg,data) == false) {
@@ -858,7 +858,7 @@ bool SisIYAServer::processSystemMessages(const string &sendTimestamp,const strin
 		// remove the processed part of the message
 		x=x.substr(p+10,x_length-p); // </message> length is 10 => cut everything before end of the first </message> tag
 		if(loglevel > 2)
-			syslog(LOG_INFO,"child server(%d) : processSystemMessages: length=%d x=[%s]",childPID,x.length(),x.c_str());
+			syslog(LOG_INFO, "child server(%d) : processSystemMessages: length=%d x=[%s]", childPID, (int)x.length(), x.c_str());
 
 		// now do the job of inserting the message into the DB
 
@@ -964,7 +964,7 @@ The new XML message format:
 	string system_str;
 	while(x.length() > 0) {
 		if(loglevel > 2)
-			syslog(LOG_INFO,"child server(%d) : processSisIYAMessages: length=%d Processing x=[%s]",childPID,x.length(),x.c_str());
+			syslog(LOG_INFO, "child server(%d) : processSisIYAMessages: length=%d Processing x=[%s]", childPID, (int)x.length(), x.c_str());
 		x_length=x.length();
 		p=x.find("</system>"); // </system> length is 9
 
@@ -986,9 +986,9 @@ Process messages send from a client through the socket.
 */
 bool SisIYAServer::process(void)
 {
-	clock_t tcstart,tcend;
+	clock_t tcstart = 0, tcend;
 	struct tms tmstart,tmend;
-	double clockticks,cticks;
+	double clockticks = 0.0, cticks;
 	string messages;
 	
 	if(loglevel > 2) {
@@ -1040,7 +1040,7 @@ bool SisIYAServer::process(void)
 		// cancel the alarm
 		remaining_time=alarm(0);
 		if(loglevel > 2)
-			syslog(LOG_INFO,"child server(%d) : canceled alarm (remaining seconds=%d) for ReadTimeout of %d seconds.",childPID,remaining_time,readTimeout);
+			syslog(LOG_INFO,"child server(%d) : canceled alarm (remaining seconds=%d) for ReadTimeout of %d seconds.", childPID, remaining_time, readTimeout);
 
 		// no more data
 		if(n == 0)
@@ -1059,7 +1059,7 @@ bool SisIYAServer::process(void)
 			messages+=string(line);
 		}
 		else {
-			syslog(LOG_ERR,"child server(%d) : Received message length exceeded max size of string, which is  %d! The rest of the message is discarded!",childPID,messages.max_size());
+			syslog(LOG_ERR, "child server(%d) : Received message length exceeded max size of string, which is  %d! The rest of the message is discarded!", childPID, (int)messages.max_size());
 			break;
 		}
 	}

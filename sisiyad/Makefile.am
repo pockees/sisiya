@@ -20,7 +20,8 @@ ALL_LFLAGS=$(OPT_FLAGS) $(ALL_INC)
 ALL_LIBS=-ldl -ledbc
 
 sisiyad_SOURCES=$(EDBC_UTILS_SRC)/trim.cpp $(EDBC_UTILS_SRC)/UpperLowerCase.cpp $(SISIYAD_SRC)/Semaphore.cpp $(SISIYAD_SRC)/misc.c $(SISIYAD_SRC)/esignal.cpp $(SISIYAD_SRC)/ConfFile.cpp $(SISIYAD_SRC)/SisIYAServer.cpp $(SISIYAD_SRC)/sisiyad.cpp
-sisiyad_LDFLAGS=$(WARN_FLAGS) $(ALL_LFLAGS) $(ALL_LIBDIRS)
+#sisiyad_LDFLAGS=$(WARN_FLAGS) $(ALL_LFLAGS) $(ALL_LIBDIRS)
+sisiyad_LDFLAGS=$(ALL_LFLAGS) $(ALL_LIBDIRS)
 AM_CXXFLAGS=$(WARN_FLAGS) $(OPT_FLAGS) $(ALL_INC)
 LIBS=$(ALL_LIBS)
 ####################################
