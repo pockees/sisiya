@@ -20,7 +20,7 @@
 LIB_SRC=$(EDBC_MYSQL_SRC)/MySQL_Connection.cpp $(EDBC_MYSQL_SRC)/MySQL_Statement.cpp $(EDBC_MYSQL_SRC)/MySQL_DatabaseMetaData.cpp $(EDBC_MYSQL_SRC)/MySQL_ResultSet.cpp $(EDBC_MYSQL_SRC)/MySQL_ResultSetMetaData.cpp $(EDBC_UTILS_SRC)/parseURL.cpp
 LIB_OBJ=MySQL_Connection.o MySQL_Statement.o MySQL_DatabaseMetaData.o MySQL_ResultSet.o MySQL_ResultSetMetaData.o parseURL.o
 
-LIB_INC=-I$(EDBC_INC) -I$(EDBC_UTILS_INC) -I$(EDBC_MYSQL_INC)
+LIB_INC=$(EDBC_INC) $(EDBC_UTILS_INC) $(EDBC_MYSQL_INC)
 LIB_OBJ_FLAGS=-fPIC -c $(WARN_FLAGS) $(DEBUG) 
 LIB_SO_FLAGS=$(MYSQL_LIB) $(MYSQL_LFLAGS) -rdynamic -shared -Wl,-soname
 DL=-ldl

@@ -20,7 +20,7 @@
 LIB_SRC=$(EDBC_PGSQL_SRC)/PostgreSQL_Connection.cpp $(EDBC_PGSQL_SRC)/PostgreSQL_Statement.cpp $(EDBC_PGSQL_SRC)/PostgreSQL_DatabaseMetaData.cpp $(EDBC_PGSQL_SRC)/PostgreSQL_ResultSet.cpp $(EDBC_PGSQL_SRC)/PostgreSQL_ResultSetMetaData.cpp $(EDBC_UTILS_SRC)/parseURL.cpp
 LIB_OBJ=PostgreSQL_Connection.o PostgreSQL_Statement.o PostgreSQL_DatabaseMetaData.o PostgreSQL_ResultSet.o PostgreSQL_ResultSetMetaData.o parseURL.o
 
-LIB_INC=-I$(EDBC_INC) -I$(EDBC_UTILS_INC) -I$(EDBC_PGSQL_INC) -I$(PGSQL_INC)
+LIB_INC=$(EDBC_INC) $(EDBC_UTILS_INC) $(EDBC_PGSQL_INC) $(PGSQL_INC)
 LIB_OBJ_FLAGS=-fPIC -c $(WARN_FLAGS) $(DEBUG) 
 LIB_SO_FLAGS=$(PGSQL_LIB) $(PGSQL_LFLAGS) -rdynamic -shared -Wl,-soname
 DL=-ldl

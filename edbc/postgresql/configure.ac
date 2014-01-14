@@ -108,14 +108,14 @@ LIB_NAME=$PACKAGE_NAME
 LIB_VER_MAJOR=0.6
 LIB_VER_MINOR=30
 
-EDBC_INC=../include
+EDBC_INC=-I../include
 EDBC_SRC=../src
 
+EDBC_PGSQL_INC=-I./include
 EDBC_PGSQL_SRC=./src
-EDBC_PGSQL_INC=./include
 
+EDBC_UTILS_INC=-I../utils/include
 EDBC_UTILS_SRC=../utils/src
-EDBC_UTILS_INC=../utils/include
 
 dnl substitutes
 AC_SUBST(DEBUG)
