@@ -17,7 +17,8 @@ Vendor: Erdal Mutlu
 Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
 Url: http://www.sisiya.org
-#Requires: 
+BuildRequires: doxygen mysql-devel postgresql-devel
+Requires: mysql-libs postgresql-libs
 %description 
 This package contains the SisIYA EDBC libraries.
 
