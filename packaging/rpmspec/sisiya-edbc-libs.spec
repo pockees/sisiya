@@ -33,7 +33,7 @@ make
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 
-make "install_root=%{buildroot}" install && cd ..
+make "install_root=%{buildroot}" install 
 
 %pre
 

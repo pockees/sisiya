@@ -5,7 +5,7 @@ VERSION=$(VER_MAJOR).$(VER_MINOR)
 INSTALL_DIR=$(DSTDIR)/
 DEV_DIR=$(INSTALL_DIR)/sisiya_edbc
 DOCS_DIR=$(INSTALL_DIR)/sisiya_edbc_docs
-LIBS_DIR=$(INSTALL_DIR)/sisiya_edbc/lib
+LIBS_DIR=$(INSTALL_DIR)/usr/lib
 
 
 #all: edbc_lib mysql_lib postgresql_lib tests docs
@@ -37,15 +37,15 @@ tests:
 	(cd examples && make)
 install:
 ### DEVEL
-	install -d $(DEV_DIR)/include
-	install -d $(DEV_DIR)/lib
-	install -m 644 include/*.hpp $(DEV_DIR)/include
+#	install -d $(DEV_DIR)/include
+#	install -d $(DEV_DIR)/lib
+#	install -m 644 include/*.hpp $(DEV_DIR)/include
 ### devel package is not complete and it is not tested
 ###	install -m 644 utils/include/*.hpp $(DEV_DIR)/include
-	install -m 644 lib/*.a $(DEV_DIR)/lib
+#	install -m 644 lib/*.a $(DEV_DIR)/lib
 ### DOCS
-	install -d $(DOCS_DIR)
-	cp -a doc/* $(DOCS_DIR)/
+#	install -d $(DOCS_DIR)
+#	cp -a doc/* $(DOCS_DIR)/
 ### LIBS
 	install -d $(LIBS_DIR)
 	if test -f mysql/libedbc_mysql.so.$(VERSION) ; then install -m 755 mysql/libedbc_mysql.so.$(VERSION) $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc_mysql.so.$(VERSION) libedbc_mysql.so ; fi
