@@ -5,8 +5,9 @@ AC_PREREQ(2.53)
 dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
-AC_INIT([libedbc_mysql], [0.6.30], [erdal@sisiya.org])
-AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AC_INIT([libedbc_mysql], [__VERSION_MAJOR__.__VERSION_MINOR__], [erdal@sisiya.org])
+#AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(include/config.h)
 
 #######################################################################################
@@ -98,8 +99,8 @@ dnl DEBUG="-ggdb -DDEBUG"
 dnl EDBC
 dnl LIB_NAME=libedbc_mysql
 LIB_NAME=$PACKAGE_NAME
-LIB_VER_MAJOR=0.6
-LIB_VER_MINOR=30
+LIB_VER_MAJOR=__VERSION_MAJOR__
+LIB_VER_MINOR=__VERSION_MINOR__
 
 EDBC_INC=-I../include
 EDBC_SRC=../src

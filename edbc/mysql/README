@@ -1,3 +1,20 @@
+Replace the following strings :
+__VERSION_MAJOR__
+__VERSION_MINOR__
+
+with appropriate values in the following files:
+
+Makefile
+mysql/configure.ac
+postgresql/configure.ac
+
+You can use the following command :
+for f in "Makefile" "mysql/configure.ac" "postgresql/configure.ac"
+do
+	sed -i -e "s/__VERSION_MAJOR__/0.6/g" -e "s/__VERSION_MINOR__/30/g" $f
+done
+
+After which execute the following commands :
 ./bootstrap create
 ./configure
 make

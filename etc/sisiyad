@@ -29,7 +29,7 @@
 #
 #######################################################################################
 ##############################
-sisiya_edbc_drivers_dir=/opt/sisiya_edbc/lib
+sisiya_edbc_drivers_dir=/usr/lib
 prog_dir=/usr/sbin
 prog=sisiyad
 sisiyad_conf=/etc/${prog}.conf
