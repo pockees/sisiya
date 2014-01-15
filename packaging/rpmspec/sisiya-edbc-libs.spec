@@ -5,7 +5,7 @@
 
 Summary: The SisIYA server / remote check programs that are run from a central server. This is normally the server where SisIYA daemon runs.
 Name:%{name} 
-BuildArch: noarch
+#BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
 Version: %{version}
 Release: %{release}
@@ -33,7 +33,7 @@ make
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 
-make "install_root=%{buildroot}" install 
+make "DSTDIR=%{buildroot}" install 
 
 %pre
 
@@ -43,5 +43,4 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 #%attr(0644,root,root) %doc README NEWS ChangeLog AUTHORS INSTALL TODO
-%attr(0755,root,root) 					/usr/lib/*.so
-%attr(-,root,root) 					/usr/lib/*.so.%{%version}
+%attr(0755,root,root) 					/usr/lib/*.so*

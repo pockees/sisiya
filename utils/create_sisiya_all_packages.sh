@@ -68,13 +68,13 @@ create_edbc_libs()
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
 	for f in "Makefile" "mysql/configure.ac" "postgresql/configure.ac"
 	do
-		sed -i -e "s/__VERSION_MAJOR__/$version_major/g" -e "s/__VERSION_MINOR__/$version_minor/g" $rpm_root_dir/$f
+		sed -i -e "s/__VERSION_MAJOR__/$version_major_str/g" -e "s/__VERSION_MINOR__/$version_minor_str/g" -e "s/__VERSION__/$version_str/g" $rpm_root_dir/$f
 	done
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
 	echo "RPM packaging info :"
 	echo "In order to build the SisIYA packages one can use the following command:"
-	echo "rpmbuild -ta $base_dir/rpm/${package_dir}.tar.gz"
+	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
 	echo "------"
 	exit 0
 	################################################################################################################################################3
