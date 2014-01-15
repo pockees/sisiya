@@ -66,7 +66,7 @@ create_edbc_libs()
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
-	for f in "Makefile" "mysql/configure.ac" "postgresql/configure.ac"
+	for f in "Makefile" "lib/configure.ac" "mysql/configure.ac" "postgresql/configure.ac"
 	do
 		sed -i -e "s/__VERSION_MAJOR__/$version_major_str/g" -e "s/__VERSION_MINOR__/$version_minor_str/g" -e "s/__VERSION__/$version_str/g" $rpm_root_dir/$f
 	done

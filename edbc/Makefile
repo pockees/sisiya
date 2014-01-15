@@ -19,7 +19,7 @@ all: edbc_lib mysql_lib postgresql_lib
 clean: clean_edbc_lib clean_mysql_lib clean_postgresql_lib clean_docs
 
 edbc_lib:
-	(cd lib && make)
+	(cd lib && ./bootstrap create && ./configure && make)
 mysql_lib:
 	(cd mysql && ./bootstrap create && ./configure && make)
 postgresql_lib:
