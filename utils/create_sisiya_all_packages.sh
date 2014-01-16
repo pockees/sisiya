@@ -59,6 +59,7 @@ create_edbc_libs()
 	rm -rf $package_dir
 	mkdir -p $package_dir
 	cp -a ${source_dir}/edbc/* $package_dir/
+	echo "$version_str" > $package_dir/version.txt
 	################################################################################################################################################3
 	### create RPM source package
 	################################################################################################################################################3
@@ -66,7 +67,6 @@ create_edbc_libs()
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
-	echo "$version_str" > $rpm_root_dir/version.txt
 	#for f in "Makefile" "lib/configure.ac" "mysql/configure.ac" "postgresql/configure.ac"
 	for f in "Makefile"
 	do
@@ -78,29 +78,24 @@ create_edbc_libs()
 	echo "In order to build the SisIYA packages one can use the following command:"
 	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
 	echo "------"
-	exit 0
 	################################################################################################################################################3
 	### create Debian source package
 	################################################################################################################################################3
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
 	rm -rf $deb_root_dir 
-	mkdir -p $deb_root_dir/opt/${package_str} 
-	for f in conf misc scripts version.txt utils
-	do
-		cp -a $package_dir/$f ${deb_root_dir}/opt/${package_str}/ 
-	done
+	cp -a $package_dir $deb_root_dir
 	mkdir $deb_root_dir/DEBIAN
 	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
 	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
 	chmod 755 $deb_root_dir/DEBIAN/postinst
-	cp -a $package_dir/etc $deb_root_dir/ 
 	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "Debian packaging info:"
 	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
 	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
 	echo "------"
+	exit 0
 	################################################################################################################################################3
 	### create directory structure for Arch systems
 	################################################################################################################################################3
