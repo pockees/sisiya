@@ -25,12 +25,12 @@ in a database system.
 
 %build
 cd edbc/lib && ./bootstrap create && ./configure && make && cd ../../
-cd sisiyad  && ./bootstrap create && ./configure && make && cd ..
+cd %{name}  && ./bootstrap create && ./configure && make && cd ..
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DSTDIR=%{buildroot}" install 
+cd %{name} && make "DSTDIR=%{buildroot}" install 
 
 %post
 ### if update, then restart
