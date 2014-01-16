@@ -165,6 +165,7 @@ create_edbc_libs()
 	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
 	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
 	echo "------"
+	return
 	exit 0
 	################################################################################################################################################3
 	### create directory structure for Arch systems
