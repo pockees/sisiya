@@ -29,7 +29,7 @@ mkdir -p %{buildroot}
 make "DESTDIR=%{buildroot}" install 
 
 %build
-cd edbc/lib && ./bootstrap create && ./configure && make cd ..
+cd edbc/lib && ./bootstrap create && ./configure && make && cd ..
 cd sisiyad && make "DESTDIR=%{buildroot}" install && cd ..
 
 %post
