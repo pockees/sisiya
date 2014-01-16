@@ -60,7 +60,8 @@ create_sisiyad()
 	mkdir -p $package_dir
 	cp -a ${source_dir}/edbc $package_dir/
 	cp -a ${source_dir}/$package_str $package_dir/
-	echo "$version_str" > $package_dir/version.txt
+	echo "$version_str" > $package_dir/edbc/version.txt
+	echo "$version_str" > $package_dir/$package_str/version.txt
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################

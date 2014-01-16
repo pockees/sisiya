@@ -23,14 +23,14 @@ in a database system.
 %prep 
 %setup -n %{name}-%{version}-%{release}
 
+%build
+cd edbc/lib && ./bootstrap create && ./configure && make && cd ../../
+cd sisiyad  && ./bootstrap create && ./configure && make && cd ..
+
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DESTDIR=%{buildroot}" install 
-
-%build
-cd edbc/lib && ./bootstrap create && ./configure && make && cd ../../
-cd sisiyad && make "DESTDIR=%{buildroot}" install && cd ..
+make "DSTDIR=%{buildroot}" install 
 
 %post
 ### if update, then restart
