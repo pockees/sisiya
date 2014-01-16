@@ -1,0 +1,73 @@
+%define name sisiyad
+
+%define version __VERSION__
+%define release __RELEASE__
+
+Summary: SisIYA daemon.
+Name: %{name}
+Version: %{version}
+Release: %{release}
+Source0: %{name}-%{version}-%{release}.tar.gz
+#Source1: http://download.sourceforge.net/sisiya/%{name}-%{version}-%{release}.tar.gz
+License: GPL
+Vendor: Erdal Mutlu
+Group: System Environment/Daemons
+Packager: Erdal Mutlu <erdal@sisiya.org>
+Url: http://www.sisiya.org
+BuildRoot:%{_tmppath}/%{name}-%{version}-%{release}-root
+
+%description
+The SisIYA daemon is a program which receives incommin SisIYA messages and records them
+in a database system.
+
+%prep 
+%setup -n %{name}-%{version}-%{release}
+
+%install
+rm -rf %{buildroot}
+mkdir -p %{buildroot}
+make "DESTDIR=%{buildroot}" install_sisiya_client_checks 
+
+%build
+### configure & compile
+make 
+
+cd edbc/lib && make
+cd sisiya_server && make "install_root=%{buildroot}" install && cd ..
+
+%post
+### if update, then restart
+if test $1 -eq 2 ; then
+	service sisiyad restart > /dev/null 
+	exit 0
+fi
+chkconfig --add sisiyad
+service sisiyad start > /dev/null 
+
+%preun 
+### if update
+if test $1 -eq 1 ; then
+	exit 0
+fi
+service sisiyad stop > /dev/null 2>&1
+chkconfig --del sisiyad
+
+%clean 
+rm -rf %{buildroot}
+
+### there is no main package
+#%files
+
+%files
+%defattr(-,root,root)
+%attr(0644,root,root) 	%doc 			README NEWS ChangeLog AUTHORS INSTALL TODO
+%attr(0600,root,root) 	%config(noreplace) 	/etc/sisiyad.conf
+#%attr(0600,root,root) 	%config(noreplace) 	/etc/sisiyaqd.conf
+%attr(0700,root,root) 				/etc/init.d/sisiyad
+#%attr(0700,root,root) 				/etc/init.d/sisiyaqd
+%attr(0700,root,root) 				/usr/sbin/sisiyad
+#%attr(0700,root,root) 				/usr/sbin/sisiyaqd
+%attr(0644,root,root) 				/usr/share/man/man5/sisiyad.conf.5.gz
+#%attr(0644,root,root) 				/usr/share/man/man5/sisiyaqd.conf.5.gz
+%attr(0644,root,root) 				/usr/share/man/man8/sisiyad.8.gz
+#%attr(0644,root,root) 				/usr/share/man/man8/sisiyaqd.8.gz

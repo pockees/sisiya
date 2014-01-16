@@ -2,7 +2,7 @@ Package: sisiya-edbc-libs
 Version: __VERSION__
 Section: system-tools 
 Priority: optional
-Architecture: all
+Architecture: any
 Essential: no
 Depends: perl, bc
 Pre-Depends:  
