@@ -5,7 +5,8 @@ AC_PREREQ(2.53)
 dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
-AC_INIT([libedbc_pgsql], [0.6.30], [erdal@sisiya.org])
+#AC_INIT([libedbc_pgsql], [0.6.30], [erdal@sisiya.org])
+AC_INIT([libedbc_pgsql], [m4_esyscmd([cat ../version.txt | tr -d "\n"])], [erdal@sisiya.org])
 AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AM_CONFIG_HEADER(include/config.h)
 
@@ -105,8 +106,10 @@ dnl DEBUG="-ggdb -DDEBUG"
 dnl EDBC
 dnl LIB_NAME=libedbc_pgsql
 LIB_NAME=$PACKAGE_NAME
-LIB_VER_MAJOR=0.6
-LIB_VER_MINOR=30
+#LIB_VER_MAJOR=__VERSION_MAJOR__
+#LIB_VER_MINOR=__VERSION_MINOR__
+LIB_VER_MAJOR=`echo -n $PACKAGE_VERSION | cut -d "." -f 1,2`
+LIB_VER_MINOR=`echo $PACKAGE_VERSION | cut -d "." -f 3`
 
 EDBC_INC=-I../include
 EDBC_SRC=../src

@@ -5,7 +5,8 @@ AC_PREREQ(2.53)
 dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
-AC_INIT([libedbc], [__VERSION_MAJOR__.__VERSION_MINOR__], [erdal@sisiya.org])
+#AC_INIT([libedbc], [__VERSION_MAJOR__.__VERSION_MINOR__], [erdal@sisiya.org])
+AC_INIT([libedbc], [m4_esyscmd([cat ../version.txt | tr -d "\n"])], [erdal@sisiya.org])
 #AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
@@ -84,8 +85,10 @@ dnl DEBUG="-ggdb -DDEBUG"
 
 dnl EDBC
 LIB_NAME=$PACKAGE_NAME
-LIB_VER_MAJOR=__VERSION_MAJOR__
-LIB_VER_MINOR=__VERSION_MINOR__
+#LIB_VER_MAJOR=__VERSION_MAJOR__
+#LIB_VER_MINOR=__VERSION_MINOR__
+LIB_VER_MAJOR=`echo -n $PACKAGE_VERSION | cut -d "." -f 1,2`
+LIB_VER_MINOR=`echo $PACKAGE_VERSION | cut -d "." -f 3`
 
 EDBC_INC=-I../include
 EDBC_SRC=../src

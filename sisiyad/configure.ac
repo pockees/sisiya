@@ -5,8 +5,9 @@ AC_PREREQ(2.53)
 dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
-AC_INIT([sisiyad], [0.6.30], [erdal@sisiya.org])
-AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+#AC_INIT([sisiyad], [0.6.30], [erdal@sisiya.org])
+AC_INIT([sisiyad], [m4_esyscmd([cat version.txt | tr -d "\n"])], [erdal@sisiya.org])
+#AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AM_CONFIG_HEADER(include/config.h)
 
 dnl --------------------------------------------------  
@@ -80,16 +81,16 @@ DEBUG=
 dnl DEBUG="-ggdb -DDEBUG"
 
 dnl sisiyad
-SISIYAD_INC=-I./include
-SISIYAD_SRC=./src
-SISIYAD_LIBS=-ldl -ledbc
+SISIYAD_INC="-I./include"
+SISIYAD_SRC="./src"
+SISIYAD_LIBS="-ldl -ledbc"
 
 dnl EDBC 
-EDBC_DIR=../edbc
-EDBC_INC=-I$EDBC_DIR/include
-EDBC_LIB=-L$EDBC_DIR/lib
-EDBC_UTILS_INC=-I$EDBC_DIR/utils/include
-EDBC_UTILS_SRC=$EDBC_DIR/utils/src
+EDBC_DIR="../edbc"
+EDBC_INC="-I$EDBC_DIR/include"
+EDBC_LIB="-L$EDBC_DIR/lib"
+EDBC_UTILS_INC="-I$EDBC_DIR/utils/include"
+EDBC_UTILS_SRC="$EDBC_DIR/utils/src"
 
 dnl substitutes
 AC_SUBST(WARN_FLAGS)
