@@ -8,6 +8,7 @@ dnl ------------------------------------------------
 #AC_INIT([sisiyad], [0.6.30], [erdal@sisiya.org])
 AC_INIT([sisiyad], [m4_esyscmd([cat version.txt | tr -d "\n"])], [erdal@sisiya.org])
 #AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(include/config.h)
 
 dnl --------------------------------------------------  
