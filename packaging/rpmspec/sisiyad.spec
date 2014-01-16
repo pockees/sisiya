@@ -17,7 +17,7 @@ Url: http://www.sisiya.org
 BuildRoot:%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
-The SisIYA daemon is a program which receives incommin SisIYA messages and records them
+The SisIYA daemon is a program which receives incomming SisIYA messages and records them
 in a database system.
 
 %prep 
@@ -26,14 +26,11 @@ in a database system.
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DESTDIR=%{buildroot}" install_sisiya_client_checks 
+make "DESTDIR=%{buildroot}" install 
 
 %build
-### configure & compile
-make 
-
-cd edbc/lib && make
-cd sisiya_server && make "install_root=%{buildroot}" install && cd ..
+cd edbc/lib && ./bootstrap create && ./configure && make cd ..
+cd sisiyad && make "DESTDIR=%{buildroot}" install && cd ..
 
 %post
 ### if update, then restart

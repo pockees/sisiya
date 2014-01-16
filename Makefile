@@ -1,8 +1,8 @@
 
-all: compile
+all: build
 
-compile:
-	cd src && ./bootstrap create && ./configure && make && cd ..
+build:
+	cd edbc && ./bootstrap create && ./configure && make && cd ..
 ### for edbc
 	cd edbc && make clean && make && cd ..
 ### for the server code
