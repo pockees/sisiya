@@ -28,49 +28,49 @@
 #include"MySQL_ResultSet.hpp"
 #include"MySQL_ResultSetMetaData.hpp"
 
-class MySQL_ResultSet; // forward class declaration
+class MySQL_ResultSet;		// forward class declaration
 
 //! MySQL implementation of the Statement class.
-class MySQL_Statement : public Statement {
-	public:
-		//! Default constructor.
-		MySQL_Statement();
-		//! Destructor.
-		virtual ~MySQL_Statement();
-		//! Executes the statement.
-		virtual bool execute(const string sql);
-		//! Executes query.
-		virtual ResultSet *executeQuery(const string sql);
-		//! Executes insert/update/delete
-		virtual int executeUpdate(const string sql);
-		//! Returns the connection object. 
-		virtual Connection *getConnection(void);
-		//! Returns result set object.
-		virtual ResultSet *getResultSet(void);
-		//! Returns update count.
-		virtual int getUpdateCount(void);
+class MySQL_Statement:public Statement {
+      public:
+	//! Default constructor.
+	MySQL_Statement();
+	//! Destructor.
+	virtual ~ MySQL_Statement();
+	//! Executes the statement.
+	virtual bool execute(const string sql);
+	//! Executes query.
+	virtual ResultSet *executeQuery(const string sql);
+	//! Executes insert/update/delete
+	virtual int executeUpdate(const string sql);
+	//! Returns the connection object. 
+	virtual Connection *getConnection(void);
+	//! Returns result set object.
+	virtual ResultSet *getResultSet(void);
+	//! Returns update count.
+	virtual int getUpdateCount(void);
 
 	// This public does not belong to the general class 
-	public :
-		//! Sets Connection object. This function is only used by MySQL Connection class.
-		void setConnection(MySQL_Connection *conn);
-		//! Sets ResultSetMetaData object. This function is only used by MySQL Statement class.
-		void setResultSetMetaData(MySQL_ResultSetMetaData *rsmd);
-		//! Sets MySQL object. This function is only used by MySQL Connection class.
-		void setMYSQL(MYSQL* mysql);
-	private:
-		//! Update count variable.
-		int updateCount;
-		//! Pointer to MySQL object.
-		MYSQL *mysql; 
-		//! Pointer to MySQL result object.
-		MYSQL_RES *result;
-		//! Connection object.
-		MySQL_Connection *conn;
-		//! ResultSet object.
-		MySQL_ResultSet *rset;
-		//! ResultSetMetaData object.
-		MySQL_ResultSetMetaData *rsmd;
+	 public:
+	    //! Sets Connection object. This function is only used by MySQL Connection class.
+	void setConnection(MySQL_Connection * conn);
+	//! Sets ResultSetMetaData object. This function is only used by MySQL Statement class.
+	void setResultSetMetaData(MySQL_ResultSetMetaData * rsmd);
+	//! Sets MySQL object. This function is only used by MySQL Connection class.
+	void setMYSQL(MYSQL * mysql);
+      private:
+	//! Update count variable.
+	int updateCount;
+	//! Pointer to MySQL object.
+	MYSQL *mysql;
+	//! Pointer to MySQL result object.
+	MYSQL_RES *result;
+	//! Connection object.
+	MySQL_Connection *conn;
+	//! ResultSet object.
+	MySQL_ResultSet *rset;
+	//! ResultSetMetaData object.
+	MySQL_ResultSetMetaData *rsmd;
 };
 
-#endif 
+#endif

@@ -24,29 +24,32 @@
 using namespace std;
 
 // default constructor
-MySQL_ResultSet::MySQL_ResultSet() 
-{ 
+MySQL_ResultSet::MySQL_ResultSet()
+{
 #ifdef DEBUG
-	cout << "Constructor : Constructing a MySQL_ResultSet object:" << this << endl; 
+	cout << "Constructor : Constructing a MySQL_ResultSet object:" <<
+	    this << endl;
 #endif
-	mysql=NULL;
-	result=NULL;
-	rsmd=NULL;
-	stmt=NULL;
+	mysql = NULL;
+	result = NULL;
+	rsmd = NULL;
+	stmt = NULL;
 }
 
 // destructor
-MySQL_ResultSet::~MySQL_ResultSet() 
-{ 
+MySQL_ResultSet::~MySQL_ResultSet()
+{
 #ifdef DEBUG
-	cout << "MySQL_ResultSet::Destructor: destructing a MySQL_ResultSet object: " << this << endl; 
+	cout <<
+	    "MySQL_ResultSet::Destructor: destructing a MySQL_ResultSet object: "
+	    << this << endl;
 #endif
 	mysql_free_result(result);
 }
 
 void MySQL_ResultSet::beforeFirst(void)
 {
-	currentRow=-1;
+	currentRow = -1;
 }
 
 /*
@@ -54,23 +57,25 @@ void MySQL_ResultSet::beforeFirst(void)
 */
 int MySQL_ResultSet::findColumn(string columnName)
 {
-	for(int i=0;i<rsmd->getColumnCount();i++) {
-		if(rsmd->getColumnName(i+1) == columnName)  // maybe I should convert to upper or lower case before comparing
-			return i+1;
+	for (int i = 0; i < rsmd->getColumnCount(); i++) {
+		if (rsmd->getColumnName(i + 1) == columnName)	// maybe I should convert to upper or lower case before comparing
+			return i + 1;
 	}
 	return -1;
 }
 
 bool MySQL_ResultSet::first(void)
 {
-	currentRow=0;
-	mysql_data_seek(result,currentRow); 	// this is possible because I use mysql_store_result in 
-						// MySQL_Statement's execute functions
-	row=mysql_fetch_row(result);
-	if(row) {
+	currentRow = 0;
+	mysql_data_seek(result, currentRow);	// this is possible because I use mysql_store_result in 
+	// MySQL_Statement's execute functions
+	row = mysql_fetch_row(result);
+	if (row) {
 #ifdef DEBUG
-//		if(mysql_errno(mysql))
-			cerr << "MySQL_ResultSet::first: Could not fetch the first row :" << mysql_error(mysql) << endl;
+//              if(mysql_errno(mysql))
+		cerr <<
+		    "MySQL_ResultSet::first: Could not fetch the first row :"
+		    << mysql_error(mysql) << endl;
 #endif
 		return false;
 	}
@@ -79,24 +84,27 @@ bool MySQL_ResultSet::first(void)
 
 bool MySQL_ResultSet::getBoolean(const string columnName)
 {
-	return getBoolean(findColumn(columnName)); // getXXX functions use columnIndex=0,1,2,...n-1
+	return getBoolean(findColumn(columnName));	// getXXX functions use columnIndex=0,1,2,...n-1
 }
 
 bool MySQL_ResultSet::getBoolean(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
+	if (columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSet::getBoolean: columnIndex=" << columnIndex << " > columnCount=" << rsmd->getColumnCount() << ends;
+		osstr << "MySQL_ResultSet::getBoolean: columnIndex=" <<
+		    columnIndex << " > columnCount=" << rsmd->
+		    getColumnCount() << ends;
 		throw SQLException(osstr.str());
 	}
 	// consider trying to convert
-	if(rsmd->getColumnType(columnIndex) != FIELD_TYPE_TINY) {
+	if (rsmd->getColumnType(columnIndex) != FIELD_TYPE_TINY) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSet::getBoolean: columnIndex=" << columnIndex << " is not boolean" << ends;
+		osstr << "MySQL_ResultSet::getBoolean: columnIndex=" <<
+		    columnIndex << " is not boolean" << ends;
 		throw SQLException(osstr.str());
 	}
 	string str(row[columnIndex]);
-	if(str.at(0) == '1')
+	if (str.at(0) == '1')
 		return true;
 	else
 		return false;
@@ -110,25 +118,28 @@ double MySQL_ResultSet::getDouble(const string columnName)
 
 double MySQL_ResultSet::getDouble(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
+	if (columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSet::getDouble: columnIndex=" << columnIndex << " > columnCount=" << rsmd->getColumnCount() << ends;
+		osstr << "MySQL_ResultSet::getDouble: columnIndex=" <<
+		    columnIndex << " > columnCount=" << rsmd->
+		    getColumnCount() << ends;
 		throw SQLException(osstr.str());
 	}
-	switch(rsmd->getColumnType(columnIndex)) {
-		case FIELD_TYPE_FLOAT :
-		case FIELD_TYPE_INT24 :
-		case FIELD_TYPE_LONG :
-		case FIELD_TYPE_LONGLONG :
-		case FIELD_TYPE_SHORT :
-		case FIELD_TYPE_DOUBLE :
-			return atof(row[columnIndex]);
-			break;
-		default:
-			ostringstream osstr;
-			osstr << "MySQL_ResultSet::getDouble: columnIndex=" << columnIndex << " is not double or float"  << ends;
-			throw SQLException(osstr.str());
-			//break;
+	switch (rsmd->getColumnType(columnIndex)) {
+	case FIELD_TYPE_FLOAT:
+	case FIELD_TYPE_INT24:
+	case FIELD_TYPE_LONG:
+	case FIELD_TYPE_LONGLONG:
+	case FIELD_TYPE_SHORT:
+	case FIELD_TYPE_DOUBLE:
+		return atof(row[columnIndex]);
+		break;
+	default:
+		ostringstream osstr;
+		osstr << "MySQL_ResultSet::getDouble: columnIndex=" <<
+		    columnIndex << " is not double or float" << ends;
+		throw SQLException(osstr.str());
+		//break;
 	}
 }
 
@@ -139,25 +150,28 @@ float MySQL_ResultSet::getFloat(const string columnName)
 
 float MySQL_ResultSet::getFloat(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
+	if (columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSet::getFloat: columnIndex=" << columnIndex << " > columnCount=" << rsmd->getColumnCount() << ends;
+		osstr << "MySQL_ResultSet::getFloat: columnIndex=" <<
+		    columnIndex << " > columnCount=" << rsmd->
+		    getColumnCount() << ends;
 		throw SQLException(osstr.str());
 	}
-	switch(rsmd->getColumnType(columnIndex)) {
-		case FIELD_TYPE_FLOAT :
-		case FIELD_TYPE_INT24 :
-		case FIELD_TYPE_LONG :
-		case FIELD_TYPE_LONGLONG :
-		case FIELD_TYPE_SHORT :
-		case FIELD_TYPE_DOUBLE :
-			return (float)atof(row[columnIndex]);
-			break;
-		default:
-			ostringstream osstr;
-			osstr << "MySQL_ResultSet::getFloat: columnIndex=" << columnIndex << " is not double or float"  << ends;
-			throw SQLException(osstr.str());
-			//break;
+	switch (rsmd->getColumnType(columnIndex)) {
+	case FIELD_TYPE_FLOAT:
+	case FIELD_TYPE_INT24:
+	case FIELD_TYPE_LONG:
+	case FIELD_TYPE_LONGLONG:
+	case FIELD_TYPE_SHORT:
+	case FIELD_TYPE_DOUBLE:
+		return (float) atof(row[columnIndex]);
+		break;
+	default:
+		ostringstream osstr;
+		osstr << "MySQL_ResultSet::getFloat: columnIndex=" <<
+		    columnIndex << " is not double or float" << ends;
+		throw SQLException(osstr.str());
+		//break;
 	}
 }
 
@@ -168,23 +182,26 @@ int MySQL_ResultSet::getInt(const string columnName)
 
 int MySQL_ResultSet::getInt(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
+	if (columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSet::getInt: columnIndex=" << columnIndex << " > columnCount=" << rsmd->getColumnCount()  << ends;
+		osstr << "MySQL_ResultSet::getInt: columnIndex=" <<
+		    columnIndex << " > columnCount=" << rsmd->
+		    getColumnCount() << ends;
 		throw SQLException(osstr.str());
 	}
-	switch(rsmd->getColumnType(columnIndex)) {
-		case FIELD_TYPE_INT24 :
-		case FIELD_TYPE_LONG :
-		case FIELD_TYPE_LONGLONG :
-		case FIELD_TYPE_SHORT :
-			return atoi(row[columnIndex]);
-			//break;
-		default:
-			ostringstream osstr;
-			osstr << "MySQL_ResultSet::getInt: columnIndex=" << columnIndex << " is not int"  << ends;
-			throw SQLException(osstr.str());
-			//break;
+	switch (rsmd->getColumnType(columnIndex)) {
+	case FIELD_TYPE_INT24:
+	case FIELD_TYPE_LONG:
+	case FIELD_TYPE_LONGLONG:
+	case FIELD_TYPE_SHORT:
+		return atoi(row[columnIndex]);
+		//break;
+	default:
+		ostringstream osstr;
+		osstr << "MySQL_ResultSet::getInt: columnIndex=" <<
+		    columnIndex << " is not int" << ends;
+		throw SQLException(osstr.str());
+		//break;
 	}
 }
 
@@ -195,23 +212,26 @@ long int MySQL_ResultSet::getLong(const string columnName)
 
 long int MySQL_ResultSet::getLong(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
+	if (columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSet::getLong: columnIndex=" << columnIndex << " > columnCount=" << rsmd->getColumnCount()  << ends;
+		osstr << "MySQL_ResultSet::getLong: columnIndex=" <<
+		    columnIndex << " > columnCount=" << rsmd->
+		    getColumnCount() << ends;
 		throw SQLException(osstr.str());
 	}
-	switch(rsmd->getColumnType(columnIndex)) {
-		case FIELD_TYPE_INT24 :
-		case FIELD_TYPE_LONG :
-		case FIELD_TYPE_LONGLONG :
-		case FIELD_TYPE_SHORT :
-			return (long int)atoi(row[columnIndex]);
-			break;
-		default:
-			ostringstream osstr;
-			osstr << "MySQL_ResultSet::getLong: columnIndex=" << columnIndex << " is not long int"  << ends;
-			throw SQLException(osstr.str());
-			//break;
+	switch (rsmd->getColumnType(columnIndex)) {
+	case FIELD_TYPE_INT24:
+	case FIELD_TYPE_LONG:
+	case FIELD_TYPE_LONGLONG:
+	case FIELD_TYPE_SHORT:
+		return (long int) atoi(row[columnIndex]);
+		break;
+	default:
+		ostringstream osstr;
+		osstr << "MySQL_ResultSet::getLong: columnIndex=" <<
+		    columnIndex << " is not long int" << ends;
+		throw SQLException(osstr.str());
+		//break;
 	}
 }
 
@@ -232,28 +252,31 @@ short int MySQL_ResultSet::getShort(const string columnName)
 
 short int MySQL_ResultSet::getShort(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
+	if (columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSet::getShort: columnIndex=" << columnIndex << " > columnCount=" << rsmd->getColumnCount()  << ends;
+		osstr << "MySQL_ResultSet::getShort: columnIndex=" <<
+		    columnIndex << " > columnCount=" << rsmd->
+		    getColumnCount() << ends;
 		throw SQLException(osstr.str());
 	}
-	switch(rsmd->getColumnType(columnIndex)) {
-		case FIELD_TYPE_INT24 :
-		case FIELD_TYPE_LONG :
-		case FIELD_TYPE_LONGLONG :
-		case FIELD_TYPE_SHORT :
-			return (short int)atoi(row[columnIndex]);
-			break;
-		default:
-			ostringstream osstr;
-			osstr << "MySQL_ResultSet::getShort: columnIndex=" << columnIndex << " is not short int"  << ends;
-			throw SQLException(osstr.str());
-			//break;
+	switch (rsmd->getColumnType(columnIndex)) {
+	case FIELD_TYPE_INT24:
+	case FIELD_TYPE_LONG:
+	case FIELD_TYPE_LONGLONG:
+	case FIELD_TYPE_SHORT:
+		return (short int) atoi(row[columnIndex]);
+		break;
+	default:
+		ostringstream osstr;
+		osstr << "MySQL_ResultSet::getShort: columnIndex=" <<
+		    columnIndex << " is not short int" << ends;
+		throw SQLException(osstr.str());
+		//break;
 	}
 }
 
 
-Statement* MySQL_ResultSet::getStatement(void)
+Statement *MySQL_ResultSet::getStatement(void)
 {
 	return stmt;
 }
@@ -265,9 +288,11 @@ string MySQL_ResultSet::getString(const string columnName)
 
 string MySQL_ResultSet::getString(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
+	if (columnIndex < 0 || columnIndex > rsmd->getColumnCount()) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSet::getString: columnIndex=" << columnIndex << " > columnCount=" << rsmd->getColumnCount()  << endl;
+		osstr << "MySQL_ResultSet::getString: columnIndex=" <<
+		    columnIndex << " > columnCount=" << rsmd->
+		    getColumnCount() << endl;
 		throw SQLException(osstr.str());
 	}
 	return string(row[columnIndex]);
@@ -277,11 +302,13 @@ string MySQL_ResultSet::getString(int columnIndex)
 bool MySQL_ResultSet::next(void)
 {
 	currentRow++;
-	row=mysql_fetch_row(result);
-	if(!row) {
-		if(mysql_errno(mysql)) {
+	row = mysql_fetch_row(result);
+	if (!row) {
+		if (mysql_errno(mysql)) {
 			ostringstream osstr;
-			osstr << "MySQL_ResultSet::next: Could not fetch the first row :" << mysql_error(mysql) << ends;
+			osstr <<
+			    "MySQL_ResultSet::next: Could not fetch the first row :"
+			    << mysql_error(mysql) << ends;
 			throw SQLException(osstr.str());
 		}
 		return false;
@@ -289,27 +316,27 @@ bool MySQL_ResultSet::next(void)
 	return true;
 }
 
-void MySQL_ResultSet::setConnection(Connection *conn)
+void MySQL_ResultSet::setConnection(Connection * conn)
 {
-	this->conn=conn;
+	this->conn = conn;
 }
 
-void MySQL_ResultSet::setResultSetMetaData(MySQL_ResultSetMetaData *rsmd)
+void MySQL_ResultSet::setResultSetMetaData(MySQL_ResultSetMetaData * rsmd)
 {
-	this->rsmd=rsmd;
+	this->rsmd = rsmd;
 }
 
-void MySQL_ResultSet::setStatement(MySQL_Statement *stmt)
+void MySQL_ResultSet::setStatement(MySQL_Statement * stmt)
 {
-	this->stmt=stmt;
+	this->stmt = stmt;
 }
 
-void MySQL_ResultSet::setMYSQL(MYSQL *mysql)
+void MySQL_ResultSet::setMYSQL(MYSQL * mysql)
 {
-	this->mysql=mysql;
+	this->mysql = mysql;
 }
 
-void MySQL_ResultSet::setMYSQL_RES(MYSQL_RES *result)
+void MySQL_ResultSet::setMYSQL_RES(MYSQL_RES * result)
 {
-	this->result=result;
+	this->result = result;
 }

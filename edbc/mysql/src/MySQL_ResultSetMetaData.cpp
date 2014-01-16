@@ -24,22 +24,26 @@
 using namespace std;
 
 // default constructor
-MySQL_ResultSetMetaData::MySQL_ResultSetMetaData() 
-: columnCount(-1),rowCount(-1)
-{ 
+MySQL_ResultSetMetaData::MySQL_ResultSetMetaData()
+:  columnCount(-1), rowCount(-1)
+{
 #ifdef DEBUG
-	cout << "Constructor : Constructing a MySQL_ResultSetMetaData object:" << this << endl; 
+	cout <<
+	    "Constructor : Constructing a MySQL_ResultSetMetaData object:"
+	    << this << endl;
 #endif
-	fields=NULL;
-	mysql=NULL;
-	result=NULL;
+	fields = NULL;
+	mysql = NULL;
+	result = NULL;
 }
 
 // destructor
-MySQL_ResultSetMetaData::~MySQL_ResultSetMetaData() 
-{ 
+MySQL_ResultSetMetaData::~MySQL_ResultSetMetaData()
+{
 #ifdef DEBUG
-	cout << "MySQL_ResultSetMetaData::Destructor: destructing a MySQL_ResultSetMetaData object: " << this << endl; 
+	cout <<
+	    "MySQL_ResultSetMetaData::Destructor: destructing a MySQL_ResultSetMetaData object: "
+	    << this << endl;
 #endif
 }
 
@@ -53,8 +57,8 @@ int MySQL_ResultSetMetaData::getColumnCount(void)
 */
 int MySQL_ResultSetMetaData::getColumnIndex(string columnName)
 {
-	for(int i=0;i<columnCount;i++) {
-		if(columnName == fields[i].name) // maybe I should convert to upper or lower case before comparing
+	for (int i = 0; i < columnCount; i++) {
+		if (columnName == fields[i].name)	// maybe I should convert to upper or lower case before comparing
 			return i;
 	}
 	return -1;
@@ -67,12 +71,14 @@ string MySQL_ResultSetMetaData::getColumnLabel(int columnIndex)
 
 string MySQL_ResultSetMetaData::getColumnName(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > columnCount) {
+	if (columnIndex < 0 || columnIndex > columnCount) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSetMetaData::getColumnName: columnIndex=" << columnIndex << " is out of range!" << ends;
+		osstr <<
+		    "MySQL_ResultSetMetaData::getColumnName: columnIndex="
+		    << columnIndex << " is out of range!" << ends;
 		throw SQLException(osstr.str());
 	}
-	return string(fields[columnIndex-1].name);
+	return string(fields[columnIndex - 1].name);
 }
 
 int MySQL_ResultSetMetaData::getColumnType(int columnIndex)
@@ -98,35 +104,37 @@ string MySQL_ResultSetMetaData::getSchemaName(int columnIndex)
 
 string MySQL_ResultSetMetaData::getTableName(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex > columnCount) {
+	if (columnIndex < 0 || columnIndex > columnCount) {
 		ostringstream osstr;
-		osstr << "MySQL_ResultSetMetaData::getTableName: columnIndex=" << columnIndex << " is out of range!" << ends;
+		osstr <<
+		    "MySQL_ResultSetMetaData::getTableName: columnIndex="
+		    << columnIndex << " is out of range!" << ends;
 		throw SQLException(osstr.str());
 	}
-	return string(fields[columnIndex-1].table);
+	return string(fields[columnIndex - 1].table);
 }
 
 void MySQL_ResultSetMetaData::setColumnCount(int count)
 {
-	columnCount=count;
+	columnCount = count;
 }
 
 void MySQL_ResultSetMetaData::setRowCount(int count)
 {
-	rowCount=count;
+	rowCount = count;
 }
 
-void MySQL_ResultSetMetaData::setMYSQL_FIELDS(MYSQL_FIELD *fields)
+void MySQL_ResultSetMetaData::setMYSQL_FIELDS(MYSQL_FIELD * fields)
 {
-	this->fields=fields;
+	this->fields = fields;
 }
 
-void MySQL_ResultSetMetaData::setMYSQL(MYSQL *mysql)
+void MySQL_ResultSetMetaData::setMYSQL(MYSQL * mysql)
 {
-	this->mysql=mysql;
+	this->mysql = mysql;
 }
 
-void MySQL_ResultSetMetaData::setMYSQL_RES(MYSQL_RES *result)
+void MySQL_ResultSetMetaData::setMYSQL_RES(MYSQL_RES * result)
 {
-	this->result=result;
+	this->result = result;
 }

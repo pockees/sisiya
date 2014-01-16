@@ -31,7 +31,7 @@ The default constructor.
 */
 ConfFile::ConfFile()
 //: file(NULL),confOptionsMap(string("Erdal"),string("Mutlu"))
-: file(NULL)
+:  file(NULL)
 {
 }
 
@@ -40,7 +40,7 @@ Constructor with a parameter: fileName
 */
 ConfFile::ConfFile(const char *fileName)
 //: file(NULL),confOptionsMap(string("Erdal"),string("Mutlu"))
-: file(NULL)
+:file(NULL)
 {
 	setFileName(fileName);
 }
@@ -50,7 +50,7 @@ Constructor with a parameter: fileName
 */
 ConfFile::ConfFile(const string fileName)
 //: file(NULL),confOptionsMap(string("Erdal"),string("Mutlu"))
-: file(NULL)
+:file(NULL)
 {
 	setFileName(fileName.c_str());
 }
@@ -59,7 +59,8 @@ ConfFile::~ConfFile()
 {
 }
 
-void ConfFile::extractKeyValue(const char *str,string &key,string &value)
+void ConfFile::extractKeyValue(const char *str, string & key,
+			       string & value)
 {
 /*
 		list<string> ls;
@@ -73,12 +74,12 @@ void ConfFile::extractKeyValue(const char *str,string &key,string &value)
 		if(i != ls.end())
 			value=(*i);
 */
-	string s=str;
-	string::size_type pos=s.find('=');
-	if(pos == string::npos)
+	string s = str;
+	string::size_type pos = s.find('=');
+	if (pos == string::npos)
 		return;
-	key=trim(s.substr(0,pos));
-	value=trim(s.substr(pos+1,s.size()-pos-1));
+	key = trim(s.substr(0, pos));
+	value = trim(s.substr(pos + 1, s.size() - pos - 1));
 }
 
 /*!
@@ -88,28 +89,30 @@ void ConfFile::extractKeyValues(void)
 {
 	char line[4096];
 
-	while(!file->eof()) {
-		file->getline(line,4096);
+	while (!file->eof()) {
+		file->getline(line, 4096);
 		//cout << "ConfFile::extractKeyValues: line=[" << line << "]" << endl;
 		// check if the line is empty or a comment
-		if(isLineCommentOrEmpty(line,'#')) {
+		if (isLineCommentOrEmpty(line, '#')) {
 			//cout << "ConfFile::extractKeyValues: The line is empty or a coment. Skipping" << endl;
 			continue;
 		}
 
-		string key,value;
-		extractKeyValue(line,key,value);
-		if(key.size() > 0 && value.size() > 0) {
-//			cout << "ConfFile::extractKeyValues: key=[" << key << "] value=[" << value << "]" << endl;
-			map<string,string>::iterator i=confOptionsMap.find(key);
-			if(i == confOptionsMap.end())
-				confOptionsMap.insert(make_pair(key,value));
+		string key, value;
+		extractKeyValue(line, key, value);
+		if (key.size() > 0 && value.size() > 0) {
+//                      cout << "ConfFile::extractKeyValues: key=[" << key << "] value=[" << value << "]" << endl;
+			map < string, string >::iterator i =
+			    confOptionsMap.find(key);
+			if (i == confOptionsMap.end())
+				confOptionsMap.
+				    insert(make_pair(key, value));
 			else
-				(*i).second=value;
+				(*i).second = value;
 		}
 		//else
-		//	cout << "ConfFile::extractKeyValues: No key/value" << endl;
-			
+		//      cout << "ConfFile::extractKeyValues: No key/value" << endl;
+
 	}
 /*
 	cout << "ConfFile::extractKeyValues: Now printing key/value from the map object:" << endl;
@@ -136,7 +139,7 @@ float ConfFile::getFloat(const char *key)
 
 float ConfFile::getFloat(const string key)
 {
-	return float(atof(getKeyValue(key).c_str()));
+	return float (atof(getKeyValue(key).c_str()));
 }
 
 int ConfFile::getInt(const char *key)
@@ -146,10 +149,10 @@ int ConfFile::getInt(const char *key)
 
 int ConfFile::getInt(const string key)
 {
-	string s=getKeyValue(key);
-	if(s.size() == 0)
+	string s = getKeyValue(key);
+	if (s.size() == 0)
 		return ConfFile::intNotFound;
-	
+
 	istringstream isstr(s);
 	int i;
 	isstr >> i;
@@ -161,11 +164,11 @@ Search for the key and return its value as string. If not found return an empty 
 */
 string ConfFile::getKeyValue(const string key)
 {
-	if(confOptionsMap.count(key) == 1) {
-		map<string,string>::iterator i=confOptionsMap.find(key);
+	if (confOptionsMap.count(key) == 1) {
+		map < string, string >::iterator i =
+		    confOptionsMap.find(key);
 		return (*i).second;
-	}
-	else
+	} else
 		return string();
 }
 
@@ -182,17 +185,17 @@ const string ConfFile::getString(const string key)
 /*!
 Check if the line a comment or empty is. Comment char is '#'.
 */
-bool ConfFile::isLineCommentOrEmpty(const char *line,const char ch)
+bool ConfFile::isLineCommentOrEmpty(const char *line, const char ch)
 {
-	if(line[0] == '\0')
-		return true; // empty line
+	if (line[0] == '\0')
+		return true;	// empty line
 
 	// check if the line is a configuration line or if it is only an empty or comment line
 	// find the first char which is not ' ','\t' or ch
-	for(int i=0;line[i] != '\0';i++) {
-		if(line[i] == ' ' || line[i] == '\t')
+	for (int i = 0; line[i] != '\0'; i++) {
+		if (line[i] == ' ' || line[i] == '\t')
 			continue;
-		else if(line[i] == ch) 
+		else if (line[i] == ch)
 			return true;
 		else
 			return false;
@@ -201,42 +204,43 @@ bool ConfFile::isLineCommentOrEmpty(const char *line,const char ch)
 }
 
 
-void ConfFile::setDefault(const char *key,int value)
+void ConfFile::setDefault(const char *key, int value)
 {
 	ostringstream osstr;
 	osstr << value << ends;
-	setDefault(string(key),osstr.str());
+	setDefault(string(key), osstr.str());
 }
 
-void ConfFile::setDefault(string key,int value)
+void ConfFile::setDefault(string key, int value)
 {
 	ostringstream osstr;
 	osstr << value << ends;
-	setDefault(key,osstr.str());
+	setDefault(key, osstr.str());
 }
 
-void ConfFile::setDefault(const char *key,const char *value)
+void ConfFile::setDefault(const char *key, const char *value)
 {
-	setDefault(string(key),string(value));
+	setDefault(string(key), string(value));
 }
 
-void ConfFile::setDefault(const string &key,const string &value)
+void ConfFile::setDefault(const string & key, const string & value)
 {
-	if(confOptionsMap.count(key) == 0) {
-		confOptionsMap.insert(make_pair(key,value));
-	}
-	else {
-		map<string,string>::iterator i=confOptionsMap.find(key);
-		(*i).second=value;
+	if (confOptionsMap.count(key) == 0) {
+		confOptionsMap.insert(make_pair(key, value));
+	} else {
+		map < string, string >::iterator i =
+		    confOptionsMap.find(key);
+		(*i).second = value;
 	}
 }
 
 bool ConfFile::setFileName(const char *fileName)
 {
-	file=new ifstream;
+	file = new ifstream;
 	file->open(fileName);
-	if(!file->is_open()) { // I should throw an IO exception here
-		cerr << "ConfFile::setFile: Could not open file : " << fileName << endl;
+	if (!file->is_open()) {	// I should throw an IO exception here
+		cerr << "ConfFile::setFile: Could not open file : " <<
+		    fileName << endl;
 		delete file;
 		return false;
 	}

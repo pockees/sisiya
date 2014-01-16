@@ -62,93 +62,93 @@ to avoid any race conditions in the sem_create() and sem_close() functions.
 	// The union semun is defined by including <sys/sem.h>
 #else
 	// According to X/OPEN we have to define it ourselves
-	union semun {
-		int val;			// value for SETVAL
-		struct semid_ds *buf;		// buffer for IPC_STAT, IPC_SET
-		unsigned short int *array;	// array for GETALL,SETALL
-		struct seminfo *__buf;		// buffer for IPC_INFO
-	};
+union semun {
+	int val;		// value for SETVAL
+	struct semid_ds *buf;	// buffer for IPC_STAT, IPC_SET
+	unsigned short int *array;	// array for GETALL,SETALL
+	struct seminfo *__buf;	// buffer for IPC_INFO
+};
 #endif
 
 
 class Semaphore {
-	public:
-		//! Default constructor.
-		Semaphore();
-		//! Constructor.
-		Semaphore(key_t key,int initial=1,bool createFlag=true);
-		//! Destructor.
-		~Semaphore();
-		//! Get the semaphore ID.
-		int getID(void);
-		//! Get the lock.
-		void getLock(void);
-		//! Set semaphore key.
-		void setKey(key_t key,int initial=1,bool createFlag=true);
-		//! Release the lock.
-		void releaseLock(void);
-	private:
-		//! Create flag.
-		bool createFlag;
-		//! The semaphore ID.
-		int semID;
-		//! Initial number.
-		int initial;
-		//! The semaphore key.
-		key_t key;
+      public:
+	//! Default constructor.
+	Semaphore();
+	//! Constructor.
+	Semaphore(key_t key, int initial = 1, bool createFlag = true);
+	//! Destructor.
+	~Semaphore();
+	//! Get the semaphore ID.
+	int getID(void);
+	//! Get the lock.
+	void getLock(void);
+	//! Set semaphore key.
+	void setKey(key_t key, int initial = 1, bool createFlag = true);
+	//! Release the lock.
+	void releaseLock(void);
+      private:
+	//! Create flag.
+	 bool createFlag;
+	//! The semaphore ID.
+	int semID;
+	//! Initial number.
+	int initial;
+	//! The semaphore key.
+	key_t key;
 
-		//! Semaphore conrol union.
-		union semun semctl_arg;
+	//! Semaphore conrol union.
+	union semun semctl_arg;
 
-  		//! Initial value of process counter.
-		static const int BIGCOUNT=10000;
+	//! Initial value of process counter.
+	static const int BIGCOUNT = 10000;
 
-		//! Define the semaphor operation arrays for the semop() calls.
-		/*!
-		1. Wait for [2] (lock) to equal 0.
-		2. Then increment [2] to 1 - this locks it. UNDO to create the lock if processe 
-			exits before explicitly unlocking
-		*/
-		struct sembuf op_lock[2];
+	//! Define the semaphor operation arrays for the semop() calls.
+	/*!
+	   1. Wait for [2] (lock) to equal 0.
+	   2. Then increment [2] to 1 - this locks it. UNDO to create the lock if processe 
+	   exits before explicitly unlocking
+	 */
+	struct sembuf op_lock[2];
 
-		/*!
-		1. Derement [1] (process counter} with undo on exit.UNDO to adjust process counter if 
-		process exits before explicitly calling close().
-		2. Then decrement [2] (lock) back to 0.
-		*/
-		struct sembuf op_endcreate[2];
-		
-		//! decrement [1] (process counter) with undo on exit
-		struct sembuf op_open[1];
+	/*!
+	   1. Derement [1] (process counter} with undo on exit.UNDO to adjust process counter if 
+	   process exits before explicitly calling close().
+	   2. Then decrement [2] (lock) back to 0.
+	 */
+	struct sembuf op_endcreate[2];
 
-		/*!
-		1. Wait for [2] (lock) to equal 0
-		2. Then increment [2] to 1 - this locks it.
-		3. Then increment [1] (process counter).
-		*/
-		struct sembuf op_close[3];
+	//! decrement [1] (process counter) with undo on exit
+	struct sembuf op_open[1];
 
-		//! Decrement [2] (lock) backt to 0 
-		struct sembuf op_unlock[1];
+	/*!
+	   1. Wait for [2] (lock) to equal 0
+	   2. Then increment [2] to 1 - this locks it.
+	   3. Then increment [1] (process counter).
+	 */
+	struct sembuf op_close[3];
 
-		/*!
-		Decrement or increment [0] with undo on exit the 99 is set to actual amount to 
-		add or substruct (positive or negative)
-		*/
-		struct sembuf op_op[1];
-	private:
-		//! Close the semaphore.
-		void close(void);
-		//! Create the semaphore.
-		void create(void);
-		//! Open the semaphore.
-		void open(void);
-		//! Initialize semaphore structures.
-		void initializeStructures(void);
-		//! General semaphore operation.
-		void operation(int value);
-		//! Remove the semaphore.
-		void remove(void);
+	//! Decrement [2] (lock) backt to 0 
+	struct sembuf op_unlock[1];
+
+	/*!
+	   Decrement or increment [0] with undo on exit the 99 is set to actual amount to 
+	   add or substruct (positive or negative)
+	 */
+	struct sembuf op_op[1];
+      private:
+	//! Close the semaphore.
+	void close(void);
+	//! Create the semaphore.
+	void create(void);
+	//! Open the semaphore.
+	void open(void);
+	//! Initialize semaphore structures.
+	void initializeStructures(void);
+	//! General semaphore operation.
+	void operation(int value);
+	//! Remove the semaphore.
+	void remove(void);
 };
 
 #endif

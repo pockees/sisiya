@@ -1,3 +1,22 @@
+#######################################################################################
+#    Copyright (C) Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#######################################################################################
+
 VER_MAJOR=__VERSION_MAJOR__
 VER_MINOR=__VERSION_MINOR__
 VERSION=$(VER_MAJOR).$(VER_MINOR)
@@ -50,6 +69,6 @@ install:
 #	cp -a doc/* $(DOCS_DIR)/
 ### LIBS
 	install -d $(LIBS_DIR)
-	install -m 755 lib/*.so.* $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc.so.$(VERSION) libedbc.so
+# 	install -m 755 lib/*.so.* $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc.so.$(VERSION) libedbc.so
 	if test -f mysql/libedbc_mysql.so.$(VERSION) ; then install -m 755 mysql/libedbc_mysql.so.$(VERSION) $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc_mysql.so.$(VERSION) libedbc_mysql.so ; fi
 	if test -f postgresql/libedbc_pgsql.so.$(VERSION) ; then install -m 755 postgresql/libedbc_pgsql.so.$(VERSION) $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc_pgsql.so.$(VERSION) libedbc_pgsql.so ; fi

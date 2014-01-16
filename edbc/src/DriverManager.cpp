@@ -32,35 +32,44 @@ Default constructor. Loads the EDBC drivers.
 \throw IOException
 */
 DriverManager::DriverManager()
-: driverCount(0)
+:  driverCount(0)
 {
 #ifdef DEBUG
-	cout << "DriverManager::Constructor: Constructing a DriverManager object: " << this << endl;
-	cout << "DriverManager::Constructor: ENV_DRIVERS=" << ENV_DRIVERS << endl;
+	cout <<
+	    "DriverManager::Constructor: Constructing a DriverManager object: "
+	    << this << endl;
+	cout << "DriverManager::Constructor: ENV_DRIVERS=" << ENV_DRIVERS
+	    << endl;
 #endif
-	char *p=getenv(ENV_DRIVERS);
-	if(p == NULL) {
-		driversDir="/usr/lib/edbc";
+	char *p = getenv(ENV_DRIVERS);
+	if (p == NULL) {
+		driversDir = "/usr/lib/edbc";
 #ifdef DEBUG
-		cout << "DriverManager::Constructor: " << ENV_DRIVERS << " is not set. Setting to the default /usr/lib/edbc" << endl;
+		cout << "DriverManager::Constructor: " << ENV_DRIVERS <<
+		    " is not set. Setting to the default /usr/lib/edbc" <<
+		    endl;
 #endif
-	}
-	else
-		driversDir=p;
+	} else
+		driversDir = p;
 #ifdef DEBUG
-	cout << "DriverManager::Constructor: driversDir=[" << driversDir << "]" << endl;
+	cout << "DriverManager::Constructor: driversDir=[" << driversDir <<
+	    "]" << endl;
 #endif
-	if(!loadDrivers()) {
-		cerr << "DriverManager::Constructor: error loading EDBC drivers" << endl;
+	if (!loadDrivers()) {
+		cerr <<
+		    "DriverManager::Constructor: error loading EDBC drivers"
+		    << endl;
 		// throw IOException
 	}
-		
+
 }
 
 DriverManager::~DriverManager()
 {
 #ifdef DEBUG
-	cout << "DriverManager::Destructor: destructing a DriverManager object: " << this << endl;
+	cout <<
+	    "DriverManager::Destructor: destructing a DriverManager object: "
+	    << this << endl;
 #endif
 }
 
@@ -72,43 +81,52 @@ bool DriverManager::loadDrivers(void)
 {
 	FILE *dl_ptr;
 	void *dlib_ptr;
-	const int BUFFER_SIZE=4096;
+	const int BUFFER_SIZE = 4096;
 	char buffer[BUFFER_SIZE];
 
 #ifdef DEBUG
-	cout << "DriverManager::loadDrivers: loading the EDBC drivers from [" << driversDir << "]" << endl;
+	cout <<
+	    "DriverManager::loadDrivers: loading the EDBC drivers from ["
+	    << driversDir << "]" << endl;
 #endif
 	ostringstream osstr;
-	osstr << "ls " << driversDir << "/*.so" << ends;
-	string command=osstr.str();
-	dl_ptr=popen(command.c_str(),"r");
-	if(!dl_ptr) {
-		cerr << "DriverManager::loadDrivers: could not open pipe to [" << command << "]" << endl;
+	//osstr << "ls " << driversDir << "/*.so" << ends;
+	osstr << "ls " << driversDir << "/libedbc*.so" << ends;
+	string command = osstr.str();
+	dl_ptr = popen(command.c_str(), "r");
+	if (!dl_ptr) {
+		cerr <<
+		    "DriverManager::loadDrivers: could not open pipe to ["
+		    << command << "]" << endl;
 		return false;
 	}
-	while(fgets(buffer,BUFFER_SIZE,dl_ptr)) {
+	while (fgets(buffer, BUFFER_SIZE, dl_ptr)) {
 #ifdef DEBUG
-		cout << "DriverManager::loadDrivers: read=[" << buffer << "]" << endl;
+		cout << "DriverManager::loadDrivers: read=[" << buffer <<
+		    "]" << endl;
 #endif
-		char *ws=strpbrk(buffer," \t\n");
-		if(ws)
-			*ws='\0';
+		char *ws = strpbrk(buffer, " \t\n");
+		if (ws)
+			*ws = '\0';
 
 #ifdef DEBUG
-		cout << "DriverManager::loadDrivers: buffer=[" << buffer << "]" << endl;
+		cout << "DriverManager::loadDrivers: buffer=[" << buffer <<
+		    "]" << endl;
 #endif
 		//dlib_ptr=dlopen(buffer,RTLD_NOW);
-		dlib_ptr=dlopen(buffer,RTLD_NOW|RTLD_GLOBAL);
-		if(dlib_ptr == NULL) {
-			cerr << "DriverManager::loadDrivers: dlerror : " << dlerror() << endl;
+		dlib_ptr = dlopen(buffer, RTLD_NOW | RTLD_GLOBAL);
+		if (dlib_ptr == NULL) {
+			cerr << "DriverManager::loadDrivers: dlerror : " <<
+			    dlerror() << endl;
 			pclose(dl_ptr);
 			return false;
 		}
-		makers[driverCount++]=dlib_ptr; // add the handle to the list
+		makers[driverCount++] = dlib_ptr;	// add the handle to the list
 	}
 	pclose(dl_ptr);
 #ifdef DEBUG
-	cout << "DriverManager::loadDrivers: number of loaded drivers=" << driverCount << endl;
+	cout << "DriverManager::loadDrivers: number of loaded drivers=" <<
+	    driverCount << endl;
 #endif
 	return true;
 }
@@ -116,22 +134,26 @@ bool DriverManager::loadDrivers(void)
 /*
 * Returns a Connection object on success or NULL 
 */
-Connection *DriverManager::getConnection(string url,string user,string password)
+Connection *DriverManager::getConnection(string url, string user,
+					 string password)
 {
 #ifdef DEBUG
-	cout << "DriverManager::getConnection: url=[" << url << "] user=[" << user << "] password=[" << password << "]" << endl;
+	cout << "DriverManager::getConnection: url=[" << url << "] user=["
+	    << user << "] password=[" << password << "]" << endl;
 #endif
 	Connection *conn;
 
-	for(int i=0;i<driverCount;i++) {
+	for (int i = 0; i < driverCount; i++) {
 #ifdef DEBUG
-		cout << "DriverManager::getConnection: trying " << i << endl;
+		cout << "DriverManager::getConnection: trying " << i <<
+		    endl;
 #endif
-		maker_t *create_conn=(maker_t *)dlsym(makers[i],"maker");
-		if(!create_conn)
+		maker_t *create_conn =
+		    (maker_t *) dlsym(makers[i], "maker");
+		if (!create_conn)
 			continue;
-		conn=create_conn(url,user,password);
-		if(conn != NULL)
+		conn = create_conn(url, user, password);
+		if (conn != NULL)
 			return conn;
 	}
 	return NULL;

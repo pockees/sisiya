@@ -29,54 +29,54 @@
 using namespace std;
 
 //! MySQL implementation of the ResultSetMetaData class.
-class MySQL_ResultSetMetaData: public ResultSetMetaData {
-	public:
-		//! Default constructor.
-		MySQL_ResultSetMetaData();
-		//! Destructor.
-		virtual ~MySQL_ResultSetMetaData();
-		//! Returns column count.
-		virtual int getColumnCount(void);
-		//! Returns column label.
-		virtual string getColumnLabel(int columnIndex);
-		//! Return column name.
-		virtual string getColumnName(int columnIndex);
-		//! Returns column type.
-		virtual int getColumnType(int columnIndex);
-		//! Returns column type name.
-		virtual string getColumnTypeName(int columnIndex);
-		//! Returns schema name.
-		virtual string getSchemaName(int columnIndex);
-		//! Returns table name.
-		virtual string getTableName(int columnIndex);
-		//! Returns row count.
-		virtual long int getRowCount(void);
+class MySQL_ResultSetMetaData:public ResultSetMetaData {
+      public:
+	//! Default constructor.
+	MySQL_ResultSetMetaData();
+	//! Destructor.
+	virtual ~ MySQL_ResultSetMetaData();
+	//! Returns column count.
+	virtual int getColumnCount(void);
+	//! Returns column label.
+	virtual string getColumnLabel(int columnIndex);
+	//! Return column name.
+	virtual string getColumnName(int columnIndex);
+	//! Returns column type.
+	virtual int getColumnType(int columnIndex);
+	//! Returns column type name.
+	virtual string getColumnTypeName(int columnIndex);
+	//! Returns schema name.
+	virtual string getSchemaName(int columnIndex);
+	//! Returns table name.
+	virtual string getTableName(int columnIndex);
+	//! Returns row count.
+	virtual long int getRowCount(void);
 
 	// This public does not belong to the general class
-	public:
-		//! Returns column index. This function is only used by the MySQL Statement class.
-		int getColumnIndex(string columnName);
-		//! Returns column count. This function is only used by the MySQL Statement class.
-		void setColumnCount(int count);
-		//! Returns MySQL fields. This function is only used by the MySQL Statement class.
-		void setMYSQL_FIELDS(MYSQL_FIELD *fields);
-		//! Sets MySQL object. This function is only used by the MySQL Statement class.
-		void setMYSQL(MYSQL *mysql);
-		//! Sets MySQL result object. This function is only used by the MySQL Statement class.
-		void setMYSQL_RES(MYSQL_RES *result);
-		//! Sets row count. This function is only used by the MySQL Statement class.
-		void setRowCount(int count);
-	private:
-		//! Column count variable.
-		int columnCount; 
-		//! Row count variable.
-		int rowCount;
-		//! Pointer to MySQL fields (columns).
-		MYSQL_FIELD *fields;
-		//! Pointer to MySQL object.
-		MYSQL *mysql;
-		//! Pointer to MySQL result object.
-		MYSQL_RES *result;
+      public:
+	//! Returns column index. This function is only used by the MySQL Statement class.
+	int getColumnIndex(string columnName);
+	//! Returns column count. This function is only used by the MySQL Statement class.
+	void setColumnCount(int count);
+	//! Returns MySQL fields. This function is only used by the MySQL Statement class.
+	void setMYSQL_FIELDS(MYSQL_FIELD * fields);
+	//! Sets MySQL object. This function is only used by the MySQL Statement class.
+	void setMYSQL(MYSQL * mysql);
+	//! Sets MySQL result object. This function is only used by the MySQL Statement class.
+	void setMYSQL_RES(MYSQL_RES * result);
+	//! Sets row count. This function is only used by the MySQL Statement class.
+	void setRowCount(int count);
+      private:
+	//! Column count variable.
+	int columnCount;
+	//! Row count variable.
+	int rowCount;
+	//! Pointer to MySQL fields (columns).
+	MYSQL_FIELD *fields;
+	//! Pointer to MySQL object.
+	MYSQL *mysql;
+	//! Pointer to MySQL result object.
+	MYSQL_RES *result;
 };
 
-#endif 
+#endif

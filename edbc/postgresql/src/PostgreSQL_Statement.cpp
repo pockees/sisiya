@@ -25,33 +25,38 @@
 using namespace std;
 
 // default constructor
-PostgreSQL_Statement::PostgreSQL_Statement() 
-: updateCount(-1)
-{ 
+PostgreSQL_Statement::PostgreSQL_Statement()
+:  updateCount(-1)
+{
 #ifdef DEBUG
-	cout << "PostgreSQL_Statement::Constructor : Constructing a PostgreSQL Statement object :" << this << endl; 
+	cout <<
+	    "PostgreSQL_Statement::Constructor : Constructing a PostgreSQL Statement object :"
+	    << this << endl;
 #endif
-	pg_conn=NULL;
-	conn=NULL;
-	result=NULL;
-	rset=new PostgreSQL_ResultSet;
-	rsmd=new PostgreSQL_ResultSetMetaData;
+	pg_conn = NULL;
+	conn = NULL;
+	result = NULL;
+	rset = new PostgreSQL_ResultSet;
+	rsmd = new PostgreSQL_ResultSetMetaData;
 
 }
 
 // destructor
-PostgreSQL_Statement::~PostgreSQL_Statement() 
-{ 
+PostgreSQL_Statement::~PostgreSQL_Statement()
+{
 #ifdef DEBUG
-	cout << "PostgreSQL_Statement::Destructor : destructing a PostgreSQL Statement object :" << this << endl; 
+	cout <<
+	    "PostgreSQL_Statement::Destructor : destructing a PostgreSQL Statement object :"
+	    << this << endl;
 #endif
 }
 
-void PostgreSQL_Statement::setConnection(PostgreSQL_Connection *conn)
+void PostgreSQL_Statement::setConnection(PostgreSQL_Connection * conn)
 {
-	this->conn=conn;
+	this->conn = conn;
 #ifdef DEBUG
-	cout << "PostgreSQL_Statement::setConnection: conn = " << this->conn << endl;
+	cout << "PostgreSQL_Statement::setConnection: conn = " << this->
+	    conn << endl;
 #endif
 }
 
@@ -67,7 +72,7 @@ ResultSet *PostgreSQL_Statement::getResultSet(void)
 	rset->setPGresult(result);
 	rset->setResultSetMetaData(rsmd);
 	rset->setStatement(this);
-	
+
 	return rset;
 }
 
@@ -76,11 +81,12 @@ int PostgreSQL_Statement::getUpdateCount(void)
 	return updateCount;
 }
 
-void PostgreSQL_Statement::setPGconn(PGconn *pg_conn)
+void PostgreSQL_Statement::setPGconn(PGconn * pg_conn)
 {
-	this->pg_conn=pg_conn;
+	this->pg_conn = pg_conn;
 #ifdef DEBUG
-	cout << "PostgreSQL_Statement::setPGconn: pg_conn = " << this->pg_conn << endl;
+	cout << "PostgreSQL_Statement::setPGconn: pg_conn = " << this->
+	    pg_conn << endl;
 #endif
 }
 
@@ -89,15 +95,19 @@ void PostgreSQL_Statement::setPGconn(PGconn *pg_conn)
 */
 bool PostgreSQL_Statement::execute(const string sql)
 {
-	updateCount=-1; // reset to the default value, this is needed if someone uses the same Statement multiple times
+	updateCount = -1;	// reset to the default value, this is needed if someone uses the same Statement multiple times
 
 #ifdef DEBUG
-	cout << "PostgreSQL_Statement::execute: Executing query :[" << sql << "]" << endl;
-	cout << "PostgreSQL_Statement::execute: pg_conn=" << pg_conn << endl;
+	cout << "PostgreSQL_Statement::execute: Executing query :[" << sql
+	    << "]" << endl;
+	cout << "PostgreSQL_Statement::execute: pg_conn=" << pg_conn <<
+	    endl;
 #endif
-	if(pg_conn == NULL) {
+	if (pg_conn == NULL) {
 		//cerr << "PostgreSQL_Statement::execute: cannot allocate memory for pg_conn" << endl;
-		throw SQLException(string("PostgreSQL_Statement::execute: cannot allocate memory for pg_conn"));
+		throw
+		    SQLException(string
+				 ("PostgreSQL_Statement::execute: cannot allocate memory for pg_conn"));
 		//return false;
 	}
 /*
@@ -130,88 +140,131 @@ bool PostgreSQL_Statement::execute(const string sql)
 */
 
 
-	result=PQexec(pg_conn,sql.c_str());
-	if(result == NULL) {
-		throw SQLException(string("PostgreSQL_Statement::execute: Error executing query : [")+string(sql)+string("] message=")+string(PQerrorMessage(pg_conn)));
-		return false; // here I should throw SQLException
+	result = PQexec(pg_conn, sql.c_str());
+	if (result == NULL) {
+		throw
+		    SQLException(string
+				 ("PostgreSQL_Statement::execute: Error executing query : [")
+				 + string(sql) + string("] message=") +
+				 string(PQerrorMessage(pg_conn)));
+		return false;	// here I should throw SQLException
 	}
-	ExecStatusType resultCode=PQresultStatus(result);
-	switch(resultCode) {
-		case PGRES_EMPTY_QUERY :
-			throw SQLException(string("PostgreSQL_Statement::execute: the query=[")+sql+string("] sent to the database server was empty : ")+string(PQresStatus(resultCode)));
-			break;
-		case PGRES_COMMAND_OK :
-			{	// to make the compiler happy. This is needed in order for the compiler
-				// to call the destructors of the variables.
+	ExecStatusType resultCode = PQresultStatus(result);
+	switch (resultCode) {
+	case PGRES_EMPTY_QUERY:
+		throw
+		    SQLException(string
+				 ("PostgreSQL_Statement::execute: the query=[")
+				 + sql +
+				 string
+				 ("] sent to the database server was empty : ")
+				 + string(PQresStatus(resultCode)));
+		break;
+	case PGRES_COMMAND_OK:
+		{		// to make the compiler happy. This is needed in order for the compiler
+			// to call the destructors of the variables.
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: query=[" << sql << "] command completed successfuly. No data to be returned : " << PQresStatus(resultCode)  << endl;
+			cout << "PostgreSQL_Statement::execute: query=[" <<
+			    sql <<
+			    "] command completed successfuly. No data to be returned : "
+			    << PQresStatus(resultCode) << endl;
 #endif
-			char *p=PQcmdTuples(result);
+			char *p = PQcmdTuples(result);
 			/*
-			if(strcmp(p,"") != 0)
-				updateCount=atoi(p);
-			*/
-			string str=p;
-			if(str.size() > 0) {
+			   if(strcmp(p,"") != 0)
+			   updateCount=atoi(p);
+			 */
+			string str = p;
+			if (str.size() > 0) {
 				istringstream isstr(p);
 				isstr >> updateCount;
 			}
-			}
-			return false;
-			//break;
-		case PGRES_TUPLES_OK :
+		}
+		return false;
+		//break;
+	case PGRES_TUPLES_OK:
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: query=[" << sql << "] is OK" << endl;
+		cout << "PostgreSQL_Statement::execute: query=[" << sql <<
+		    "] is OK" << endl;
 #endif
-			rsmd->setColumnCount(PQnfields(result));
-			rsmd->setRowCount(PQntuples(result));
+		rsmd->setColumnCount(PQnfields(result));
+		rsmd->setRowCount(PQntuples(result));
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: column count=" << rsmd->getColumnCount() << endl;
-			cout << "PostgreSQL_Statement::execute: row count=" << rsmd->getRowCount() << endl;
+		cout << "PostgreSQL_Statement::execute: column count=" <<
+		    rsmd->getColumnCount() << endl;
+		cout << "PostgreSQL_Statement::execute: row count=" <<
+		    rsmd->getRowCount() << endl;
 #endif
-			break;
-		case PGRES_COPY_OUT :
+		break;
+	case PGRES_COPY_OUT:
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: query=[" << sql << "] copy out (from server) data transfer started : " << PQresStatus(resultCode) << endl;
+		cout << "PostgreSQL_Statement::execute: query=[" << sql <<
+		    "] copy out (from server) data transfer started : " <<
+		    PQresStatus(resultCode) << endl;
 #endif
-			break;
-		case PGRES_COPY_IN :
+		break;
+	case PGRES_COPY_IN:
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: query=[" << sql << "] copy in (to server) data transfer started : " << PQresStatus(resultCode) << endl;
+		cout << "PostgreSQL_Statement::execute: query=[" << sql <<
+		    "] copy in (to server) data transfer started : " <<
+		    PQresStatus(resultCode) << endl;
 #endif
-			break;
-		case PGRES_BAD_RESPONSE :
+		break;
+	case PGRES_BAD_RESPONSE:
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: query=[" << sql << "] The server's response was not understood : " << PQresStatus(resultCode) << endl;
+		cout << "PostgreSQL_Statement::execute: query=[" << sql <<
+		    "] The server's response was not understood : " <<
+		    PQresStatus(resultCode) << endl;
 #endif
-			throw SQLException(string("PostgreSQL_Statement::execute: query=[")+sql+string("] The server's response was not understood : ")+string(PQresStatus(resultCode)));
-			break;
-		case PGRES_NONFATAL_ERROR :
+		throw
+		    SQLException(string
+				 ("PostgreSQL_Statement::execute: query=[")
+				 + sql +
+				 string
+				 ("] The server's response was not understood : ")
+				 + string(PQresStatus(resultCode)));
+		break;
+	case PGRES_NONFATAL_ERROR:
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: query=[" << sql << "] A non fatal error (a notice or warning) occured : " << PQresStatus(resultCode) << endl;
+		cout << "PostgreSQL_Statement::execute: query=[" << sql <<
+		    "] A non fatal error (a notice or warning) occured : "
+		    << PQresStatus(resultCode) << endl;
 #endif
-			break;
-		case PGRES_FATAL_ERROR :
+		break;
+	case PGRES_FATAL_ERROR:
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: query=[" << sql << "] A fatal error occured : " << PQresStatus(resultCode) << endl;
+		cout << "PostgreSQL_Statement::execute: query=[" << sql <<
+		    "] A fatal error occured : " << PQresStatus(resultCode)
+		    << endl;
 #endif
-			throw SQLException(string("PostgreSQL_Statement::execute: query=[")+sql+string("] A fatal error occured : ")+string(PQresStatus(resultCode)));
-			break;
-		default :
+		throw
+		    SQLException(string
+				 ("PostgreSQL_Statement::execute: query=[")
+				 + sql +
+				 string("] A fatal error occured : ") +
+				 string(PQresStatus(resultCode)));
+		break;
+	default:
 #ifdef DEBUG
-			cout << "PostgreSQL_Statement::execute: query=[" << sql << "] Unknown return code" << endl;
+		cout << "PostgreSQL_Statement::execute: query=[" << sql <<
+		    "] Unknown return code" << endl;
 #endif
-			throw SQLException(string("PostgreSQL_Statement::execute: query=[")+sql+string("] Unknown return code"));
-			break;
+		throw
+		    SQLException(string
+				 ("PostgreSQL_Statement::execute: query=[")
+				 + sql + string("] Unknown return code"));
+		break;
 	}
-//	PQclear(result); // I am going to need this result set pointer for later use.
+//      PQclear(result); // I am going to need this result set pointer for later use.
 	return true;
 }
 
 ResultSet *PostgreSQL_Statement::executeQuery(const string sql)
 {
-	if(!execute(sql)) {
-		cerr << "PostgreSQL_Statement::executeQuery: Error executing the query=[" << sql << "]" << endl;
+	if (!execute(sql)) {
+		cerr <<
+		    "PostgreSQL_Statement::executeQuery: Error executing the query=["
+		    << sql << "]" << endl;
 		return NULL;
 	}
 	return getResultSet();
@@ -223,11 +276,14 @@ ResultSet *PostgreSQL_Statement::executeQuery(const string sql)
 */
 int PostgreSQL_Statement::executeUpdate(const string sql)
 {
-	if(execute(sql)) {
-		throw SQLException(string("PostgreSQL_Statement::executeUpdate: Error executing the query=[")+sql+string("]"));
+	if (execute(sql)) {
+		throw
+		    SQLException(string
+				 ("PostgreSQL_Statement::executeUpdate: Error executing the query=[")
+				 + sql + string("]"));
 		//return -1;
 	}
-	if(updateCount == -1)
+	if (updateCount == -1)
 		return 0;
 	return updateCount;
 }

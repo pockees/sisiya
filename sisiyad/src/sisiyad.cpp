@@ -32,7 +32,7 @@
 
 // this is a C++ program
 #ifndef __cplusplus
-	#define __cplusplus
+#define __cplusplus
 #endif
 
 #include"common.hpp"
@@ -80,9 +80,9 @@ END_C_DECLS
 using namespace std;
 
 //! The name of the configuration file.
-char * confFileName;
+char *confFileName;
 //! Coonection object
-Connection *conn=NULL;
+Connection *conn = NULL;
 //! DriverManager object
 DriverManager *dm;
 //! EDBC string
@@ -102,7 +102,7 @@ int sockfd;
 Semaphore *sem;
 
 //! The server and client socketaddr structures
-struct sockaddr_in cli_addr,serv_addr;
+struct sockaddr_in cli_addr, serv_addr;
 
 //! Environment variable for sigsetjump() used for SIGHUP
 static jmp_buf env_reconfigure;
@@ -129,24 +129,32 @@ Signal handler for SIGCHLD.
 */
 RETSIGTYPE sig_child(int signo)
 {
- 
+
 	int status;
-//	pid_t pid=wait(&status);
-	pid_t pid; 
-	int saved_errno=errno; // save the errno value
+//      pid_t pid=wait(&status);
+	pid_t pid;
+	int saved_errno = errno;	// save the errno value
 
-	while((pid=waitpid(-1,&status,WNOHANG)) > 0) {
-		if(loglevel > 1)
-			syslog(LOG_INFO,"child server(%s:%d) pid=%d terminated with status=%d",inet_ntoa(cli_addr.sin_addr),cli_addr.sin_port,pid,status);
+	while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+		if (loglevel > 1)
+			syslog(LOG_INFO,
+			       "child server(%s:%d) pid=%d terminated with status=%d",
+			       inet_ntoa(cli_addr.sin_addr),
+			       cli_addr.sin_port, pid, status);
 
-		if(WIFEXITED(status) != 0){
-			if(loglevel > 1)
-				syslog(LOG_INFO,"child server(%s:%d) pid=%d terminated normally.",inet_ntoa(cli_addr.sin_addr),cli_addr.sin_port,pid);
-		}
-		else 
-			syslog(LOG_ERR,"child server(%s:%d) pid=%d terminated abnormally!",inet_ntoa(cli_addr.sin_addr),cli_addr.sin_port,pid);
+		if (WIFEXITED(status) != 0) {
+			if (loglevel > 1)
+				syslog(LOG_INFO,
+				       "child server(%s:%d) pid=%d terminated normally.",
+				       inet_ntoa(cli_addr.sin_addr),
+				       cli_addr.sin_port, pid);
+		} else
+			syslog(LOG_ERR,
+			       "child server(%s:%d) pid=%d terminated abnormally!",
+			       inet_ntoa(cli_addr.sin_addr),
+			       cli_addr.sin_port, pid);
 	}
-	errno=saved_errno; // restore the errno value
+	errno = saved_errno;	// restore the errno value
 }
 
 /*!
@@ -154,8 +162,10 @@ Signal handler for SIGQUIT.
 */
 RETSIGTYPE sig_quit(int signo)
 {
-	if(loglevel > 1)
-		syslog(LOG_INFO,"child server(%s:%d) caught SIGQUIT (%d)",inet_ntoa(cli_addr.sin_addr),cli_addr.sin_port,signo);
+	if (loglevel > 1)
+		syslog(LOG_INFO, "child server(%s:%d) caught SIGQUIT (%d)",
+		       inet_ntoa(cli_addr.sin_addr), cli_addr.sin_port,
+		       signo);
 	clean_and_exit(EXIT_SUCCESS);
 }
 
@@ -164,9 +174,11 @@ Signal handler for SIGHUP. This way we reconfigure our server.
 */
 RETSIGTYPE sig_hup(int signo)
 {
-	syslog(LOG_INFO,"Server(%s:%d) caught SIGHUP (%d). Reloading configuration.",inet_ntoa(cli_addr.sin_addr),cli_addr.sin_port,signo);
-	// restore the set of blocked signals if any		
-	siglongjmp(env_reconfigure,1);
+	syslog(LOG_INFO,
+	       "Server(%s:%d) caught SIGHUP (%d). Reloading configuration.",
+	       inet_ntoa(cli_addr.sin_addr), cli_addr.sin_port, signo);
+	// restore the set of blocked signals if any            
+	siglongjmp(env_reconfigure, 1);
 }
 
 
@@ -175,8 +187,8 @@ Signal handler for SIGTERM.
 */
 RETSIGTYPE sig_term(int signo)
 {
-	if(loglevel > 1)
-		syslog(LOG_INFO,"server caught SIGTERM (%d)",signo);
+	if (loglevel > 1)
+		syslog(LOG_INFO, "server caught SIGTERM (%d)", signo);
 	clean_and_exit(EXIT_SUCCESS);
 }
 
@@ -194,10 +206,10 @@ Performs clean up and exits with the specified exit code.
 void clean_and_exit(int code)
 {
 	clean_up();
-	if(code != 0)
-		syslog(LOG_INFO,"exited with error code=%d",code);
+	if (code != 0)
+		syslog(LOG_INFO, "exited with error code=%d", code);
 	else
-		syslog(LOG_INFO,"exited");
+		syslog(LOG_INFO, "exited");
 
 	exit(code);
 }
@@ -209,35 +221,41 @@ void clean_up(void)
 {
 	pid_t pid;
 
-	pid=getpid();
+	pid = getpid();
 	// This must be done only if we are the daemon.
 
-	if(pid == serverPID) {
+	if (pid == serverPID) {
 		// Exiting the daemon
 		close(sockfd);
-		if(loglevel > 2)
-			syslog(LOG_INFO,"closed sockfd %d.",sockfd);
+		if (loglevel > 2)
+			syslog(LOG_INFO, "closed sockfd %d.", sockfd);
 
-		if(loglevel > 2)
-			syslog(LOG_INFO,"removing semaphore=%d.",sem->getID());
+		if (loglevel > 2)
+			syslog(LOG_INFO, "removing semaphore=%d.",
+			       sem->getID());
 		delete sem;
-		sem=NULL;
-		if(loglevel > 2)
-			syslog(LOG_INFO,"semaphore is removed.");
-		if(conn != NULL) {
+		sem = NULL;
+		if (loglevel > 2)
+			syslog(LOG_INFO, "semaphore is removed.");
+		if (conn != NULL) {
 			delete conn;
-			conn=NULL;
-			if(loglevel > 1)
-				syslog(LOG_INFO,"Disconnected from DB %s@%s",confFile.getString("DB_USER").c_str(),edbc.c_str());
+			conn = NULL;
+			if (loglevel > 1)
+				syslog(LOG_INFO,
+				       "Disconnected from DB %s@%s",
+				       confFile.getString("DB_USER").
+				       c_str(), edbc.c_str());
 		}
-		// remove the pid file	
-		if(unlink(confFile.getString("PID_FILE").c_str()) != 0) {
-			syslog(LOG_ERR,"can't unlink the PID file : %s !",confFile.getString("PID_FILE").c_str());
+		// remove the pid file  
+		if (unlink(confFile.getString("PID_FILE").c_str()) != 0) {
+			syslog(LOG_ERR, "can't unlink the PID file : %s !",
+			       confFile.getString("PID_FILE").c_str());
 		}
-		if(loglevel > 1)
-			syslog(LOG_INFO,"Removed the pid file %s",confFile.getString("PID_FILE").c_str());
-	
- 	}
+		if (loglevel > 1)
+			syslog(LOG_INFO, "Removed the pid file %s",
+			       confFile.getString("PID_FILE").c_str());
+
+	}
 }
 
 
@@ -246,66 +264,90 @@ Print the configuration information to syslog.
 */
 void sisiya_showconf(void)
 {
-	syslog(LOG_INFO,"StartServers : [%d]",confFile.getInt("StartServers"));
-	syslog(LOG_INFO,"MaxClients : [%d]",confFile.getInt("MaxClients"));
-	syslog(LOG_INFO,"MinSpareThreads : [%d]",confFile.getInt("MinSpareThreads"));
-	syslog(LOG_INFO,"MaxSpareThreads : [%d]",confFile.getInt("MaxSpareThreads"));
-	syslog(LOG_INFO,"ReadTimeout : [%d]",confFile.getInt("ReadTimeout"));
-	syslog(LOG_INFO,"PID_FILE : [%s]",confFile.getString("PID_FILE").c_str());
-	syslog(LOG_INFO,"LOGLEVEL : [%d]",confFile.getInt("LOGLEVEL"));
-	syslog(LOG_INFO,"IP : [%s]",confFile.getString("IP").c_str());
-	syslog(LOG_INFO,"PORT : [%d]",confFile.getInt("PORT"));
-	syslog(LOG_INFO,"DB_SERVER : [%s]",confFile.getString("DB_SERVER").c_str());
-	syslog(LOG_INFO,"DB_TYPE : [%s]",confFile.getString("DB_TYPE").c_str());
-	syslog(LOG_INFO,"DB_NAME : [%s]",confFile.getString("DB_NAME").c_str());
-	syslog(LOG_INFO,"DB_USER : [%s]",confFile.getString("DB_USER").c_str());
-	syslog(LOG_INFO,"DB_PASSWORD : [*******]");
+	syslog(LOG_INFO, "StartServers : [%d]",
+	       confFile.getInt("StartServers"));
+	syslog(LOG_INFO, "MaxClients : [%d]",
+	       confFile.getInt("MaxClients"));
+	syslog(LOG_INFO, "MinSpareThreads : [%d]",
+	       confFile.getInt("MinSpareThreads"));
+	syslog(LOG_INFO, "MaxSpareThreads : [%d]",
+	       confFile.getInt("MaxSpareThreads"));
+	syslog(LOG_INFO, "ReadTimeout : [%d]",
+	       confFile.getInt("ReadTimeout"));
+	syslog(LOG_INFO, "PID_FILE : [%s]",
+	       confFile.getString("PID_FILE").c_str());
+	syslog(LOG_INFO, "LOGLEVEL : [%d]", confFile.getInt("LOGLEVEL"));
+	syslog(LOG_INFO, "IP : [%s]", confFile.getString("IP").c_str());
+	syslog(LOG_INFO, "PORT : [%d]", confFile.getInt("PORT"));
+	syslog(LOG_INFO, "DB_SERVER : [%s]",
+	       confFile.getString("DB_SERVER").c_str());
+	syslog(LOG_INFO, "DB_TYPE : [%s]",
+	       confFile.getString("DB_TYPE").c_str());
+	syslog(LOG_INFO, "DB_NAME : [%s]",
+	       confFile.getString("DB_NAME").c_str());
+	syslog(LOG_INFO, "DB_USER : [%s]",
+	       confFile.getString("DB_USER").c_str());
+	syslog(LOG_INFO, "DB_PASSWORD : [*******]");
 }
 
 /*!
 */
 void showConfigs(void)
 {
-	cout << "StartServers		: [" << confFile.getInt("StartServers") << "]" << endl;
-	cout << "MaxClients		: [" << confFile.getInt("MaxClients") << "]" << endl;
-	cout << "MinSpareThreads		: [" << confFile.getInt("MinSpareThreads") << "]" << endl;
-	cout << "MaxSpareThreads		: [" << confFile.getInt("MaxSpareThreads") << "]" << endl;
-	cout << "ReadTimeout		: [" << confFile.getInt("ReadTimeout") << "]" << endl;
-	cout << "PID_FILE		: [" << confFile.getString("PID_FILE") << "]" << endl;
-	cout << "LOGLEVEL		: [" << confFile.getInt("LOGLEVEL") << "]" << endl;
-	cout << "IP			: [" << confFile.getString("IP") << "]" << endl;
-	cout << "PORT			: [" << confFile.getInt("PORT") << "]" << endl;
-	cout << "DB_SERVER		: [" << confFile.getString("DB_SERVER") << "]" << endl;
-	cout << "DB_TYPE			: [" << confFile.getString("DB_TYPE") << "]" << endl;
-	cout << "DB_NAME			: [" << confFile.getString("DB_NAME") << "]" << endl;
-	cout << "DB_USER			: [" << confFile.getString("DB_USER") << "]" << endl;
-	cout << "DB_PASSWORD		: [" << confFile.getString("DB_PASSWORD") << "]" << endl;
+	cout << "StartServers		: [" << confFile.
+	    getInt("StartServers") << "]" << endl;
+	cout << "MaxClients		: [" << confFile.
+	    getInt("MaxClients") << "]" << endl;
+	cout << "MinSpareThreads		: [" << confFile.
+	    getInt("MinSpareThreads") << "]" << endl;
+	cout << "MaxSpareThreads		: [" << confFile.
+	    getInt("MaxSpareThreads") << "]" << endl;
+	cout << "ReadTimeout		: [" << confFile.
+	    getInt("ReadTimeout") << "]" << endl;
+	cout << "PID_FILE		: [" << confFile.
+	    getString("PID_FILE") << "]" << endl;
+	cout << "LOGLEVEL		: [" << confFile.
+	    getInt("LOGLEVEL") << "]" << endl;
+	cout << "IP			: [" << confFile.
+	    getString("IP") << "]" << endl;
+	cout << "PORT			: [" << confFile.
+	    getInt("PORT") << "]" << endl;
+	cout << "DB_SERVER		: [" << confFile.
+	    getString("DB_SERVER") << "]" << endl;
+	cout << "DB_TYPE			: [" << confFile.
+	    getString("DB_TYPE") << "]" << endl;
+	cout << "DB_NAME			: [" << confFile.
+	    getString("DB_NAME") << "]" << endl;
+	cout << "DB_USER			: [" << confFile.
+	    getString("DB_USER") << "]" << endl;
+	cout << "DB_PASSWORD		: [" << confFile.
+	    getString("DB_PASSWORD") << "]" << endl;
 }
 
 void setDefaults(void)
 {
-	confFile.setDefault("StartServers",5);
-	confFile.setDefault("MaxClients",600);
-	confFile.setDefault("MinSpareThreads",10);
-	confFile.setDefault("MaxSpareThreads",30);
-	confFile.setDefault("ReadTimeout",10);
-	confFile.setDefault("PID_FILE","/var/run/sisiyad.pid");
-	confFile.setDefault("LOGLEVEL",0);
-	confFile.setDefault("SEMKEY",11);
-	confFile.setDefault("IP","any");
-	confFile.setDefault("PORT",8888);
-	confFile.setDefault("DB_SERVER","localhost");
+	confFile.setDefault("StartServers", 5);
+	confFile.setDefault("MaxClients", 600);
+	confFile.setDefault("MinSpareThreads", 10);
+	confFile.setDefault("MaxSpareThreads", 30);
+	confFile.setDefault("ReadTimeout", 10);
+	confFile.setDefault("PID_FILE", "/var/run/sisiyad.pid");
+	confFile.setDefault("LOGLEVEL", 0);
+	confFile.setDefault("SEMKEY", 11);
+	confFile.setDefault("IP", "any");
+	confFile.setDefault("PORT", 8888);
+	confFile.setDefault("DB_SERVER", "localhost");
 	//confFile.setDefault("DB_TYPE","PostgreSQL");
-	confFile.setDefault("DB_TYPE","MySQL");
-	confFile.setDefault("DB_NAME","sisiya");
-	confFile.setDefault("DB_USER","sisiyauser");
-	confFile.setDefault("DB_PASSWORD","sisiyauser1");
-	if(confFile.getString("DB_TYPE") == "PostgreSQL")
-		confFile.setDefault("DB_PORT",5432);
-	else if(confFile.getString("DB_TYPE") == "MySQL")
-		confFile.setDefault("DB_PORT",3306);
+	confFile.setDefault("DB_TYPE", "MySQL");
+	confFile.setDefault("DB_NAME", "sisiya");
+	confFile.setDefault("DB_USER", "sisiyauser");
+	confFile.setDefault("DB_PASSWORD", "sisiyauser1");
+	if (confFile.getString("DB_TYPE") == "PostgreSQL")
+		confFile.setDefault("DB_PORT", 5432);
+	else if (confFile.getString("DB_TYPE") == "MySQL")
+		confFile.setDefault("DB_PORT", 3306);
 	else
-		confFile.setDefault("DB_PORT",0);
+		confFile.setDefault("DB_PORT", 0);
 }
 
 /*!
@@ -315,27 +357,26 @@ int daemon_init(void)
 {
 	pid_t pid;
 
-	pid=fork();
-	if(pid < 0)
-		return(-1);
-	else if(pid != 0)
-		exit(0); // the parent exits
+	pid = fork();
+	if (pid < 0)
+		return (-1);
+	else if (pid != 0)
+		exit(0);	// the parent exits
 
 	// the child process continues
-	pid=setsid(); // become session leader
-	if(pid == -1) {
-		syslog(LOG_ERR,"cannot set session id");
+	pid = setsid();		// become session leader
+	if (pid == -1) {
+		syslog(LOG_ERR, "cannot set session id");
 		exit(1);
 	}
- 
 	// change working dir to /, so that we do not occupie any mounts
-	if(chdir("/") != 0) {
-		syslog(LOG_ERR,"cannot change dir to /");
+	if (chdir("/") != 0) {
+		syslog(LOG_ERR, "cannot change dir to /");
 		exit(1);
 	}
- 
-	umask(0); // clear our file creation mask, so that any inherited restriction do not apply
-	return(0);
+
+	umask(0);		// clear our file creation mask, so that any inherited restriction do not apply
+	return (0);
 };
 
 void doit(void)
@@ -346,214 +387,266 @@ void doit(void)
 	pid_t childPID;
 
 	/* become a daemon */
-	if(daemon_init() == -1) {
-		syslog(LOG_ERR,"could not fork. Exiting...");
+	if (daemon_init() == -1) {
+		syslog(LOG_ERR, "could not fork. Exiting...");
 		clean_and_exit(EXIT_FAILURE);
 	}
 	// here I should jump when there is SIGHUP
-	if(sigsetjmp(env_reconfigure,1) != 0) {
-		syslog(LOG_INFO,"Reconfiguring SisIYA daemon...");
+	if (sigsetjmp(env_reconfigure, 1) != 0) {
+		syslog(LOG_INFO, "Reconfiguring SisIYA daemon...");
 		// clean up
 		clean_up();
 	}
 	setDefaults();
 	confFile.setFileName(confFileName);
-	if(!confFile.setFileName(confFileName)) {
-		syslog(LOG_ERR,"could open file %s",confFileName);
+	if (!confFile.setFileName(confFileName)) {
+		syslog(LOG_ERR, "could open file %s", confFileName);
 		clean_and_exit(EXIT_FAILURE);
 	}
 	// Set the loglevel. For now it is primitive made. Change it later
-	loglevel=confFile.getInt("LOGLEVEL"); 
+	loglevel = confFile.getInt("LOGLEVEL");
 
 	// I ignore exited childs till I test it extensively. Normally there is no need to handle the exited child proccesses
 	// in SisIYA daemon.
-	if(esignal(SIGCHLD,SIG_IGN) == SIG_ERR) {
-		syslog(LOG_ERR,"could not set SIGCHLD to SIG_IGN. Exiting...");
+	if (esignal(SIGCHLD, SIG_IGN) == SIG_ERR) {
+		syslog(LOG_ERR,
+		       "could not set SIGCHLD to SIG_IGN. Exiting...");
 		clean_and_exit(EXIT_FAILURE);
 	}
 	/*
-	esignal(SIGCHLD,sig_child) == SIG_ERR) {
-		syslog(LOG_ERR,"could not set signal handler for SIGCHLD. Exiting...");
+	   esignal(SIGCHLD,sig_child) == SIG_ERR) {
+	   syslog(LOG_ERR,"could not set signal handler for SIGCHLD. Exiting...");
+	   clean_and_exit(EXIT_FAILURE);
+	   }
+	 */
+	if (esignal(SIGQUIT, sig_quit) == SIG_ERR) {
+		syslog(LOG_ERR,
+		       "could not set signal handler for SIGQUIT. Exiting...");
 		clean_and_exit(EXIT_FAILURE);
 	}
-	*/
-	if(esignal(SIGQUIT,sig_quit) == SIG_ERR) {
-		syslog(LOG_ERR,"could not set signal handler for SIGQUIT. Exiting...");
+	if (esignal(SIGTERM, sig_term) == SIG_ERR) {
+		syslog(LOG_ERR,
+		       "could not set signal handler for SIGTERM. Exiting...");
 		clean_and_exit(EXIT_FAILURE);
 	}
-	if(esignal(SIGTERM,sig_term) == SIG_ERR) {
-		syslog(LOG_ERR,"could not set signal handler for SIGTERM. Exiting...");
+	if (esignal(SIGUSR1, sig_usr1) == SIG_ERR) {
+		syslog(LOG_ERR,
+		       "could not set signal handler for SIGUSR1. Exiting...");
 		clean_and_exit(EXIT_FAILURE);
 	}
-	if(esignal(SIGUSR1,sig_usr1) == SIG_ERR) {
-		syslog(LOG_ERR,"could not set signal handler for SIGUSR1. Exiting...");
-		clean_and_exit(EXIT_FAILURE);
-	}
-	if(esignal(SIGHUP,sig_hup) == SIG_ERR) {
-		syslog(LOG_ERR,"could not set signal handler for SIGHUP. Exiting...");
+	if (esignal(SIGHUP, sig_hup) == SIG_ERR) {
+		syslog(LOG_ERR,
+		       "could not set signal handler for SIGHUP. Exiting...");
 		clean_and_exit(EXIT_FAILURE);
 	}
 
-	if(loglevel > 2)
-		syslog(LOG_INFO,"signal handlers are set");
+	if (loglevel > 2)
+		syslog(LOG_INFO, "signal handlers are set");
 
-	serverPID=getpid();
+	serverPID = getpid();
 
 	ofstream pidFile;
-	pidFile.open(confFile.getString("PID_FILE").c_str(),ios::out);
-	if(pidFile.bad()) {
-		syslog(LOG_ERR,"can't open the PID file : %s ! Exiting...",confFile.getString("PID_FILE").c_str());
-		clean_and_exit(EXIT_FAILURE); 
+	pidFile.open(confFile.getString("PID_FILE").c_str(), ios::out);
+	if (pidFile.bad()) {
+		syslog(LOG_ERR,
+		       "can't open the PID file : %s ! Exiting...",
+		       confFile.getString("PID_FILE").c_str());
+		clean_and_exit(EXIT_FAILURE);
 	}
 	pidFile << serverPID;
 	pidFile.close();
 
 
-	if((sockfd=socket(AF_INET,SOCK_STREAM,0)) < 0) {
-		syslog(LOG_ERR,"can't open stream socket (socket(AF_INET,SOCK_STREAM,0))");
+	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+		syslog(LOG_ERR,
+		       "can't open stream socket (socket(AF_INET,SOCK_STREAM,0))");
 		exit(1);
 	}
- 
-	if(loglevel > 1)
-		syslog(LOG_INFO,"opened a stream socket.");
- 
+
+	if (loglevel > 1)
+		syslog(LOG_INFO, "opened a stream socket.");
+
 	//bzero((char *)&serv_addr,sizeof(serv_addr));
-	bzero(static_cast<sockaddr_in *>(&serv_addr),sizeof(serv_addr));
-	serv_addr.sin_family=AF_INET;
-	if(confFile.getString("IP") == "any" || confFile.getString("IP") == "0.0.0.0")
+	bzero(static_cast < sockaddr_in * >(&serv_addr),
+	      sizeof(serv_addr));
+	serv_addr.sin_family = AF_INET;
+	if (confFile.getString("IP") == "any"
+	    || confFile.getString("IP") == "0.0.0.0")
 		// I cannot supress the old-style-cast here because INADDR_ANY is define with old style cast
-		serv_addr.sin_addr.s_addr=htonl(INADDR_ANY);
-	else if(confFile.getString("IP") == "127.0.0.1" || confFile.getString("IP") == "localhost")
-		serv_addr.sin_addr.s_addr=htonl(INADDR_LOOPBACK);
-	else {	 
-		if(inet_aton(confFile.getString("IP").c_str(),&(serv_addr.sin_addr)) == 0) {
-			syslog(LOG_ERR,"Can't convert numbers-and-dots (%s) notation into  binary  data",confFile.getString("IP").c_str());
+		serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	else if (confFile.getString("IP") == "127.0.0.1"
+		 || confFile.getString("IP") == "localhost")
+		serv_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+	else {
+		if (inet_aton
+		    (confFile.getString("IP").c_str(),
+		     &(serv_addr.sin_addr)) == 0) {
+			syslog(LOG_ERR,
+			       "Can't convert numbers-and-dots (%s) notation into  binary  data",
+			       confFile.getString("IP").c_str());
 			exit(1);
-		} 
-	} 
-	if(loglevel > 2)
-		syslog(LOG_INFO,"inet_ntoa(serv_addr.sin_addr)=%s",inet_ntoa(serv_addr.sin_addr));
-  
-	serv_addr.sin_port=htons(confFile.getInt("PORT"));
+		}
+	}
+	if (loglevel > 2)
+		syslog(LOG_INFO, "inet_ntoa(serv_addr.sin_addr)=%s",
+		       inet_ntoa(serv_addr.sin_addr));
+
+	serv_addr.sin_port = htons(confFile.getInt("PORT"));
 
 	// set SO_REUSEADDR option 
-	int on=1;
-	if(setsockopt(sockfd,SOL_SOCKET,SO_REUSEADDR, &on, sizeof(on)) < 0) {
+	int on = 1;
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) <
+	    0) {
 		close(sockfd);
-		syslog(LOG_ERR,"Cannot set SO_REUSEADDR socket option! Exiting...");
+		syslog(LOG_ERR,
+		       "Cannot set SO_REUSEADDR socket option! Exiting...");
 		exit(1);
+	} else {
+		if (loglevel > 2)
+			syslog(LOG_INFO, "Set SO_REUSEADDR socket option");
 	}
-	else {
-		if(loglevel > 2)
-			syslog(LOG_INFO,"Set SO_REUSEADDR socket option");
-	}
- 
-	if(bind(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0) {
-//	if(bind(sockfd,static_cast<struct sockaddr *>(&serv_addr),sizeof(serv_addr)) < 0) {
+
+	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr))
+	    < 0) {
+//      if(bind(sockfd,static_cast<struct sockaddr *>(&serv_addr),sizeof(serv_addr)) < 0) {
 		close(sockfd);
-		syslog(LOG_ERR,"Cannot bind local address (%s:%d)",confFile.getString("IP").c_str(),confFile.getInt("PORT"));
-		exit(1);
-	} 
-
-	if(loglevel > 1)
-		syslog(LOG_INFO,"Bind local address (%s:%d)",confFile.getString("IP").c_str(),confFile.getInt("PORT"));
-
-	if(listen(sockfd,LISTENQ) == -1) {
-		syslog(LOG_ERR,"Cannot listen address (%s:%d)",confFile.getString("IP").c_str(),confFile.getInt("PORT"));
+		syslog(LOG_ERR, "Cannot bind local address (%s:%d)",
+		       confFile.getString("IP").c_str(),
+		       confFile.getInt("PORT"));
 		exit(1);
 	}
 
-	if(loglevel > 1)
-		syslog(LOG_INFO,"Start to listen");
+	if (loglevel > 1)
+		syslog(LOG_INFO, "Bind local address (%s:%d)",
+		       confFile.getString("IP").c_str(),
+		       confFile.getInt("PORT"));
+
+	if (listen(sockfd, LISTENQ) == -1) {
+		syslog(LOG_ERR, "Cannot listen address (%s:%d)",
+		       confFile.getString("IP").c_str(),
+		       confFile.getInt("PORT"));
+		exit(1);
+	}
+
+	if (loglevel > 1)
+		syslog(LOG_INFO, "Start to listen");
 
 	key_t semkey;
 	//semkey=(key_t)confFile.getInt("SEMKEY");
-	semkey=static_cast<key_t>(confFile.getInt("SEMKEY"));
+	semkey = static_cast < key_t > (confFile.getInt("SEMKEY"));
 	// I should use try catch 
 	//sem=new Semaphore(semkey,1);
-	sem=new Semaphore(semkey);
-	if(loglevel > 2)
-		syslog(LOG_INFO,"created semaphore=%d.",sem->getID());
+	sem = new Semaphore(semkey);
+	if (loglevel > 2)
+		syslog(LOG_INFO, "created semaphore=%d.", sem->getID());
 
 	// Connect to the database system.
-	edbc=string("edbc:")+lowerCase(confFile.getString("DB_TYPE"))+string("://")+confFile.getString("DB_SERVER")+string("/")+confFile.getString("DB_NAME");
-	if(confFile.getInt("DB_PORT") != 0)
-		edbc+=string(":")+confFile.getString("DB_PORT");
-	if(conn != NULL)
+	edbc =
+	    string("edbc:") + lowerCase(confFile.getString("DB_TYPE")) +
+	    string("://") + confFile.getString("DB_SERVER") + string("/") +
+	    confFile.getString("DB_NAME");
+	if (confFile.getInt("DB_PORT") != 0)
+		edbc += string(":") + confFile.getString("DB_PORT");
+	if (conn != NULL)
 		delete conn;
-	if(dm != NULL)
+	if (dm != NULL)
 		delete dm;
 	try {
-		dm=new DriverManager;
-		conn=dm->getConnection(edbc,confFile.getString("DB_USER"),confFile.getString("DB_PASSWORD"));
+		dm = new DriverManager;
+		conn =
+		    dm->getConnection(edbc, confFile.getString("DB_USER"),
+				      confFile.getString("DB_PASSWORD"));
 	}
-	catch(SQLException &e) {
-		syslog(LOG_ERR,"Failed to connect to DB %s@%s! Exiting...",confFile.getString("DB_USER").c_str(),edbc.c_str());
+	catch(SQLException & e) {
+		syslog(LOG_ERR,
+		       "Failed to connect to DB %s@%s! Exiting...",
+		       confFile.getString("DB_USER").c_str(),
+		       edbc.c_str());
 		clean_and_exit(1);
 	}
-	if(conn == NULL) {
-			syslog(LOG_ERR,"doit: Could not connect to connect DB %s@%s",confFile.getString("DB_USER").c_str(),edbc.c_str());
-			clean_and_exit(1);
-	}
-	else
-		if(loglevel > 1)
-			syslog(LOG_INFO,"Connected to connect DB %s@%s",confFile.getString("DB_USER").c_str(),edbc.c_str());
-	
+	if (conn == NULL) {
+		syslog(LOG_ERR,
+		       "doit: Could not connect to connect DB %s@%s",
+		       confFile.getString("DB_USER").c_str(),
+		       edbc.c_str());
+		clean_and_exit(1);
+	} else if (loglevel > 1)
+		syslog(LOG_INFO, "Connected to connect DB %s@%s",
+		       confFile.getString("DB_USER").c_str(),
+		       edbc.c_str());
+
 	conn->setAutoCommit(true);
-		if(loglevel > 1)
-			syslog(LOG_INFO,"Set auto-commit to true");
-	
-	syslog(LOG_INFO,"Server (version=%s) started and accepting connection on interface=%s and port=%d. PID is %d",VERSION,confFile.getString("IP").c_str(),confFile.getInt("PORT"),serverPID); 
-	 
-	for(;;) {
-		addrlen=static_cast<socklen_t>(sizeof(cli_addr));
+	if (loglevel > 1)
+		syslog(LOG_INFO, "Set auto-commit to true");
+
+	syslog(LOG_INFO,
+	       "Server (version=%s) started and accepting connection on interface=%s and port=%d. PID is %d",
+	       VERSION, confFile.getString("IP").c_str(),
+	       confFile.getInt("PORT"), serverPID);
+
+	for (;;) {
+		addrlen = static_cast < socklen_t > (sizeof(cli_addr));
 		/* restart accept if interrupted by signal
-		while((newsockfd=accept(sockfd,(struct sockaddr *)&cli_addr,&addrlen)), newsockfd == -1 && errno == EINTR)
-			;
-		*/
-		newsockfd=accept(sockfd,(struct sockaddr *)&cli_addr,&addrlen);
+		   while((newsockfd=accept(sockfd,(struct sockaddr *)&cli_addr,&addrlen)), newsockfd == -1 && errno == EINTR)
+		   ;
+		 */
+		newsockfd =
+		    accept(sockfd, (struct sockaddr *) &cli_addr,
+			   &addrlen);
 		//newsockfd=accept(sockfd,static_cast<struct sockaddr *>(&cli_addr),&addrlen);
-		if(newsockfd == -1) {
-			if(errno == EINTR)
-                                continue; // interrupted by a signal
+		if (newsockfd == -1) {
+			if (errno == EINTR)
+				continue;	// interrupted by a signal
 			/*
-			char errmsg[MAX_STR];
-			if(strerror_r(errno,errmsg,MAX_STR) == NULL) {
-				syslog(LOG_ERR,"error calling accept and after strerror_r! Error for strerror_r code=%d",errno);
-				clean_and_exit(errno);
-			}
-			syslog(LOG_ERR,"error calling accept! Error code=%d message=%s",errno,errmsg);
-			syslog(LOG_ERR,"error calling accept! Error code=%d message=%s",errno,strerror_r(errno,errmsg,MAX_STR));
-			*/
-			syslog(LOG_ERR,"error calling accept! Error code=%d message=%s",errno,strerror(errno));
+			   char errmsg[MAX_STR];
+			   if(strerror_r(errno,errmsg,MAX_STR) == NULL) {
+			   syslog(LOG_ERR,"error calling accept and after strerror_r! Error for strerror_r code=%d",errno);
+			   clean_and_exit(errno);
+			   }
+			   syslog(LOG_ERR,"error calling accept! Error code=%d message=%s",errno,errmsg);
+			   syslog(LOG_ERR,"error calling accept! Error code=%d message=%s",errno,strerror_r(errno,errmsg,MAX_STR));
+			 */
+			syslog(LOG_ERR,
+			       "error calling accept! Error code=%d message=%s",
+			       errno, strerror(errno));
 			clean_and_exit(errno);
 		}
-		if(loglevel > 1)
-			syslog(LOG_INFO,"client(%s:%d) connected.",inet_ntoa(cli_addr.sin_addr),cli_addr.sin_port);
-		if((childPID=fork()) < 0) { 
-			syslog(LOG_ERR,"Cannot fork");
+		if (loglevel > 1)
+			syslog(LOG_INFO, "client(%s:%d) connected.",
+			       inet_ntoa(cli_addr.sin_addr),
+			       cli_addr.sin_port);
+		if ((childPID = fork()) < 0) {
+			syslog(LOG_ERR, "Cannot fork");
 			exit(1);
-		}
-		else if(childPID == 0) {	// child process 
-			childPID=getpid(); 
- 
-			if(setpgid(0,childPID) == -1)
-				syslog(LOG_ERR,"child server[%d] : can't change process group",childPID);
-  
-			if(loglevel > 1)
-				syslog(LOG_INFO,"child server connected. PPID=%d PID=%d GPID=%d\n",getppid(),childPID,getpgid(childPID));    
+		} else if (childPID == 0) {	// child process 
+			childPID = getpid();
+
+			if (setpgid(0, childPID) == -1)
+				syslog(LOG_ERR,
+				       "child server[%d] : can't change process group",
+				       childPID);
+
+			if (loglevel > 1)
+				syslog(LOG_INFO,
+				       "child server connected. PPID=%d PID=%d GPID=%d\n",
+				       getppid(), childPID,
+				       getpgid(childPID));
 
 			close(sockfd);	// child process
-			SisIYAServer s(conn,newsockfd,confFile.getInt("ReadTimeout"),sem,loglevel);
+			SisIYAServer s(conn, newsockfd,
+				       confFile.getInt("ReadTimeout"), sem,
+				       loglevel);
 			// process the request
-			if(s.process() == false)
-				syslog(LOG_ERR,"child server(%d) exited with error",childPID);
-			else
-				if(loglevel > 1)
-					syslog(LOG_INFO,"child server(%d) exited succesfully",childPID);
-			exit(0);              
-		}
-		else
+			if (s.process() == false)
+				syslog(LOG_ERR,
+				       "child server(%d) exited with error",
+				       childPID);
+			else if (loglevel > 1)
+				syslog(LOG_INFO,
+				       "child server(%d) exited succesfully",
+				       childPID);
+			exit(0);
+		} else
 			close(newsockfd);	// parent process
 	}
 }
@@ -561,16 +654,16 @@ void doit(void)
 /*!
 The main function.
 */
-int main(int argc,char *argv[])
+int main(int argc, char *argv[])
 {
-	if(argc != 2 ) {
+	if (argc != 2) {
 		cerr << "Usage : " << argv[0] << " sisiyad.conf" << endl;
 		return 1;
 	}
-	openlog("sisiyad",LOG_PID,LOG_USER); // Open the syslog. Log progname and pid
+	openlog("sisiyad", LOG_PID, LOG_USER);	// Open the syslog. Log progname and pid
 
-	pname=argv[0];
-	confFileName=argv[1]; 
+	pname = argv[0];
+	confFileName = argv[1];
 	doit();
 	return 0;
 }

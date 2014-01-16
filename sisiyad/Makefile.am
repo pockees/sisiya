@@ -1,29 +1,33 @@
-### Change this later, so that it can be configured throw the configure
-### directory definitions #################################################
-dst_dir=/opt
-dst_server_checks=$(install_root)$(dst_dir)/sisiya_server_checks
-dst_sisiya_check=$(install_root)$(dst_dir)/sisiya_check
-dst_sbin=$(install_root)/usr/sbin
-dst_etc=$(install_root)/etc
-dst_init_dot_d=$(install_root)/etc/init.d
-dst_man=$(install_root)/usr/share/man
-dst_www=$(install_root)/var/www/html/sisiya
-dst_db_scripts=$(install_root)/usr/local/sisiya_dbscripts
-###########################################################################
-
+#######################################################################################
+#    Copyright (C) Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#######################################################################################
 
 bin_PROGRAMS=sisiyad
 
 ALL_INC=$(EDBC_INC) $(EDBC_UTILS_INC) $(SISIYAD_INC)
-ALL_LIBDIRS=-L$(EDBC_LIB)
+ALL_LIBDIRS=$(EDBC_LIB)
 ALL_LFLAGS=$(OPT_FLAGS) $(ALL_INC)
-ALL_LIBS=-ldl -ledbc
+LIBS=$(SISIYAD_LIBS)
 
 sisiyad_SOURCES=$(EDBC_UTILS_SRC)/trim.cpp $(EDBC_UTILS_SRC)/UpperLowerCase.cpp $(SISIYAD_SRC)/Semaphore.cpp $(SISIYAD_SRC)/misc.c $(SISIYAD_SRC)/esignal.cpp $(SISIYAD_SRC)/ConfFile.cpp $(SISIYAD_SRC)/SisIYAServer.cpp $(SISIYAD_SRC)/sisiyad.cpp
 #sisiyad_LDFLAGS=$(WARN_FLAGS) $(ALL_LFLAGS) $(ALL_LIBDIRS)
 sisiyad_LDFLAGS=$(ALL_LFLAGS) $(ALL_LIBDIRS)
 AM_CXXFLAGS=$(WARN_FLAGS) $(OPT_FLAGS) $(ALL_INC)
-LIBS=$(ALL_LIBS)
 ####################################
 check_sisiya:
 	@echo "prefix = $(prefix)"

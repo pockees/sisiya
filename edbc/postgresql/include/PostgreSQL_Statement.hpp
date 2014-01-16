@@ -27,47 +27,47 @@
 #include"PostgreSQL_ResultSet.hpp"
 #include"PostgreSQL_ResultSetMetaData.hpp"
 
-class PostgreSQL_ResultSet; // forward class declaration
+class PostgreSQL_ResultSet;	// forward class declaration
 
 //! PostgreSQL implementation of the Statement class.
-class PostgreSQL_Statement : public Statement {
-	public:
-		//! Default constructor.
-		PostgreSQL_Statement();
-		//! Destructor.
-		virtual ~PostgreSQL_Statement();
-		//! Executes the statement.
-		virtual bool execute(const string sql);
-		//! Executes query.
-		virtual ResultSet *executeQuery(const string sql);
-		//! Executes insert/update/delete
-		virtual int executeUpdate(const string sql);
-		//! Returns the connection object. 
-		virtual Connection *getConnection(void);	
-		//! Returns result set object.
-		virtual ResultSet *getResultSet(void);
-		//! Returns update count.
-		virtual int getUpdateCount(void);
+class PostgreSQL_Statement:public Statement {
+      public:
+	//! Default constructor.
+	PostgreSQL_Statement();
+	//! Destructor.
+	virtual ~ PostgreSQL_Statement();
+	//! Executes the statement.
+	virtual bool execute(const string sql);
+	//! Executes query.
+	virtual ResultSet *executeQuery(const string sql);
+	//! Executes insert/update/delete
+	virtual int executeUpdate(const string sql);
+	//! Returns the connection object. 
+	virtual Connection *getConnection(void);
+	//! Returns result set object.
+	virtual ResultSet *getResultSet(void);
+	//! Returns update count.
+	virtual int getUpdateCount(void);
 
 	// This public does not belong to the general class 
-	public :
-		//! Sets Connection object. This function is only used by PostgreSQL Connection class.
-		void setConnection(PostgreSQL_Connection *conn);
-		//! Sets PostgreSQL connection object. This function is only used by PostgreSQL Connection class.
-		void setPGconn(PGconn *pg_conn);
-	private:
-		//! Update count variable (number of affected rows in case of UPDATE, DELETE ...).
-		int updateCount;
-		//! Pointer to PostgreSQL connection object.
-		PGconn *pg_conn; 
-		//! Pointer to PostgreSQL result object.
-		PGresult *result;
-		//! Connection object.
-		PostgreSQL_Connection *conn;
-		//! ResultSet object.
-		PostgreSQL_ResultSet *rset;
-		//! ResultSetMetaData object.
-		PostgreSQL_ResultSetMetaData *rsmd;
+	 public:
+	    //! Sets Connection object. This function is only used by PostgreSQL Connection class.
+	void setConnection(PostgreSQL_Connection * conn);
+	//! Sets PostgreSQL connection object. This function is only used by PostgreSQL Connection class.
+	void setPGconn(PGconn * pg_conn);
+      private:
+	//! Update count variable (number of affected rows in case of UPDATE, DELETE ...).
+	int updateCount;
+	//! Pointer to PostgreSQL connection object.
+	PGconn *pg_conn;
+	//! Pointer to PostgreSQL result object.
+	PGresult *result;
+	//! Connection object.
+	PostgreSQL_Connection *conn;
+	//! ResultSet object.
+	PostgreSQL_ResultSet *rset;
+	//! ResultSetMetaData object.
+	PostgreSQL_ResultSetMetaData *rsmd;
 };
 
-#endif 
+#endif

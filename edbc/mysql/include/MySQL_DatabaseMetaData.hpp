@@ -30,49 +30,49 @@ using namespace std;
 Comprehensive information about the database as a whole.
 */
 
-class MySQL_DatabaseMetaData: public DatabaseMetaData {
-	public:
-		//! Default constructor.
-		MySQL_DatabaseMetaData();
-		//! Destructor.
-		virtual ~MySQL_DatabaseMetaData();
-		//! Retrieves the database's major version number.
-		virtual inline const int getDatabaseMajorVersion(void);
-		//! Retrieves the database's minor version number.
-		virtual inline const int getDatabaseMinorVersion(void);
-		//! Retrieves the database's sub version number.
-		virtual inline const int getDatabaseSubVersion(void);
-		//! Retrieves database's product name.
-		virtual inline const string getDatabaseProductName(void);
-		//! Retrieves database's product version.
-		virtual inline const string getDatabaseProductVersion(void);
-       // This public does not belong to the general class
-        public :
-		//! Sets connection object.
-		void setConnection(MySQL_Connection *conn);
-		//! Sets MySQL connection object.
-		void setMYSQL(MYSQL* mysql);
-	private:
-		//! Connection object.
-		MySQL_Connection* conn;
-		//! MySQL connection object.
-		MYSQL* mysql;
-		//! major version.
-		int majorVersion;
-		//! Minor version.
-		int minorVersion;
-		//! Sub version.
-		int subVersion;
-		//! MyQL communication protocol version.
-		int protocolVersion;
-		//! Database product name (MySQL).
-		string dbProductName; 
-		//! Database product version (majorVersion.minorVersion.subVersion).
-		string dbProductVersion; 
+class MySQL_DatabaseMetaData:public DatabaseMetaData {
+      public:
+	//! Default constructor.
+	MySQL_DatabaseMetaData();
+	//! Destructor.
+	virtual ~ MySQL_DatabaseMetaData();
+	//! Retrieves the database's major version number.
+	virtual inline const int getDatabaseMajorVersion(void);
+	//! Retrieves the database's minor version number.
+	virtual inline const int getDatabaseMinorVersion(void);
+	//! Retrieves the database's sub version number.
+	virtual inline const int getDatabaseSubVersion(void);
+	//! Retrieves database's product name.
+	virtual inline const string getDatabaseProductName(void);
+	//! Retrieves database's product version.
+	virtual inline const string getDatabaseProductVersion(void);
+	// This public does not belong to the general class
+	 public:
+	    //! Sets connection object.
+	void setConnection(MySQL_Connection * conn);
+	//! Sets MySQL connection object.
+	void setMYSQL(MYSQL * mysql);
+      private:
+	//! Connection object.
+	 MySQL_Connection * conn;
+	//! MySQL connection object.
+	MYSQL *mysql;
+	//! major version.
+	int majorVersion;
+	//! Minor version.
+	int minorVersion;
+	//! Sub version.
+	int subVersion;
+	//! MyQL communication protocol version.
+	int protocolVersion;
+	//! Database product name (MySQL).
+	string dbProductName;
+	//! Database product version (majorVersion.minorVersion.subVersion).
+	string dbProductVersion;
 
-		//! Retrive version information.
-		void getVersions(void);
+	//! Retrive version information.
+	void getVersions(void);
 
 };
 
-#endif 
+#endif

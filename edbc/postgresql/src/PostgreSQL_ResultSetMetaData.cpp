@@ -24,21 +24,25 @@
 using namespace std;
 
 // default constructor
-PostgreSQL_ResultSetMetaData::PostgreSQL_ResultSetMetaData() 
-: columnCount(-1),rowCount(-1)
-{ 
+PostgreSQL_ResultSetMetaData::PostgreSQL_ResultSetMetaData()
+:  columnCount(-1), rowCount(-1)
+{
 #ifdef DEBUG
-	cout << "Constructor : Constructing a PostgreSQL_ResultSetMetaData object:" << this << endl; 
+	cout <<
+	    "Constructor : Constructing a PostgreSQL_ResultSetMetaData object:"
+	    << this << endl;
 #endif
-	pg_conn=NULL;
-	result=NULL;
+	pg_conn = NULL;
+	result = NULL;
 }
 
 // destructor
-PostgreSQL_ResultSetMetaData::~PostgreSQL_ResultSetMetaData() 
-{ 
+PostgreSQL_ResultSetMetaData::~PostgreSQL_ResultSetMetaData()
+{
 #ifdef DEBUG
-	cout << "PostgreSQL_ResultSetMetaData::Destructor: destructing a PostgreSQL_ResultSetMetaData object: " << this << endl; 
+	cout <<
+	    "PostgreSQL_ResultSetMetaData::Destructor: destructing a PostgreSQL_ResultSetMetaData object: "
+	    << this << endl;
 #endif
 }
 
@@ -52,12 +56,17 @@ int PostgreSQL_ResultSetMetaData::getColumnCount(void)
 */
 string PostgreSQL_ResultSetMetaData::getColumnLabel(int columnIndex)
 {
-	if(columnIndex < 0 || columnIndex >= columnCount) {
-		throw SQLException("PostgreSQL_ResultSetMetaData::getColumnLabel: column index is out of range!");
+	if (columnIndex < 0 || columnIndex >= columnCount) {
+		throw
+		    SQLException
+		    ("PostgreSQL_ResultSetMetaData::getColumnLabel: column index is out of range!");
 	}
-	char *p=PQfname(result,columnIndex);
-	if(p == NULL) {
-		throw SQLException(string("PostgreSQL_ResultSetMetaData::getColumnLabel: Error occured while calling PQfname:!")+string(PQresultErrorMessage(result)));
+	char *p = PQfname(result, columnIndex);
+	if (p == NULL) {
+		throw
+		    SQLException(string
+				 ("PostgreSQL_ResultSetMetaData::getColumnLabel: Error occured while calling PQfname:!")
+				 + string(PQresultErrorMessage(result)));
 	}
 	return string(p);
 }
@@ -67,12 +76,12 @@ string PostgreSQL_ResultSetMetaData::getColumnLabel(int columnIndex)
 */
 string PostgreSQL_ResultSetMetaData::getColumnName(int columnIndex)
 {
-	return getColumnLabel(columnIndex); // for now call getColumnLabel
+	return getColumnLabel(columnIndex);	// for now call getColumnLabel
 }
 
 int PostgreSQL_ResultSetMetaData::getColumnIndex(string columnName)
 {
-	return PQfnumber(result,columnName.c_str()); // columnIndex=0,1,2...n-1
+	return PQfnumber(result, columnName.c_str());	// columnIndex=0,1,2...n-1
 }
 
 int PostgreSQL_ResultSetMetaData::getColumnType(int columnIndex)
@@ -97,28 +106,29 @@ string PostgreSQL_ResultSetMetaData::getSchemaName(int columnIndex)
 
 string PostgreSQL_ResultSetMetaData::getTableName(int columnIndex)
 {
-	Oid oid=PQftable(result,columnIndex);
-	cout << "PostgreSQL_ResultSetMetaData:getTableName: column oid=" << oid << endl;
+	Oid oid = PQftable(result, columnIndex);
+	cout << "PostgreSQL_ResultSetMetaData:getTableName: column oid=" <<
+	    oid << endl;
 	// then query the pg_class table to find out the columns table name
 	return string("not implemented yet");
 }
 
 void PostgreSQL_ResultSetMetaData::setColumnCount(int count)
 {
-	columnCount=count;
+	columnCount = count;
 }
 
 void PostgreSQL_ResultSetMetaData::setRowCount(int count)
 {
-	rowCount=count;
+	rowCount = count;
 }
 
-void PostgreSQL_ResultSetMetaData::setPGconn(PGconn *pg_conn)
+void PostgreSQL_ResultSetMetaData::setPGconn(PGconn * pg_conn)
 {
-	this->pg_conn=pg_conn;
+	this->pg_conn = pg_conn;
 }
 
-void PostgreSQL_ResultSetMetaData::setPGresult(PGresult *result)
+void PostgreSQL_ResultSetMetaData::setPGresult(PGresult * result)
 {
-	this->result=result;
+	this->result = result;
 }

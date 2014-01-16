@@ -25,37 +25,41 @@
 using namespace std;
 
 // default constructor
-MySQL_Statement::MySQL_Statement() 
-: updateCount(-1)
-{ 
+MySQL_Statement::MySQL_Statement()
+:  updateCount(-1)
+{
 #ifdef DEBUG
-	cout << "MySQL_Statement::Constructor : Constructing a MySQL Statement object :" << this << endl; 
+	cout <<
+	    "MySQL_Statement::Constructor : Constructing a MySQL Statement object :"
+	    << this << endl;
 #endif
-	conn=NULL;
-	result=NULL;
-	rset=new MySQL_ResultSet;
-	rsmd=new MySQL_ResultSetMetaData;
+	conn = NULL;
+	result = NULL;
+	rset = new MySQL_ResultSet;
+	rsmd = new MySQL_ResultSetMetaData;
 }
 
 // destructor
-MySQL_Statement::~MySQL_Statement() 
-{ 
+MySQL_Statement::~MySQL_Statement()
+{
 #ifdef DEBUG
-	cout << "MySQL_Statement::Destructor : destructing a MySQL Statement object :" << this << endl; 
+	cout <<
+	    "MySQL_Statement::Destructor : destructing a MySQL Statement object :"
+	    << this << endl;
 #endif
 }
 
-void MySQL_Statement::setConnection(MySQL_Connection *conn)
+void MySQL_Statement::setConnection(MySQL_Connection * conn)
 {
-	this->conn=conn;
+	this->conn = conn;
 }
 
-Connection* MySQL_Statement::getConnection()
+Connection *MySQL_Statement::getConnection()
 {
 	return conn;
 }
 
-ResultSet* MySQL_Statement::getResultSet()
+ResultSet *MySQL_Statement::getResultSet()
 {
 	rset->setConnection(conn);
 	rset->setMYSQL(mysql);
@@ -71,10 +75,11 @@ int MySQL_Statement::getUpdateCount(void)
 	return updateCount;
 }
 
-void MySQL_Statement::setMYSQL(MYSQL* mysql)
+void MySQL_Statement::setMYSQL(MYSQL * mysql)
 {
-	this->mysql=mysql;
+	this->mysql = mysql;
 }
+
 /*!
 \param sql any SQL statement
 \return true if the result is a ResultSet object; false if it is an update count or there are no results
@@ -82,37 +87,52 @@ void MySQL_Statement::setMYSQL(MYSQL* mysql)
 */
 bool MySQL_Statement::execute(const string sql)
 {
-	updateCount=-1; // reset to the default value, this is needed if someone uses the same Statement multiple times
+	updateCount = -1;	// reset to the default value, this is needed if someone uses the same Statement multiple times
 #ifdef DEBUG
-	cout << "MySQL_Statement::execute: Executing query :[" << sql << "]" << endl;
+	cout << "MySQL_Statement::execute: Executing query :[" << sql <<
+	    "]" << endl;
 #endif
-	if(mysql_query(mysql,sql.c_str())) {
-		throw SQLException(string("MySQL_Statement::execute: Error occured during executing of the query :[")+sql+string("]")+string("\nMySQL_Statement:execute: MySQL Error: ")+string(mysql_error(mysql)),mysql_sqlstate(mysql),mysql_errno(mysql));
+	if (mysql_query(mysql, sql.c_str())) {
+		throw
+		    SQLException(string
+				 ("MySQL_Statement::execute: Error occured during executing of the query :[")
+				 + sql + string("]") +
+				 string
+				 ("\nMySQL_Statement:execute: MySQL Error: ")
+				 + string(mysql_error(mysql)),
+				 mysql_sqlstate(mysql),
+				 mysql_errno(mysql));
 		//return false; 
-	}
-	else {
-		result=mysql_store_result(mysql); // this will get all data from the server, this cause memory problems
-		if(result) { // there are rows
+	} else {
+		result = mysql_store_result(mysql);	// this will get all data from the server, this cause memory problems
+		if (result) {	// there are rows
 			rsmd->setColumnCount(mysql_num_fields(result));
 			rsmd->setRowCount(mysql_num_rows(result));
 			rsmd->setMYSQL_FIELDS(mysql_fetch_fields(result));
 #ifdef DEBUG
-			cout << "MySQL_Statement::execute: column count=" << rsmd->getColumnCount() << endl;
-			cout << "MySQL_Statement::execute: row count=" << rsmd->getRowCount() << endl;
+			cout << "MySQL_Statement::execute: column count="
+			    << rsmd->getColumnCount() << endl;
+			cout << "MySQL_Statement::execute: row count=" <<
+			    rsmd->getRowCount() << endl;
 			return true;
 #endif
-		}
-		else { // mysql_store_result returned nothing, should it have ?
-			if(mysql_field_count(mysql) == 0) {
+		} else {	// mysql_store_result returned nothing, should it have ?
+			if (mysql_field_count(mysql) == 0) {
 				// query does not return data
-				updateCount=mysql_affected_rows(mysql);
+				updateCount = mysql_affected_rows(mysql);
 #ifdef DEBUG
-				cout << "MySQL_Statement::execute: updateCount=" << updateCount << endl;
+				cout <<
+				    "MySQL_Statement::execute: updateCount="
+				    << updateCount << endl;
 #endif
-				return false; // this OK, the query does not have ResultSet object
-			}
-			else { // mysq_store_result should have returned data
-				throw SQLException(string("MySQL_Statement::execute: Error for the query :[")+sql+string("]")+string(mysql_error(mysql)));
+				return false;	// this OK, the query does not have ResultSet object
+			} else {	// mysq_store_result should have returned data
+				throw
+				    SQLException(string
+						 ("MySQL_Statement::execute: Error for the query :[")
+						 + sql + string("]") +
+						 string(mysql_error
+							(mysql)));
 				//return false;
 
 			}
@@ -123,8 +143,11 @@ bool MySQL_Statement::execute(const string sql)
 
 ResultSet *MySQL_Statement::executeQuery(const string sql)
 {
-	if(!execute(sql)) {
-		throw SQLException(string("MySQL_Statement::executeQuery: Error executing the query=[")+sql+string("]"));
+	if (!execute(sql)) {
+		throw
+		    SQLException(string
+				 ("MySQL_Statement::executeQuery: Error executing the query=[")
+				 + sql + string("]"));
 		//return NULL;
 	}
 	return getResultSet();
@@ -136,11 +159,14 @@ ResultSet *MySQL_Statement::executeQuery(const string sql)
 */
 int MySQL_Statement::executeUpdate(const string sql)
 {
-	if(execute(sql)) {
-		throw SQLException(string("MySQL_Statement::executeUpdate: Error executing the query=[")+sql+string("]"));
+	if (execute(sql)) {
+		throw
+		    SQLException(string
+				 ("MySQL_Statement::executeUpdate: Error executing the query=[")
+				 + sql + string("]"));
 		//return -1;
 	}
-	if(updateCount == -1)
+	if (updateCount == -1)
 		return 0;
 	return updateCount;
 }

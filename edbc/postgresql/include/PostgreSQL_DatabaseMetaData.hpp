@@ -29,56 +29,56 @@ using namespace std;
 /*!
 Comprehensive information about the database as a whole.
 */
-class PostgreSQL_DatabaseMetaData: public DatabaseMetaData {
-	public:
-		//! Default constructor.
-		PostgreSQL_DatabaseMetaData();
-		//! Destructor.
-		virtual ~PostgreSQL_DatabaseMetaData();
-		//! Retrieves the database's major version number.
-		virtual inline const int getDatabaseMajorVersion(void);
-		//! Retrieves the database's minor version number.
-		virtual inline const int getDatabaseMinorVersion(void);
-		//! Retrieves the database's sub version number.
-		virtual inline const int getDatabaseSubVersion(void);
-		//! Retrieves database's product name.
-		virtual inline const string getDatabaseProductName(void);
-		//! Retrieves database's product version.
-		virtual inline const string getDatabaseProductVersion(void);
-       // This public does not belong to the general class
-        public :
-		/*
-		 I cannot use inline for this two functions, find out why.
-		Note: if use inline only in the CPP file it does not give warnings!? But this time I cannot call them
-		from PostgreSQL_Connection object.
+class PostgreSQL_DatabaseMetaData:public DatabaseMetaData {
+      public:
+	//! Default constructor.
+	PostgreSQL_DatabaseMetaData();
+	//! Destructor.
+	virtual ~ PostgreSQL_DatabaseMetaData();
+	//! Retrieves the database's major version number.
+	virtual inline const int getDatabaseMajorVersion(void);
+	//! Retrieves the database's minor version number.
+	virtual inline const int getDatabaseMinorVersion(void);
+	//! Retrieves the database's sub version number.
+	virtual inline const int getDatabaseSubVersion(void);
+	//! Retrieves database's product name.
+	virtual inline const string getDatabaseProductName(void);
+	//! Retrieves database's product version.
+	virtual inline const string getDatabaseProductVersion(void);
+	// This public does not belong to the general class
+	 public:
+	    /*
+	       I cannot use inline for this two functions, find out why.
+	       Note: if use inline only in the CPP file it does not give warnings!? But this time I cannot call them
+	       from PostgreSQL_Connection object.
 
-		inline void setConnection(PostgreSQL_Connection *conn);
-		inline void setPGconn(PGconn *pg_conn);
-		*/
-		//! Sets connection object.
-		void setConnection(PostgreSQL_Connection *conn);
-		//! Sets PostgreSQL connection object.
-		void setPGconn(PGconn *pg_conn);
-	private:
-		//! Connection object.
-		PostgreSQL_Connection *conn;
-		//! PostgreSQL connection object.
-		PGconn *pg_conn;
-		//! major version.
-		int majorVersion;
-		//! Minor version.
-		int minorVersion;
-		//! Sub version.
-		int subVersion;
-		//! PostgreSQL communication protocol version: 2.0 => < 7.4 ; 3.0 => > 7.4
-		int protocolVersion;
-		//! Database product name (PostgreSQL).
-		string dbProductName; 
-		//! Database product version (majorVersion.minorVersion.subVersion).
-		string dbProductVersion; 
+	       inline void setConnection(PostgreSQL_Connection *conn);
+	       inline void setPGconn(PGconn *pg_conn);
+	     */
+	    //! Sets connection object.
+	void setConnection(PostgreSQL_Connection * conn);
+	//! Sets PostgreSQL connection object.
+	void setPGconn(PGconn * pg_conn);
+      private:
+	//! Connection object.
+	 PostgreSQL_Connection * conn;
+	//! PostgreSQL connection object.
+	PGconn *pg_conn;
+	//! major version.
+	int majorVersion;
+	//! Minor version.
+	int minorVersion;
+	//! Sub version.
+	int subVersion;
+	//! PostgreSQL communication protocol version: 2.0 => < 7.4 ; 3.0 => > 7.4
+	int protocolVersion;
+	//! Database product name (PostgreSQL).
+	string dbProductName;
+	//! Database product version (majorVersion.minorVersion.subVersion).
+	string dbProductVersion;
 
-		//! Retrive version information.
-		void getVersions(void);
+	//! Retrive version information.
+	void getVersions(void);
 };
 
-#endif 
+#endif

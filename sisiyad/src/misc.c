@@ -9,22 +9,22 @@
   Error    => return value < 0
   EOF      => return value = 0
   Normally => value = number of bytes read.
-*/ 
-int readn(int fd,char *ptr,int nbytes)
+*/
+int readn(int fd, char *ptr, int nbytes)
 {
-	ssize_t nleft,nread;
- 
-	nleft=nbytes;
-	while(nleft > 0) {
-		nread=read(fd,ptr,nleft);
-		if(nread < 0)
-			return(nread);  /* error, return < 0 */
-		else if(nread == 0)
-			break;         /* EOF */
-		nleft-=nread;
-		ptr+=nread;      
+	ssize_t nleft, nread;
+
+	nleft = nbytes;
+	while (nleft > 0) {
+		nread = read(fd, ptr, nleft);
+		if (nread < 0)
+			return (nread);	/* error, return < 0 */
+		else if (nread == 0)
+			break;	/* EOF */
+		nleft -= nread;
+		ptr += nread;
 	}
-	return(nbytes-nleft); /* return >= 0 */
+	return (nbytes - nleft);	/* return >= 0 */
 }
 
 /*
@@ -34,21 +34,21 @@ int readn(int fd,char *ptr,int nbytes)
 /* 
   Error    => return value < 0
   Normally => value = number of bytes written.
-*/ 
+*/
 
-int writen(int fd,char *ptr,int nbytes)
+int writen(int fd, char *ptr, int nbytes)
 {
-	ssize_t nleft,nwritten;
- 
-	nleft=nbytes;
-	while(nleft > 0) {
-		nwritten=write(fd,ptr,nleft);
-		if(nwritten <= 0)
-			return(nwritten);  /* error */
-		nleft-=nwritten;
-		ptr+=nwritten;
+	ssize_t nleft, nwritten;
+
+	nleft = nbytes;
+	while (nleft > 0) {
+		nwritten = write(fd, ptr, nleft);
+		if (nwritten <= 0)
+			return (nwritten);	/* error */
+		nleft -= nwritten;
+		ptr += nwritten;
 	}
-	return(nbytes-nleft);  /* return >= 0 */
+	return (nbytes - nleft);	/* return >= 0 */
 }
 
 /*
@@ -62,30 +62,26 @@ int writen(int fd,char *ptr,int nbytes)
   Error    => return value = -1
   EOF      => return value = 0
   Normally => value = number of bytes read.
-*/ 
+*/
 
-int readline(int fd,char *ptr,int maxlen)
+int readline(int fd, char *ptr, int maxlen)
 {
-	int n,rc;
+	int n, rc;
 	char c;
- 
-	for(n=1;n<maxlen;n++) {
-		 /*    printf("geldim n = %d\n",n);*/
-		if((rc=read(fd,&c,1)) == 1) {
-			/*      printf("okudum  n = %d, c= %c\n",n,c);*/
-			*ptr++=c;
-			if(c == '\n')
+
+	for (n = 1; n < maxlen; n++) {
+		if ((rc = read(fd, &c, 1)) == 1) {
+			*ptr++ = c;
+			if (c == '\n')
 				break;
-		}
-		else if(rc == 0) {
-			if(n == 1)
-				return(0);  /* EOF, no data read */
+		} else if (rc == 0) {
+			if (n == 1)
+				return (0);	/* EOF, no data read */
 			else
 				break;
-		}
-		else
-			return(-1);  /* error */       
+		} else
+			return (-1);	/* error */
 	}
-	*ptr=0;
-	return(n);
+	*ptr = 0;
+	return (n);
 }

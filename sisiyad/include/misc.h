@@ -20,21 +20,21 @@
 #define _misc_header_
 
 #if HAVE_CONFIG_H
-  #include"config.h"
+#include"config.h"
 #endif
 
 #include<stdio.h>
 
 #if HAVE_UNISTD_H
- #ifdef DARWIN
-  #include<sys/unistd.h>
- #else
-  #include<unistd.h>
- #endif
+#ifdef DARWIN
+#include<sys/unistd.h>
+#else
+#include<unistd.h>
+#endif
 #endif
 
 
-int readn(int fd,char *ptr,int nbytes);
-int writen(int fd,char *ptr,int nbytes);
-int readline(int fd,char *ptr,int maxlen);
+int readn(int fd, char *ptr, int nbytes);
+int writen(int fd, char *ptr, int nbytes);
+int readline(int fd, char *ptr, int maxlen);
 #endif
