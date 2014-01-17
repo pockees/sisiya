@@ -133,6 +133,7 @@ create_edbc_libs()
 	mkdir -p $package_dir
 	cp -a ${source_dir}/edbc/* $package_dir/
 	echo "$version_str" > $package_dir/version.txt
+	sed -i -e "s/__VERSION_MAJOR__/$version_major_str/g" -e "s/__VERSION_MINOR__/$version_minor_str/g" -e "s/__VERSION__/$version_str/g" $package_dir/Makefile
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
@@ -140,11 +141,6 @@ create_edbc_libs()
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
-	#for f in "Makefile" "lib/configure.ac" "mysql/configure.ac" "postgresql/configure.ac"
-	for f in "Makefile"
-	do
-		sed -i -e "s/__VERSION_MAJOR__/$version_major_str/g" -e "s/__VERSION_MINOR__/$version_minor_str/g" -e "s/__VERSION__/$version_str/g" $rpm_root_dir/$f
-	done
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
 	echo "RPM packaging info :"
