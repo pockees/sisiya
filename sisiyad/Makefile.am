@@ -57,7 +57,7 @@ install:
 	install -d -m 755 $(install_root)/usr/share/doc/sisiyad-$(VERSION)
 	install -d -m 755 $(install_root)/usr/share/man/man5
 	install -d -m 755 $(install_root)/usr/share/man/man8
-	install -m 600 ../etc/sisiyad_sysvinit $(install_root)/etc/init.d
+	install -m 600 ../etc/sisiyad_sysvinit $(install_root)/etc/init.d/sisiyad
 	install -m 644 ../doc/sisiyad.conf.5 $(install_root)/usr/share/man/man5
 	install -m 644 ../doc/sisiyad.8 $(install_root)/usr/share/man/man8
 	install -m 600 sisiyad.conf $(install_root)/etc
