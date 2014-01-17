@@ -52,12 +52,9 @@ chkconfig --del sisiyad
 %clean 
 rm -rf %{buildroot}
 
-### there is no main package
-#%files
-
 %files
 %defattr(-,root,root)
-%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
+#%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
 %attr(0600,root,root) 	%config(noreplace) 	/etc/sisiyad.conf
 #%attr(0600,root,root) 	%config(noreplace) 	/etc/sisiyaqd.conf
 %attr(0700,root,root) 				/etc/init.d/sisiyad
