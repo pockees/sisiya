@@ -24,7 +24,7 @@ noextract=()
 md5sums=('__MD5SUM__') #generate with 'makepkg -g'
 
 build() {
-	cd "$srcdir/$pkgname-$pkgver"
+	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
 	make
 }
 
