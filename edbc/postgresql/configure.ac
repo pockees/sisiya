@@ -6,8 +6,10 @@ dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
 #AC_INIT([libedbc_pgsql], [0.6.30], [erdal@sisiya.org])
-AC_INIT([libedbc_pgsql], [m4_esyscmd([cat ../version.txt | tr -d "\n"])], [erdal@sisiya.org])
-AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+#AC_INIT([libedbc_pgsql], [m4_esyscmd([cat ../version.txt | tr -d "\n"])], [erdal@sisiya.org])
+AC_INIT([libedbc_pgsql], m4_esyscmd(tr -d '\n' < ../version.txt), [erdal@sisiya.org])
+#AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(include/config.h)
 
 #######################################################################################

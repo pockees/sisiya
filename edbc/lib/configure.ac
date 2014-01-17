@@ -6,7 +6,8 @@ dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
 #AC_INIT([libedbc], [__VERSION_MAJOR__.__VERSION_MINOR__], [erdal@sisiya.org])
-AC_INIT([libedbc], [m4_esyscmd([cat ../version.txt | tr -d "\n"])], [erdal@sisiya.org])
+#AC_INIT([libedbc], [m4_esyscmd([cat ../version.txt | tr -d "\n"])], [erdal@sisiya.org])
+AC_INIT([libedbc], m4_esyscmd(tr -d '\n' < ../version.txt), [erdal@sisiya.org])
 #AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
