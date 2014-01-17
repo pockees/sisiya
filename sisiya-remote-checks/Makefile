@@ -1,5 +1,5 @@
 ### directory definitions #################################################
-root_dir=$(DSTDIR)
+root_dir=$(DESTDIR)
 dst_dir=/opt
 dst_sisiya_base=$(root_dir)$(dst_dir)/sisiya-remote-checks
 dst_etc=$(root_dir)/etc

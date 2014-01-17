@@ -33,7 +33,7 @@ make
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 
-make "DSTDIR=%{buildroot}" install 
+make "DESTDIR=%{buildroot}" install 
 
 %pre
 

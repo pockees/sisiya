@@ -30,7 +30,7 @@ cd %{name}  && ./bootstrap create && ./configure && make && cd ..
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-cd %{name} && make "DSTDIR=%{buildroot}" install 
+cd %{name} && make "DESTDIR=%{buildroot}" install 
 
 %post
 ### if update, then restart

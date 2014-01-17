@@ -29,7 +29,7 @@ The SisIYA client programs and checks. This package is installed on every server
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DSTDIR=%{buildroot}" install_sisiya_client_checks 
+make "DESTDIR=%{buildroot}" install_sisiya_client_checks 
 
 %files
 %defattr(-,root,root)

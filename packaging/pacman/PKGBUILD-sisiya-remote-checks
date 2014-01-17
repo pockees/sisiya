@@ -25,5 +25,5 @@ md5sums=('__MD5SUM__') #generate with 'makepkg -g'
 
 package() {
 	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
-	make DSTDIR="$pkgdir/" install
+	make DESTDIR="$pkgdir/" install
 }

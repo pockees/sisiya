@@ -1,10 +1,10 @@
-# Maintainer: Erdal Mutlu <erdal@sisiya.net>
-pkgname=sisiya-client-checks
+# Maintainer: Erdal Mutlu <erdal@sisiya.org>
+pkgname=sisiyad
 pkgver=__VERSION__
 pkgrel=__RELEASE__
 epoch=
-pkgdesc="The SisIYA client programs and checks."
-arch=('any')
+pkgdesc="The SisIYA daemon."
+arch=('i686' 'x86_64')
 url="http://www.sisiya.org"
 license=('GPL2')
 groups=()
@@ -15,7 +15,7 @@ optdepends=()
 provides=()
 conflicts=()
 replaces=()
-backup=('opt/sisiya-client-checks/SisIYA_Config.pm' 'opt/sisiya-client-checks/SisIYA_Config_local.pl')
+backup=()
 options=()
 install=
 changelog=
@@ -23,7 +23,18 @@ source=("$pkgname-$pkgver-$pkgrel.tar.gz")
 noextract=()
 md5sums=('__MD5SUM__') #generate with 'makepkg -g'
 
+build() {
+	cd "$srcdir/$pkgname-$pkgver-$pkgrel/edbc/lib"
+	./bootstrap create
+	./configure
+	make
+	cd ../../sisiyad
+	./bootstrap create
+	./configure
+	make
+}
+
 package() {
-	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
+	cd "$srcdir/$pkgname-$pkgver-$pkgrel/sisiyad"
 	make DESTDIR="$pkgdir/" install
 }
