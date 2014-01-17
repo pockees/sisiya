@@ -51,5 +51,7 @@ check_sisiya:
 	@echo "top_builddir = $(top_builddir)"
 
 install:
+	install -d -m 755 $(install_root)/etc
+	install -d -m 755 $(install_root)/usr/sbin
 	install -m 600 sisiyad.conf $(install_root)/etc
 	install -m 700 sisiyad $(install_root)/usr/sbin
