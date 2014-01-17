@@ -168,8 +168,6 @@ create_edbc_libs()
 	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
 	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
 	echo "------"
-	return
-	exit 0
 	################################################################################################################################################
 	### create directory structure for Arch systems
 	################################################################################################################################################
@@ -177,7 +175,6 @@ create_edbc_libs()
 	pacman_root_dir="$base_dir/pacman/$package_name"
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
-	cp -a ${package_dir}/etc $pacman_root_dir 
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name

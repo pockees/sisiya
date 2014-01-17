@@ -1,0 +1,34 @@
+# Maintainer: Erdal Mutlu <erdal@sisiya.org>
+pkgname=sisiya-edbc-libs
+pkgver=__VERSION__
+pkgrel=__RELEASE__
+epoch=
+pkgdesc="The SisIYA EDBC libraries."
+arch=('any')
+url="http://www.sisiya.org"
+license=('GPL2')
+groups=()
+depends=('perl')
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=("$pkgname-$pkgver-$pkgrel.tar.gz")
+noextract=()
+md5sums=('__MD5SUM__') #generate with 'makepkg -g'
+
+build() {
+	cd "$srcdir/$pkgname-$pkgver"
+	make
+}
+
+package() {
+	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
+	make DESTDIR="$pkgdir/" install
+}
