@@ -57,7 +57,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%attr(0644,root,root) 	%doc 			README NEWS ChangeLog AUTHORS INSTALL TODO
+%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
 %attr(0600,root,root) 	%config(noreplace) 	/etc/sisiyad.conf
 #%attr(0600,root,root) 	%config(noreplace) 	/etc/sisiyaqd.conf
 %attr(0700,root,root) 				/etc/init.d/sisiyad
