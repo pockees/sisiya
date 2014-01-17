@@ -58,6 +58,7 @@ create_sisiyad()
 	### common package directory for all package types (rpm, deb, pacman ...)
 	rm -rf $package_dir
 	mkdir -p $package_dir
+	cp -a ${source_dir}/doc $package_dir/
 	cp -a ${source_dir}/edbc $package_dir/
 	cp -a ${source_dir}/$package_str $package_dir/
 	echo "$version_str" > $package_dir/edbc/version.txt
