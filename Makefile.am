@@ -24,6 +24,6 @@ edbc:
 	cd edbc && ./bootstrap create && ./configure && make && cd ..
 .PHONY: sisiyad
 sisiyad:
-	cd sisiyad && ./bootstrap create && ./configure && make clean && make && cd ..
+	cd sisiyad && ./bootstrap create && ./configure --prefix=/ && make clean && make && cd ..
 install:
 	cd sisiyad && make "DESTDIR=$(DESTDIR)" install && cd ..
