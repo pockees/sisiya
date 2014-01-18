@@ -26,4 +26,4 @@ edbc:
 sisiyad:
 	cd sisiyad && ./bootstrap create && ./configure && make clean && make && cd ..
 install:
-	cd sisiyad && make "DSTDIR=$(DSTDIR)" install && cd ..
+	cd sisiyad && make "DESTDIR=$(DESTDIR)" install && cd ..
