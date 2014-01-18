@@ -25,7 +25,7 @@ in a database system.
 
 %build
 ./bootstrap create
-./configure
+./configure --prefix=/
 make
 
 %install
