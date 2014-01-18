@@ -1,0 +1,13 @@
+- Version :
+	Edit the version.txt file and write the appropriate version in it.
+
+- Build :
+	./bootstrap create
+	./configure
+	make
+- Install :
+	make install
+
+	or	
+
+	make "DESTDIR=/opt/sisiya" install

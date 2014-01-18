@@ -61,7 +61,12 @@ create_sisiyad()
 	cp -a ${source_dir}/doc $package_dir/
 	cp -a ${source_dir}/edbc $package_dir/
 	cp -a ${source_dir}/etc $package_dir/
+	for f in "AUTHORS" "ChangeLog" "COPYING" "INSTALL" "Makefile.am" "bootstrap"  "configure.ac" "NEWS" "README"
+	do
+		cp -a ${source_dir}/$f $package_dir/
+	done
 	cp -a ${source_dir}/$package_str $package_dir/
+	echo "$version_str" > $package_dir/version.txt
 	echo "$version_str" > $package_dir/edbc/version.txt
 	echo "$version_str" > $package_dir/$package_str/version.txt
 	################################################################################################################################################
@@ -77,7 +82,6 @@ create_sisiyad()
 	echo "In order to build the SisIYA packages one can use the following command:"
 	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
 	echo "------"
-	return
 	################################################################################################################################################
 	### create Debian source package
 	################################################################################################################################################
@@ -95,7 +99,6 @@ create_sisiyad()
 	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
 	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
 	echo "------"
-	exit 0
 	################################################################################################################################################
 	### create directory structure for Arch systems
 	################################################################################################################################################
@@ -103,7 +106,6 @@ create_sisiyad()
 	pacman_root_dir="$base_dir/pacman/$package_name"
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
-	cp -a ${package_dir}/etc $pacman_root_dir 
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
@@ -133,7 +135,7 @@ create_edbc_libs()
 	mkdir -p $package_dir
 	cp -a ${source_dir}/edbc/* $package_dir/
 	echo "$version_str" > $package_dir/version.txt
-	sed -i -e "s/__VERSION_MAJOR__/$version_major_str/g" -e "s/__VERSION_MINOR__/$version_minor_str/g" -e "s/__VERSION__/$version_str/g" $package_dir/Makefile
+	#sed -i -e "s/__VERSION_MAJOR__/$version_major_str/g" -e "s/__VERSION_MINOR__/$version_minor_str/g" -e "s/__VERSION__/$version_str/g" $package_dir/Makefile
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################

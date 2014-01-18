@@ -16,12 +16,7 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 #######################################################################################
-
-VER_MAJOR=__VERSION_MAJOR__
-VER_MINOR=__VERSION_MINOR__
-VERSION=$(VER_MAJOR).$(VER_MINOR)
-
-INSTALL_DIR=$(DESTDIR)
+INSTALL_DIR=$(DESTDIR)$(prefix)
 DEV_DIR=$(INSTALL_DIR)/sisiya_edbc
 DOCS_DIR=$(INSTALL_DIR)/sisiya_edbc_docs
 LIBS_DIR=$(INSTALL_DIR)/usr/lib

@@ -24,17 +24,13 @@ noextract=()
 md5sums=('__MD5SUM__') #generate with 'makepkg -g'
 
 build() {
-	cd "$srcdir/$pkgname-$pkgver-$pkgrel/edbc/lib"
-	./bootstrap create
-	./configure
-	make
-	cd ../../sisiyad
+	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
 	./bootstrap create
 	./configure
 	make
 }
 
 package() {
-	cd "$srcdir/$pkgname-$pkgver-$pkgrel/sisiyad"
+	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
 	make DESTDIR="$pkgdir/" install
 }
