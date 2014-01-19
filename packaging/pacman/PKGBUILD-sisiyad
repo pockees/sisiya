@@ -32,5 +32,14 @@ build() {
 
 package() {
 	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
-	make DESTDIR="$pkgdir/" install
+#	cd "$srcdir/$pkgname-$pkgver-$pkgrel/sisiyad"
+	make "DESTDIR=$pkgdir" install
+#	cd ..
+	install -d -m 755 $pkgdir/etc/systemd/system
+	install -m m 644 etc/sisiyad_systemd $pkgdir/etc/systemd/system/sisiyad.service
 }
+
+#systemctl daemon-reload
+#systemctl enable sisiyad.service
+#systemctl restart sisiyad
+			

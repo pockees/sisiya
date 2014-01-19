@@ -6,8 +6,7 @@ dnl ------------------------------------------------
 dnl Initialization and Versioning
 dnl ------------------------------------------------
 #AC_INIT([sisiyad], [0.6.30], [erdal@sisiya.org])
-AC_INIT([sisiyad], [m4_esyscmd([cat version.txt | tr -d "\n"])], [erdal@sisiya.org])
-#AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
+AC_INIT([sisiyad], m4_esyscmd(tr -d '\n' < version.txt), [erdal@sisiya.org])
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(include/config.h)
 
@@ -33,6 +32,7 @@ dnl Set some target options
 
 #cxxflags_save="$CXXFLAGS" $cxxflags_save
 cxxflags_save=$cxxflags_save
+LDFLAGS=""
 case "${host}" in
 	*-*-darwin*)
 		CXXFLAGS="-DDARWIN"
@@ -46,7 +46,7 @@ case "${host}" in
                 ;;
 esac
 CXXFLAGS="$CXXFLAGS $cxxflags_save"
-LDFLAGS="$LDFLAGS $ldflags_save"
+#LDFLAGS="$LDFLAGS $ldflags_save"
 
 dnl --------------------------------------------------
 dnl Check for libraries

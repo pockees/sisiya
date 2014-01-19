@@ -1,0 +1,13 @@
+[Unit]
+Description=SisIYA daemon
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/sisiyad.pid
+ExecStart=/usr/sbin/sisiyad /etc/sisiyad.conf 
+#ExecStop=
+#ExecReload=/usr/sbin/sisiyad -HUP
+
+[Install]
+WantedBy=multi-user.target
