@@ -8,6 +8,7 @@ insert into users values(-1,'admin','$1\$xotkYPkm\$Xvcb5nKLwjMhWUrIhiZ1I.','Syst
 insert into users values(1,'erdal','$1\$xotkYPkm\$Xvcb5nKLwjMhWUrIhiZ1I.','Erdal','Mutlu','erdal@example.com','f');
 
 insert into securitygroups values(0,'sisiya.records.securitygroups.allsystems');
+insert into securitygroupuser values(0,-1);
 
 insert into alerttypes values(2,'sisiya.records.alerttypes.email');
 insert into alerttypes values(3,'sisiya.records.alerttypes.sms');

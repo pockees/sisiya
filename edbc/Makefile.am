@@ -17,8 +17,8 @@
 #
 #######################################################################################
 INSTALL_DIR=$(DESTDIR)$(prefix)
-DEV_DIR=$(INSTALL_DIR)/sisiya_edbc
-DOCS_DIR=$(INSTALL_DIR)/sisiya_edbc_docs
+DEV_DIR=$(INSTALL_DIR)sisiya_edbc
+DOCS_DIR=$(INSTALL_DIR)sisiya_edbc_docs
 LIBS_DIR=$(INSTALL_DIR)/usr/lib
 
 

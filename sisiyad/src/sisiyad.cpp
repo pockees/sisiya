@@ -553,8 +553,7 @@ void doit(void)
 		delete dm;
 	try {
 		dm = new DriverManager;
-		conn =
-		    dm->getConnection(edbc, confFile.getString("DB_USER"),
+		conn = dm->getConnection(edbc, confFile.getString("DB_USER"),
 				      confFile.getString("DB_PASSWORD"));
 	}
 	catch(SQLException & e) {

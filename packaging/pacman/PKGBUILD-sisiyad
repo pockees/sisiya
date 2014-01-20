@@ -8,7 +8,7 @@ arch=('i686' 'x86_64')
 url="http://www.sisiya.org"
 license=('GPL2')
 groups=()
-depends=('perl')
+depends=('sisiya-edbc-libs')
 makedepends=()
 checkdepends=()
 optdepends=()
@@ -32,11 +32,11 @@ build() {
 
 package() {
 	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
-#	cd "$srcdir/$pkgname-$pkgver-$pkgrel/sisiyad"
 	make "DESTDIR=$pkgdir" install
-#	cd ..
-	install -d -m 755 $pkgdir/etc/systemd/system
-	install -m m 644 etc/sisiyad_systemd $pkgdir/etc/systemd/system/sisiyad.service
+
+ 	#mkdir -p $pkgdir/etc/systemd/system
+ 	install -d -m 755 $pkgdir/etc/systemd/system
+	install -m 644 etc/sisiyad_systemd $pkgdir/etc/systemd/system/sisiyad.service
 }
 
 #systemctl daemon-reload

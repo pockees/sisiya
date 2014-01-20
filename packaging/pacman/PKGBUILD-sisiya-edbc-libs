@@ -8,7 +8,7 @@ arch=('i686' 'x86_64')
 url="http://www.sisiya.org"
 license=('GPL2')
 groups=()
-depends=('perl')
+depends=('libmariadbclient' 'postgresql-libs')
 makedepends=()
 checkdepends=()
 optdepends=()
@@ -26,7 +26,7 @@ md5sums=('__MD5SUM__') #generate with 'makepkg -g'
 build() {
 	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
 	./bootstrap create
-	./configure
+	./configure --prefix=
 	make
 }
 

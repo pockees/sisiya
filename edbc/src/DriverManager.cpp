@@ -43,10 +43,10 @@ DriverManager::DriverManager()
 #endif
 	char *p = getenv(ENV_DRIVERS);
 	if (p == NULL) {
-		driversDir = "/usr/lib/edbc";
+		driversDir = "/usr/lib";
 #ifdef DEBUG
 		cout << "DriverManager::Constructor: " << ENV_DRIVERS <<
-		    " is not set. Setting to the default /usr/lib/edbc" <<
+		    " is not set. Setting to the default /usr/lib" <<
 		    endl;
 #endif
 	} else
