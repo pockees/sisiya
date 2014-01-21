@@ -154,19 +154,24 @@ if ($#sockets > -1) {
 		}
 		#print STDERR "\n";
 	}
+	my $s;
 	for $i (0..$#sockets) {
 		#print STDERR "$sockets[$i]{'progname'}...\n";
+		$s = '';
+		if ($i > 0) {
+			$s =',';
+		}
 		if (is_listening_socket($i)) {
 			#print STDERR "$sockets[$i]{'progname'} is OK\n";
-			$ok_str .= " $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
+			$ok_str .= "$s $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
 		}
 		else {
 			#print STDERR "$sockets[$i]{'progname'} is NOT OK\n";
 			if ($sockets[$i]{'onerror'} eq 'warn') {
-				$warning_str .= " $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
+				$warning_str .= "$s $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
 			}
 			else {
-				$error_str .= " $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
+				$error_str .= "$s $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
 			}
 		}
 	}
