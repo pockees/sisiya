@@ -2,7 +2,7 @@
 
 %define version __VERSION__
 %define release __RELEASE__
-%define Source_Release %{release}
+%define Source_Release __RELEASE__
 
 
 Summary: SisIYA daemon.
