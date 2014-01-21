@@ -140,7 +140,7 @@ else {
 $message_str .= get_cpu_info();
 ### add cpu usage info
 $message_str .= get_cpu_usage();
-$data_str = '<entry name="load_average" type="numeric">'.$n.'</entry>';
+$data_str = '<entries><entry name="load_average" type="numeric">'.$n.'</entry></entries>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

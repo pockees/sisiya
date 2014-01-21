@@ -159,7 +159,8 @@ else {
 	#RAM: total=".get_size_k($ram_total)." used=".get_size_k($ram_used)." free=".get_size_k($ram_free)." usage=".int($ram_percent).'%.';
 }
 #	
-$data_str = '<entry name="swap_total" type="numeric">'.trim($swap_total).'</entry>';
+$data_str = '<entries>';
+$data_str .= '<entry name="swap_total" type="numeric">'.trim($swap_total).'</entry>';
 $data_str .= '<entry name="swap_free" type="numeric">'.trim($swap_free).'</entry>';
 $data_str .= '<entry name="swap_used" type="numeric">'.trim($swap_used).'</entry>';
 $data_str .= '<entry name="swap_used_percent" type="numeric">'.trim($swap_percent).'</entry>';
@@ -167,6 +168,7 @@ $data_str .= '<entry name="ram_total" type="numeric">'.trim($ram_total).'</entry
 $data_str .= '<entry name="ram_free" type="numeric">'.trim($ram_free).'</entry>';
 $data_str .= '<entry name="ram_used" type="numeric">'.trim($ram_used).'</entry>';
 $data_str .= '<entry name="ram_used_percent" type="numeric">'.trim($ram_percent).'</entry>';
+$data_str .= '</entries>';
 
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);

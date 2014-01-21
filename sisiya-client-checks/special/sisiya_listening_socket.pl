@@ -136,10 +136,9 @@ if ($#sockets > -1) {
         my @c;
 	for $i (0..$#a) {
 		@b = split(/\s+/, $a[$i]);
-		print STDERR @b."\n";
 		$j = 0;
 		foreach my $k (@b) {
-			print STDERR "$k ";
+			#print STDERR "$k ";
 			if (($j == 6) && ($netstat_list[$i][0] eq 'tcp')) {
 				# extract the progname part of "PID/progname" string
 				# and only add the line if it has a valid progname
@@ -163,7 +162,7 @@ if ($#sockets > -1) {
 			}
 			$j++;
 		}
-		print STDERR "\n";
+		#print STDERR "\n";
 	}
 
 	my $s;
