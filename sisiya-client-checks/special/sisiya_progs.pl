@@ -34,6 +34,19 @@ if (-f $SisIYA_Config::functions) {
 #### the default values
 our $ps_prog = 'ps';
 our @progs;
+# our @progs = (
+#		{
+#			'command' 	=> '/usr/sbin/sisiyad /etc/sisiyad.conf', 
+#			'description'	=> 'SisIYA server'
+#		},
+#		{
+#			'command' 	=> '/usr/sbin/httpd', 
+#			'description'	=> 'Web server'
+#		},
+#	);
+#
+#push @progs , { 'command' => '/usr/sbin/sisiyad /etc/sisiyad.conf', 'description' => 'SisIYA server'};
+#push @progs , { 'command' => '/usr/sbin/httpd', 'description' => 'Web server'};
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
@@ -82,12 +95,17 @@ elsif ($SisIYA_Config::osname eq 'Linux') {
 }
 
 chomp(@ps_list = `$ps_prog $ps_params`);
+my $s;
 for my $i (0..$#progs) {
-	if (is_running($progs[$i])) {
-		$ok_str .= " $progs[$i]";
+	$s = '';
+	if ($i > 0) {
+		$s =',';
+	}
+	if (is_running($progs[$i]{'command'})) {
+		$ok_str .= "$s $progs[$i]{'description'}";
 	}
 	else {
-		$error_str .= " $progs[$i]";
+		$error_str .= "$s $progs[$i]{'description'}";
 	}
 }
 
