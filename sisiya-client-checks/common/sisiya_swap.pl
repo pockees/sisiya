@@ -68,8 +68,8 @@ my $message_str;
 my $data_str = '';
 my $service_name = 'swap';
 my $retcode;
-my ($free_ram, $total_ram, $used_ram, $percent_ram);
-my ($free_swap, $total_swap, $used_swap, $percent_swap);
+my ($ram_free, $ram_total, $ram_used, $ram_percent);
+my ($swap_free, $swap_total, $swap_used, $swap_percent);
 if ($SisIYA_Config::osname eq 'Linux') {
 	my $file;
 	open($file, '<', '/proc/meminfo') || die "$0: Could not open file /proc/meminfo! $!";
@@ -80,19 +80,19 @@ if ($SisIYA_Config::osname eq 'Linux') {
 #		print STDERR "$_\n";
 #	}
 
-		#$total_ram = get_meminfo('MemTotal:', @lines);
-		#$free_ram = get_meminfo('MemFree:', @lines);
-	$total_ram = (split(/k/, (split(/:/, (grep(/MemTotal:/, @lines))[0]))[1]))[0];
-	$free_ram = (split(/k/, (split(/:/, (grep(/MemFree:/, @lines))[0]))[1]))[0];
-	$used_ram = $total_ram - $free_ram;
-		#$total_swap = get_meminfo('SwapTotal:', @lines);
-		#$free_swap = get_meminfo('SwapFree:', @lines);
-	$total_swap = (split(/k/, (split(/:/, (grep(/SwapTotal:/, @lines))[0]))[1]))[0];
-	$free_swap = (split(/k/, (split(/:/, (grep(/SwapFree:/, @lines))[0]))[1]))[0];
-	$used_swap = $total_swap - $free_swap;
-#	print STDERR "SWAP: total=$total_swap free=$free_swap used=$total_swap\n";
-#	print STDERR "RAM: total=$total_ram free=$free_ram used=$total_ram\n";
-#	print STDERR "formated RAM total=".get_size_k($total_ram)."\n";
+		#$ram_total = get_meminfo('MemTotal:', @lines);
+		#$ram_free = get_meminfo('MemFree:', @lines);
+	$ram_total = (split(/k/, (split(/:/, (grep(/MemTotal:/, @lines))[0]))[1]))[0];
+	$ram_free = (split(/k/, (split(/:/, (grep(/MemFree:/, @lines))[0]))[1]))[0];
+	$ram_used = $ram_total - $ram_free;
+		#$swap_total = get_meminfo('SwapTotal:', @lines);
+		#$swap_free = get_meminfo('SwapFree:', @lines);
+	$swap_total = (split(/k/, (split(/:/, (grep(/SwapTotal:/, @lines))[0]))[1]))[0];
+	$swap_free = (split(/k/, (split(/:/, (grep(/SwapFree:/, @lines))[0]))[1]))[0];
+	$swap_used = $swap_total - $swap_free;
+#	print STDERR "SWAP: total=$swap_total free=$swap_free used=$swap_total\n";
+#	print STDERR "RAM: total=$ram_total free=$ram_free used=$ram_total\n";
+#	print STDERR "formated RAM total=".get_size_k($ram_total)."\n";
 }
 elsif ($SisIYA_Config::osname eq 'SunOS') {
 	my @a = `$sunos_swap_prog -s`;
@@ -103,9 +103,9 @@ elsif ($SisIYA_Config::osname eq 'SunOS') {
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
-		$total_swap = (split(/k/, (split(/,/, $a[0]))[1]))[0];
-		$used_swap = (split(/k/, (split(/=/, $a[0]))[1]))[0];
-		$free_swap = $total_swap - $used_swap;
+		$swap_total = (split(/k/, (split(/,/, $a[0]))[1]))[0];
+		$swap_used = (split(/k/, (split(/=/, $a[0]))[1]))[0];
+		$swap_free = $swap_total - $swap_used;
 	}
 	@a = `$sunos_prtconf_prog`;
 	$retcode = $? >>=8;
@@ -116,9 +116,9 @@ elsif ($SisIYA_Config::osname eq 'SunOS') {
 	}
 	else {
 		my $s = (grep(/^Memory size:/, @a))[0];
-		$total_ram = (split(/\s+/, (split(/:/, $s))[1]))[1];
-		$total_ram = 1024 * $total_ram;
-		$free_ram = 0;
+		$ram_total = (split(/\s+/, (split(/:/, $s))[1]))[1];
+		$ram_total = 1024 * $ram_total;
+		$ram_free = 0;
 		@a = `$sunos_vmstat_prog 1 2`;
 		$retcode = $? >>=8;
 		if ($retcode != 0) {
@@ -128,36 +128,45 @@ elsif ($SisIYA_Config::osname eq 'SunOS') {
 		}
 		else {
 			$s = $a[3];
-			$free_ram = (split(/\s+/, $s))[5];
+			$ram_free = (split(/\s+/, $s))[5];
 		}
-		$used_ram = $total_ram - $free_ram;
+		$ram_used = $ram_total - $ram_free;
 	}
 }
-$percent_swap = 0;
-if ($total_swap != 0) {
-	$percent_swap = int(100 * $used_swap / $total_swap);
+$swap_percent = 0;
+if ($swap_total != 0) {
+	$swap_percent = int(100 * $swap_used / $swap_total);
 }
 ### only for info
-$percent_ram = 0;
-if ($total_ram != 0) {
-	$percent_ram = int(100 * $used_ram / $total_ram);
+$ram_percent = 0;
+if ($ram_total != 0) {
+	$ram_percent = int(100 * $ram_used / $ram_total);
 }
-my $s = "SWAP: total=".get_size_k($total_swap)." used=".get_size_k($used_swap)." free=".get_size_k($free_swap).". RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
-if ($percent_swap >= $swap_percents{'error'}) {
+my $s = "SWAP: total=".get_size_k($swap_total)." used=".get_size_k($swap_used)." free=".get_size_k($swap_free).". RAM: total=".get_size_k($ram_total)." used=".get_size_k($ram_used)." free=".get_size_k($ram_free)." usage=".int($ram_percent).'%.';
+if ($swap_percent >= $swap_percents{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: Swap usage is ".$percent_swap."% (>= ".$swap_percents{'error'}.")! $s";
-	#	SWAP: total=".get_size_k($total_swap)." used=".get_size_k($used_swap)." free=".get_size_k($free_swap).". RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
+	$message_str = "ERROR: Swap usage is ".$swap_percent."% (>= ".$swap_percents{'error'}.")! $s";
+	#	SWAP: total=".get_size_k($swap_total)." used=".get_size_k($swap_used)." free=".get_size_k($swap_free).". RAM: total=".get_size_k($ram_total)." used=".get_size_k($ram_used)." free=".get_size_k($ram_free)." usage=".int($ram_percent).'%.';
 }
-elsif ($percent_swap >= $swap_percents{'warning'}) {
+elsif ($swap_percent >= $swap_percents{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
-	$message_str = "WARNING: Swap usage is ".$percent_swap."% (>= ".$swap_percents{'warning'}.")! $s";
-	#	RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
+	$message_str = "WARNING: Swap usage is ".$swap_percent."% (>= ".$swap_percents{'warning'}.")! $s";
+	#	RAM: total=".get_size_k($ram_total)." used=".get_size_k($ram_used)." free=".get_size_k($ram_free)." usage=".int($ram_percent).'%.';
 }
 else {
 	$statusid = $SisIYA_Config::statusids{'ok'};
-	$message_str = "OK: Swap usage is ".$percent_swap."%. $s";
-	#RAM: total=".get_size_k($total_ram)." used=".get_size_k($used_ram)." free=".get_size_k($free_ram)." usage=".int($percent_ram).'%.';
+	$message_str = "OK: Swap usage is ".$swap_percent."%. $s";
+	#RAM: total=".get_size_k($ram_total)." used=".get_size_k($ram_used)." free=".get_size_k($ram_free)." usage=".int($ram_percent).'%.';
 }
+#	
+$data_str = '<entry name="swap_total" type="numeric">'.trim($swap_total).'</entry>';
+$data_str .= '<entry name="swap_free" type="numeric">'.trim($swap_free).'</entry>';
+$data_str .= '<entry name="swap_used" type="numeric">'.trim($swap_used).'</entry>';
+$data_str .= '<entry name="swap_used_percent" type="numeric">'.trim($swap_percent).'</entry>';
+$data_str .= '<entry name="ram_total" type="numeric">'.trim($ram_total).'</entry>';
+$data_str .= '<entry name="ram_free" type="numeric">'.trim($ram_free).'</entry>';
+$data_str .= '<entry name="ram_used" type="numeric">'.trim($ram_used).'</entry>';
+$data_str .= '<entry name="ram_used_percent" type="numeric">'.trim($ram_percent).'</entry>';
 
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
