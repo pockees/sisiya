@@ -43,7 +43,6 @@ if (-f $module_conf_file) {
 }
 ################################################################################
 my $message_str = '';
-my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $service_name = 'process_count';
 my @a = `ps -ef`;
@@ -59,6 +58,7 @@ if ($n >= $process_counts{'warning'}) {
 else {
 	$message_str = "OK: There are $n running processes.";
 }
+my $data_str = '<entry name="number_of_processes" type="numeric">'.$n.'</entry>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
