@@ -94,8 +94,7 @@ sub is_listening_socket
 					$found = 1;
 					last;
 			}
-		}
-		elsif ($sockets[$j]{'protocol'} eq 'udp') {
+		} elsif ($sockets[$j]{'protocol'} eq 'udp') {
 			if (
 				($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
 			&& 	($netstat_list[$i][3] eq $interface_port_str)
@@ -104,7 +103,22 @@ sub is_listening_socket
 					$found = 1;
 					last;
 			}
+		} elsif ($sockets[$j]{'protocol'} eq 'unix') {
+			if (
+				(
+						($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
+					&& 	($netstat_list[$i][9] eq $sockets[$j]{'progname'})
+				) || (
+					($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
+					&&	(defined $netstat_list[$i][10])
+					&& 	($netstat_list[$i][10] eq $sockets[$j]{'progname'})
+				)
+			) {
+					$found = 1;
+					last;
+			}
 		}
+
 	}
 	return $found;
 }
@@ -122,38 +136,36 @@ if ($#sockets > -1) {
         my @c;
 	for $i (0..$#a) {
 		@b = split(/\s+/, $a[$i]);
+		print STDERR @b."\n";
 		$j = 0;
 		foreach my $k (@b) {
-			#print STDERR "$k ";
+			print STDERR "$k ";
 			if (($j == 6) && ($netstat_list[$i][0] eq 'tcp')) {
 				# extract the progname part of "PID/progname" string
 				# and only add the line if it has a valid progname
 				@c = split(/\//, $k);
 				if ($#c == 1) {
 					push @{$netstat_list[$i]}, $c[1];
-				}
-				else {
+				} else {
 					push @{$netstat_list[$i]}, $k;
 				}
-			}
-			elsif (($j == 5) && ($netstat_list[$i][0] eq 'udp')) {
+			} elsif (($j == 5) && ($netstat_list[$i][0] eq 'udp')) {
 				# extract the progname part of "PID/progname" string
 				# and only add the line if it has a valid progname
 				@c = split(/\//, $k);
 				if ($#c == 1) {
 					push @{$netstat_list[$i]}, $c[1];
-				}
-				else {
+				} else {
 					push @{$netstat_list[$i]}, $k;
 				}
-			}
-			else {
+			} else {
 				push @{$netstat_list[$i]}, $k;
 			}
 			$j++;
 		}
-		#print STDERR "\n";
+		print STDERR "\n";
 	}
+
 	my $s;
 	for $i (0..$#sockets) {
 		#print STDERR "$sockets[$i]{'progname'}...\n";
