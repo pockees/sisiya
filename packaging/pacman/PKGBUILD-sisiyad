@@ -19,7 +19,8 @@ backup=()
 options=()
 install=
 changelog=
-source=("$pkgname-$pkgver-$pkgrel.tar.gz")
+#source=("$pkgname-$pkgver-$pkgrel.tar.gz")
+source=("http://sourceforge.net/projects/sisiya/files/sisiya/$pkgver/pacman/$pkgname-$pkgver-$pkgrel.tar.gz")
 noextract=()
 md5sums=('__MD5SUM__') #generate with 'makepkg -g'
 
