@@ -12,8 +12,7 @@ BuildRoot: %{_builddir}/%{name}-root
 Version: %{version}
 Release: %{release}
 #Obsoletes: $version-$release
-Source0: %{name}-%{version}-%{release}.tar.gz
-Source1: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/%{name}-%{version}-%{release}.tar.gz
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/%{name}-%{version}-%{release}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons

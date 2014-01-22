@@ -9,8 +9,7 @@ Summary: SisIYA daemon.
 Name: %{name}
 Version: %{version}
 Release: %{Source_Release}%{?dist}
-Source0: %{name}-%{version}-%{Source_Release}.tar.gz
-Source1: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/%{name}-%{version}-%{Source_Release}.tar.gz
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/%{name}-%{version}-%{Source_Release}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
