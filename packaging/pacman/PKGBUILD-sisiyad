@@ -1,4 +1,4 @@
-# Maintainer: Erdal Mutlu <erdal@sisiya.org>
+# Maintainer: Erdal Mutlu <erdal at sisiya dot org>
 pkgname=sisiyad
 pkgver=__VERSION__
 pkgrel=__RELEASE__

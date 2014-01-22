@@ -1,4 +1,4 @@
-# Maintainer: Erdal Mutlu <erdal@sisiya.net>
+# Maintainer: Erdal Mutlu <erdal at sisiya dot org>
 pkgname=sisiya-remote-checks
 pkgver=__VERSION__
 pkgrel=__RELEASE__

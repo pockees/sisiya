@@ -1,4 +1,4 @@
-# Maintainer: Erdal Mutlu <erdal@sisiya.org>
+# Maintainer: Erdal Mutlu <erdal at sisiya dot org>
 pkgname=sisiya-edbc-libs
 pkgver=__VERSION__
 pkgrel=__RELEASE__
