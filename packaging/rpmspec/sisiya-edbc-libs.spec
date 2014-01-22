@@ -3,7 +3,7 @@
 %define version __VERSION__
 %define release __RELEASE__
 
-Summary: The SisIYA server / remote check programs that are run from a central server. This is normally the server where SisIYA daemon runs.
+Summary: Libraries written in C++ for Database connectivity like JDBC.
 Name:%{name} 
 #BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
