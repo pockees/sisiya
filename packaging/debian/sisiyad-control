@@ -1,11 +1,11 @@
-Package: sisiya-edbc-libs
+Package: sisiyad
 Version: __VERSION__
 Section: system-tools 
 Priority: optional
 Architecture: any
 Essential: no
-Build-Depends: autoconf g++ make libmysqlclient-dev libpq-dev
-Depends: 
+Build-Depends: autoconf g++ make 
+Depends: sisiya-edbc-libs
 Pre-Depends:  
 Recommends: 
 Suggests: 
@@ -14,4 +14,4 @@ Maintainer: Erdal Mutlu <erdal@sisiya.org>
 Conflicts: 
 Replaces: 
 Provides:
-Description: This package contains the SisIYA EDBC headers and libraries.
+Description: The SisIYA daemon is a program which receives incomming SisIYA messages and records them in a database system.
