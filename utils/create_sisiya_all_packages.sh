@@ -41,6 +41,140 @@ str=`cat $version_file`
 version_str=`echo $str | cut -d "-" -f 1`
 release_str="1"
 
+create_webui_images()
+{
+	source_dir=$1
+	version_str=$2
+	release_str=$3
+	base_dir=$4
+	local_dir=$5
+	year_str=`date +%Y` 
+
+	package_str="sisiya-webui-images"
+	package_name="${package_str}-${version_str}-$release_str"
+	package_dir="$base_dir/tmp/${package_name}"
+	version_major_str=`echo $version_str | cut -d "." -f 1,2`
+	version_minor_str=`echo $version_str | cut -d "." -f 3`
+
+	### common package directory for all package types (rpm, deb, pacman ...)
+	rm -rf $package_dir
+	mkdir -p $package_dir
+	cp -a ${source_dir}/$package_str/* $package_dir/
+	################################################################################################################################################
+	### create RPM source package
+	################################################################################################################################################
+	rpm_root_dir="$base_dir/rpm/$package_name"
+	rm -rf $rpm_root_dir
+	cp -a $package_dir $rpm_root_dir
+	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
+	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
+	rm -rf $rpm_root_dir
+	echo "RPM packaging info :"
+	echo "In order to build the SisIYA packages one can use the following command:"
+	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
+	echo "------"
+	################################################################################################################################################
+	### create Debian source package
+	################################################################################################################################################
+	###
+	deb_root_dir="$base_dir/deb/$package_name"
+	rm -rf $deb_root_dir 
+	cp -a $package_dir $deb_root_dir
+	mkdir $deb_root_dir/DEBIAN
+	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
+	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
+	chmod 755 $deb_root_dir/DEBIAN/postinst
+	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
+	rm -rf $deb_root_dir 
+	echo "Debian packaging info:"
+	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
+	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
+	echo "------"
+	################################################################################################################################################
+	### create directory structure for Arch systems
+	################################################################################################################################################
+	###
+	pacman_root_dir="$base_dir/pacman/$package_name"
+	rm -rf $pacman_root_dir 
+	cp -a $package_dir $pacman_root_dir
+	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
+	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
+	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
+	rm -rf $pacman_root_dir &&
+	echo "Pacman packaging info:"
+	echo "In order to build Pacman package use the $base_dir/pacman/${package_name}.tar.gz archive and the $base_dir/pacman/PKGBUILD-${package_name} on a Pacman system (makepkg)."
+	echo "------"
+}
+
+create_webui_php()
+{
+	source_dir=$1
+	version_str=$2
+	release_str=$3
+	base_dir=$4
+	local_dir=$5
+	year_str=`date +%Y` 
+
+	package_str="sisiya-webui-php"
+	package_name="${package_str}-${version_str}-$release_str"
+	package_dir="$base_dir/tmp/${package_name}"
+	version_major_str=`echo $version_str | cut -d "." -f 1,2`
+	version_minor_str=`echo $version_str | cut -d "." -f 3`
+
+	### common package directory for all package types (rpm, deb, pacman ...)
+	rm -rf $package_dir
+	mkdir -p $package_dir
+	cp -a ${source_dir}/$package_str/* $package_dir/
+	cp -a ${source_dir}/etc $package_dir/
+	cp -a ${source_dir}/sisiya_ui/XMPPHP $package_dir/
+	echo "$version_str" > $package_dir/version.txt
+	cat $source_dir/$package_str/conf/sisiya_common_conf.php | sed -e "s/__VERSION__/${version_str}/" -e "s/__YEAR__/${year_str}/"  > $rpm_root_dir/conf/sisiya_common_conf.php 
+	################################################################################################################################################
+	### create RPM source package
+	################################################################################################################################################
+	rpm_root_dir="$base_dir/rpm/$package_name"
+	rm -rf $rpm_root_dir
+	cp -a $package_dir $rpm_root_dir
+	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
+	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
+	rm -rf $rpm_root_dir
+	echo "RPM packaging info :"
+	echo "In order to build the SisIYA packages one can use the following command:"
+	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
+	echo "------"
+	################################################################################################################################################
+	### create Debian source package
+	################################################################################################################################################
+	###
+	deb_root_dir="$base_dir/deb/$package_name"
+	rm -rf $deb_root_dir 
+	cp -a $package_dir $deb_root_dir
+	mkdir $deb_root_dir/DEBIAN
+	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
+	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
+	chmod 755 $deb_root_dir/DEBIAN/postinst
+	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
+	rm -rf $deb_root_dir 
+	echo "Debian packaging info:"
+	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
+	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
+	echo "------"
+	################################################################################################################################################
+	### create directory structure for Arch systems
+	################################################################################################################################################
+	###
+	pacman_root_dir="$base_dir/pacman/$package_name"
+	rm -rf $pacman_root_dir 
+	cp -a $package_dir $pacman_root_dir
+	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
+	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
+	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
+	rm -rf $pacman_root_dir &&
+	echo "Pacman packaging info:"
+	echo "In order to build Pacman package use the $base_dir/pacman/${package_name}.tar.gz archive and the $base_dir/pacman/PKGBUILD-${package_name} on a Pacman system (makepkg)."
+	echo "------"
+}
+
 create_sisiyad()
 {
 	source_dir=$1
@@ -403,6 +537,8 @@ create_client_checks $source_dir $version_str $release_str $base_dir
 create_remote_checks $source_dir $version_str $release_str $base_dir
 create_edbc_libs $source_dir $version_str $release_str $base_dir
 create_sisiyad $source_dir $version_str $release_str $base_dir
+create_webui_images $source_dir $version_str $release_str $base_dir
+create_webui_php $source_dir $version_str $release_str $base_dir
 
 # clean up
 rm -rf $base_dir/tmp/

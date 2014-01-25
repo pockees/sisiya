@@ -18,7 +18,7 @@ Vendor: Erdal Mutlu
 Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
 Url: http://www.sisiya.org
-Requires: bash, perl
+Requires: perl
 %description 
 The SisIYA client programs and checks. This package is installed on every server that is going to be monitored by SisIYA.
 

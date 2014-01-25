@@ -1,9 +1,9 @@
-%define name sisiya-webgui
+%define name sisiya-webui-php
 
-%define version 0.5.20
-%define release 29
+%define version __VERSION__
+%define release __RELEASE__
 
-%define install_dir /var/www/html/sisiya
+%define install_dir /var/www/html/%{name}
 
 ### define distro
 #%define is_redhat 	%(test -e /etc/redhat-release 	&& echo 1 || echo 0)
@@ -27,14 +27,13 @@ BuildRoot: %{_builddir}/%{name}-root
 Version: %{version}
 Release: %{release}
 #Obsoletes: $version-$release
-Source0: %{name}-%{version}-%{release}.tar.gz
-#Source1: http://download.sourceforge.net/sisiya/%{name}-%{version}-%{release}.tar.gz
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}-%{release}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Tools
 Packager: Erdal Mutlu <emutlu@users.sourceforge.net>
 Url: http://sisiya.sourceforge.net
-Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, sisiya-server-checks, sisiya-client-checks
+Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, sisiya-remote-checks, sisiya-client-checks
 %description 
 The SisIYA web GUI, php scripts and images for viewing the data from DB. You need this
 package on the server on which the Apache with php is running.
@@ -49,7 +48,7 @@ package on the server on which the Apache with php is running.
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "install_root=%{buildroot}" install_sisiya_webgui
+make "DESTDIR=%{buildroot}" "WEB_BASE_DIR=/var/www/html" install
 
 %post
 # change ownership 
