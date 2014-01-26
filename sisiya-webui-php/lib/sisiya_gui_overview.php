@@ -27,7 +27,7 @@ error_reporting(E_ALL);
 $html='';
 
 $securitygroups_sql='';
-if(!$_SESSION['hasAllSystems']) 
+if($force_login == true && !$_SESSION['hasAllSystems']) 
 	$securitygroups_sql=' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 ####################################################################################################################################################
 

@@ -161,6 +161,7 @@ create_webui_php()
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
+	cp $source_dir/packaging/pacman/${package_str}.install $base_dir/pacman/
 	rm -rf $pacman_root_dir &&
 	echo "OK"
 }
@@ -501,7 +502,8 @@ package_building_info()
 	echo "-----------------------------------------------------------------------------------------------------------------------"
 	echo "For RPM packages    : rpmbuild -ta rpm/package.tar.gz"
 	echo "For DEB packages    : Unpack the deb/package.tar.gz and run the dpkg --build package command."
-	echo "For Pacman packages : Use pacman/package.tar.gz and use it together with PKGBUILD-package on a Pacman system (makepkg)."
+	echo "For Pacman packages : Use pacman/package.tar.gz and use it together with PKGBUILD-package and/or 
+			package.install files on a Pacman system (makepkg)."
 	echo "-----------------------------------------------------------------------------------------------------------------------"
 }
 ################################################################################################################################################

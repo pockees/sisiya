@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright (C) 2003 - 2012 Erdal Mutlu
+    Copyright (C) 2003 - __YEAR__ Erdal Mutlu
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ error_reporting(E_ALL);
 
 function initialize()
 {
-	global $progName,$debug;
+	global $progName, $force_login, $debug;
 
 	$progName=$_SERVER['PHP_SELF'];
 
@@ -37,7 +37,8 @@ function initialize()
 	debug("initialize: initLanguage()...OK");
 
 	debug("initialize: hasAllSystems()...");
-	hasAllSystems($_SESSION['user_id']);
+	if($force_login)
+		hasAllSystems($_SESSION['user_id']);
 	debug("initialize: hasAllSystems()...OK");
 
 	return(true);
@@ -68,10 +69,10 @@ function getSystemGlobalStatusID()
  
 function getTotalNumberOfSystems($location, $groups=0, $nsystems)
 {
-	global $db;
+	global $db, $force_login;
  
 	$securitygroups_sql='';
-	if(!$_SESSION['hasAllSystems']) 
+	if($force_login && !$_SESSION['hasAllSystems']) 
 		$securitygroups_sql=' and a.id in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 	####################################################################################################################################################
 	if($groups == 1) {

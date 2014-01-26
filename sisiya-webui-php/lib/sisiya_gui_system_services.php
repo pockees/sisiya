@@ -59,7 +59,7 @@ function setSystemNameAndType(&$systemName,$systemID,&$systemType,$securitygroup
 ###########################################################
 $securitygroups_sql='';
 $securitygroups2_sql='';
-if(!$_SESSION['hasAllSystems']) { 
+if($force_login && !$_SESSION['hasAllSystems']) { 
 	$securitygroups_sql=' and a.systemid 	in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 	$securitygroups2_sql=' and a.id 	in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 }

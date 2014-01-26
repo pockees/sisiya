@@ -22,7 +22,7 @@ define("VERSION","__VERSION__",false);
 define("YEAR","__YEAR__",false);
 
 # Setup wizard
-include_once($rootDir.'/lib/sisiya_setup_wizard.php');
+#include_once($rootDir.'/lib/sisiya_setup_wizard.php');
 
 global $progNameSisIYA_GUI;
 $progNameSisIYA_GUI=$rootDir.'/sisiya_gui.php';

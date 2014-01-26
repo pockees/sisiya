@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright (C) 2003 - __YEAR__ Erdal Mutlu
+    Copyright (C) 2003 - __YEAR__  Erdal Mutlu
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,26 +17,10 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-global $debug;
-$debug=false;
+error_reporting(E_ALL);
 
-global $force_login;
-$force_login=false;
+$h->addContent('<!-- menu: start -->');
+$h->addContent('	<script type="text/javascript"> new menu (MENU_ITEMS, MENU_TPL); </script>');
+$h->addContent('<!-- menu: finish -->');
 
-global $ncolumns;
-$ncolumns=30;
-
-global $mainProg;
-$mainProg=$progNameSisIYA_GUI;
-
-global $adminProg;
-$adminProg=$progNameSisIYA_Admin;
-
-global $rssFile;
-$rssFile=$rootDir.'/sisiya_rss.xml';
-
-
-# functions
-include_once($libDir.'/sisiya_common_functions.php');
-include_once($libDir.'/sisiya_gui_functions.php');
 ?>

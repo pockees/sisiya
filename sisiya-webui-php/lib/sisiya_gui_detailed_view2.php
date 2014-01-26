@@ -48,7 +48,7 @@ $html.='</form>'."\n";
 $html.="</div>\n";
 
 $securitygroups_sql='';
-if(!$_SESSION['hasAllSystems']) 
+if($force_login && !$_SESSION['hasAllSystems']) 
 	$securitygroups_sql=' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 ####################################################################################################################################################
 #		   0            1        2           3            4          5     6        7      8              9  

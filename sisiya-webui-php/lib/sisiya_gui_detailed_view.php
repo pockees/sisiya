@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright (C) 2003 - 2012 Erdal Mutlu
+    Copyright (C) 2003 - __YEAR__ Erdal Mutlu
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,11 +43,11 @@ $navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img
 $html.="</div>\n";
 
 $securitygroups_sql='';
-if(!$_SESSION['hasAllSystems']) 
+if ($force_login && !$_SESSION['hasAllSystems']) 
 	$securitygroups_sql=' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 ####################################################################################################################################################
 $groups=getHTTPValue('groups');
-if($groups == '1') {
+if ($groups == '1') {
 	#		   0            1        2           3            4          5     6        7      8           9      10             11 
 	$sql_str="select c.hostname,a.systemid,a.statusid,a.updatetime,a.changetime,a.str,b.keystr,d.str,c.locationid,e.str,c.effectsglobal,f.str";
 	$sql_str.=" from systemstatus a,status b,systems c";
@@ -70,25 +70,25 @@ else {
 	$sql_str.=" order by d.sortid,c.effectsglobal desc,i.str,a.statusid desc,c.hostname";
 }
 debug('sql_str='.$sql_str);
-$result=$db->query($sql_str);
-if(!$result)
+$result = $db->query($sql_str);
+if (!$result)
 	errorRecord('select');
 else {
-	$nrows=$db->getRowCount($result);
-	if($nrows > 0) {
-		$nsystems=0;
+	$nsystems = 0;
+	$nrows = $db->getRowCount($result);
+	if ($nrows > 0) {
 		$old_group_str='';
 		$flag=TRUE;
 		$row_index=0;
 		while($flag ==  TRUE) {
-			if($row_index >= $nrows) {
+			if ($row_index >= $nrows) {
 				$flag=FALSE;
 				break;
 			}
 			$row=$db->fetchRow($result,$row_index);
 			$row_index++;
-			if("$old_group_str" != $row[7]) { // every time when the location is changed
-				if("$old_group_str" != '') {
+			if ("$old_group_str" != $row[7]) { // every time when the location is changed
+				if ("$old_group_str" != '') {
 					$html.='<tr class="footer"><td colspan="6">';
 					$html.=$lrb['sisiya_gui.label.TotalNumberOfSystems'].' : '.$nsystems.' (';
 					$html.=getTotalNumberOfSystems($old_group_str, $groups, $nsystems);
@@ -114,7 +114,7 @@ else {
 			$html.='&amp;systemName='.$row[0].'&amp;systemType='.$row[9].'">';
 			$html.='<img src="'.$systemsImageDir.'/'.$row[9].'.gif" alt="'.$row[9].'" height="25" /><br />';
 			$html.=$row[0].'</a></td>';
-			if($row[10] == 'f')
+			if ($row[10] == 'f')
 				$html.='<td class="effectsfalse center">';
 			else
 				$html.='<td class="center">';

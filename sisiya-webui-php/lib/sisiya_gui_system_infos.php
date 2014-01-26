@@ -60,7 +60,7 @@ $html.='</div>';
 $html.='<table class="system_infos">'."\n";
 
 $securitygroups_sql='';
-if(!$_SESSION['hasAllSystems']) 
+if($force_login && !$_SESSION['hasAllSystems']) 
 	$securitygroups_sql=' and a.id in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 ####################################################################################################################################################
 #		   0                 1        2             3      

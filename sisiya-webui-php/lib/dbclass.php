@@ -60,37 +60,32 @@ class MySQL_DBClass extends DBClass {
  
 	function connect()
 	{
-		if($this->debug == 1)
+		if ($this->debug == 1)
 			echo "MySQL_DBClass:(connect): Connecting to ".$this->server." ...<br>\n"; 
-		$this->conn=mysql_pconnect($this->server,$this->user,$this->password) or die("Could not connect to MySQL DB : ".$this->user."@".$this->server."\n");
+		$this->conn = mysqli_connect($this->server, $this->user, $this->password, $this->dbname) or die("Could not connect to MySQL DB : ".$this->user."@".$this->server."\n");
 
-		if($this->debug == 1)
+		if ($this->debug == 1)
 			echo "MySQL_DBClass:(connect): Connected to MySQL DB :".$this->user."/".$this->dbname."@".$this->server."<br>\n";
-
-		mysql_select_db($this->dbname,$this->conn) or die("Could not connect to MySQL DB :".$this->user."/".$this->dbname."@".$this->server."\n");
-
-		if($this->debug == 1)
-			echo "MySQL_DBClass:(connect): Connected (select_db) to MySQL DB :".$this->user."/".$this->dbname."@".$this->server."<br>\n";
 	}
  
 	function close()
 	{
-		mysql_close($this->conn);
-		if($this->debug == 1)
+		mysqli_close($this->conn);
+		if ($this->debug == 1)
 			echo "MySQL_DBClass:(close): Closed connection to MySQL DB :".$this->user."/".$this->dbname."@".$this->server."<br>\n";
 	}
 
 	function query($sql)
 	{
-		if($this->debug == 1) {
-			$d=getdate();
+		if ($this->debug == 1) {
+			$d = getdate();
 			echo "MySQL_DBClass:(query): Start time : $d[mday].$d[month].$d[year] $d[hours]:$d[minutes].$d[seconds] Executing query :[".$sql."]...<br>\n";
-	}  
+		}  
  
-		$result=mysql_query($sql,$this->conn);
+		$result = mysqli_query($this->conn, $sql);
 
-		if($this->debug == 1) {
-			$d=getdate();
+		if ($this->debug == 1) {
+			$d = getdate();
 			echo "MySQL_DBClass:(query): Stop time : $d[mday].$d[month].$d[year] $d[hours]:$d[minutes].$d[seconds] Executing query :[".$sql."] finished.<br>\n";
 		}
 		return $result;
@@ -98,63 +93,71 @@ class MySQL_DBClass extends DBClass {
 
 	function getRowCount($result) 
 	{ 
-		if($result == '')
+		if ($result == '')
 			return 0;
-		else
-			return mysql_num_rows($result); 
+		return mysqli_num_rows($result); 
 	}
 
 	function getColumnCount($result) 
 	{ 
-		if($result == '')
+		if ($result == '')
 			return 0;
-		else
-			return mysql_num_fields($result); 
+		return mysqli_num_fields($result); 
 	}
 
-	function getColumnName($result,$index) { return mysql_field_name($result,$index); }
+	function getColumnName($result, $index) 
+	{ 
+		return 'NONAME';
+		#return mysql_field_name($result, $index); 
+	}
 
-	function fetchRow($result,$index) 
+	function fetchRow($result, $index) 
 	{ 
 		### improve this method
-		mysql_data_seek($result,$index); 
-		return mysql_fetch_row($result);
+		mysqli_data_seek($result, $index); 
+		return mysqli_fetch_row($result);
 	}
 
-	function getAffectedRows($result) { return mysql_affected_rows($this->conn); }
+	function getAffectedRows($result) 
+	{ 
+		return mysqli_affected_rows($this->conn); 
+	}
 
-	function freeResult($result) { return mysql_free_result($result); }
+	function freeResult($result) 
+	{ 
+		return mysqli_free_result($result); 
+	}
 }
 
 ### PostgreSQL implementation of DBClass
 class PostgreSQL_DBClass extends DBClass {
 	function connect()
 	{
-		if($this->debug == 1)
+		if ($this->debug == 1)
 			echo "PostgreSQL_DBClass:(connect): Connecting to ".$this->server." ...<br>\n"; 
 		$this->conn=pg_pconnect("host=".$this->server." dbname=".$this->dbname." user=".$this->user." password=".$this->password) or die("Could not connect to ".$this->user."@".$this->dbname."/".$this->server);
 
-		if($this->debug == 1)
+		if ($this->debug == 1)
 			echo "PostgreSQL_DBClass:(connect): Connectet (select_db) to PostgreSQL DB :".$this->user."/".$this->dbname."@".$this->server."<br>\n";
 	}
  
 	function close()
 	{
 		pg_close($this->conn);
-		if($this->debug == 1)
+		if ($this->debug == 1)
 			echo "PostgreSQL_DBClass:(close): Closed connection to PostgreSQL DB :".$this->user."/".$this->dbname."@".$this->server."<br>\n";
 	}
 
 	function query($sql)
 	{
-		if($this->debug == 1) {
+		if ($this->debug == 1) {
 			$d=getdate();
 			echo "PostgreSQL_DBClass:(query): Start time : $d[mday].$d[month].$d[year] $d[hours]:$d[minutes].$d[seconds] Executing query :[".$sql."]...<br>\n";
 		}  
  
 		$result=pg_exec($this->conn,$sql);
 
-		if($this->debug == 1) {
+		if ($this->debug == 1) {
 			$d=getdate();
 			echo "PostgreSQL_DBClass:(query): Stop time : $d[mday].$d[month].$d[year] $d[hours]:$d[minutes].$d[seconds] Executing query :[".$sql."] finished.<br>\n";
 		}
@@ -163,7 +166,7 @@ class PostgreSQL_DBClass extends DBClass {
 
 	function getRowCount($result) 
 	{ 
-		if($result == '')
+		if ($result == '')
 		return 0;
 	else
 		return pg_numrows($result); 
@@ -171,7 +174,7 @@ class PostgreSQL_DBClass extends DBClass {
 
 	function getColumnCount($result) 
 	{ 
-		if($result == '')
+		if ($result == '')
 			return 0;
 		else
 			return pg_numfields($result); 
@@ -189,55 +192,55 @@ class Oracle_DBClass extends DBClass {
  
 	function connect()
 	{
-		if($this->debug == 1)
+		if ($this->debug == 1)
 			echo "Oracle_DBClass:(connect): Connecting to ".$this->server." ...<br>\n"; 
 		$this->conn=oci_pconnect($this->user,$this->password,$this->server) or die("Could not connect to Oracle DB : ".$this->user."@".$this->server."\n");
 
-		if($this->debug == 1)
+		if ($this->debug == 1)
 			echo "Oracle_DBClass:(connect): Connected to Oracle DB :".$this->user."/".$this->dbname."@".$this->server."<br>\n";
 	}
  
 	function close()
 	{
 		oci_close($this->conn);
-		if($this->debug == 1)
+		if ($this->debug == 1)
 			echo "Oracle_DBClass:(close): Closed connection to Oracle DB :".$this->user."/".$this->dbname."@".$this->server."<br>\n";
 	}
 
 	function query($sql)
 	{
-		if($this->debug == 1) {
+		if ($this->debug == 1) {
 			$d=getdate();
 			echo "Oracle_DBClass:(query): Start time : $d[mday].$d[month].$d[year] $d[hours]:$d[minutes].$d[seconds] Executing query :[".$sql."]...<br>\n";
 	}  
 		# Parse the statement. Note there is no final semi-colon in the SQL statement
 		$result=oci_parse($this->conn,$sql);
-		if($result == false) {
-			if($this->debug == 1)
+		if ($result == false) {
+			if ($this->debug == 1)
 				echo 'Oracle_DBClass:(query): Could not parse SQL!';
 			return false;
 		}
   		# Set before calling oci_execute()
 /*
 		$prefetch_rows=300;
-		if(oci_set_prefetch($result, $prefetch_rows) == false) {
-			if($this->debug == 1)
+		if (oci_set_prefetch($result, $prefetch_rows) == false) {
+			if ($this->debug == 1)
 				echo 'Oracle_DBClass:(query): Could not set prefetch to '.$prefetch_rows.'!';
 			return false;
 		}
 */
-		if(oci_execute($result) == false) {
-			if($this->debug == 1)
+		if (oci_execute($result) == false) {
+			if ($this->debug == 1)
 				echo 'Oracle_DBClass:(query): Could not execute the query!';
 			return false;
 		} 
 
-		if($this->debug == 1) {
+		if ($this->debug == 1) {
 			$d=getdate();
 			echo "Oracle_DBClass:(query): Stop time : $d[mday].$d[month].$d[year] $d[hours]:$d[minutes].$d[seconds] Executing query :[".$sql."] finished.<br>\n";
 		}
 
-		if(oci_statement_type($result) == 'SELECT') {
+		if (oci_statement_type($result) == 'SELECT') {
 			# fetch all rows and store in an array
 			$this->fetchAll($result);
 		}
@@ -250,11 +253,11 @@ class Oracle_DBClass extends DBClass {
 		$maxrows=-1;	# -1 : get all after skipping $skip rows
 		$flags=OCI_FETCHSTATEMENT_BY_ROW + OCI_NUM;
 		$nrows=oci_fetch_all($result,$rs,$skip,$maxrows,$flags);
-		if($this->debug == 1) {
+		if ($this->debug == 1) {
 			echo "Oracle_DBClass:(fetchAll): count(rs)=".count($rs)."<br>\n";
 #			echo "Oracle_DBClass:(fetchAll): =".var_dump($rs)."<br>\n";
 		}
-		if($nrows == false) {
+		if ($nrows == false) {
 			echo "Oracle_DBClass:(fetchAll): Error occured while fetching all result!<br>\n";
 			return false;
 		}
@@ -268,7 +271,7 @@ class Oracle_DBClass extends DBClass {
 		$resultid=(string)$result;
 		echo "resultid=".$resultid."<br />";
 		$this->results[$resultid]=array('nrows' => $nrows, 'rs' => $rs);
-		if($this->debug == 1) {
+		if ($this->debug == 1) {
                       	echo "Oracle_DBClass:(fetchAll): Added result into the results table.<br>\n";
 			echo "Oracle_DBClass:(fetchAll): number of result sets=".count($this->results)." <br>\n";
 			echo "Oracle_DBClass:(fetchAll): nrows=".$this->results[$resultid]['nrows']."<br>\n";
@@ -285,14 +288,14 @@ class Oracle_DBClass extends DBClass {
 
 	function getRowCount($result) 
 	{ 
-		if($result == '')
+		if ($result == '')
 			return 0;
 		else {
 			# because all rows are fetched at once oci_num_rows($result); could also be called, but we have already stored the
 			# nrows in the $rs array, that is why we use $rs array's nrows 
 			$resultid=(string)$result;
-			if(array_key_exists($resultid,$this->results) == false) {
-				if($this->debug == 1) 
+			if (array_key_exists($resultid,$this->results) == false) {
+				if ($this->debug == 1) 
                         		echo "Oracle_DBClass:(getRowCount): The result id=".$resultid." is not in the results table!<br>\n";
 					echo "Oracle_DBClass:(getRowCount): =".var_dump($this->results)."<br>\n";
 				return 0;
@@ -304,7 +307,7 @@ class Oracle_DBClass extends DBClass {
 
 	function getColumnCount($result) 
 	{ 
-		if($result == '')
+		if ($result == '')
 			return 0;
 		else {
 			return oci_num_fields($result); 
@@ -316,14 +319,14 @@ class Oracle_DBClass extends DBClass {
 	function fetchRow($result,$index) 
 	{ 
 		$resultid=(string)$result;
-		if(array_key_exists($resultid,$this->results) == false) {
-			if($this->debug == 1) 
+		if (array_key_exists($resultid,$this->results) == false) {
+			if ($this->debug == 1) 
                         	echo "Oracle_DBClass:(fetchRow): The result id is not in the results table!<br>\n";
 			return false;
 		}
 		$nrows=$this->results[$resultid]['nrows'];
-		if($index >= $nrows) {
-			if($this->debug == 1) 
+		if ($index >= $nrows) {
+			if ($this->debug == 1) 
                         	echo "Oracle_DBClass:(fetchRow): The index ".$index." is >= number of rows=".$nrows."!<br>\n";
 			return false;
 		}
@@ -336,8 +339,8 @@ class Oracle_DBClass extends DBClass {
 	function freeResult($result) 
 	{ 
 		$resultid=(string)$result;
-		if(array_key_exists($resultid,$this->results) == false) {
-			if($this->debug == 1) 
+		if (array_key_exists($resultid,$this->results) == false) {
+			if ($this->debug == 1) 
                         	echo "Oracle_DBClass:(freeResult): The result id is not in the results table!<br>\n";
 			return false;
 		}

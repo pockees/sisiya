@@ -26,7 +26,7 @@ function getSystemServiceStatusHistoryPanel($effectsglobal='')
 	global $lrb,$sisiyaImageDir,$tmpImageDir,$statusNames;
 
 	$title_str=$lrb['sisiya.label.HistoryOfServices'];
-	if($effectsglobal == '') {
+	if ($effectsglobal == '') {
 		$effectsglobal_str='';
 		$image_file=$tmpImageDir.'/system_service_status_history_all.png';
 	}
@@ -57,7 +57,7 @@ function getSystemServiceStatusHistory(&$image_file,$sql_str)
 
 	debug('sql_str='.$sql_str);
 	$result=$db->query($sql_str);
-	if(!$result)
+	if (!$result)
 		errorRecord('select');
 	else {
 		$w=400;
@@ -138,11 +138,11 @@ function createHistoryLineGraph($result,$image_file,$H,$W)
 		$y2=$h;
 		imageline($im,$x1,$y1,$x2,$y2,$x_axis_color);
 		# baseline tick
-		if($i % 2 == 0) {
+		if ($i % 2 == 0) {
 			imageline($im,$x1,$h-3,$x2,$h+3,$graph_color_black);
 		}
 		# x axis labels
-		if($i % 12 == 0) {
+		if ($i % 12 == 0) {
 			$str=$i/2;
 			imagestring($im,$font_size,$x1-3,$h+5,$str,$text_color);
 		}
@@ -161,12 +161,12 @@ function createHistoryLineGraph($result,$image_file,$H,$W)
 		$str=$str.'%';
 		$x1=0;
 		$y1=$i*$dy;
-		if($i<10)
+		if ($i<10)
 			imagestring($im,$font_size,$x1,$y1,$str,$text_color);
 	}
 	
 	$nrows=$db->getRowCount($result);
-	if($nrows == 0)
+	if ($nrows == 0)
 		return;
 	$system_status_history_count=array(array());
 	$system_status_history_total=0;
@@ -186,7 +186,7 @@ function createHistoryLineGraph($result,$image_file,$H,$W)
 #		echo $status_stamp.'|';
 		$system_status_history_count[$time_stamp][$status_stamp]=$row[2];
 		$system_status_history_total=array_sum($system_status_history_count[$time_stamp]);
-		if($system_status_history_total > $system_status_history_total_max)
+		if ($system_status_history_total > $system_status_history_total_max)
 			$system_status_history_total_max=$system_status_history_total;
 	}
 	//echo $system_status_history_count[610][3]."-";
@@ -237,7 +237,7 @@ function createHistoryLineGraph($result,$image_file,$H,$W)
 						$color_g=$graph_color_magenta;
 						break;
 				}
-				if($zz==1) {
+				if ($zz==1) {
 				#				imagefilledrectangle($im,$xx1-1,$yy2-1,$xx1+1,$yy2+1,$color_g);
 				imageline($im,$xx1,$yy1,$xx2,$yy2,$color_g);
 				imageline($im,$xx1,$yy1+1,$xx2,$yy2+1,$color_g);
@@ -249,7 +249,7 @@ function createHistoryLineGraph($result,$image_file,$H,$W)
 			}
 		}
 	}
-	if(imagepng($im,$image_file) == false)
+	if (imagepng($im,$image_file) == false)
 		debug("ERROR: Yaratamadim");
 	else
 		debug("OK: Yarattim.");
@@ -305,7 +305,7 @@ function createSystemStatusPie($info_count, $ok_count, $warning_count, $error_co
 	$y2 = $box_y + $box_h;
 	imagerectangle($image, $x1, $y1, $x2, $y2, $gray);
 	$total = $info_count + $ok_count + $warning_count + $error_count + $other_count;
-	if($total > 0) {
+	if ($total > 0) {
 		$x1 = $box_x1;
 		$x2 = $x1 + $sq;
 		$y1 = $box_y1;
@@ -355,26 +355,26 @@ function createSystemStatusPie($info_count, $ok_count, $warning_count, $error_co
 		$cx = $dw + $rx;
 		$cy = $dh + $ry;
 		for ($i = $cy + 15; $i > $cy; $i--) {
-			if($z1 <> $z2)
+			if ($z1 <> $z2)
 				imagefilledarc($image, $cx, $i, 2 * $rx, 2*$ry, $z1, $z2, $darknavy, IMG_ARC_PIE);
-			if($z2 <> $z3)
+			if ($z2 <> $z3)
 				imagefilledarc($image, $cx, $i, 2 * $rx, 2*$ry, $z2, $z3, $darkgreen, IMG_ARC_PIE);
-			if($z3 <> $z4)
+			if ($z3 <> $z4)
 				imagefilledarc($image, $cx, $i, 2 * $rx, 2*$ry, $z3, $z4, $darkyellow, IMG_ARC_PIE);
-			if($z4 <> $z5)
+			if ($z4 <> $z5)
 				imagefilledarc($image, $cx, $i, 2 * $rx, 2*$ry, $z4, $z5, $darkred, IMG_ARC_PIE);
-			if($z5 <> $z6)
+			if ($z5 <> $z6)
 				imagefilledarc($image, $cx, $i, 2 * $rx, 2*$ry, $z5, $z6, $darkgray, IMG_ARC_PIE);
 		}
-		if($z1 <> $z2)
+		if ($z1 <> $z2)
 			imagefilledarc($image, $cx, $cy, 2 * $rx, 2 * $ry, $z1, $z2, $navy, IMG_ARC_PIE);
-		if($z2 <> $z3)
+		if ($z2 <> $z3)
 			imagefilledarc($image, $cx, $cy, 2 * $rx, 2 * $ry, $z2, $z3, $green, IMG_ARC_PIE);
-		if($z3 <> $z4)
+		if ($z3 <> $z4)
 			imagefilledarc($image, $cx, $cy, 2 * $rx, 2 * $ry, $z3, $z4, $yellow, IMG_ARC_PIE);
-		if($z4 <> $z5)
+		if ($z4 <> $z5)
 			imagefilledarc($image, $cx, $cy, 2 * $rx, 2 * $ry, $z4, $z5, $red, IMG_ARC_PIE);
-		if($z5 <> $z6)
+		if ($z5 <> $z6)
 			imagefilledarc($image, $cx, $cy, 2 * $rx, 2 * $ry, $z5, $z6, $gray, IMG_ARC_PIE);
 	}
 	imagepng($image, $image_file);
@@ -422,7 +422,7 @@ function getSystemStatusCount(&$info_count,&$ok_count,&$warning_count,&$error_co
 
 	debug('sql_str='.$sql_str);
 	$result=$db->query($sql_str);
-	if(!$result)
+	if (!$result)
 		errorRecord('select');
 	else {
 		$nrows = $db->getRowCount($result);
@@ -457,7 +457,7 @@ function getSystemStatusCount(&$info_count,&$ok_count,&$warning_count,&$error_co
 
 function getSystemStatusPanel($effectsglobal='')
 {
-	global $lrb,$mainProg,$sisiyaImageDir,$tmpImageDir,$statusNames;
+	global $lrb, $force_login, $mainProg, $sisiyaImageDir, $tmpImageDir, $statusNames;
 
 	$info_percent=0;
 	$ok_percent=0;
@@ -466,7 +466,7 @@ function getSystemStatusPanel($effectsglobal='')
 	$other_percent=0;
 
 	$title_str=$lrb['sisiya.label.Systems'];
-	if($effectsglobal == '') {
+	if ($effectsglobal == '') {
 		$effectsglobal_str='';
 		$effectsglobal_link_str='';
 		$image_file=$tmpImageDir.'/system_status_pie_all.png';
@@ -480,13 +480,13 @@ function getSystemStatusPanel($effectsglobal='')
 	$link_str=$mainProg.'?menu=detailed_view2'.$effectsglobal_link_str;
 
 	$securitygroups_sql='';
-	if(!$_SESSION['hasAllSystems']) 
+	if ($force_login && !$_SESSION['hasAllSystems']) 
 		$securitygroups_sql=' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 	####################################################################################################################################################
 	$sql_str="select a.statusid,count(a.statusid) from systemstatus a,systems b where a.systemid=b.id ".$securitygroups_sql." and b.active='t' ".$effectsglobal_str." group by a.statusid order by a.statusid;";
 	getSystemStatusCount($info_count,$ok_count,$warning_count,$error_count,$other_count,$image_file,$sql_str); 
 	$total=$info_count+$ok_count+$warning_count+$error_count+$other_count;
-	if($total > 0) {
+	if ($total > 0) {
 		$info_percent = round(100*$info_count/$total,2);
 		$ok_percent = round(100*$ok_count/$total,2);
 		$warning_percent = round(100*$warning_count/$total,2);
@@ -539,7 +539,7 @@ function getSystemStatusPanel($effectsglobal='')
 
 function getSystemStatusPanel2()
 {
-	global $lrb,$tmpImageDir,$statusNames;
+	global $lrb, $force_login, $tmpImageDir, $statusNames;
 
 	$info_percent=0;
 	$ok_percent=0;
@@ -547,14 +547,14 @@ function getSystemStatusPanel2()
 	$error_percent=0;
 
 	$securitygroups_sql='';
-	if(!$_SESSION['hasAllSystems']) 
+	if ($force_login && !$_SESSION['hasAllSystems']) 
 		$securitygroups_sql=' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 	####################################################################################################################################################
 	$sql_str="select a.statusid,count(a.statusid) from systemstatus a,systems b where a.systemid=b.id ".$securitygroups_sql." and b.active='t' and b.effectsglobal='f' group by a.statusid order by a.statusid;";
 	$image_file=$tmpImageDir.'/system_status_pie2.png';
 	getSystemStatusCount($info_count,$ok_count,$warning_count,$error_count,$image_file,$sql_str); 
 	$total=$info_count+$ok_count+$warning_count+$error_count;
-	if($total > 0) {
+	if ($total > 0) {
 		$info_percent=round(100*$info_count/$total,2);
 		$ok_percent=round(100*$ok_count/$total,2);
 		$warning_percent=round(100*$warning_count/$total,2);
@@ -599,7 +599,7 @@ function getSystemStatusPanel2()
 
 function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 {
-	global $lrb, $sisiyaImageDir, $tmpImageDir, $statusNames, $mainProg;
+	global $lrb, $force_login, $sisiyaImageDir, $tmpImageDir, $statusNames, $mainProg;
 
 	$info_percent = 0;
 	$ok_percent = 0;
@@ -607,7 +607,7 @@ function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 	$error_percent = 0;
 	$other_percent = 0;
 	
-	if($effectsglobal == '') {
+	if ($effectsglobal == '') {
 		$effectsglobal_str = '';
 		$effectsglobal_link_str = '';
 		$image_file = $tmpImageDir.'/system_'.$serviceID.'_all_service_status_pie.png';
@@ -618,7 +618,7 @@ function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 		$image_file = $tmpImageDir.'/system_'.$serviceID.'_'.$effectsglobal.'_service_status_pie.png';
 	}
 	$securitygroups_sql = '';
-	if(!$_SESSION['hasAllSystems']) 
+	if ($force_login && !$_SESSION['hasAllSystems']) 
 		$securitygroups_sql = ' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 	####################################################################################################################################################
 	$sql_str="select a.statusid,count(a.statusid) from systemservicestatus a,systems b where a.systemid=b.id ".$securitygroups_sql." and b.active='t' ".$effectsglobal_str." and a.serviceid=".$serviceID." group by a.statusid order by a.statusid;";
@@ -626,7 +626,7 @@ function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 	getSystemStatusCount($info_count,$ok_count,$warning_count,$error_count,$other_count,$image_file,$sql_str); 
 	$total=$info_count+$ok_count+$warning_count+$error_count+$other_count;
 	#echo  "total=$total info_count=$info_count ok_count=$ok_count warning_count=$warning_count error_count=$error_count other_count=$other_count<br>";
-	if($total > 0) {
+	if ($total > 0) {
 		$info_percent=round(100*$info_count/$total,2);
 		$ok_percent=round(100*$ok_count/$total,2);
 		$warning_percent=round(100*$warning_count/$total,2);
@@ -689,7 +689,7 @@ function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 
 function getSystemServiceStatusPanel($effectsglobal='')
 {
-	global $lrb,$sisiyaImageDir,$tmpImageDir,$statusNames;
+	global $lrb, $force_login, $sisiyaImageDir, $tmpImageDir, $statusNames;
 
 	$info_percent=0;
 	$ok_percent=0;
@@ -698,7 +698,7 @@ function getSystemServiceStatusPanel($effectsglobal='')
 	$other_percent=0;
 
 	$title_str=$lrb['sisiya.label.Services'];
-	if($effectsglobal == '') {
+	if ($effectsglobal == '') {
 		$effectsglobal_str='';
 		$image_file=$tmpImageDir.'/system_services_status_pie_all.png';
 	}
@@ -708,13 +708,13 @@ function getSystemServiceStatusPanel($effectsglobal='')
 	}
 
 	$securitygroups_sql='';
-	if(!$_SESSION['hasAllSystems']) 
+	if ($force_login && !$_SESSION['hasAllSystems']) 
 		$securitygroups_sql=' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 	####################################################################################################################################################
 	$sql_str="select a.statusid,count(a.statusid) from systemservicestatus a,systems b where a.systemid=b.id ".$securitygroups_sql." and b.active='t' ".$effectsglobal_str." group by a.statusid order by a.statusid;";
 	getSystemStatusCount($info_count,$ok_count,$warning_count,$error_count,$other_count,$image_file,$sql_str); 
 	$total=$info_count+$ok_count+$warning_count+$error_count+$other_count;
-	if($total > 0) {
+	if ($total > 0) {
 		$info_percent=round(100*$info_count/$total,2);
 		$ok_percent=round(100*$ok_count/$total,2);
 		$warning_percent=round(100*$warning_count/$total,2);
@@ -777,7 +777,7 @@ function getSystemServiceStatusPanel($effectsglobal='')
 
 function getSystemServiceStatusDailyAveragePanel($effectsglobal='')
 {
-	global $lrb,$sisiyaImageDir,$tmpImageDir,$statusNames;
+	global $lrb, $force_login, $sisiyaImageDir, $tmpImageDir, $statusNames;
 
 	$info_percent=0;
 	$ok_percent=0;
@@ -786,7 +786,7 @@ function getSystemServiceStatusDailyAveragePanel($effectsglobal='')
 	$other_count=0;
 
 	$title_str=$lrb['sisiya.label.DailyAverageOfServices'];
-	if($effectsglobal == '') {
+	if ($effectsglobal == '') {
 		$effectsglobal_str='';
 		$image_file=$tmpImageDir.'/system_service_status_daily_average_pie_all.png';
 	}
@@ -797,13 +797,13 @@ function getSystemServiceStatusDailyAveragePanel($effectsglobal='')
 
 
 	$securitygroups_sql='';
-	if(!$_SESSION['hasAllSystems']) 
+	if ($force_login && !$_SESSION['hasAllSystems']) 
 		$securitygroups_sql=' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 	####################################################################################################################################################
 	$sql_str="select a.statusid,count(a.statusid) from systemhistorystatus a,systems b where a.systemid=b.id ".$securitygroups_sql." and b.active='t' ".$effectsglobal_str."  group by a.statusid order by a.statusid";
 	getSystemStatusCount($info_count,$ok_count,$warning_count,$error_count,$other_count,$image_file,$sql_str); 
 	$total=$info_count+$ok_count+$warning_count+$error_count+$other_count;
-	if($total > 0) {
+	if ($total > 0) {
 		$info_percent=round(100*$info_count/$total,2);
 		$ok_percent=round(100*$ok_count/$total,2);
 		$warning_percent=round(100*$warning_count/$total,2);
@@ -830,7 +830,7 @@ function getSystemsPanel($effectsglobal='t')
 	global $lrb;
 
 	$critical_str='Critical';
-	if($effectsglobal == 'f')
+	if ($effectsglobal == 'f')
 		$critical_str='NonCritical';
 	$html='';
 	$html.='<table class="dashboard_layout">'."\n";
@@ -860,7 +860,7 @@ function getSystemsDashboard($effectsglobal='')
 
 	$html='';
 	$html.='<p />';
-	if($effectsglobal != '')
+	if ($effectsglobal != '')
 		$html.=getSystemsPanel($effectsglobal);
 	else {
 		$html.=getSystemsPanel('t');
@@ -953,20 +953,20 @@ $h->addHeadContent('<meta http-equiv="cache-control" content="no-cache" />');
 $h->addHeadContent('<meta http-equiv="refresh" content="180" />');
 
 $effectsglobal_hidden_str='';
-if($effectsglobal != '') {
+if ($effectsglobal != '') {
 	$effectsglobal_hidden_str='<input type="hidden" name="effectsglobal" value="'.$effectsglobal.'" />';
 }
 $type_hidden_str='';
-if($type != '') {
+if ($type != '') {
 	$type_hidden_str='<input type="hidden" name="type" value="'.$type.'" />';
 }
 
 
 $html_type_str='';
-if($type == 'systems') {
+if ($type == 'systems') {
 	$html_type_str=getSystemsDashboard($effectsglobal);
 }
-else if($type == 'services') {
+else if ($type == 'services') {
 	$html_type_str=getServicesDashboard($effectsglobal);
 }
 else {
@@ -980,7 +980,7 @@ else {
 #$html.='</div>'."\n";
 $navigation_panel_str=getNavigationPan();
 
-if($effectsglobal != '' && $type != '') {
+if ($effectsglobal != '' && $type != '') {
 	$html.='<form id="dashbowardForm"  method="post" action="'.$progName.'">';
 	$html.=$effectsglobal_hidden_str;
 	$html.=$type_hidden_str;
