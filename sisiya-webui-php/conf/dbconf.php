@@ -18,6 +18,16 @@
 
 */
 
+### Choose your DB type and comment the others.
+$dbType="MySQL";               # valid values are MySQL and PostgreSQL
+#$dbType="Oracle";
+#$dbType="PostgreSQL";
+#
+###
+$db_server="localhost";        # host name or IP address of the the SisIYA's database
+$db_user="sisiyauser";         # the username to connect to the SisIYA's database
+$db_password="sisiyauser1";    # database user's password
+$db_name="sisiya";             # name of the SisIYA's database
 
 # build up corresponding connection to db
 

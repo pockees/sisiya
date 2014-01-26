@@ -305,7 +305,7 @@
 <record><strkey>sisiya.label.target</strkey> <value>Target</value></record>
 <record><strkey>sisiya.label.target.description</strkey> <value>Can pass hostname, IP addresses, networks etc. Ex: server1.example.org, example.org/24, 192.168.0.1; 10.0.0-255.1-254</value></record>
 <record><strkey>sisiya.label.add</strkey> <value>add</value></record>
-<record><strkey>sisiya.label.copyright</strkey> <value>© 2003 - 2010 SisIYA</value></record>
+<record><strkey>sisiya.label.copyright</strkey> <value>© 2003 - 2014 SisIYA</value></record>
 <record><strkey>sisiya.label.delete</strkey> <value>delete</value></record>
 <record><strkey>sisiya.label.error</strkey> <value>Error</value></record>
 <record><strkey>sisiya.label.system</strkey> <value>System</value></record>

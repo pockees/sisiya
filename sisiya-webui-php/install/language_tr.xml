@@ -317,7 +317,7 @@
 <record><strkey>sisiya.label.target</strkey> <value>Hedef</value></record>
 <record><strkey>sisiya.label.target.description</strkey> <value>Bilgisayar adı, IP, bilgisayar ağları gibi değerleri yazabilirsiniz. Örnek: sunucu1.example.org, example.org/24, 192.168.0.1; 10.0.0-255.1-254</value></record>
 <record><strkey>sisiya.label.add</strkey> <value>ekle</value></record>
-<record><strkey>sisiya.label.copyright</strkey> <value>© 2003 - 2010 SisIYA</value></record>
+<record><strkey>sisiya.label.copyright</strkey> <value>© 2003 - 2014 SisIYA</value></record>
 <record><strkey>sisiya.label.delete</strkey> <value>sil</value></record>
 <record><strkey>sisiya.label.error</strkey> <value>Hata</value></record>
 <record><strkey>sisiya.label.system</strkey> <value>Sistem</value></record>

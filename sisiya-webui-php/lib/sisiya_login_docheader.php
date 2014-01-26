@@ -27,7 +27,6 @@ $rs['meta-author']='www.sisiya.net';
 $rs['meta-description']='SisIYA system and network monitoring';
 $rs['meta-generator']='sisiya_admin';
 $rs['meta-keywords']='sisiya,system monitoring,network monitoring,snmp traps,web based,free';
-#$rs['copyright']='© 2004 - 2010  SisIYA by Erdal Mutlu';
 
 $h->setDoctype('html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"');
 $h->setHTMLTag('xmlns="http://www.w3.org/1999/xhtml"');

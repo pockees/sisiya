@@ -8,7 +8,7 @@ CREATE UNIQUE INDEX index_systemtypes_pk ON systemtypes(id);
 
 CREATE TABLE strkeys (
 	id	integer		NOT NULL,
-	keystr	varchar(256)	NOT NULL,
+	keystr	varchar(255)	NOT NULL,
 	str	text		NOT NULL,
 	primary key(id)
 )
@@ -18,7 +18,7 @@ CREATE UNIQUE INDEX index_keystrs_keystr	ON strkeys(keystr);
 
 CREATE TABLE languages (
 	id		integer		NOT NULL,
-	keystr		varchar(256)	NOT NULL REFERENCES strkeys(keystr),
+	keystr		varchar(255)	NOT NULL REFERENCES strkeys(keystr),
 	code		varchar(8)	NOT NULL,
 	charset		varchar(32)	NOT NULL,
 	primary key(id)
@@ -30,7 +30,7 @@ ALTER TABLE languages ADD CONSTRAINT fk_languages_keystr	FOREIGN KEY(keystr)	REF
 
 CREATE TABLE properties (
 	id	integer		NOT NULL,
-	keystr	varchar(256)	NOT NULL REFERENCES strkeys(keystr),
+	keystr	varchar(255)	NOT NULL REFERENCES strkeys(keystr),
 	primary key(id)
 )
 ENGINE = INNODB;
@@ -39,7 +39,7 @@ ALTER TABLE properties ADD CONSTRAINT fk_properties_keystr	FOREIGN KEY(keystr)	R
 
 CREATE TABLE services (
 	id		integer		NOT NULL,
-	keystr		varchar(256)	NOT NULL REFERENCES strkeys(keystr),
+	keystr		varchar(255)	NOT NULL REFERENCES strkeys(keystr),
 	primary key(id)
 )
 ENGINE = INNODB;
@@ -48,7 +48,7 @@ ALTER TABLE services ADD CONSTRAINT fk_services_keystr	FOREIGN KEY(keystr)	REFER
 
 CREATE TABLE status (
 	id		integer	NOT NULL,
-	keystr		varchar(256)	NOT NULL REFERENCES strkeys(keystr),
+	keystr		varchar(255)	NOT NULL REFERENCES strkeys(keystr),
 	primary key(id)
 )
 ENGINE = INNODB;
@@ -68,7 +68,7 @@ ALTER TABLE interface ADD CONSTRAINT fk_interface_strkeyid	FOREIGN KEY(strkeyid)
 
 CREATE TABLE alerttypes (
 	id		integer 	NOT NULL,
-	keystr		varchar(256)	NOT NULL REFERENCES strkeys(keystr),
+	keystr		varchar(255)	NOT NULL REFERENCES strkeys(keystr),
 	primary key(id)
 )
 ENGINE = INNODB;
@@ -78,7 +78,7 @@ ALTER TABLE alerttypes ADD CONSTRAINT fk_alerttypes_keystr	FOREIGN KEY(keystr)	R
 CREATE TABLE infos (
 	id		integer 	NOT NULL,
 	sortid		integer 	NOT NULL,
-	keystr		varchar(256)	NOT NULL REFERENCES strkeys(keystr),
+	keystr		varchar(255)	NOT NULL REFERENCES strkeys(keystr),
 	primary key(id)
 )
 ENGINE = INNODB;
@@ -88,7 +88,7 @@ ALTER TABLE infos ADD CONSTRAINT fk_infos_keystr	FOREIGN KEY(keystr)	REFERENCES 
 CREATE TABLE locations (
 	id		integer NOT NULL,
 	sortid		integer NOT NULL,
-	keystr		varchar(256)	NOT NULL REFERENCES strkeys(keystr),
+	keystr		varchar(255)	NOT NULL REFERENCES strkeys(keystr),
 	primary key(id)
 )
 ENGINE = INNODB;
@@ -103,8 +103,8 @@ CREATE TABLE systems (
 	hostname		varchar(32)	NOT NULL,
 	fullhostname		varchar(64)	NOT NULL,
 	effectsglobal		char(1)		NOT NULL,
-	ip			varchar(256)	NOT NULL,
-	mac			varchar(256)	NOT NULL,
+	ip			varchar(255)	NOT NULL,
+	mac			varchar(255)	NOT NULL,
 	primary key(id)
 )
 ENGINE = INNODB;
@@ -117,7 +117,7 @@ ALTER TABLE systems ADD CONSTRAINT fk_systems_locationid	FOREIGN KEY(locationid)
 CREATE TABLE users (
 	id		integer		NOT NULL,
 	username	varchar(32)	NOT NULL,
-	password	varchar(256)	NOT NULL,
+	password	varchar(255)	NOT NULL,
 	name		varchar(64)	NOT NULL,
 	surname		varchar(64)	NOT NULL,
 	email		varchar(128)	NOT NULL,
@@ -133,8 +133,8 @@ CREATE TABLE scannedsystems (
 	systemtypeid		integer		NOT NULL REFERENCES systemtypes(id),
 	hostname		varchar(32)	NOT NULL,
 	fullhostname		varchar(64)	NOT NULL,
-	ip			varchar(256)	NOT NULL,
-	mac			varchar(256)	NOT NULL,
+	ip			varchar(255)	NOT NULL,
+	mac			varchar(255)	NOT NULL,
 	primary key(userid,hostname)
 )
 ENGINE = INNODB;
@@ -270,7 +270,7 @@ ALTER TABLE systemstatus ADD CONSTRAINT fk_systemstatus_statusid	FOREIGN KEY(sta
 
 CREATE TABLE securitygroups (
 	id		integer		NOT NULL,
-	keystr		varchar(256)	NOT NULL REFERENCES strkeys(keystr),
+	keystr		varchar(255)	NOT NULL REFERENCES strkeys(keystr),
 	primary key(id)
 )
 ENGINE = INNODB;

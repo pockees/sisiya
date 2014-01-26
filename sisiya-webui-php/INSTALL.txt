@@ -1,6 +1,56 @@
 1) Database configuration:
+	- cd install
+	- Edit the Makefile and edit the DBTYPE according to your specific needs.
+	- Edit the db_DBTYPE.conf (where DBTYPE is your choice in the previous item) and edit it.
+	- Execute the make command. 
 
 2) Web server configuration:
 	- For Apache use the sisiya_apache.conf configuration file and put it where the Apache configuration files are located,
 		on CentOS it is the /etc/httpd/conf.d. After which edit it according to your specific needs.
 	- For Nginx use the sisiya_nginx.conf configuration file. After which edit it according to your specific needs.
+3) Web UI configuration:
+	- Edit the conf/dbconf.php according to the database configuration you have made in the first item.
+	- Edit the conf/sisiya_common_conf.php configuration file.
+
+This file helps you to create the SisIYA database and populate it
+with initial data.
+
+In the install/ directory you will find scripts for creating the user, db, tables etc for
+SisIYA database. For SisIYA DB installation please refer to INSTALL file in this directory.
+
+Here is a short description of some files:
+
+Makefile 		: This file is used by make (as always) and is a wrapper around dbscript.
+dbscript.sh		: This is a wrapper script for exec_DBTYPE.sh scripts. DBTYPE can be
+		  	  MySQL or PostgreSQL.
+db_DBTYPE.conf		: These files contain database connection info SQL file names.
+exec_DBTYPE.sh		: These are scripts which are called from dbscript.sh for
+			  executing varios SQLs.
+make_history_archive.sh : This script should be run every night after midnight in order to
+			  move all records exept which are for today (after midnight records) 
+			  from the systemhistorystatus to the systemhistorystatusall table.
+			  This is needed in order to speed up the daily queries.
+create_tables.sql	: SQL statements for creating the SisIYA's tables.
+drop_tables.sql		: SQL statements for deleting the SisIYA's tables.
+populate_db.sql		: SQL statements for populating the SisIYA's tables.
+1) Decide which database system you are going to use. There are two 
+   possible choices at the momemnt: MySQL and PostgreSQL. When you
+   have made your choice, set the DBTYPE variable in the Makefile and 
+   according to your needs edit the corresponding db_MySQL.conf or db_PostgreSQL.conf 
+   files. What you will probably need to change is the following :
+	dbserver 	: The server name or IP address of your database system. 
+	dbauser  	: The database administrator's user name. Usually this
+			  is mysql for MySQL and postgres for PostgreSQL database systems.
+	dbapassword	: This is the password of the dbauser.
+	dbadbname	: This is the database name of the dbauser. Usually this is
+			  mysql for MySQL and template1 for PostgreSQL.
+	dbpassword	: The password of the SisIYA database user (dbuser=sisiya).
+2) Edit the populate_db.sql. Here you will need to change the entries for
+   locations (When you have more then one server room or server center, you may
+   want to see your systems grouped by their location. This table defines the possible
+   locations.) and systems (Here you specify your systems: servers, etc.) tables.   
+3) Type make to do all the installation. If the entries in the conf file are correctly
+   entered or the connection data is correct, then you are going to be prompted
+   for dbauser's password. 
+
+

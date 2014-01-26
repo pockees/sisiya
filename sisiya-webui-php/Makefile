@@ -31,8 +31,8 @@ install:
 	cd $(web_dir) && ln -sf ${sisiya_remote_checks_dir}/conf	xmlconf
 	install -m 755 -d 				$(web_dir)/conf
 	install -m 644 conf/*.php 			$(web_dir)/conf/
-	install -m 644 etc/sisiya_apache.conf		$(web_dir)/conf/
-	install -m 644 etc/sisiya_nginx.conf		$(web_dir)/conf/
+	cat etc/sisiya_apache.conf | sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g"	> $(web_dir)/conf/sisiya_apache.conf
+	cat etc/sisiya_nginx.conf  | sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/conf/sisiya_nginx.conf
 	install -m 755 -d 				$(web_dir)/lib
 	install -m 644 lib/*.php 			$(web_dir)/lib/
 	install -m 755 -d 				$(web_dir)/images
