@@ -62,13 +62,16 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_archive
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_check_expired
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_rss
-%dir %attr(0755,root,root) 				/etc/httpd/conf.d
-%attr(0644,root,root) 		%config 		/etc/httpd/conf.d/sisiya.conf
+#%dir %attr(0755,root,root) 				/etc/httpd/conf.d
+#%attr(0644,root,root) 		%config 		/etc/httpd/conf.d/sisiya.conf
 %dir %attr(0755,root,root) 				%{install_dir}
 %attr(0644,root,root) 					%{install_dir}/favicon.ico
 %attr(0644,root,root) 					%{install_dir}/*.php
+%attr(0644,root,root) 					%{install_dir}/README.txt
+%attr(0644,root,root) 					%{install_dir}/INSTALL.txt
 %dir %attr(0755,root,root) 				%{install_dir}/conf
 %attr(0644,root,root) 		%config(noreplace)	%{install_dir}/conf/*.php
+%attr(0644,root,root) 		%config(noreplace)	%{install_dir}/conf/*.conf
 %dir %attr(0755,root,root) 				%{install_dir}/javascript
 %attr(0644,root,root) 					%{install_dir}/javascript/*.js
 %dir %attr(0755,root,root) 				%{install_dir}/lib
@@ -85,6 +88,8 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 %dir %attr(0755,root,root) 				%{install_dir}/images/tmp
 %attr(0644,root,root) 					%{install_dir}/images/sisiya/*.gif
 %attr(0644,root,root) 					%{install_dir}/images/sisiya/*.png
+%dir %attr(0755,root,root) 				%{install_dir}/install
+			 				%{install_dir}/install/*
 %dir %attr(0755,root,root) 				%{install_dir}/XMPPHP
 %attr(0644,root,root) 					%{install_dir}/XMPPHP/*.php
 #%attr(0644,root,root) 					%{install_dir}/xmlconf

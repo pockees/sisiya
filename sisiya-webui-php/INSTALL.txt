@@ -1,0 +1,6 @@
+1) Database configuration:
+
+2) Web server configuration:
+	- For Apache use the sisiya_apache.conf configuration file and put it where the Apache configuration files are located,
+		on CentOS it is the /etc/httpd/conf.d. After which edit it according to your specific needs.
+	- For Nginx use the sisiya_nginx.conf configuration file. After which edit it according to your specific needs.

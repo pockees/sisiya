@@ -5,7 +5,7 @@ insert into languages values(0,'sisiya.records.languages.english','en','utf-8');
 insert into languages values(1,'sisiya.records.languages.turkish','tr','utf-8');
 
 insert into users values(-1,'admin','$1\$xotkYPkm\$Xvcb5nKLwjMhWUrIhiZ1I.','System','Administrator','admins@example.com','t');
-insert into users values(1,'erdal','$1\$xotkYPkm\$Xvcb5nKLwjMhWUrIhiZ1I.','Erdal','Mutlu','erdal@example.com','f');
+insert into users values(1,'erdal','$1\$xotkYPkm\$Xvcb5nKLwjMhWUrIhiZ1I.','Erdal','Mutlu','erdal@sisiya.org','f');
 
 insert into securitygroups values(0,'sisiya.records.securitygroups.allsystems');
 insert into securitygroupuser values(0,-1);

@@ -1,0 +1,23 @@
+===============================================================================================================================
+Rewrite php scripts to use a Document class with the follwing methods:
+
+setDocumentTag($str);
+setHTMLTag($str);	# the xmlns="http://www.w3.org/1999/xhtml" part of <html xmlns="http://www.w3.org/1999/xhtml"> tag
+setTitle($str);
+addHeadContent($str);	# used for adding meta, link etc in the head section of a HTML document
+addContent($str);	# adds content in the body
+getHTML();		# retrievs the HTML source code
+displayHTML();		# displays the HTML code
+
+
+===============================================================================================================================
+security groups: 
+	groupdid -1 : all systems
+	groupid > 0 : other system groups
+security group user:
+	security groupid, userid
+security group system:
+	security groupid, systemid
+
+- There should be a location view (the current overview, detailed etc)
+- There should be user defined group view

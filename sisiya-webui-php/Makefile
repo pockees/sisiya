@@ -6,15 +6,13 @@ dst_etc=$(install_root)/etc
 cron_dir=$(install_root)/etc/cron.d
 sisiya_remote_checks_dir=/opt/sisiya-remote-checks
 ###########################################################################
-
+.PHONY: install
 install:
 	install -d 					$(cron_dir)
 	install -m 600 etc/cron.d/sisiya_alerts		$(cron_dir)
 	install -m 600 etc/cron.d/sisiya_archive	$(cron_dir)
 	install -m 600 etc/cron.d/sisiya_check_expired	$(cron_dir)
 	install -m 600 etc/cron.d/sisiya_rss		$(cron_dir)
-	install -m 755 -d 				$(dst_apache_conf)
-	install -m 644 etc/sisiya.conf		$(dst_apache_conf)
 	install -m 755 -d 				$(web_dir)/style
 	install -m 644 style/*.css 			$(web_dir)/style
 	install -m 755 -d 				$(web_dir)/javascript
@@ -27,10 +25,14 @@ install:
 	install -m 644 sisiya_alerts.php 		$(web_dir)
 	install -m 644 sisiya_rss.php 			$(web_dir)
 	install -m 644 sisiya_updatedb.php 		$(web_dir)
+	install -m 644 README.txt			$(web_dir)
+	install -m 644 INSTALL.txt			$(web_dir)
 	cd $(web_dir) && ln -sf sisiya_gui.php index.php
 	cd $(web_dir) && ln -sf ${sisiya_remote_checks_dir}/conf	xmlconf
 	install -m 755 -d 				$(web_dir)/conf
 	install -m 644 conf/*.php 			$(web_dir)/conf/
+	install -m 644 etc/sisiya_apache.conf		$(web_dir)/conf/
+	install -m 644 etc/sisiya_nginx.conf		$(web_dir)/conf/
 	install -m 755 -d 				$(web_dir)/lib
 	install -m 644 lib/*.php 			$(web_dir)/lib/
 	install -m 755 -d 				$(web_dir)/images
@@ -40,6 +42,8 @@ install:
 	install -m 755 -d 				$(web_dir)/images/tmp
 	install -m 644 images/sisiya/*.gif 		$(web_dir)/images/sisiya/
 	install -m 644 images/sisiya/*.png 		$(web_dir)/images/sisiya/
+	install -m 755 -d 				$(web_dir)/install
+	install install/* 				$(web_dir)/install/
 	install -m 755 -d				$(web_dir)/XMPPHP/
 	install -m 644 XMPPHP/*.php			$(web_dir)/XMPPHP/
 	install -m 755 -d 				$(web_dir)/autodiscover

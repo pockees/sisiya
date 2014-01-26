@@ -91,7 +91,7 @@ create_webui_images()
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
-	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
+	echo -n "Creating ${pacman_root_dir}.tar.gz ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
@@ -155,7 +155,7 @@ create_webui_php()
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
-	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
+	echo -n "Creating ${pacman_root_dir}.tar.gz ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
@@ -224,7 +224,7 @@ create_sisiyad()
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
-	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
+	echo -n "Creating ${pacman_root_dir}.tar.gz ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
@@ -286,7 +286,7 @@ create_edbc_libs()
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
-	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
+	echo -n "Creating ${pacman_root_dir}.tar.gz ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
@@ -366,7 +366,7 @@ create_remote_checks()
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
-	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
+	echo -n "Creating ${pacman_root_dir}.tar.gz ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	cp -a ${package_dir}/etc $pacman_root_dir 
@@ -450,7 +450,7 @@ create_client_checks()
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
-	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
+	echo -n "Creating ${pacman_root_dir}.tar.gz ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	cp -a ${package_dir}/etc $pacman_root_dir 
@@ -498,11 +498,11 @@ create_source_package()
 
 package_building_info()
 {
-	echo "--------------------------------------------------------------------------------------------------"
+	echo "-----------------------------------------------------------------------------------------------------------------------"
 	echo "For RPM packages    : rpmbuild -ta rpm/package.tar.gz"
 	echo "For DEB packages    : Unpack the deb/package.tar.gz and run the dpkg --build package command."
-	echo "For Pacman packages : Use pacman/package.tar.gz and PKGBUILD-package on a Pacman system (makepkg)."
-	echo "--------------------------------------------------------------------------------------------------"
+	echo "For Pacman packages : Use pacman/package.tar.gz and use it together with PKGBUILD-package on a Pacman system (makepkg)."
+	echo "-----------------------------------------------------------------------------------------------------------------------"
 }
 ################################################################################################################################################
 base_dir=`pwd`
