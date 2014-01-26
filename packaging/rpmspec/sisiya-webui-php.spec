@@ -20,23 +20,21 @@
 %endif
 
 
-Summary: The SisIYA web GUI, php scripts for viewing and administering SisIYA data from DB.
+Summary: SisIYA' PHP web UI.
 Name:%{name} 
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
 Version: %{version}
 Release: %{release}
-#Obsoletes: $version-$release
 Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}-%{release}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Tools
-Packager: Erdal Mutlu <emutlu@users.sourceforge.net>
-Url: http://sisiya.sourceforge.net
-Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, sisiya-remote-checks, sisiya-client-checks
+Packager: Erdal Mutlu <erdal@sisiya.org>
+Url: http://www.sisiya.org
+Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, nmap, sisiya-client-checks
 %description 
-The SisIYA web GUI, php scripts and images for viewing the data from DB. You need this
-package on the server on which the Apache with php is running.
+SisIYA's PHP web UI.
 
 %prep 
 #%setup ###-q -n sisiya-%{sisiya_Version}-%{sisiya_Release}
@@ -64,7 +62,6 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_archive
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_check_expired
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_rss
-#%attr(0644,root,root) 		%doc 			README NEWS ChangeLog AUTHORS INSTALL TODO
 %dir %attr(0755,root,root) 				/etc/httpd/conf.d
 %attr(0644,root,root) 		%config 		/etc/httpd/conf.d/sisiya.conf
 %dir %attr(0755,root,root) 				%{install_dir}
@@ -90,4 +87,4 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 %attr(0644,root,root) 					%{install_dir}/images/sisiya/*.png
 %dir %attr(0755,root,root) 				%{install_dir}/XMPPHP
 %attr(0644,root,root) 					%{install_dir}/XMPPHP/*.php
-%attr(0644,root,root) 					%{install_dir}/xmlconf
+#%attr(0644,root,root) 					%{install_dir}/xmlconf

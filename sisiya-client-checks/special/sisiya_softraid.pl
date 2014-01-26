@@ -103,15 +103,16 @@ for $i (0..$#raid_arrays) {
 		#print STDERR "$state\n";
 
 		if ( ($state eq 'active') || ($state eq 'clean') ) {
-			$ok_str .= " OK: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs).";
-		} elsif (($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)') || ($state eq 'clean, checking') || ( $state eq 'clean, degraded, resyncing (DELAYED)')) {
-			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs)!";
+			$ok_str .= " OK: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, working=$working_devs, failed=$failed_devs, spare=$spare_devs).";
+		} elsif (($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)') || ($state eq 'clean, checking') || ( $state eq 'clean, degraded, resyncing (DELAYED)')
+			|| ($state eq 'active, resyncing (DELAYED)')) {
+			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, working=$working_devs, failed=$failed_devs, spare=$spare_devs)!";
 		} elsif ( ($state eq 'active, resyncing') || ($state eq 'clean,resyncing') || ($state eq 'active, degraded, recovering')) {
 			$rebuild_status = (split(/:/, (grep(/Rebuild status :/i, @a))[0]))[1];
 			#Rebuild Status : 7% complete
-			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs) Rebuild status $rebuild_status.";
+			$warning_str .= " WARNING: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, working=$working_devs, failed=$failed_devs, spare=$spare_devs) Rebuild status $rebuild_status.";
 		} else {
-			$error_str .= " ERROR: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, warking=$working_devs, failde=$failed_devs, spare=$spare_devs)!";
+			$error_str .= " ERROR: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, working=$working_devs, failed=$failed_devs, spare=$spare_devs)!";
 		}
 	}
 }

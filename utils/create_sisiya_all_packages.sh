@@ -64,20 +64,19 @@ create_webui_images()
 	### create RPM source package
 	################################################################################################################################################
 	rpm_root_dir="$base_dir/rpm/$package_name"
+	echo -n "Creating ${rpm_root_dir}.tar.gz ..."
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
-	echo "RPM packaging info :"
-	echo "In order to build the SisIYA packages one can use the following command:"
-	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create Debian source package
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
+	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir $deb_root_dir
 	mkdir $deb_root_dir/DEBIAN
@@ -86,24 +85,20 @@ create_webui_images()
 	chmod 755 $deb_root_dir/DEBIAN/postinst
 	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
-	echo "Debian packaging info:"
-	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
-	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create directory structure for Arch systems
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
+	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
 	rm -rf $pacman_root_dir &&
-	echo "Pacman packaging info:"
-	echo "In order to build Pacman package use the $base_dir/pacman/${package_name}.tar.gz archive and the $base_dir/pacman/PKGBUILD-${package_name} on a Pacman system (makepkg)."
-	echo "------"
+	echo "OK"
 }
 
 create_webui_php()
@@ -128,25 +123,24 @@ create_webui_php()
 	cp -a ${source_dir}/etc $package_dir/
 	cp -a ${source_dir}/sisiya_ui/XMPPHP $package_dir/
 	echo "$version_str" > $package_dir/version.txt
-	cat $source_dir/$package_str/conf/sisiya_common_conf.php | sed -e "s/__VERSION__/${version_str}/" -e "s/__YEAR__/${year_str}/"  > $rpm_root_dir/conf/sisiya_common_conf.php 
+	cat $source_dir/$package_str/conf/sisiya_common_conf.php | sed -e "s/__VERSION__/${version_str}/" -e "s/__YEAR__/${year_str}/"  > $package_dir/conf/sisiya_common_conf.php 
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
 	rpm_root_dir="$base_dir/rpm/$package_name"
+	echo -n "Creating ${rpm_root_dir}.tar.gz ..."
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
-	echo "RPM packaging info :"
-	echo "In order to build the SisIYA packages one can use the following command:"
-	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create Debian source package
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
+	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir $deb_root_dir
 	mkdir $deb_root_dir/DEBIAN
@@ -155,24 +149,20 @@ create_webui_php()
 	chmod 755 $deb_root_dir/DEBIAN/postinst
 	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
-	echo "Debian packaging info:"
-	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
-	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create directory structure for Arch systems
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
+	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
 	rm -rf $pacman_root_dir &&
-	echo "Pacman packaging info:"
-	echo "In order to build Pacman package use the $base_dir/pacman/${package_name}.tar.gz archive and the $base_dir/pacman/PKGBUILD-${package_name} on a Pacman system (makepkg)."
-	echo "------"
+	echo "OK"
 }
 
 create_sisiyad()
@@ -207,20 +197,19 @@ create_sisiyad()
 	### create RPM source package
 	################################################################################################################################################
 	rpm_root_dir="$base_dir/rpm/$package_name"
+	echo -n "Creating ${rpm_root_dir}.tar.gz ..."
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
-	echo "RPM packaging info :"
-	echo "In order to build the SisIYA packages one can use the following command:"
-	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create Debian source package
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
+	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir $deb_root_dir
 	mkdir $deb_root_dir/DEBIAN
@@ -229,24 +218,20 @@ create_sisiyad()
 	chmod 755 $deb_root_dir/DEBIAN/postinst
 	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
-	echo "Debian packaging info:"
-	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
-	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create directory structure for Arch systems
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
+	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
 	rm -rf $pacman_root_dir &&
-	echo "Pacman packaging info:"
-	echo "In order to build Pacman package use the $base_dir/pacman/${package_name}.tar.gz archive and the $base_dir/pacman/PKGBUILD-${package_name} on a Pacman system (makepkg)."
-	echo "------"
+	echo "OK"
 }
 
 
@@ -274,20 +259,19 @@ create_edbc_libs()
 	### create RPM source package
 	################################################################################################################################################
 	rpm_root_dir="$base_dir/rpm/$package_name"
+	echo -n "Creating ${rpm_root_dir}.tar.gz ..."
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
-	echo "RPM packaging info :"
-	echo "In order to build the SisIYA packages one can use the following command:"
-	echo "rpmbuild -ta $base_dir/rpm/${package_name}.tar.gz"
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create Debian source package
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
+	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir $deb_root_dir
 	mkdir $deb_root_dir/DEBIAN
@@ -296,24 +280,20 @@ create_edbc_libs()
 	chmod 755 $deb_root_dir/DEBIAN/postinst
 	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
-	echo "Debian packaging info:"
-	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
-	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create directory structure for Arch systems
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
+	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
 	rm -rf $pacman_root_dir &&
-	echo "Pacman packaging info:"
-	echo "In order to build Pacman package use the $base_dir/pacman/${package_name}.tar.gz archive and the $base_dir/pacman/PKGBUILD-${package_name} on a Pacman system (makepkg)."
-	echo "------"
+	echo "OK"
 }
 
 create_remote_checks()
@@ -336,38 +316,37 @@ create_remote_checks()
 
 	mkdir -p $package_dir/etc/cron.d
 	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d/
-	if test -z "$local_dir" ; then
-		echo "Creating source package for general usage..."
-	else
-		echo "Creating source package for you..."
-
-	 	if test ! -d $local_dir ; then
-			echo "$0 : Local configuration directory (local_confs_dir) does not exist!"
-			exit 1
-		fi
-		if test -f ${local_dir}/$package_str/conf/SisIYA_Remote_Config_local.pl ; then
-			echo "I am using your own SisIYA_Remote_Config_local.pl file (${local_dir}/$package_str/SisIYA_Remote_Config_local.pl) ..."
-			cp -f ${local_dir}/$package_str/conf/SisIYA_Remote_Config_local.pl $package_dir/conf/
-		fi
-	fi
+	#if test -z "$local_dir" ; then
+	#	echo "Creating source package for general usage..."
+	#else
+	#	echo "Creating source package for you..."
+	#
+	# 	if test ! -d $local_dir ; then
+	#		echo "$0 : Local configuration directory (local_confs_dir) does not exist!"
+	#		exit 1
+	#	fi
+	#	if test -f ${local_dir}/$package_str/conf/SisIYA_Remote_Config_local.pl ; then
+	#		echo "I am using your own SisIYA_Remote_Config_local.pl file (${local_dir}/$package_str/SisIYA_Remote_Config_local.pl) ..."
+	#		cp -f ${local_dir}/$package_str/conf/SisIYA_Remote_Config_local.pl $package_dir/conf/
+	#	fi
+	#fi
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
 	rpm_root_dir="$base_dir/rpm/$package_name"
+	echo -n "Creating ${rpm_root_dir}.tar.gz ..."
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
-	echo "RPM packaging info :"
-	echo "In order to build the SisIYA packages one can use the following command:"
-	echo "rpmbuild -ta $base_dir/rpm/${package_dir}.tar.gz"
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create Debian source package
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
+	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	mkdir -p $deb_root_dir/opt/${package_str} 
 	for f in conf misc scripts version.txt utils
@@ -381,15 +360,13 @@ create_remote_checks()
 	cp -a $package_dir/etc $deb_root_dir/ 
 	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
-	echo "Debian packaging info:"
-	echo "In order to build Debian package use the $deb_root_dir/${package_name}.tar.gz archive file on a Debian system."
-	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_name} command."
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create directory structure for Arch systems
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
+	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	cp -a ${package_dir}/etc $pacman_root_dir 
@@ -397,9 +374,7 @@ create_remote_checks()
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
 	rm -rf $pacman_root_dir &&
-	echo "Pacman packaging info:"
-	echo "In order to build Pacman package use the $base_dir/pacman/${package_name}.tar.gz archive and the $base_dir/pacman/PKGBUILD-${package_name} on a Pacman system (makepkg)."
-	echo "------"
+	echo "OK"
 }
 
 create_client_checks()
@@ -422,41 +397,40 @@ create_client_checks()
 
 	mkdir -p $package_dir/etc/cron.d
 	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d/
-	if test -z "$local_dir" ; then
-		echo "Creating source package for general usage..."
-	else
-		echo "Creating source package for you..."
-		### remove default files, this directory is owned by the sisiya-client-systems package
-		rm -rf $package_dir/systems/*
-
-	 	if test ! -d $local_dir ; then
-			echo "$0 : Local configuration directory (local_confs_dir) does not exist!"
-			exit 1
-		fi
-		if test -f ${local_dir}/$package_str/SisIYA_Config_local.pl ; then
-			echo "I am using your own SisIYA_Config_local.pl file (${local_dir}/sisiya-client-checks/SisIYA_Config_local.pl) ..."
-			cp -f ${local_dir}/$package_str/SisIYA_Config_local.pl $package_dir/
-		fi
-	fi
+	#if test -z "$local_dir" ; then
+	#	echo "Creating source package for general usage..."
+	#else
+	#	echo "Creating source package for you..."
+	#	### remove default files, this directory is owned by the sisiya-client-systems package
+	#	rm -rf $package_dir/systems/*
+	#
+	# 	if test ! -d $local_dir ; then
+	#		echo "$0 : Local configuration directory (local_confs_dir) does not exist!"
+	#		exit 1
+	#	fi
+	#	if test -f ${local_dir}/$package_str/SisIYA_Config_local.pl ; then
+	#		echo "I am using your own SisIYA_Config_local.pl file (${local_dir}/sisiya-client-checks/SisIYA_Config_local.pl) ..."
+	#		cp -f ${local_dir}/$package_str/SisIYA_Config_local.pl $package_dir/
+	#	fi
+	#fi
 	### end of common package directory for all package types (rpm, deb, pacman ...)
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
 	rpm_root_dir="$base_dir/rpm/$package_name"
+	echo -n "Creating ${rpm_root_dir}.tar.gz ..."
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
 	cat $source_dir/packaging/rpmspec/${package_str}.spec   | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
-	echo "RPM packaging info :"
-	echo "In order to build the SisIYA packages one can use the following command:"
-	echo "rpmbuild -ta $base_dir/rpm/${package_str}.tar.gz"
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create Debian source package
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
+	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	mkdir -p $deb_root_dir/opt/${package_str} 
 	for f in common misc special version.txt SisIYA_Config.pm SisIYA_Config_local.pl utils
@@ -470,15 +444,13 @@ create_client_checks()
 	cp -a $package_dir/etc $deb_root_dir/ 
 	(cd $base_dir/deb ; tar czf ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
-	echo "Debian packaging info:"
-	echo "In order to build Debian package use the $deb_root_dir/${package_str}.tar.gz archive file on a Debian system."
-	echo "Unpack the archive, move the directory to the same name and run the dpkg --build ${package_str} command."
-	echo "------"
+	echo "OK"
 	################################################################################################################################################
 	### create directory structure for Arch systems
 	################################################################################################################################################
 	###
 	pacman_root_dir="$base_dir/pacman/$package_name"
+	echo -n "Creating ${pacman_root_dir}.tar.gz and $base_dir/pacman/PKGBUILD-${package_name} ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
 	cp -a ${package_dir}/etc $pacman_root_dir 
@@ -486,9 +458,7 @@ create_client_checks()
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
 	rm -rf $pacman_root_dir &&
-	echo "Pacman packaging info:"
-	echo "In order to build Pacman package use the $base_dir/pacman/${package_name}.tar.gz archive and the $base_dir/pacman/PKGBUILD-${package_name} on a Pacman system (makepkg)."
-	echo "------"
+	echo "OK"
 }
 
 # create the SisIYA source package and put it under the $base_dir/src directory
@@ -523,7 +493,16 @@ create_source_package()
 	tar -cz -f $tar_file $dst_dir
 	mv -f $tar_file $base_dir/src
 
-	echo "SisIYA source package $tar_file is ready."
+	#echo "SisIYA source package $tar_file is ready."
+}
+
+package_building_info()
+{
+	echo "--------------------------------------------------------------------------------------------------"
+	echo "For RPM packages    : rpmbuild -ta rpm/package.tar.gz"
+	echo "For DEB packages    : Unpack the deb/package.tar.gz and run the dpkg --build package command."
+	echo "For Pacman packages : Use pacman/package.tar.gz and PKGBUILD-package on a Pacman system (makepkg)."
+	echo "--------------------------------------------------------------------------------------------------"
 }
 ################################################################################################################################################
 base_dir=`pwd`
@@ -533,12 +512,14 @@ source_package_file="${source_name}.tar.gz"
 source_dir="$base_dir/tmp/$source_package_name"
 
 create_source_package $sisiya_dir $base_dir $source_package_name
+#
 create_client_checks $source_dir $version_str $release_str $base_dir
-create_remote_checks $source_dir $version_str $release_str $base_dir
 create_edbc_libs $source_dir $version_str $release_str $base_dir
+create_remote_checks $source_dir $version_str $release_str $base_dir
 create_sisiyad $source_dir $version_str $release_str $base_dir
 create_webui_images $source_dir $version_str $release_str $base_dir
 create_webui_php $source_dir $version_str $release_str $base_dir
 
+package_building_info
 # clean up
 rm -rf $base_dir/tmp/
