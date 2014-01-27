@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright (C) 2003 - __YEAR__  Erdal Mutlu
+    Copyright (C) 2003 - 2012  Erdal Mutlu
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 
 */
 
-define("VERSION","__VERSION__",false);
-define("YEAR","__YEAR__",false);
-define("SISIYA_URL","http://sisiya.example.com",false);
+define("VERSION","0.5.20-28",false);
+define("YEAR","2012",false);
+define("SISIYA_URL","http://sisiya.ics-group.com.tr",false);
 
 # Setup wizard
 #include_once($rootDir.'/lib/sisiya_setup_wizard.php');
@@ -42,6 +42,8 @@ global $min_password_length;
 $min_password_length=8;                                                                                                                                                                                   
 global $salt_length;                                                                                                                                                                                      
 $salt_length=12; ### Use MD5 with 12 character salt                                                                                                                                                       
+global $resourceDir;                                                                                                                                                                                      
+$resourceDir=$rootDir;  
 
 global $resourceDir;
 $resourceDir=$rootDir;

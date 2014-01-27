@@ -53,15 +53,19 @@ AC_CANONICAL_HOST
 dnl Set some target options
 
 dnl PostgreSQL
-PGSQL_LIB=-L/usr/lib/pgsql
+PGSQL_LIB=-L/usr/lib
 PGSQL_LFLAGS=-lpq
 
 case "${host}" in
 	*86-*-linux*)
-		PGSQL_LIB=-L/usr/lib/pgsql
+		if test -d /usr/lib/pgsql ; then
+			PGSQL_LIB=-L/usr/lib/pgsql
+		fi
 		;;
 	*86_64-*-linux*)
-		PGSQL_LIB=-L/usr/lib64/pgsql
+		if test -d /usr/lib64/pgsql ; then
+			PGSQL_LIB=-L/usr/lib64/pgsql
+		fi
 		;;
 esac
 PGSQL_INC=

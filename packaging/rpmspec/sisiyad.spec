@@ -16,6 +16,8 @@ Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
 Url: http://www.sisiya.org
 BuildRoot:%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires: autoconf automake doxygen gcc-c++
+Requires: sisiya-edbc-libs
 
 %description
 The SisIYA daemon is a program which receives incomming SisIYA messages and records them
@@ -33,10 +35,12 @@ make
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 make "DESTDIR=%{buildroot}" install 
-%if 0%{?rhel} < 7
+%if 0%{?rhel_version}
+%if 0%{?rhel_version} < 700 
 	%define sisiyad_service_dst_dir /etc/init.d
 	%define sisiyad_service_src_file sisiyad_sysvinit
 	%define sisiyad_service_dst_file sisiyad
+%endif
 %else
 	%define sisiyad_service_dst_dir /etc/systemd/system
 	%define sisiyad_service_src_file sisiyad_systemd
@@ -46,21 +50,32 @@ mkdir -p %{buildroot}%{sisiyad_service_dst_dir}
 cp etc/%{sisiyad_service_src_file} %{buildroot}%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}
 
 %post
-### if update, then restart
-if test $1 -eq 2 ; then
-	service sisiyad restart > /dev/null 
+if test $1 -ne 2 ; then
 	exit 0
 fi
-chkconfig --add sisiyad
-service sisiyad start > /dev/null 
+%if 0%{?rhel_version}
+%if 0%{?rhel_version} < 700 
+	service sisiyad restart > /dev/null 
+%endif
+%else
+	systemctl daemon-reload
+	systemctl restart sisiyad 
+%endif
 
 %preun 
 ### if update
 if test $1 -eq 1 ; then
 	exit 0
 fi
-service sisiyad stop > /dev/null 2>&1
-chkconfig --del sisiyad
+%if 0%{?rhel_version}
+%if 0%{?rhel_version} < 700 
+	service sisiyad stop > /dev/null 2>&1
+	chkconfig --del sisiyad
+%endif
+%else
+	systemctl stop sisiyad
+	systemctl disable sisiyad
+%endif
 
 %clean 
 rm -rf %{buildroot}

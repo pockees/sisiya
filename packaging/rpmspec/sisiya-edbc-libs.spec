@@ -3,6 +3,13 @@
 %define version __VERSION__
 %define release __RELEASE__
 
+### define distro
+#%define is_redhat 	%(test -e /etc/redhat-release 	&& echo 1 || echo 0)
+%define is_mandrake 	%(test -e /etc/mandrake-release && echo 1 || echo 0)
+%define is_suse 	%(test -e /etc/SuSE-release 	&& echo 1 || echo 0)
+%define is_fedora 	%(test -e /etc/fedora-release 	&& echo 1 || echo 0)
+
+
 Summary: Libraries written in C++ for Database connectivity like JDBC.
 Name:%{name} 
 #BuildArch: noarch
@@ -16,8 +23,12 @@ Vendor: Erdal Mutlu
 Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
 Url: http://www.sisiya.org
-BuildRequires: doxygen mysql-devel postgresql-devel
+BuildRequires: autoconf automake doxygen gcc-c++ mysql-devel postgresql-devel
+%if 0%{?suse_version} 
+Requires: libmysqlclient18 libpq5
+%else
 Requires: mysql-libs postgresql-libs
+%endif
 %description 
 This package contains the SisIYA EDBC libraries.
 
@@ -25,8 +36,9 @@ This package contains the SisIYA EDBC libraries.
 %setup -n %{name}-%{version}-%{release}
 
 %build
-### configure & compile
-make 
+./bootstrap create
+./configure --prefix=
+make
 
 %install
 rm -rf %{buildroot}

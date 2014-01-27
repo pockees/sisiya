@@ -4,6 +4,8 @@
 %define release __RELEASE__
 
 %define install_dir /var/www/html/sisiya-webui-php/images/systems
+opensuse /srv/www/htdocs/
+ /srv/www/htdocs/
 
 Summary: Image collection for SisIYA web user interface. These images are used for assigning to systems.
 Name:%{name} 
