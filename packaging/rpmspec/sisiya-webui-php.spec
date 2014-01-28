@@ -14,9 +14,9 @@
 		%define www_user  wwwrun
 		%define www_group www
 	%else
-		%define web_base_dir /srv/http
-		%define www_user  http
-		%define www_group users
+		%define web_base_dir /var/www/html
+		%define www_user  apache
+		%define www_group apache
 	%endif
 %endif
 
@@ -44,7 +44,7 @@ PHP web UI for SisIYA.
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DESTDIR=%{buildroot}" "WEB_BASE_DIR=/var/www/html" install
+make "DESTDIR=%{buildroot}" "WEB_BASE_DIR=%{web_base_dir}" install
 
 %post
 # change ownership 

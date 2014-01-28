@@ -13,9 +13,9 @@
 		%define www_user  wwwrun
 		%define www_group www
 	%else
-		%define web_base_dir /srv/http
-		%define www_user  http
-		%define www_group users
+		%define web_base_dir /var/www/html
+		%define www_user  apache
+		%define www_group apache
 	%endif
 %endif
 
