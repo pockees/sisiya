@@ -2,10 +2,24 @@
 
 %define version __VERSION__
 %define release __RELEASE__
+	
+%if 0%{?rhel_version}
+	%define web_base_dir /var/www/html
+	%define www_user  apache
+	%define www_group apache
+%else
+	%if 0%{?suse_version}
+		%define web_base_dir /srv/www/htdocs
+		%define www_user  wwwrun
+		%define www_group www
+	%else
+		%define web_base_dir /srv/http
+		%define www_user  http
+		%define www_group users
+	%endif
+%endif
 
-%define install_dir /var/www/html/sisiya-webui-php/images/systems
-opensuse /srv/www/htdocs/
- /srv/www/htdocs/
+%define install_dir %{web_base_dir}/sisiya-webui-php/images/systems
 
 Summary: Image collection for SisIYA web user interface. These images are used for assigning to systems.
 Name:%{name} 
@@ -27,17 +41,14 @@ Image collection for SisIYA web GUI. These images are used for assigning to syst
 %prep 
 %setup -n %{name}-%{version}-%{release}
 
-#%build
-#exit 0
-
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DESTDIR=%{buildroot} WEB_BASE_DIR=/var/www/html" install
+make "DESTDIR=%{buildroot}" "WEB_BASE_DIR=%{web_base_dir}" install
 
-
-#%clean
-#exit 0
+%post
+# change ownership 
+chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 
 %files
 %defattr(-,root,root)

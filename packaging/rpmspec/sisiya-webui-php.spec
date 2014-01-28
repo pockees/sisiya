@@ -3,24 +3,26 @@
 %define version __VERSION__
 %define release __RELEASE__
 
-%define install_dir /var/www/html/%{name}
 
-### define distro
-#%define is_redhat 	%(test -e /etc/redhat-release 	&& echo 1 || echo 0)
-%define is_mandrake 	%(test -e /etc/mandrake-release && echo 1 || echo 0)
-%define is_suse 	%(test -e /etc/SuSE-release 	&& echo 1 || echo 0)
-%define is_fedora 	%(test -e /etc/fedora-release 	&& echo 1 || echo 0)
-
-%define www_user  apache
-%define www_group apache
-
-%if %is_suse
-%define www_user  wwwrun
-%define www_group www
+%if 0%{?rhel_version}
+	%define web_base_dir /var/www/html
+	%define www_user  apache
+	%define www_group apache
+%else
+	%if 0%{?suse_version}
+		%define web_base_dir /srv/www/htdocs
+		%define www_user  wwwrun
+		%define www_group www
+	%else
+		%define web_base_dir /srv/http
+		%define www_user  http
+		%define www_group users
+	%endif
 %endif
 
+%define install_dir %{web_base_dir}/%{name}
 
-Summary: SisIYA' PHP web UI.
+Summary: PHP web UI for SisIYA.
 Name:%{name} 
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
@@ -34,14 +36,10 @@ Packager: Erdal Mutlu <erdal@sisiya.org>
 Url: http://www.sisiya.org
 Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, nmap, sisiya-client-checks
 %description 
-SisIYA's PHP web UI.
+PHP web UI for SisIYA.
 
 %prep 
-#%setup ###-q -n sisiya-%{sisiya_Version}-%{sisiya_Release}
 %setup -n %{name}-%{version}-%{release}
-
-#%build
-#exit 0
 
 %install
 rm -rf %{buildroot}
@@ -62,8 +60,6 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_archive
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_check_expired
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_rss
-#%dir %attr(0755,root,root) 				/etc/httpd/conf.d
-#%attr(0644,root,root) 		%config 		/etc/httpd/conf.d/sisiya.conf
 %dir %attr(0755,root,root) 				%{install_dir}
 %attr(0644,root,root) 					%{install_dir}/favicon.ico
 %attr(0644,root,root) 					%{install_dir}/*.php
@@ -92,4 +88,4 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 			 				%{install_dir}/install/*
 %dir %attr(0755,root,root) 				%{install_dir}/XMPPHP
 %attr(0644,root,root) 					%{install_dir}/XMPPHP/*.php
-#%attr(0644,root,root) 					%{install_dir}/xmlconf
+%attr(0644,root,root) 					%{install_dir}/xmlconf
