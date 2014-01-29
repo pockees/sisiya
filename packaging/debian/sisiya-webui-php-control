@@ -1,11 +1,11 @@
-Package: sisiya-remote-checks
+Package: sisiya-webui-php
 Version: __VERSION__
 Section: system-tools 
 Priority: optional
 Architecture: all
 Essential: no
-Depends: 
-Pre-Depends: perl, libxml-simple-perl, sisiya-client-checks (>=0.6.0)  
+Depends: php5, php5-gd, php5-mysql, php5-pgsql
+Pre-Depends:   
 Recommends: 
 Suggests: 
 Installed-Size: 1024
@@ -13,4 +13,4 @@ Maintainer: Erdal Mutlu <erdal@sisiya.org>
 Conflicts: 
 Replaces: 
 Provides: 
-Description: The SisIYA remote check programs that are run from a central server. 
+Description: PHP web UI for SisIYA.

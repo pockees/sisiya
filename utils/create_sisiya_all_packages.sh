@@ -120,7 +120,11 @@ create_webui_php()
 	rm -rf $package_dir
 	mkdir -p $package_dir
 	cp -a ${source_dir}/$package_str/* $package_dir/
-	cp -a ${source_dir}/etc $package_dir/
+	mkdir -p $package_dir/etc/cron.d
+	for f in "sisiya_alerts" "sisiya_archive" "sisiya_check_expired" "sisiya_rss"
+	do
+		cp -a ${source_dir}/etc/cron.d/$f $package_dir/etc/cron.d/
+	done
 	cp -a ${source_dir}/sisiya_ui/XMPPHP $package_dir/
 	echo "$version_str" > $package_dir/version.txt
 	cat $source_dir/$package_str/conf/sisiya_common_conf.php | sed -e "s/__VERSION__/${version_str}/" -e "s/__YEAR__/${year_str}/"  > $package_dir/conf/sisiya_common_conf.php 

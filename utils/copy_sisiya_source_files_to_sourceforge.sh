@@ -40,7 +40,13 @@ done
 
 for d in "dep" "pacman" "rpm"
 do
-	#In order to copy files to sourceforge.net :
+	if test "$d" == "pacman" ; then
+		for f in $d/sisiya*${version}-*.pkg.tar.xz
+		do
+			echo "Copying $f to $server_str/$d ..."
+			scp $f $server_str/$d/
+		done
+	fi
 	for f in $d/sisiya*${version}.tar.gz
 	do
 		echo "Copying $f to $server_str/$d ..."
