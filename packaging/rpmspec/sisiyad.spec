@@ -16,7 +16,11 @@ Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
 Url: http://www.sisiya.org
 BuildRoot:%{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires: autoconf automake doxygen gcc-c++
+%if 0%{?suse_version} 
+Requires: autoconf automake doxygen gcc-c++ libmysqlclient18 libpq5
+%else
+Requires: autoconf automake doxygen gcc-c++ mysql-libs postgresql-libs
+%endif
 Requires: sisiya-edbc-libs
 
 %description
