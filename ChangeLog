@@ -1,3 +1,12 @@
+0.6.30:
+- client checks are rewritten in Perl
+- remote checks are rewritten in Perl
+- source code has moved to github
+- SisIYA now supports packages for Arch and the latest versions of CentOS, Fedora and openSUSE
+- Debian and Ubuntu packages are going to be available soon
+- the main website is http://www.sisiya.org
+- demo : http://sisiya.sisiya.org
+Windows.
 0.5:
 Release 1
 - sisiya client check scripts on Linux/UNIX systems have now a lock file to prevent running it when the previous script is not finished
