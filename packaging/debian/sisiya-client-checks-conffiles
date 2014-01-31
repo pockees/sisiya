@@ -1,0 +1,3 @@
+/etc/cron.d/sisiya-client-checks
+/etc/sisiya/sisiya-client-checks/SisIYA_Config.pm
+/etc/sisiya/sisiya-client-checks/SisIYA_Config_local.pl
