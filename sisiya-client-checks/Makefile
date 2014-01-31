@@ -1,6 +1,7 @@
 ### directory definitions #################################################
 root_dir=$(DESTDIR)
-dst_dir=/opt
+dst_dir=/usr/share
+package_name=sisiya/sisiya-client-checks
 dst_sisiya_client_checks=$(root_dir)$(dst_dir)/sisiya-client-checks
 dst_etc=$(root_dir)/etc
 dst_cron=$(root_dir)/etc/cron.d
@@ -11,13 +12,13 @@ install: install_sisiya_client_checks install_sisiya_client_systems
 
 install_sisiya_client_checks:
 	install -d $(dst_cron)
-	install -m 600 etc/cron.d/sisiya-client-checks		$(dst_cron)
+	install -m 600 etc/cron.d/$(package_name)		$(dst_cron)
+	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config.pm $(dst_etc)/sisiya/$(package_name)/
+	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config_local.pl $(dst_ect)/sisiya/$(package_name)/
 	install -m 700 -d $(dst_sisiya_client_checks)/misc
 	install -m 700 -d $(dst_sisiya_client_checks)/common
 	install -m 700 -d $(dst_sisiya_client_checks)/special
 	install -m 700 -d $(dst_sisiya_client_checks)/utils
-	install -m 600 SisIYA_Config.pm $(dst_sisiya_client_checks)/
-	install -m 600 SisIYA_Config_local.pl $(dst_sisiya_client_checks)/
 	install -m 600 version.txt $(dst_sisiya_client_checks)/
 	install -m 700 common/* $(dst_sisiya_client_checks)/common
 	install -m 600 misc/* $(dst_sisiya_client_checks)/misc

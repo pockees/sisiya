@@ -396,29 +396,24 @@ create_client_checks()
 
 	### common package directory for all package types (rpm, deb, pacman ...)
 	rm -rf $package_dir
-	mkdir -p $package_dir/systems
+	mkdir  $package_dir
 	cp -a $source_dir/$package_str/* $package_dir/
 	echo "${version_str}-$release_str" > $package_dir/version.txt
-
 	mkdir -p $package_dir/etc/cron.d
 	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d/
-	#if test -z "$local_dir" ; then
-	#	echo "Creating source package for general usage..."
-	#else
-	#	echo "Creating source package for you..."
-	#	### remove default files, this directory is owned by the sisiya-client-systems package
-	#	rm -rf $package_dir/systems/*
-	#
-	# 	if test ! -d $local_dir ; then
-	#		echo "$0 : Local configuration directory (local_confs_dir) does not exist!"
-	#		exit 1
-	#	fi
-	#	if test -f ${local_dir}/$package_str/SisIYA_Config_local.pl ; then
-	#		echo "I am using your own SisIYA_Config_local.pl file (${local_dir}/sisiya-client-checks/SisIYA_Config_local.pl) ..."
-	#		cp -f ${local_dir}/$package_str/SisIYA_Config_local.pl $package_dir/
-	#	fi
-	#fi
-	### end of common package directory for all package types (rpm, deb, pacman ...)
+	mkdir -p $package_dir/etc/sisiya
+	cp -a ${source_dir}/etc/sisiya/$package_str/ $package_dir/etc/sisiya
+	mkdir -p $package_dir/usr/share/doc/$package_str
+	cp $source_dir/packaging/copyright $package_dir/usr/share/doc/$package_str/
+	mkdir -p $package_dir/usr/share/doc/$package_str
+	mv $package_dir/changelog $package_dir/usr/share/doc/$package_str/
+
+	find $package_dir/ -type d -exec chmod 755 {} \;
+	find $package_dir/ -type f -exec chmod 644 {} \;
+	find $package_dir/ -name "*.pl" -exec chmod 755 {} \;
+	find $package_dir/ -name "*.sh" -exec chmod 755 {} \;
+	find $package_dir/etc -type f -exec chmod 644 {} \;
+
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
@@ -437,16 +432,30 @@ create_client_checks()
 	deb_root_dir="$base_dir/deb/$package_name"
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
-	mkdir -p $deb_root_dir/opt/${package_str} 
-	for f in common misc special version.txt SisIYA_Config.pm SisIYA_Config_local.pl utils
+	mkdir -p $deb_root_dir/usr/share/${package_str} 
+	for f in common misc special version.txt utils
 	do
-		cp -a $package_dir/$f ${deb_root_dir}/opt/${package_str}/ 
+		cp -a $package_dir/$f ${deb_root_dir}/usr/share/${package_str}/ 
 	done
-	mkdir $deb_root_dir/DEBIAN ${deb_root_dir}/opt/${package_str}/systems 
+	cp -a $package_dir/usr/share/doc $deb_root_dir/usr/share
+	mv $package_dir/changelog.Debian $deb_root_dir/usr/share/doc/$package_str/
+	gzip --best $deb_root_dir/usr/share/doc/$package_str/changelog*
+
+	mkdir $deb_root_dir/DEBIAN  
+	cp $source_dir/packaging/debian/${package_str}-conffiles $deb_root_dir/DEBIAN/conffiles
+	cp $source_dir/packaging/copyright $deb_root_dir/DEBIAN/
 	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
 	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
-	chmod 755 $deb_root_dir/DEBIAN/postinst
 	cp -a $package_dir/etc $deb_root_dir/ 
+
+	find $deb_root_dir/ -type d -exec chmod 755 {} \;
+	find $deb_root_dir/ -type f -exec chmod 644 {} \;
+	find $deb_root_dir/ -name "*.pl" -exec chmod 755 {} \;
+	find $deb_root_dir/ -name "*.sh" -exec chmod 755 {} \;
+	find $deb_root_dir/etc -type f -exec chmod 644 {} \;
+
+	chmod 755 $deb_root_dir/DEBIAN/postinst
+
 	(cd $base_dir/deb ; tar czf ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"

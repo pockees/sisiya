@@ -24,8 +24,6 @@
 ####
 # server 	: web.sourceforge.net
 #			the server allows only sftp like emutlu,sisiya@web.sourceforge.net
-### the old way : this is not allowed any more 
-##### server 	: login.sf.net
 ##### document root : /home/groups/s/si/sisiya/htdocs
 user=emutlu
 project=sisiya

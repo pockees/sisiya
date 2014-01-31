@@ -56,7 +56,7 @@ sub run_script
 	my ($status_id, $service_id, $s);
 
 	#print STDERR "[$_[0]] ...\n";
-	chomp($s = `/usr/bin/perl -I$SisIYA_Config::base_dir $_[0]`);
+	chomp($s = `/usr/bin/perl -I$SisIYA_Config::conf_dir $_[0]`);
 	$status_id = $? >> 8;
 	$service_id = get_serviceid($s);	
 	# replace ' with \', because it is a problem in the SQL statemnet

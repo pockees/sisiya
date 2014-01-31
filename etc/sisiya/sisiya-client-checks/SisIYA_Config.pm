@@ -48,13 +48,14 @@ chomp($osrelease = `uname -r`);
 # field seperator
 our $FS = '~';
 
-our $base_dir			= '/opt/sisiya-client-checks';
-our $local_conf			= "$base_dir/SisIYA_Config_local.pl";
+our $base_dir			= '/usr/share/sisiya-client-checks';
+our $conf_dir			= "/etc/sisiya/sisiya-client-checks";
+our $local_conf			= "$conf_dir/SisIYA_Config_local.pl";
 our $common_dir			= "$base_dir/common";
 our $misc_dir 			= "$base_dir/misc";
 our $special_dir		= "$base_dir/special";
 our $utils_dir 			= "$base_dir/utils";
-our $systems_dir		= "$base_dir/systems/$hostname";
+our $systems_dir		= "$conf_dir";
 our $systems_conf_dir 		= "$systems_dir/conf";
 our $send_message_prog 		= "$utils_dir/send_message_xml.pl";
 our $send_message2_prog		= "$utils_dir/send_message2_xml.pl";
