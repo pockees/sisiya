@@ -28,7 +28,9 @@ MAN_DIR = $(DESTDIR)/usr/share/man/man1
 #
 configure-stamp:
 	$(checkdir)
-	./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
+#./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
+	./bootstrap create
+	./configure --prefix=
 	touch configure-stamp
 
 build-stamp: configure-stamp
@@ -63,51 +65,38 @@ binary-arch: build
 	$(checkroot)
 
 	# Install Program
-	$(MAKE) install DESTDIR=$(DESTDIR) LIBTOOL=libtool
+	#$(MAKE) install DESTDIR=$(DESTDIR) LIBTOOL=libtool
+	$(MAKE) install DESTDIR=$(DESTDIR) 
 
 	# Install Program Resources
-	$(MAKE_DIR) $(SHARE_DIR)
-	$(INST_FILE) road.bmp $(SHARE_DIR)
+	#$(MAKE_DIR) $(SHARE_DIR)
+	#$(INST_FILE) road.bmp $(SHARE_DIR)
 	
 	$(MAKE_DIR) $(DESTDIR)/DEBIAN
+
 	# Install Docs
 	$(MAKE_DIR) $(DOCS_DIR)
 	$(INST_FILE) debian/copyright $(DOCS_DIR)/copyright
 	$(INST_FILE) debian/changelog $(DOCS_DIR)/changelog.Debian
 	$(INST_FILE) README $(DOCS_DIR)/README
 
-	# Install Manpages
-	$(MAKE_DIR) $(MAN_GAMES_DIR)
-	$(INST_FILE) roaddemo.6 $(MAN_GAMES_DIR)
-
-	# Install Menu and Icon
-	$(MAKE_DIR) $(MENU_DIR)
-	$(INST_FILE) debian/menu $(MENU_DIR)/roaddemo
-	$(MAKE_DIR) $(PIXMAPS_DIR)
-	$(INST_FILE) debian/roaddemo.xpm $(PIXMAPS_DIR)
-
 	# Install Package Scripts
-	$(INST_SCRIPT) debian/postinst $(DESTDIR)/DEBIAN
-	$(INST_SCRIPT) debian/postrm $(DESTDIR)/DEBIAN
+	#$(INST_SCRIPT) debian/postinst $(DESTDIR)/DEBIAN
+	#$(INST_SCRIPT) debian/postrm $(DESTDIR)/DEBIAN
 
 	# Compress Docs
 	gzip -9 $(DOCS_DIR)/changelog.Debian
-	gzip -9 $(MAN_GAMES_DIR)/roaddemo.6
 
-        # Strip the symbols from the executable (thanks Helen)
-	# TODO: the stripping part in binary-arch should honor the DEB_BUILD_OPTIONS environment variable and not strip stuff when it includes 'nostrip'
-	strip -R .comment $(BIN_DIR)/roaddemo
-
-        # Work out the shared library dependancies (thanks Helen)
+        # Work out the shared library dependancies
 	dpkg-shlibdeps $(package)
 
-	# Generate the control file (thanks Helen)
+	# Generate the control file
 	dpkg-gencontrol -isp -P$(DESTDIR)
 
-        # Make DEBIAN/md5sums (thanks Helen)
+        # Make DEBIAN/md5sums
 	cd $(DESTDIR) && find . -type f ! -regex '.*DEBIAN/.*' -printf '%P\0' | xargs -r0 md5sum > DEBIAN/md5sums
 
-	# Create the .deb package (thanks Helen)
+	# Create the .deb package 
 	dpkg-deb -b $(DESTDIR) ../
 
 binary: binary-indep binary-arch

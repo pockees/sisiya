@@ -2,7 +2,7 @@ Source: sisiya-edbc-libs
 Section: utils
 Priority: optional
 Maintainer: Erdal Mutlu <erdal@sisiya.org>
-Build-Depends: autoconf g++ make libmysqlclient-dev libpq-dev
+Build-Depends: autoconf, g++, make, libmysqlclient-dev, libpq-dev
 Standards-Version: 3.6.1
 
 Package: sisiya-edbc-libs

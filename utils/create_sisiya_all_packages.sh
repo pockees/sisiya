@@ -279,10 +279,10 @@ create_edbc_libs()
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir $deb_root_dir
-	mkdir $deb_root_dir/DEBIAN
-	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
-	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
-	chmod 755 $deb_root_dir/DEBIAN/postinst
+	#mkdir $deb_root_dir/DEBIAN
+	#cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
+	#cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
+	#chmod 755 $deb_root_dir/DEBIAN/postinst
 	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"

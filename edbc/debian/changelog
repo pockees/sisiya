@@ -1,5 +1,5 @@
- sisiyad (0.6.30-1) unstable; urgency=low
+sisiya-edbc-libs (0.6.30) UNRELEASED; urgency=low
 
-    * Initial Release.
+  * Initial release.
 
-	-- Erdal Mutlu <erdal@sisiya.org>  01.02.2014 18:01
+ -- Erdal Mutlu <erdal@sisiya.org>  Sun, 02 Feb 2014 17:50:50 +0200
