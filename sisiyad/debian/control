@@ -1,0 +1,11 @@
+Source: sisiyad
+Section: utils
+Priority: optional
+Maintainer: Erdal Mutlu <erdal@sisiya.org>
+Build-Depends: autoconf, g++, automake, libmysqlclient-dev, libpq-dev
+Standards-Version: 3.6.1
+
+Package: sisiyad
+Architecture: any
+Description: The SisIYA daemon is a program which receives 
+ incomming SisIYA messages and records them in a database system.

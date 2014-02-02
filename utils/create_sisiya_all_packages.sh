@@ -183,6 +183,7 @@ create_sisiyad()
 	package_dir="$base_dir/tmp/${package_name}"
 	version_major_str=`echo $version_str | cut -d "." -f 1,2`
 	version_minor_str=`echo $version_str | cut -d "." -f 3`
+	year_str=`date +%Y` 
 
 	### common package directory for all package types (rpm, deb, pacman ...)
 	rm -rf $package_dir
@@ -198,6 +199,8 @@ create_sisiyad()
 	echo "$version_str" > $package_dir/version.txt
 	echo "$version_str" > $package_dir/edbc/version.txt
 	echo "$version_str" > $package_dir/$package_str/version.txt
+	mv $package_dir/$package_str/debian $package_dir/
+	cat ${source_dir}/$package_str/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
@@ -217,11 +220,7 @@ create_sisiyad()
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir $deb_root_dir
-	mkdir $deb_root_dir/DEBIAN
-	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
-	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
-	chmod 755 $deb_root_dir/DEBIAN/postinst
-	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
+	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}-${release_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"
 	################################################################################################################################################
@@ -253,12 +252,14 @@ create_edbc_libs()
 	package_dir="$base_dir/tmp/${package_name}"
 	version_major_str=`echo $version_str | cut -d "." -f 1,2`
 	version_minor_str=`echo $version_str | cut -d "." -f 3`
+	year_str=`date +%Y` 
 
 	### common package directory for all package types (rpm, deb, pacman ...)
 	rm -rf $package_dir
 	mkdir -p $package_dir
 	cp -a ${source_dir}/edbc/* $package_dir/
 	echo "$version_str" > $package_dir/version.txt
+	cat ${source_dir}/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
 	#sed -i -e "s/__VERSION_MAJOR__/$version_major_str/g" -e "s/__VERSION_MINOR__/$version_minor_str/g" -e "s/__VERSION__/$version_str/g" $package_dir/Makefile
 	################################################################################################################################################
 	### create RPM source package
@@ -279,11 +280,7 @@ create_edbc_libs()
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir $deb_root_dir
-	#mkdir $deb_root_dir/DEBIAN
-	#cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
-	#cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
-	#chmod 755 $deb_root_dir/DEBIAN/postinst
-	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
+	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}-${release_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"
 	################################################################################################################################################
