@@ -1,2 +1,3 @@
 #!/bin/bash
 #chown root:root -R /usr/lib/libedbc*
+ldconfig

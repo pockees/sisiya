@@ -81,11 +81,14 @@ binary-arch: build
 	$(INST_FILE) README $(DOCS_DIR)/README
 
 	# Install Package Scripts
-	#$(INST_SCRIPT) debian/postinst $(DESTDIR)/DEBIAN
+	$(INST_SCRIPT) debian/postinst $(DESTDIR)/DEBIAN
 	#$(INST_SCRIPT) debian/postrm $(DESTDIR)/DEBIAN
 
 	# Compress Docs
 	gzip -9 $(DOCS_DIR)/changelog.Debian
+
+	# Strip
+	strip $(DESTDIR)/usr/lib/libedbc*.so.*
 
         # Work out the shared library dependancies
 	dpkg-shlibdeps $(package)

@@ -65,5 +65,5 @@ install:
 ### LIBS
 	install -d $(LIBS_DIR)
 # 	install -m 755 lib/*.so.* $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc.so.$(VERSION) libedbc.so
-	if test -f mysql/libedbc_mysql.so.$(VERSION) ; then install -m 755 mysql/libedbc_mysql.so.$(VERSION) $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc_mysql.so.$(VERSION) libedbc_mysql.so ; fi
-	if test -f postgresql/libedbc_pgsql.so.$(VERSION) ; then install -m 755 postgresql/libedbc_pgsql.so.$(VERSION) $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc_pgsql.so.$(VERSION) libedbc_pgsql.so ; fi
+	if test -f mysql/libedbc_mysql.so.$(VERSION) ; then install -m 755 mysql/libedbc_mysql.so.$(VERSION) $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc_mysql.so.$(VERSION) libedbc_mysql.so.$(LIB_VER_MAJOR) ; ln -sf libedbc_mysql.so.$(LIB_VER_MAJOR) libedbc_mysql.so ; fi
+	if test -f postgresql/libedbc_pgsql.so.$(VERSION) ; then install -m 755 postgresql/libedbc_pgsql.so.$(VERSION) $(LIBS_DIR) ; cd $(LIBS_DIR) && ln -sf libedbc_pgsql.so.$(VERSION) libedbc_pgsql.so.$(LIB_VER_MAJOR) ; ln -sf libedbc_pgsql.so.$(LIB_VER_MAJOR) libedbc_pgsql.so; fi
