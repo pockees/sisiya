@@ -4,7 +4,7 @@ Section: system-tools
 Priority: optional
 Architecture: any
 Essential: no
-Build-Depends: autoconf g++ make 
+Build-Depends: autoconf g++ automake libmysqlclient18 libmysqlclient-dev libpq-dev 
 Depends: sisiya-edbc-libs
 Pre-Depends:  
 Recommends: 
