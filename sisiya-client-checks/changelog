@@ -8,6 +8,10 @@ sisiya-client-checks (0.6.31-1) UNRELEASED; urgency=low
     to sisiya_hpasm_temperature.pl client check for the new web UI
   * added entry to the data part of the SisIYA message
     to sisiya_dmesg.pl client check for the new web UI
+  * added entry to the data part of the SisIYA message
+    to sisiya_hpasm_cpu.pl client check for the new web UI
+  * added entry to the data part of the SisIYA message
+    to sisiya_hpasm_powersupply.pl client check for the new web UI
 
 sisiya-client-checks (0.6.30-1) UNRELEASED; urgency=low
 

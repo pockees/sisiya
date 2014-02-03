@@ -64,17 +64,21 @@ if ($retcode == 0) {
 	$s =~ s/\s+/ /g;
 	my @b = grep(/Stepping/, split(/Processor/, $s));
 	my $status;
+	$data_str = '<entries>';
 	for my $i (0..$#b) {
 		#print STDERR "$i $b[$i]\n";
 		$status = trim((split(/:/, (split(/Status/, $b[$i]))[1]))[1]);
 		#print STDERR "status=[$status]\n";
 		if ($status eq 'Ok') {
 			$ok_str .= " OK: Processor $b[$i].";
+			$data_str .= '<entry name="cpu_'.$i.'" type="booloean">1</entry>';
 		}
 		else {
 			$error_str .= " ERROR: The status of processor $i is $status (!= Ok)! $b[$i].";
+			$data_str .= '<entry name="cpu_'.$i.'" type="booloean">0</entry>';
 		}
 	}
+	$data_str = '<entries>';
 }
 
 if ($error_str ne '') {

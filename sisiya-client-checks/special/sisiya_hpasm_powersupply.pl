@@ -69,15 +69,18 @@ if ($retcode == 0) {
 	$info_str = "INFO: $s"; 
 	my @b = grep(/Condition/, @a);
 	my $status;
+	$data_str = '<entries>';
 	for my $i (0..$#b) {
 		#print STDERR "$i $b[$i]\n";
 		$status = trim((split(/:/, $b[$i]))[1]);
 		#print STDERR "$i status=[$status]\n";
 		if ($status eq 'Ok') {
 			$ok_str .= " OK: The condition of powersupply ".($i + 1)." is Ok.";
+			$data_str .= '<entry name="powersupply_'.$i.'" type="booloean">1</entry>';
 		}
 		else {
 			$error_str .= " ERROR: The condition of powersupply ".($i + 1)." is $status (!= Ok)!";
+			$data_str .= '<entry name="powersupply_'.$i.'" type="booloean">0</entry>';
 		}
 	}
 }
