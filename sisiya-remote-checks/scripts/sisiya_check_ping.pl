@@ -60,23 +60,31 @@ sub check_ping
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $x_str .= "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid>";
 	my $s = '';
+	my $data_str = '';
 	my @a = `$SisIYA_Remote_Config::external_progs{'ping'} -q -c $packets_to_send -w $timeout_to_wait $hostname`;
 	my $retcode = $? >>=8;
 	if($retcode == 1) {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$s = "ERROR: The system is unreachable!";
+		$data_str .= '<entry name="packet_loss" type="numeric" unit="%">100</entry>';
 	}
 	else {
+		my ($response_time, $packet_loss);
 		my $info_str = (grep(/^$packets_to_send packets/, @a))[0];
 		if($retcode == 0) {
 			$s = "OK: $info_str";
+			$data_str .= '<entry name="packet_loss" type="numeric" unit="%">0</entry>';
 		}
 		else {
 			$statusid = $SisIYA_Config::statusids{'warning'};
 			$s = "WARNING: The system has network problems! $info_str";
+			$packet_loss = (split(/%/, (split(/,/, $info_str))[2]))[0];
+			$data_str .= '<entry name="packet_loss" type="numeric" unit="ms">'.$packet_loss.'</entry>';
 		}
+		$response_time = (split(/\s+/, (split(/,/, $info_str))[3]))[1];
+		$data_str .= '<entry name="response_time" type="numeric" unit="">'.$response_time.'</entry>';
 	}
-	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message></system>";
+	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg>$data_str</datamsg></data></message></system>";
 	return $x_str;
 }
 

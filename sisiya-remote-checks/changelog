@@ -1,0 +1,9 @@
+sisiya-remote-checks (0.6.31-1) UNRELEASED; urgency=low
+  data part of the SisIYA message
+    to sisiya_check_ping.pl client check for the new web UI
+
+sisiya-remote-checks (0.6.30-1) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Fri, 31 Jan 2014 11:08:28 +0200
