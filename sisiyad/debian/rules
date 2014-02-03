@@ -4,7 +4,7 @@ package=sisiyad
 
 # Function to check if we're in the correct dir
 define checkdir
-	@test -f debian/rules -a -f src/DriverManager.cpp || \
+	@test -f debian/rules -a -f sisiyad/src/sisiyad.cpp || \
 	(echo Not in correct source directory; exit 1)
 endef
 
