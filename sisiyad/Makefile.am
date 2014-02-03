@@ -51,15 +51,17 @@ check_sisiya:
 	@echo "top_builddir = $(top_builddir)"
 
 install:
-	install -d -m 755 $(install_root)/etc
+	install -d -m 755 $(install_root)/etc/sisiya/sisiyad
 #	install -d -m 755 $(install_root)/etc/init.d
 	install -d -m 755 $(install_root)/usr/sbin
 #	install -d -m 755 $(install_root)/usr/share/doc/sisiyad-$(VERSION)
 	install -d -m 755 $(install_root)/usr/share/man/man5
 	install -d -m 755 $(install_root)/usr/share/man/man8
 #	install -m 600 ../etc/sisiyad_sysvinit $(install_root)/etc/init.d/sisiyad
-#	install -m 644 AUTHORS ChangeLog NEWS README $(install_root)/usr/share/doc/sisiyad-$(VERSION)
+#	install -m 644 AUTHORS ChangeLog NEWS README $(install_root)/usr/share/doc/sisiyad
 	install -m 644 ../doc/sisiyad.conf.5 $(install_root)/usr/share/man/man5
 	install -m 644 ../doc/sisiyad.8 $(install_root)/usr/share/man/man8
-	install -m 600 sisiyad.conf $(install_root)/etc
+	gzip -9 $(install_root)/usr/share/man/man5/*
+	gzip -9 $(install_root)/usr/share/man/man8/*
+	install -m 600 sisiyad.conf $(install_root)/etc/sisiya/sisiyad
 	install -m 700 sisiyad $(install_root)/usr/sbin

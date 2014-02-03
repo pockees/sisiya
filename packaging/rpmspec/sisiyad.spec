@@ -89,7 +89,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 #%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
-%attr(0600,root,root) 	%config(noreplace) 	/etc/sisiyad.conf
+%attr(0600,root,root) 	%config(noreplace) 	/etc/sisiya/sisiyad/sisiyad.conf
 %attr(0700,root,root) 				%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}
 %attr(0700,root,root) 				/usr/sbin/sisiyad
 %attr(0644,root,root) 				/usr/share/man/man5/sisiyad.conf.5.gz
