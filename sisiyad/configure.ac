@@ -84,7 +84,7 @@ dnl DEBUG="-ggdb -DDEBUG"
 dnl sisiyad
 SISIYAD_INC="-I./include"
 SISIYAD_SRC="./src"
-SISIYAD_LFLAGS="-ldl -ledbc"
+SISIYAD_LFLAGS="-ledbc -ldl"
 
 dnl EDBC 
 EDBC_DIR="../edbc"
