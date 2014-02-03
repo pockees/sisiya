@@ -131,15 +131,19 @@ sub get_cpu_utilization
 		#04:14:37 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
 		#04:14:37 PM  all    5.55    0.00    1.88    1.55    0.00    0.06    0.00    0.00   90.96
 		my @b = split(/\s+/, (grep(/all/, @a))[0]);
-		$s .= '<entry name="cpu_user" type="numeric">'.$b[3].'</entry>';
-		$s .= '<entry name="cpu_nice" type="numeric">'.$b[4].'</entry>';
-		$s .= '<entry name="cpu_sys" type="numeric">'.$b[5].'</entry>';
-		$s .= '<entry name="cpu_iowait" type="numeric">'.$b[6].'</entry>';
-		$s .= '<entry name="cpu_irq" type="numeric">'.$b[7].'</entry>';
-		$s .= '<entry name="cpu_soft" type="numeric">'.$b[8].'</entry>';
-		$s .= '<entry name="cpu_steal" type="numeric">'.$b[9].'</entry>';
-		$s .= '<entry name="cpu_guest" type="numeric">'.$b[10].'</entry>';
-		$s .= '<entry name="cpu_idle" type="numeric">'.$b[11].'</entry>';
+		my $i = 3;
+		if ($#b == 10) {
+			$i = 2;
+		}
+		$s = '<entry name="cpu_user" type="numeric">'.$b[$i++].'</entry>';
+		$s .= '<entry name="cpu_nice" type="numeric">'.$b[$i++].'</entry>';
+		$s .= '<entry name="cpu_sys" type="numeric">'.$b[$i++].'</entry>';
+		$s .= '<entry name="cpu_iowait" type="numeric">'.$b[$i++].'</entry>';
+		$s .= '<entry name="cpu_irq" type="numeric">'.$b[$i++].'</entry>';
+		$s .= '<entry name="cpu_soft" type="numeric">'.$b[$i++].'</entry>';
+		$s .= '<entry name="cpu_steal" type="numeric">'.$b[$i++].'</entry>';
+		$s .= '<entry name="cpu_guest" type="numeric">'.$b[$i++].'</entry>';
+		$s .= '<entry name="cpu_idle" type="numeric">'.$b[$i++].'</entry>';
 	}
 	return $s;
 } 
