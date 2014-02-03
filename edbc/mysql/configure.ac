@@ -57,14 +57,15 @@ MYSQL_INC=-I/usr/include/mysql
 MYSQL_LIB=-L/usr/lib/mysql
 MYSQL_LFLAGS=-lmysqlclient
 
-case "${host}" in
-	*86-*-linux*)
-		MYSQL_LIB=-L/usr/lib/mysql
-		;;
-	*86_64-*-linux*)
-		MYSQL_LIB=-L/usr/lib64/mysql
-		;;
-esac
+MYSQL_LIB=`mysql_config --libs | cut -d " " -f 1`
+#case "${host}" in
+#	*86-*-linux*)
+#		MYSQL_LIB=-L/usr/lib/mysql
+#		;;
+#	*86_64-*-linux*)
+#		MYSQL_LIB=-L/usr/lib64/mysql
+#		;;
+#esac
 
 dnl --------------------------------------------------
 dnl Check for libraries

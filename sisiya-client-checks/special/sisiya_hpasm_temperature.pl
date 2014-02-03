@@ -61,6 +61,7 @@ if ($retcode == 0) {
 	chomp(@a = @a);
 	my ($tsensor_number, $tsensor_name, $warning_temperature, $error_temperature, $tsensor_temperature, $tsensor_threshold);
 	my $i=1;
+	$data_str = '<entries>';
        	foreach (@a) {
 		$tsensor_temperature = (split(/\s+/, $_))[2];
 		if ($tsensor_temperature ne '-') {
@@ -86,8 +87,10 @@ if ($retcode == 0) {
 			else {
 				$ok_str .= " OK: The temperature for the $tsensor_number $tsensor_name sensor is $tsensor_temperature Grad Celcius."
 			}
+			$data_str .= '<entry name="'.$tsensor_number.'_'.$tsensor_name.'" type="numeric" unit="C">'.$tsensor_temperature.'</entry>';
 		}
 	}
+	$data_str .= '</entries>';
 }
 
 if ($error_str ne '') {

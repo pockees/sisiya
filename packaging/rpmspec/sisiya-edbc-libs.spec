@@ -54,4 +54,4 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 #%attr(0644,root,root) %doc README NEWS ChangeLog AUTHORS INSTALL TODO
-%attr(0755,root,root) 					/usr/lib/*.so*
+/usr/lib/*.so*

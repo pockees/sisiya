@@ -145,6 +145,7 @@ elsif ($SisIYA_Config::osname eq 'SunOS') {
 		}
 	}
 }
+$data_str = '<entries>';
 for my $k (keys %file_systems) {
 	#print STDERR "-----> : key=[$k] type=[$file_systems{$k}{'type'}] total=[$file_systems{$k}{'total'}] used=[$file_systems{$k}{'used'}] available=[$file_systems{$k}{'available'}] capacity=[$file_systems{$k}{'capacity'}] mountded on=[$file_systems{$k}{'mounted_on'}]\n";
 	$percent_error = $percents{'error'};
@@ -166,7 +167,9 @@ for my $k (keys %file_systems) {
 	if ( ($fs_state ne '') && ($fs_state ne 'clean') ) {
 			$error_str .= " ERROR: The filesystem state for $file_systems{$k}{'mounted_on'} is $fs_state (<> clean)!";
 	}
+	$data_str .= '<entry name="'.$file_systems{$k}{'mounted_on'}.'" type="numeric">'.$file_systems{$k}{'capacity'}.'</entry>';
 }
+$data_str .= '</entries>';
 
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};

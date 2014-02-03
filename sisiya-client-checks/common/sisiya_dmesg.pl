@@ -30,7 +30,7 @@ if (-f $SisIYA_Config::local_conf) {
 ###############################################################################
 #### the default values
 our @error_strings = ('error', 'fail', 'down', 'crit', 'fault', 'timed out', 'promiscuous', 'crash');
-our @warning_strings = ('warn', 'notice', 'not responding', 'NIC Link i Up');
+our @warning_strings = ('warn', 'notice', 'not responding', 'NIC Link is Up');
 #### end of the default values
 ################################################################################
 ## override defaults if there is a corresponfing conf file
@@ -48,6 +48,8 @@ my $error_messages = '';
 my $warning_messages = '';
 my $ok_messages = '';
 my $x;
+
+$data_str = '<entries>';
 foreach (@error_strings) {
 	if ($SisIYA_Config::osname eq 'AIX') {
 		### AIX does not have dmesg command. I use alog instead. alog -L lists log types.
@@ -61,6 +63,7 @@ foreach (@error_strings) {
 	}
 	if ($x ne '') {
 		$error_messages .= " ERROR: [$x] contains [$_]!";
+		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
 	}
 	else {
 		$ok_messages .= "[$_]";
@@ -80,11 +83,13 @@ foreach (@warning_strings) {
 	}
 	if ($x ne '') {
 		$warning_messages .= " WARNING: [$x] contains [$_]!";
+		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
 	}
 	else {
 		$ok_messages .= "[$_]";
 	}
 }
+$data_str .= '</entries>';
 if ($error_messages ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = $error_messages;
@@ -100,6 +105,6 @@ if ($ok_messages ne '') {
 }
 
 ################################################################################
-print "dmesg$SisIYA_Config::FS<msg>$message_str</msg><datamsg></datamsg>\n";
+print "dmesg$SisIYA_Config::FS<msg>$message_str</msg><datamsg>$data_str</datamsg>\n";
 exit $statusid;
 ################################################################################

@@ -102,7 +102,16 @@ if ($n > 0) {
 elsif ($n == 0) {
 	$statusid = $SisIYA_Config::statusids{'ok'};
 	$message_str = "OK: The system is uptodate.";
+}#	
+$data_str = '<entries>';
+if ($n == 0) {
+	$data_str .= '<entry name="is_uptodate" type="boolean">1</entry>';
+} else {
+	$data_str .= '<entry name="is_uptodate" type="boolean">0</entry>';
 }
+$data_str .= '<entry name="number_of_packages" type="numeric">'.$n.'</entry>';
+$data_str .= '</entries>';
+
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

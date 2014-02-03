@@ -146,6 +146,13 @@ elsif ($retcode == 127) {
 		}
 	}
 }
+$data_str = '<entries>';
+if ($statusid == $SisIYA_Config::statusids{'ok'}) {
+	$data_str .= '<entry name="is_clock_synchronized" type="boolean">1</entry>';
+} else {
+	$data_str .= '<entry name="is_clock_synchronized" type="boolean">0</entry>';
+}
+$data_str .= '</entries>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

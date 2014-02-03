@@ -35,6 +35,7 @@ if (-f $SisIYA_Config::functions) {
 # order to specify load avarage limit of 1.2 => 1.2 * 100 = 120
 our %load_avarages = ( 'warning' => 2, 'error' => 5);
 our $uptime_prog = 'uptime';
+our $mpstat_prog = '/usr/bin/mpstat';
 #### end of the default values
 ################################################################################
 
@@ -120,6 +121,28 @@ sub get_cpu_info
 	}
 	return $s;
 }
+
+sub get_cpu_utilization
+{
+	my $s = '';
+	my @a = `$mpstat_prog`;
+	my $retcode = $? >>=8;
+	if ($retcode == 0) {
+		#04:14:37 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+		#04:14:37 PM  all    5.55    0.00    1.88    1.55    0.00    0.06    0.00    0.00   90.96
+		my @b = split(/\s+/, (grep(/all/, @a))[0]);
+		$s .= '<entry name="cpu_user" type="numeric">'.$b[3].'</entry>';
+		$s .= '<entry name="cpu_nice" type="numeric">'.$b[4].'</entry>';
+		$s .= '<entry name="cpu_sys" type="numeric">'.$b[5].'</entry>';
+		$s .= '<entry name="cpu_iowait" type="numeric">'.$b[6].'</entry>';
+		$s .= '<entry name="cpu_irq" type="numeric">'.$b[7].'</entry>';
+		$s .= '<entry name="cpu_soft" type="numeric">'.$b[8].'</entry>';
+		$s .= '<entry name="cpu_steal" type="numeric">'.$b[9].'</entry>';
+		$s .= '<entry name="cpu_guest" type="numeric">'.$b[10].'</entry>';
+		$s .= '<entry name="cpu_idle" type="numeric">'.$b[11].'</entry>';
+	}
+	return $s;
+} 
 ################################################################################
 my $n = get_load_avarage();
 my $str = "Load average for the past 5 minutes is $n";
@@ -140,10 +163,16 @@ else {
 $message_str .= get_cpu_info();
 ### add cpu usage info
 $message_str .= get_cpu_usage();
-$data_str = '<entries><entry name="load_average" type="numeric">'.$n.'</entry></entries>';
+$data_str = '<entries><entry name="load_average" type="numeric">'.$n.'</entry>'.get_cpu_utilization().'</entries>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
+#mpstat 
+#Linux 2.6.32-358.23.2.el6.x86_64 (dbsrv01.altiniplik.com.tr)    02/03/2014      _x86_64_        (16 CPU)
+#
+#04:14:37 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+#04:14:37 PM  all    5.55    0.00    1.88    1.55    0.00    0.06    0.00    0.00   90.96
+########################################################################################
 #
 #cat /proc/cpuinfo 
 #processor       : 0
