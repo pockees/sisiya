@@ -430,7 +430,7 @@ create_client_checks()
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	mkdir -p $deb_root_dir/usr/share/${package_str} 
-	for f in common misc special version.txt utils
+	for f in misc scripts version.txt utils
 	do
 		cp -a $package_dir/$f ${deb_root_dir}/usr/share/${package_str}/ 
 	done
