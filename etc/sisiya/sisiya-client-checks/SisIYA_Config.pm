@@ -50,13 +50,13 @@ our $FS = '~';
 
 our $base_dir			= '/usr/share/sisiya-client-checks';
 our $conf_dir			= "/etc/sisiya/sisiya-client-checks";
-our $local_conf			= "$conf_dir/SisIYA_Config_local.pl";
+our $conf_d_dir			= "$conf_dir/conf.d";
+our $conf_d_dir			= "$conf_dir/conf.d";
+our $local_conf			= "$conf_dir/SisIYA_Config_local.conf";
 our $common_dir			= "$base_dir/common";
 our $misc_dir 			= "$base_dir/misc";
 our $special_dir		= "$base_dir/special";
 our $utils_dir 			= "$base_dir/utils";
-our $systems_dir		= "$conf_dir";
-our $systems_conf_dir 		= "$systems_dir/conf";
 our $send_message_prog 		= "$utils_dir/send_message_xml.pl";
 our $send_message2_prog		= "$utils_dir/send_message2_xml.pl";
 our $sisiyac_prog 		= "$utils_dir/sisiyac_xml.pl";
@@ -68,6 +68,17 @@ our $export_to_xml		= 0;
 our $export_xml_file		= '/tmp/sisiya-client-checks.xml';
 our $export_xml_owner		= 'erdalmutlu:users';
 our $export_xml_permissions	= '640';
+
+our %checks = (
+		'dmesg' 		=> { 'auto' => 1, 'conf' => 'sisiya_dmesg.conf', 		'script' => 'sisiya_dmesg.pl' 		},
+		'fs'	 		=> { 'auto' => 1, 'conf' => 'sisiya_fs.conf', 			'script' => 'sisiya_fs.pl' 		},
+		'isuptodate'		=> { 'auto' => 1, 'conf' => 'sisiya_isuptodate.conf',		'script' => 'sisiya_isuptodate.pl' 	},
+		'load'	 		=> { 'auto' => 1, 'conf' => 'sisiya_load.conf',			'script' => 'sisiya_load.pl' 		},
+		'process_count'		=> { 'auto' => 1, 'conf' => 'sisiya_process_count.conf',	'script' => 'sisiya_process_count.pl'	},
+		'swap'	 		=> { 'auto' => 1, 'conf' => 'sisiya_swap.conf', 		'script' => 'sisiya_swap.pl' 		},
+		'system' 		=> { 'auto' => 1, 'conf' => 'sisiya_system.conf', 		'script' => 'sisiya_system.pl' 		},
+		'users'	 		=> { 'auto' => 1, 'conf' => 'sisiya_users.conf', 		'script' => 'sisiya_users.pl' 		},
+	);
 
 our %statusids = (
 	'info' 		=> 1,	# 2^0 

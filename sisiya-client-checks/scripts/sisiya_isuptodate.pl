@@ -70,8 +70,7 @@ sub use_zypper
 }
 ################################################################################
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+my $module_conf_file = "$SisIYA_Config::conf_dir/sisiya_isuptodate.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }

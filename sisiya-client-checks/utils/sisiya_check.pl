@@ -71,13 +71,13 @@ sub run_script
 # Return	: XML string
 sub process_checks
 {
-	my $dir_str = $_[0];
-	my $expire  = $_[1];
-	my ($status_id, $service_id);
+	my ($dir_str, $expire)  = @_;
+
+	#my ($status_id, $service_id);
 	my $s = '';
 
 	if (opendir(my $dh, $dir_str)) {
-		my @scripts = grep { /^sisiya_*/ && -x "$dir_str/$_" } readdir($dh);
+		my @scripts = grep { /^sisiya_*.pl/ && -x "$dir_str/$_" } readdir($dh);
 		closedir($dh);
 		foreach my $f (@scripts) {
 			$s .= run_script("$dir_str/$f", $expire); 
@@ -98,7 +98,7 @@ if ($#ARGV == 1) {
 else {
 	$expire = $ARGV[0];
 	$xml_s_str  = process_checks($SisIYA_Config::common_dir, $expire);
-	$xml_s_str .= process_checks($SisIYA_Config::systems_dir, $expire);
+	$xml_s_str .= process_checks($SisIYA_Config::conf_dir, $expire);
 }
 
 if ($xml_s_str eq '') {

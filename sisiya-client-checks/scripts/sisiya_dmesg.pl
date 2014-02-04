@@ -33,9 +33,8 @@ our @error_strings = ('error', 'fail', 'down', 'crit', 'fault', 'timed out', 'pr
 our @warning_strings = ('warn', 'notice', 'not responding', 'NIC Link is Up');
 #### end of the default values
 ################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_dir/sisiya_dmesg.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
