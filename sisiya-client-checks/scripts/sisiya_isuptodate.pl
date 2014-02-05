@@ -40,8 +40,15 @@ our %update_progs = (
 );
 #### end of the default values
 ################################################################################
+################################################################################
+my $service_name = 'isuptodate';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
+if (-f $module_conf_file) {
+	require $module_conf_file;
+}
+################################################################################
 
-#######################################################################################
 sub use_pacman
 {
 	`$update_progs{'pacman'} --sync --refresh >/dev/null`;
@@ -68,17 +75,11 @@ sub use_zypper
 	chomp($n = `$update_progs{'zypper'} --non-interactive list-updates | grep "^v |" |  wc -l`);
 	return $n;
 }
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::conf_dir/sisiya_isuptodate.conf";
-if (-f $module_conf_file) {
-	require $module_conf_file;
-}
+
 ################################################################################
 my $message_str = "INFO: Unsupported system for uptodate checking.";
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'info'};
-my $service_name = 'isuptodate';
 my $n = -1;
 
 if (-x $update_progs{'yum'}) {

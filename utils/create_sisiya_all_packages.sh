@@ -259,7 +259,7 @@ create_edbc_libs()
 	mkdir -p $package_dir
 	cp -a ${source_dir}/edbc/* $package_dir/
 	echo "$version_str" > $package_dir/version.txt
-	cat ${source_dir}/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
+	cat ${source_dir}/edbc/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
 	#sed -i -e "s/__VERSION_MAJOR__/$version_major_str/g" -e "s/__VERSION_MINOR__/$version_minor_str/g" -e "s/__VERSION__/$version_str/g" $package_dir/Makefile
 	################################################################################################################################################
 	### create RPM source package

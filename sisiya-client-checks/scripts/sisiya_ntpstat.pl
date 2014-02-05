@@ -30,12 +30,20 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our $ntpstat_prog = '/usr/bin/ntpstat';
 our $ntpq_prog = '/usr/bin/ntpq';
 #### end of the default values
-################################################################################
+#######################################################################################
+my $service_name = 'ntpstat';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
+if (-f $module_conf_file) {
+	require $module_conf_file;
+}
+#######################################################################################
+
 sub get_synchronized_peer
 {
 	###############################################################################
@@ -78,20 +86,13 @@ sub get_synchronized_peer
 	return '';
 }
 
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
-if (-f $module_conf_file) {
-	require $module_conf_file;
-}
-
 ################################################################################
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'error'};
-my $service_name = 'ntpstat';
 my @a = `$ntpstat_prog 2>/dev/null`;
 my $retcode = $? >>=8;
+my $status_flag = 0;
 
 if ($retcode == 0) {
 	#######################################################       
@@ -108,6 +109,7 @@ if ($retcode == 0) {
 	chomp($s = $s);
 	$s =~ s/\)//g;
 	$message_str = "OK: The system clock is synchronized to $s.";
+	$status_flag = 1;
 }
 elsif ($retcode == 1) {
 	#######################################################       
@@ -135,6 +137,7 @@ elsif ($retcode == 127) {
 			if ($p ne '') {
 				$statusid = $SisIYA_Config::statusids{'ok'};
 				$message_str = "OK: The system clock is synchronized to $p.";
+				$status_flag = 1;
 			}
 			else {
 				$statusid = $SisIYA_Config::statusids{'warning'};
@@ -146,13 +149,7 @@ elsif ($retcode == 127) {
 		}
 	}
 }
-$data_str = '<entries>';
-if ($statusid == $SisIYA_Config::statusids{'ok'}) {
-	$data_str .= '<entry name="is_clock_synchronized" type="boolean">1</entry>';
-} else {
-	$data_str .= '<entry name="is_clock_synchronized" type="boolean">0</entry>';
-}
-$data_str .= '</entries>';
+$data_str = '<entries><entry name="is_clock_synchronized" type="boolean">'.$status_flag.'</entry></entries>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################

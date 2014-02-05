@@ -30,25 +30,25 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our $smartctl_prog = '/usr/sbin/smartctl';
 our @disks;
 #push @disks , { 'device' => '/dev/sda', 'warning' => 31, 'error' => 35 };
 #push @disks , { 'device' => '/dev/sdb', 'warning' => 30, 'error' => 34 };
 #### end of the default values
-################################################################################
+#######################################################################################
+my $service_name = 'smart';
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 chomp($module_conf_file);
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'smart';
 my $error_str = '';
 my $ok_str = '';
 my $warning_str = '';

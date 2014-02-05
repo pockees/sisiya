@@ -43,8 +43,9 @@ our %exception_list;
 #### end of the default values
 ################################################################################
 ################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::conf_dir/sisiya_fs.conf";
+my $service_name = 'filesystem';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
@@ -76,7 +77,6 @@ sub get_filesystem_state
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'filesystem';
 my $error_str = '';
 my $ok_str = '';
 my $warning_str = '';

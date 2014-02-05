@@ -27,22 +27,22 @@ if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our @error_strings = ('error', 'fail', 'down', 'crit', 'fault', 'timed out', 'promiscuous', 'crash');
 our @warning_strings = ('warn', 'notice', 'not responding', 'NIC Link is Up');
 #### end of the default values
-################################################################################
+#######################################################################################
+my $service_name = 'dmesg';
 ## override defaults if there is a corresponding conf file
-my $module_conf_file = "$SisIYA_Config::conf_dir/sisiya_dmesg.conf";
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'dmesg';
 my $error_messages = '';
 my $warning_messages = '';
 my $ok_messages = '';

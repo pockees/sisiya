@@ -29,6 +29,7 @@ if (-f $SisIYA_Config::local_conf) {
 if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
+################################################################################
 ## the default values
 # uptimes are given in minutes
 our %uptimes = ('error' => 1440, 'warning' => 4320);
@@ -40,9 +41,9 @@ our $version_file = "$SisIYA_Config::base_dir/version.txt";
 our $ip_prog = '/sbin/ip';
 #### end of the default values
 ################################################################################
-# override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+my $service_name = 'system';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
@@ -50,7 +51,6 @@ if (-f $module_conf_file) {
 my $message_str;
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'system';
 
 sub get_uptime_in_minutes
 {

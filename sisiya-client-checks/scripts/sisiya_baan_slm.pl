@@ -30,7 +30,7 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our $env_slmhome = '/infor/slm';
 our $slmcmd_prog = "$env_slmhome/bin/SlmCmd";
@@ -39,18 +39,17 @@ our $env_bse = '/infor/erpln/bse';
 our $env_bse_tmp = "$env_bse/tmp";
 our @slm_servers = ( {'server' => 'localhost', 'port' => 6005} );
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+#######################################################################################
+my $service_name = 'baan_slm';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'baan_slm';
 my $error_str = '';
 my $info_str = '';
 my $ok_str = '';

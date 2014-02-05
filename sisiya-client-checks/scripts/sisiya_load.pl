@@ -29,7 +29,8 @@ if (-f $SisIYA_Config::local_conf) {
 if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
-###############################################################################
+#######################################################################################
+#######################################################################################
 #### the default values
 # load avarage is specified by A * 100, where A is the normal load avarage. Example: In 
 # order to specify load avarage limit of 1.2 => 1.2 * 100 = 120
@@ -37,22 +38,18 @@ our %load_avarages = ( 'warning' => 2, 'error' => 5);
 our $uptime_prog = 'uptime';
 our $mpstat_prog = '/usr/bin/mpstat';
 #### end of the default values
-################################################################################
-
 #######################################################################################
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+my $service_name = 'load';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 my $message_str = "INFO: Unsupported system for uptodate checking.";
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'info'};
-my $service_name = 'load';
-################################################################################
+#######################################################################################
 sub get_load_avarage
 {
 	my $n = 0;

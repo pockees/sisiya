@@ -30,22 +30,21 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our @exception_users;
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+#######################################################################################
+my $service_name = 'users';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'info'};
-my $service_name = 'users';
 my @a;
 
 if ($SisIYA_Config::osname eq 'HP-UX') {

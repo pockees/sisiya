@@ -30,23 +30,23 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our $baan_jobs_status_db_prog = '';
 ##our $baan_jobs_status_db_prog="$SisIYA_Config::utils_dir/sisiya_baan_jobs_status_oracle.pl"
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
+#######################################################################################
+my $service_name = 'baan_jobs_status';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 chomp($module_conf_file);
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'baan_jobs_status';
 my $error_str = '';
 my $info_str = '';
 my $ok_str = '';

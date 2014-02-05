@@ -41,22 +41,15 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-#foreach ($SisIYA_Config::base_dir, $SisIYA_Config::common_dir, $SisIYA_Config::special_dir) {
-#	if (! -d $_) {
-#		print "$0: No such directory : $_\n";
-#		exit 1;
-#	}
-#}
-
 # Parameter	: script name
 # Return	: xml message string
 sub run_script
 {
-	my $expire = $_[1];
+	my ($script_file, $expire) = @_;
 	my ($status_id, $service_id, $s);
 
 	#print STDERR "[$_[0]] ...\n";
-	chomp($s = `/usr/bin/perl -I$SisIYA_Config::conf_dir $_[0]`);
+	chomp($s = `/usr/bin/perl -I$SisIYA_Config::conf_dir $script_file`);
 	$status_id = $? >> 8;
 	$service_id = get_serviceid($s);	
 	# replace ' with \', because it is a problem in the SQL statemnet
@@ -71,17 +64,15 @@ sub run_script
 # Return	: XML string
 sub process_checks
 {
-	my ($dir_str, $expire)  = @_;
-
-	#my ($status_id, $service_id);
+	my ($expire)  = @_;
 	my $s = '';
 
-	if (opendir(my $dh, $dir_str)) {
-		my @scripts = grep { /^sisiya_*.pl/ && -x "$dir_str/$_" } readdir($dh);
-		closedir($dh);
-		foreach my $f (@scripts) {
-			$s .= run_script("$dir_str/$f", $expire); 
+	foreach my $check_name (keys %SisIYA_Config::checks) {	
+		if( $SisIYA_Config::checks{$check_name}{'auto'} == 0 ) {
+			next;
 		}
+		#print STDERR "Checking $check_name ...\n";
+		$s .= run_script("$SisIYA_Config::scripts_dir/$SisIYA_Config::checks{$check_name}{'script'}", $expire); 
 	}
 	return $s;
 }
@@ -97,8 +88,7 @@ if ($#ARGV == 1) {
 }
 else {
 	$expire = $ARGV[0];
-	$xml_s_str  = process_checks($SisIYA_Config::common_dir, $expire);
-	$xml_s_str .= process_checks($SisIYA_Config::conf_dir, $expire);
+	$xml_s_str = process_checks($expire);
 }
 
 if ($xml_s_str eq '') {

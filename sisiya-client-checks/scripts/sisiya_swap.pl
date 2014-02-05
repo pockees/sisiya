@@ -40,8 +40,9 @@ our %swap_percents = ( 'warning' => 30, 'error' => 50);
 
 #######################################################################################
 ################################################################################
+my $service_name = 'swap';
 ## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 chomp($module_conf_file);
 if (-f $module_conf_file) {
 	require $module_conf_file;
@@ -66,7 +67,6 @@ if (-f $module_conf_file) {
 my $statusid;
 my $message_str;
 my $data_str = '';
-my $service_name = 'swap';
 my $retcode;
 my ($ram_free, $ram_total, $ram_used, $ram_percent);
 my ($swap_free, $swap_total, $swap_used, $swap_percent);
