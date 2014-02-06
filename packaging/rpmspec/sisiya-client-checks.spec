@@ -36,6 +36,7 @@ make "DESTDIR=%{buildroot}" install_sisiya_client_checks
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-client-checks
 %dir %attr(0755,root,root) 				/etc/sisiya/%{name}
 %dir %attr(0755,root,root) 				/etc/sisiya/%{name}/conf.d
+%attr(0644,root,root) 		%config(noreplace)	/etc/sisiya/%{name}/conf.d/*
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Config.pm
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Config_local.conf
 %attr(0644,root,root) 		%doc 			copyright changelog
