@@ -3,7 +3,7 @@
 %define version __VERSION__
 %define release __RELEASE__
 
-%define install_dir /opt/%{name}
+%define install_dir /usr/share/%{name}
 
 ### define distro
 #%define is_redhat 	%(test -e /etc/redhat-release 	&& echo 1 || echo 0)
@@ -46,8 +46,8 @@ make "DESTDIR=%{buildroot}" install
 
 %post
 # change ownership of some files and directories so that sisiya-webui package can access them in order to change conf files
-chgrp    %{www_group}	%{install_dir}
-chgrp -R %{www_group}	%{install_dir}/conf
+chgrp    %{www_group}	/etc/sisiya/sisiya-remote-checks
+chgrp -R %{www_group}	/etc/sisiya/sisiya-remote-checks/conf.d
 
 %files
 %dir %attr(0755,root,root) 				/etc/cron.d
@@ -56,7 +56,7 @@ chgrp -R %{www_group}	%{install_dir}/conf
 #%attr(0644,root,root) 		%doc 			README NEWS ChangeLog AUTHORS INSTALL TODO
 %attr(0750,root,root)	 	%dir 			%{install_dir}
 %attr(0644,root,root) 					%{install_dir}/version.txt
-%attr(0750,root,root)		%dir			%{install_dir}/conf
+%attr(0750,root,root)		%dir			/etc/sisiya/sisiya-remote-checks/conf.d
 %attr(0750,root,root) 		%dir 			%{install_dir}/lib
 %attr(0750,root,root)		%dir			%{install_dir}/misc
 %attr(0750,root,root) 		%dir 			%{install_dir}/scripts

@@ -305,6 +305,7 @@ create_remote_checks()
 	release_str=$3
 	base_dir=$4
 	local_dir=$5
+	year_str=`date +%Y` 
 
 	package_str="sisiya-remote-checks"
 	package_name="${package_str}-${version_str}-$release_str"
@@ -317,21 +318,10 @@ create_remote_checks()
 	echo "${version_str}-$release_str" > $package_dir/version.txt
 
 	mkdir -p $package_dir/etc/cron.d
-	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d/
-	#if test -z "$local_dir" ; then
-	#	echo "Creating source package for general usage..."
-	#else
-	#	echo "Creating source package for you..."
-	#
-	# 	if test ! -d $local_dir ; then
-	#		echo "$0 : Local configuration directory (local_confs_dir) does not exist!"
-	#		exit 1
-	#	fi
-	#	if test -f ${local_dir}/$package_str/conf/SisIYA_Remote_Config_local.pl ; then
-	#		echo "I am using your own SisIYA_Remote_Config_local.pl file (${local_dir}/$package_str/SisIYA_Remote_Config_local.pl) ..."
-	#		cp -f ${local_dir}/$package_str/conf/SisIYA_Remote_Config_local.pl $package_dir/conf/
-	#	fi
-	#fi
+	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d
+	mkdir -p $package_dir/etc/sisiya
+	cp -a ${source_dir}/etc/sisiya/$package_str $package_dir/etc/sisiya
+	cat ${source_dir}/$package_str/COPYING | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/COPYING
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
@@ -350,10 +340,15 @@ create_remote_checks()
 	deb_root_dir="$base_dir/deb/$package_name"
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
-	mkdir -p $deb_root_dir/opt/${package_str} 
-	for f in conf misc scripts version.txt utils
+	mkdir -p $deb_root_dir/usr/share/${package_str} 
+	mkdir -p $deb_root_dir/usr/share/doc/${package_str} 
+	for f in misc scripts utils
 	do
-		cp -a $package_dir/$f ${deb_root_dir}/opt/${package_str}/ 
+		cp -a $package_dir/$f ${deb_root_dir}/usr/share/${package_str} 
+	done
+	for f in changelog version.txt COPYING
+	do
+		cp -a $package_dir/$f ${deb_root_dir}/usr/share/doc/${package_str} 
 	done
 	mkdir $deb_root_dir/DEBIAN
 	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 

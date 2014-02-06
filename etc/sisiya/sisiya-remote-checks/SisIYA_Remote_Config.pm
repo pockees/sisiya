@@ -31,12 +31,13 @@ package SisIYA_Remote_Config;
 ##################################################################################
 
 
-our $client_conf 		= '/opt/sisiya-client-checks/SisIYA_Config.pm';
-our $client_local_conf	 	= '/opt/sisiya-client-checks/SisIYA_Config_local.pl';
-our $base_dir		 	= '/opt/sisiya-remote-checks';
-our $conf_dir 			= "$base_dir/conf";
+our $client_conf 		= '/etc/sisiya/sisiya-client-checks/SisIYA_Config.pm';
+our $client_local_conf	 	= '/etc/sisiya/sisiya-client-checks/SisIYA_Config_local.conf';
+our $base_dir		 	= '/usr/share/sisiya-remote-checks';
+our $conf_dir 			= "/etc/sisiya/sisiya-remote-checks";
+our $conf_d_dir			= "$conf_dir/conf.d";
 our $lib_dir			= "$base_dir/lib";
-our $local_conf			= "$conf_dir/SisIYA_Remote_Config_local.pl";
+our $local_conf			= "/etc/sisiya/sisiya-remote-checks/SisIYA_Remote_Config_local.conf";
 our $misc_dir 			= "$base_dir/misc";
 our $scripts_dir	 	= "$base_dir/scripts";
 our $tmp_dir			= "/tmp";
@@ -84,6 +85,6 @@ our %checks = (
 	);
 # Environment variables
 our %env = (
-	'CLASSPATH'	=> "$conf_dir:$lib_dir:/opt/java/jre:/usr/lib/jdbc/mysql-connector-java-3.1.11-bin.jar:/usr/lib/jdbc/pg74.216.jdbc2.jar:/usr/lib/jdbc/ojdbc14.jar:/usr/lib/jdbc/jtds-1.3.1.jar"
+	'CLASSPATH'	=> "$conf_d_dir:$lib_dir:/opt/java/jre:/usr/lib/jdbc/mysql-connector-java-3.1.11-bin.jar:/usr/lib/jdbc/pg74.216.jdbc2.jar:/usr/lib/jdbc/ojdbc14.jar:/usr/lib/jdbc/jtds-1.3.1.jar"
 );
 1;

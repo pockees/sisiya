@@ -1,5 +1,10 @@
 sisiya-client-checks (0.6.31-1) UNRELEASED; urgency=low
 
+  * 
+  * active checks are controlled via SisIYA_Config.pm configuration file
+  * added default configuration files for every check
+  * changed the location of scripts and config files to conform with FSH
+    standard
   * added entry to the data part of the SisIYA message to sisiya_load.pl
     client check for the new web UI
   * added entry to the data part of the SisIYA message to sisiya_isuptodate.pl
