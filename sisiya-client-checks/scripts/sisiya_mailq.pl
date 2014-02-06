@@ -30,24 +30,23 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our $mailq_prog = 'mailq';
 our %mailq = ('error' => 5, 'warning' => 3);
 #our $mailq_prog = '/opt/sisiya-client-checks/special/sisiya_mailq.sh';
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+#######################################################################################
+my $service_name = 'mailq';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'mailq';
 
 my @a = qx/$mailq_prog/;
 my $retcode = $? >>=8;
@@ -66,8 +65,7 @@ else {
 if ($queue_count >= $mailq{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: There are $queue_count (>= $mailq{'error'}) number of mails waiting in the queue!";
-}
-if ($queue_count >= $mailq{'warning'}) {
+} elsif ($queue_count >= $mailq{'warning'}) {
 	$statusid = $SisIYA_Config::statusids{'warning'};
 	$message_str = "WARNING: There are $queue_count (>= $mailq{'warning'}) number of mails waiting in the queue!";
 }
@@ -75,6 +73,6 @@ else {
 	$statusid = $SisIYA_Config::statusids{'ok'};
 	$message_str = "OK: There are no mails in the queue.";
 }
-###################################################################################
+######################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
-###################################################################################
+######################################################################################

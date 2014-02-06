@@ -29,17 +29,15 @@ if (-f $SisIYA_Config::local_conf) {
 if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
-###############################################################################
+#######################################################################################
+#######################################################################################
 #### the default values
 our $sunos_swap_prog = '/usr/sbin/swap';
 our $sunos_prtconf_prog = '/usr/sbin/prtconf';
 our $sunos_vmstat_prog = '/usr/bin/vmstat';
 our %swap_percents = ( 'warning' => 30, 'error' => 50);
 #### end of the default values
-################################################################################
-
 #######################################################################################
-################################################################################
 my $service_name = 'swap';
 ## override defaults if there is a corresponfing conf file
 my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
@@ -47,7 +45,7 @@ chomp($module_conf_file);
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 # 1 parameter is the search string
 # 2 parameter is an array to cat /proc/meminfo
 #

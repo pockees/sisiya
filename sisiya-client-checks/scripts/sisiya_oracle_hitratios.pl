@@ -30,7 +30,7 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our $sqlplus_prog = 'sqlplus';
 our %hitratios = ( 
@@ -47,18 +47,17 @@ our $env_nls_lang = 'AMERICAN_AMERICA.WE8ISO8859P9';
 our $env_oracle_home = '/opt/oracle/product/8.1.7';
 our $env_oracle_bin = '/opt/oracle/product/8.1.7/bin';
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+#######################################################################################
+my $service_name = 'oracle_hitratios';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'oracle_hitratios';
 my $error_str = '';
 my $ok_str = '';
 my $warning_str = '';

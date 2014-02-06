@@ -49,14 +49,14 @@ our @dbs = ( { 'db_name' => 'mysql', 'description' => 'MySQL System DB', 'check_
 our @exception_tables = ( {'db' => 'mysql', 'table' => 'general_log'}, { 'db' => 'mysql', 'table' => 'slow_log'});
 #
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+#######################################################################################
+my $service_name = 'mysql_table_status';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 sub is_exception
 {
 	my $db = $_[0];
@@ -72,7 +72,6 @@ sub is_exception
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'mysql_table_status';
 my $error_str = '';
 my $info_str = '';
 my $ok_str = '';
