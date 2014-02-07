@@ -39,7 +39,9 @@ make "DESTDIR=%{buildroot}" install
 %attr(0644,root,root) 		%config(noreplace)	/etc/sisiya/%{name}/conf.d/*
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Config.pm
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Config_local.conf
-%attr(0644,root,root) 		%doc 			copyright changelog version.txt
+%attr(0644,root,root) 		 			/usr/share/doc/changelog
+%attr(0644,root,root) 		 			/usr/share/doc/copyright
+%attr(0644,root,root) 		 			/usr/share/doc/version.txt
 %dir %attr(0755,root,root) 				%{install_dir}
 %dir %attr(0755,root,root) 				%{install_dir}/misc
 %dir %attr(0755,root,root) 				%{install_dir}/scripts

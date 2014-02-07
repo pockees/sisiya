@@ -37,7 +37,7 @@ our $uptime_prog = 'uptime';
 ### to get information about the server
 our $info_prog = '';
 ##our $info_prog="$SisIYA_Config::base_dir/special/system_info_hpasm.sh"
-our $version_file = "$SisIYA_Config::base_dir/version.txt";
+our $version_file = "/usr/share/doc/sisiya-client-checks/version.txt";
 our $ip_prog = '/sbin/ip';
 #### end of the default values
 ################################################################################
