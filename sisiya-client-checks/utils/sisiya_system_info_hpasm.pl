@@ -31,7 +31,7 @@ if (-f $SisIYA_Config::functions) {
 }
 ###############################################################################
 #Put the following line in the conf/sisiya_system.pl file:
-#$info_prog = '/usr/bin/perl -I/opt/sisiya-client-checks /opt/sisiya-client-checks/special/sisiya_system_info_hpasm.pl';
+#$info_prog = '/usr/bin/perl -I/etc/sisiya/sisiya-client-checks /usr/share/sisiya-client-checks/utils/sisiya_system_info_hpasm.pl';
 ###############################################################################
 #### the default values
 #

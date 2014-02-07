@@ -18,20 +18,18 @@
 #
 #
 #######################################################################################
-if test $# -ne 4 ; then
-	echo "Usage : $0 sisiya_client.conf expire status message"
+if test $# -ne 3 ; then
+	echo "Usage : $0 expire status message"
 	echo "expire must be specified in minutes. expire=0 means not to expire"
 	echo "status=error,warning,ok,info"
 	exit 1
 fi
 
-#client_conf_file="$1"
-base_dir="/opt/sisiya-client-checks"
+base_dir="/usr/share/sisiya-client-checks"
 send_message_prog="$base_dir/utils/sisiya_send_message.pl"
-client_conf_file="$1"
-expire="$2"
-status_str="$3"
-org_message="$4"
+expire="$1"
+status_str="$2"
+org_message="$3"
 service_str="batchjob_notify"
 if test ! -f $send_message_prog ; then
 	echo "$0 : SisIYA send message program $send_message_prog does not exist!"
@@ -41,8 +39,6 @@ fi
 message_str="$org_message"
 data_message_str=""
 ###################################################################################################
-#echo "sisiya_hostname=$sisiya_hostname serviceid=$serviceid statusid=$statusid expire=$expire str=$message_str"
-#echo "perl -I$base_dir ${send_message_prog} $service_str $status_str $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 perl -I$base_dir ${send_message_prog} $service_str $status_str $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 sleep 1
 exit 0

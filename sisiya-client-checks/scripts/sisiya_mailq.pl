@@ -34,7 +34,7 @@ if (-f $SisIYA_Config::functions) {
 #### the default values
 our $mailq_prog = 'mailq';
 our %mailq = ('error' => 5, 'warning' => 3);
-#our $mailq_prog = '/opt/sisiya-client-checks/special/sisiya_mailq.sh';
+#our $mailq_prog = '/usr/share/sisiya-client-checks/utils/sisiya_mailq.sh';
 #### end of the default values
 #######################################################################################
 my $service_name = 'mailq';
