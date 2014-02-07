@@ -28,7 +28,7 @@ The SisIYA client programs and checks. This package is installed on every server
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DESTDIR=%{buildroot}" install_sisiya_client_checks 
+make "DESTDIR=%{buildroot}" install 
 
 %files
 %defattr(-,root,root)

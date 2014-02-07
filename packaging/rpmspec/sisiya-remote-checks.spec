@@ -55,7 +55,6 @@ chgrp -R %{www_group}	/etc/sisiya/sisiya-remote-checks/conf.d
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-remote-checks
 #%attr(0644,root,root) 		%doc 			README NEWS ChangeLog AUTHORS INSTALL TODO
 %attr(0750,root,root)	 	%dir 			%{install_dir}
-%attr(0644,root,root) 					%{install_dir}/version.txt
 %attr(0750,root,root)		%dir			/etc/sisiya/sisiya-remote-checks/conf.d
 %attr(0750,root,root) 		%dir 			%{install_dir}/lib
 %attr(0750,root,root)		%dir			%{install_dir}/misc
