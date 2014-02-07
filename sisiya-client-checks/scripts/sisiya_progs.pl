@@ -48,10 +48,10 @@ our @progs;
 #push @progs , { 'command' => '/usr/sbin/sisiyad /etc/sisiyad.conf', 'description' => 'SisIYA server'};
 #push @progs , { 'command' => '/usr/sbin/httpd', 'description' => 'Web server'};
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+#######################################################################################
+my $service_name = 'progs';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
@@ -59,7 +59,6 @@ if (-f $module_conf_file) {
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my $service_name = 'progs';
 my $error_str = '';
 my $ok_str = '';
 #my $warning_str = '';
