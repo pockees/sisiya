@@ -423,13 +423,15 @@ create_client_checks()
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
 	mkdir -p $deb_root_dir/usr/share/${package_str} 
-	for f in misc scripts version.txt utils
+	for f in misc scripts utils
 	do
 		cp -a $package_dir/$f ${deb_root_dir}/usr/share/${package_str}/ 
 	done
 	mkdir -p $deb_root_dir/usr/share/doc/$package_str
-	cp -a $package_dir/usr/share/doc $deb_root_dir/usr/share
-	mv $package_dir/changelog.Debian $deb_root_dir/usr/share/doc/$package_str/
+	for f in changelog copyright version.txt changelog.Debian
+	do
+		cp $package_dir/$f $deb_root_dir/usr/share/doc/$package_str
+	done
 	gzip --best $deb_root_dir/usr/share/doc/$package_str/changelog*
 
 	mkdir $deb_root_dir/DEBIAN  
