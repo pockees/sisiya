@@ -381,6 +381,7 @@ create_client_checks()
 	release_str=$3
 	base_dir=$4
 	local_dir=$5
+	year_str=`date +%Y` 
 
 	package_str="sisiya-client-checks"
 	package_name="${package_str}-${version_str}-$release_str"
@@ -395,10 +396,7 @@ create_client_checks()
 	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d/
 	mkdir -p $package_dir/etc/sisiya
 	cp -a ${source_dir}/etc/sisiya/$package_str/ $package_dir/etc/sisiya
-	mkdir -p $package_dir/usr/share/doc/$package_str
-	cp $source_dir/packaging/copyright $package_dir/usr/share/doc/$package_str/
-	mkdir -p $package_dir/usr/share/doc/$package_str
-	mv $package_dir/changelog $package_dir/usr/share/doc/$package_str/
+	cat ${source_dir}/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/copyright
 
 	find $package_dir/ -type d -exec chmod 755 {} \;
 	find $package_dir/ -type f -exec chmod 644 {} \;

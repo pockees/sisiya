@@ -23,6 +23,7 @@ dst_dir=$(root_dir)/usr/share
 dst_etc=$(root_dir)/etc
 dst_cron=$(root_dir)/etc/cron.d
 dst_man=$(root_dir)/usr/share/man
+doc_dir=$(root_dir)/usr/share/doc/$(package_name)
 
 install:
 	install -d		$(dst_cron)
@@ -35,7 +36,7 @@ install:
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config.pm 		$(dst_etc)/sisiya/$(package_name)
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config_local.conf	$(dst_etc)/sisiya/$(package_name)
 	install -m 600 etc/sisiya/$(package_name)/conf.d/* 			$(dst_etc)/sisiya/$(package_name)/conf.d
-	install -m 600 version.txt 						$(dst_dir)/$(package_name)
+	install -m 644 changelog copyright version.txt 				$(doc_dir)
 	install -m 600 misc/* 							$(dst_dir)/$(package_name)/misc
 	install -m 700 scripts/*						$(dst_dir)/$(package_name)/scripts
 	install -m 700 utils/*							$(dst_dir)/$(package_name)/utils
