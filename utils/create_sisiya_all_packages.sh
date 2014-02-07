@@ -427,6 +427,7 @@ create_client_checks()
 	do
 		cp -a $package_dir/$f ${deb_root_dir}/usr/share/${package_str}/ 
 	done
+	mkdir -p $deb_root_dir/usr/share/doc/$package_str
 	cp -a $package_dir/usr/share/doc $deb_root_dir/usr/share
 	mv $package_dir/changelog.Debian $deb_root_dir/usr/share/doc/$package_str/
 	gzip --best $deb_root_dir/usr/share/doc/$package_str/changelog*
