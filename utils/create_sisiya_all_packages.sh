@@ -396,7 +396,7 @@ create_client_checks()
 	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d/
 	mkdir -p $package_dir/etc/sisiya
 	cp -a ${source_dir}/etc/sisiya/$package_str/ $package_dir/etc/sisiya
-	cat ${source_dir}/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/copyright
+	cat ${source_dir}/$package_str/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/copyright
 
 	find $package_dir/ -type d -exec chmod 755 {} \;
 	find $package_dir/ -type f -exec chmod 644 {} \;
