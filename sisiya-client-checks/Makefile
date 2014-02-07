@@ -26,12 +26,13 @@ dst_man=$(root_dir)/usr/share/man
 doc_dir=$(root_dir)/usr/share/doc/$(package_name)
 
 install:
+	install -d -m 755	$(doc_dir)
 	install -d		$(dst_cron)
 	install -d		$(dst_etc)/sisiya/$(package_name)
 	install -d		$(dst_etc)/sisiya/$(package_name)/conf.d
-	install -m 700 -d	$(dst_dir)/$(package_name)/misc
-	install -m 700 -d	$(dst_dir)/$(package_name)/scripts
-	install -m 700 -d	$(dst_dir)/$(package_name)/utils
+	install -d -m 700	$(dst_dir)/$(package_name)/misc
+	install -d -m 700	$(dst_dir)/$(package_name)/scripts
+	install -d -m 700	$(dst_dir)/$(package_name)/utils
 	install -m 600 etc/cron.d/$(package_name)				$(dst_cron)
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config.pm 		$(dst_etc)/sisiya/$(package_name)
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config_local.conf	$(dst_etc)/sisiya/$(package_name)
