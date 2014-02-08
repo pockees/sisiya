@@ -346,7 +346,7 @@ create_remote_checks()
 	do
 		cp -a $package_dir/$f ${deb_root_dir}/usr/share/${package_str} 
 	done
-	for f in changelog version.txt COPYING
+	for f in changelog version.txt copyright
 	do
 		cp -a $package_dir/$f ${deb_root_dir}/usr/share/doc/${package_str} 
 	done
