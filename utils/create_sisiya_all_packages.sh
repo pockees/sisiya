@@ -321,7 +321,7 @@ create_remote_checks()
 	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d
 	mkdir -p $package_dir/etc/sisiya
 	cp -a ${source_dir}/etc/sisiya/$package_str $package_dir/etc/sisiya
-	cat ${source_dir}/$package_str/copryright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/copyright
+	cat ${source_dir}/$package_str/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/copyright
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
