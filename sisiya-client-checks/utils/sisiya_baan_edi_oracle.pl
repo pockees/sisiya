@@ -30,7 +30,7 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 #######################################################################################
-###############################################################################
+#######################################################################################
 #### the default values
 our $sqlplus_prog = 'sqlplus';
 our $db_name = 'TIGER';
@@ -40,14 +40,14 @@ our $env_nls_lang = 'AMERICAN_AMERICA.WE8ISO8859P9';
 our $env_oracle_home = '/opt/oracle/product/8.1.7';
 our $env_oracle_bin = '/opt/oracle/product/8.1.7/bin';
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
+#######################################################################################
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_baan_edi_oracle.conf";
 chomp($module_conf_file);
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }
-################################################################################
+#######################################################################################
 
 ### set environment variables
 $ENV{'ORACLE_HOME'} = $env_oracle_home;
@@ -56,7 +56,7 @@ $ENV{'NLS_LANG'} = $env_nls_lang;
 
 sub exec_sql
 {
-	my $sql_file = $SisIYA_Config::systems_conf_dir.'/sisiya_baan_edi_oracle_'.$_[0].'.sql';
+	my $sql_file = $SisIYA_Config::conf_d_dir.'/sisiya_baan_edi_oracle_'.$_[0].'.sql';
 	my $s = $_[0].',0';
 	if (-f $sql_file) {
 		my @a = `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`;
