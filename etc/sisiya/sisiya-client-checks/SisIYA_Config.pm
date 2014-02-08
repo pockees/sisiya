@@ -79,7 +79,7 @@ our %checks = (
 		'baan_users'	 	=> { 'auto' => 0, 'script' => 'sisiya_baan_users.pl' 		},
 		'battery'	 	=> { 'auto' => 0, 'script' => 'sisiya_battery.pl' 		},
 		'dmesg' 		=> { 'auto' => 1, 'script' => 'sisiya_dmesg.pl' 		},
-		'fs'	 		=> { 'auto' => 1, 'script' => 'sisiya_fs.pl' 			},
+		'filesystem'		=> { 'auto' => 1, 'script' => 'sisiya_filesystem.pl'		},
 		'hpasm_cpu'	 	=> { 'auto' => 0, 'script' => 'sisiya_hpasm_cpu.pl' 		},
 		'hpasm_fans'	 	=> { 'auto' => 0, 'script' => 'sisiya_hpasm_fans.pl' 		},
 		'hpasm_powersupply' 	=> { 'auto' => 0, 'script' => 'sisiya_hpasm_powersupply.pl' 	},
