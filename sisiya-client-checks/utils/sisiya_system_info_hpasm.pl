@@ -29,18 +29,17 @@ if (-f $SisIYA_Config::local_conf) {
 if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
-###############################################################################
-#Put the following line in the conf/sisiya_system.pl file:
+#######################################################################################
+#Put the following line in the /etc/sisiya/sisiya-client-checks/conf.d/sisiya_system.conf file:
 #$info_prog = '/usr/bin/perl -I/etc/sisiya/sisiya-client-checks /usr/share/sisiya-client-checks/utils/sisiya_system_info_hpasm.pl';
-###############################################################################
+#######################################################################################
 #### the default values
 #
 our $hpasmcli_prog = '/sbin/hpasmcli';
 #### end of the default values
-################################################################################
-## override defaults if there is a corresponfing conf file
-my $module_conf_file = "$SisIYA_Config::systems_conf_dir/".`basename $0`;
-chomp($module_conf_file);
+#######################################################################################
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_system_info_hpasm.conf";
 if (-f $module_conf_file) {
 	require $module_conf_file;
 }

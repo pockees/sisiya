@@ -55,7 +55,7 @@ chgrp -R %{www_group}	/etc/sisiya/sisiya-remote-checks/conf.d
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-remote-checks
 %attr(0750,root,root)	 	%dir 			%{install_dir}
 %attr(0755,root,root) 		%dir			/etc/sisiya/%{name}/conf.d
-%attr(0644,root,root) 		%config(noreplace)	/etc/sisiya/%{name}/conf.d/*
+%attr(0664,root,root) 		%config(noreplace)	/etc/sisiya/%{name}/conf.d/*
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Remote_Config.pm
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Remote_Config_local.conf
 %attr(0750,root,root) 		%dir 			%{install_dir}/lib

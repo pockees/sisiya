@@ -54,12 +54,11 @@ sub run_script
 {
 	my ($check_name, $expire) = @_;
 	my $script_file = "$SisIYA_Remote_Config::scripts_dir/$SisIYA_Remote_Config::checks{$check_name}{'script'}";
-	my $systems_file = "$SisIYA_Remote_Config::conf_dir/$SisIYA_Remote_Config::checks{$check_name}{'conf'}";
+	my $systems_file = "$SisIYA_Remote_Config::conf_d_dir/$SisIYA_Remote_Config::checks{$check_name}{'conf'}";
 	my ($service_id, $s);
-	#my $systems_file = "$SisIYA_Remote_Config::conf_dir/dns_systems.xml";
 
 	#print STDERR "[$_[0]] ...\n";
-	chomp($s = `$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Remote_Config::conf_dir -I$SisIYA_Config::base_dir $script_file $systems_file $expire`);
+	chomp($s = `$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Remote_Config::conf_dir -I$SisIYA_Config::conf_dir $script_file $systems_file $expire`);
 	#my $status_id = $? >> 8;
 	#print STDERR "statusid = $status_id message=$s\n";
 	return $s;	
@@ -77,9 +76,7 @@ sub process_checks
 		if( $SisIYA_Remote_Config::checks{$check_name}{'auto'} == 1 ) {
 			#print STDERR "Checking $check_name ...\n";
 			# excecute $0 in background
-			#print STDERR "$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Config::base_dir -I$SisIYA_Remote_Config::conf_dir $0 $check_name $expire\n";
-			#system($SisIYA_Remote_Config::external_progs{'bash'}, $SisIYA_Remote_Config::external_progs{'perl'}, "-I$SisIYA_Config::base_dir", "-I$SisIYA_Remote_Config::conf_dir", "$0", $check_name, $expire, '&');
-			system("$SisIYA_Remote_Config::external_progs{'bash'} -c \"$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Config::base_dir -I$SisIYA_Remote_Config::conf_dir $0  $check_name $expire\" &");
+			system("$SisIYA_Remote_Config::external_progs{'bash'} -c \"$SisIYA_Remote_Config::external_progs{'perl'} -I$SisIYA_Config::conf_dir -I$SisIYA_Remote_Config::conf_dir $0  $check_name $expire\" &");
 		} #else {
 		#	print STDERR "Skipping $check_name ...\n";
 		#}

@@ -36,7 +36,7 @@ install:
 	install -d -m 700	$(dst_dir)/src
 	install -d -m 700	$(dst_dir)/utils
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Remote_Config*.*	$(dst_etc)/sisiya/$(package_name)
-	install -m 600 etc/sisiya/$(package_name)/conf.d/*			$(dst_etc)/sisiya/$(package_name)/conf.d
+	install -m 660 etc/sisiya/$(package_name)/conf.d/*			$(dst_etc)/sisiya/$(package_name)/conf.d
 	install -m 600 etc/cron.d/$(package_name)				$(dst_cron)
 	install -m 644 changelog version.txt COPYING				$(doc_dir)
 	install -m 600 lib/*		 					$(dst_dir)/lib
