@@ -63,9 +63,6 @@ chgrp -R %{www_group}	/etc/sisiya/sisiya-remote-checks/conf.d
 %attr(0750,root,root) 		%dir 			%{install_dir}/scripts
 %attr(0750,root,root) 		%dir 			%{install_dir}/src
 %attr(0750,root,root) 		%dir			%{install_dir}/utils
-%attr(0660,root,root)		%config(noreplace) 	%{install_dir}/conf/*.properties
-%attr(0660,root,root)		%config(noreplace) 	%{install_dir}/conf/*.example
-%attr(0660,root,root)		%config(noreplace) 	%{install_dir}/conf/*.xml
 %attr(0600,root,root) 					%{install_dir}/lib/*.*
 %attr(0700,root,root) 					%{install_dir}/misc/*.*
 %attr(0700,root,root) 					%{install_dir}/scripts/*.*
