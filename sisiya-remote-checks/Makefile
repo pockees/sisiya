@@ -22,24 +22,25 @@ dst_dir=$(root_dir)/usr/share/$(package_name)
 dst_etc=$(root_dir)/etc
 dst_cron=$(root_dir)/etc/cron.d
 #dst_man=$(root_dir)/usr/share/man
+doc_dir=$(root_dir)/usr/share/doc/$(package_name)
 
 install: 
+	install -d -m 755	$(doc_dir)
 	install -d		$(dst_cron)
 	install -d		$(dst_etc)/sisiya/$(package_name)/conf.d
-	install -d		$(root_dir)/usr/share/$(package_name)
-	install -d		$(root_dir)/usr/share/doc/$(package_name)
+	install -d		$(dst_dir)
 	install -d -m 750	$(dst_dir)/conf.d
 	install -d -m 700	$(dst_dir)/lib
 	install -d -m 700	$(dst_dir)/misc
 	install -d -m 700	$(dst_dir)/scripts
 	install -d -m 700	$(dst_dir)/src
 	install -d -m 700	$(dst_dir)/utils
-	install -m 600 etc/sisiya/sisiya-remote-checks/SisIYA_Remote_Config*.*	$(dst_etc)/sisiya/$(package_name)
-	install -m 600 etc/sisiya/sisiya-remote-checks/conf.d/*			$(dst_etc)/sisiya/$(package_name)/conf.d
-	install -m 600 etc/cron.d/sisiya-remote-checks		$(dst_cron)
-	install -m 600 lib/*		 			$(dst_dir)/lib
-	install -m 600 misc/* 					$(dst_dir)/misc
-	install -m 700 scripts/* 				$(dst_dir)/scripts
-	install -m 600 src/*		 			$(dst_dir)/src
-	install -m 644 changelog version.txt COPYING		$(root_dir)/usr/share/doc/$(package_name)
-	install -m 700 utils/* 					$(dst_dir)/utils
+	install -m 600 etc/sisiya/$(package_name)/SisIYA_Remote_Config*.*	$(dst_etc)/sisiya/$(package_name)
+	install -m 600 etc/sisiya/$(package_name)/conf.d/*			$(dst_etc)/sisiya/$(package_name)/conf.d
+	install -m 600 etc/cron.d/$(package_name)				$(dst_cron)
+	install -m 644 changelog version.txt COPYING				$(doc_dir)
+	install -m 600 lib/*		 					$(dst_dir)/lib
+	install -m 600 misc/* 							$(dst_dir)/misc
+	install -m 700 scripts/* 						$(dst_dir)/scripts
+	install -m 600 src/*		 					$(dst_dir)/src
+	install -m 700 utils/* 							$(dst_dir)/utils

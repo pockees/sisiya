@@ -71,6 +71,4 @@ chgrp -R %{www_group}	/etc/sisiya/sisiya-remote-checks/conf.d
 %attr(0700,root,root) 					%{install_dir}/scripts/*.*
 %attr(0600,root,root) 					%{install_dir}/src/*.*
 %attr(0700,root,root) 					%{install_dir}/utils/*.*
-%attr(0644,root,root) 		 			/usr/share/doc/%{name}/changelog
-%attr(0644,root,root) 		 			/usr/share/doc/%{name}/copyright
-%attr(0644,root,root) 		 			/usr/share/doc/%{name}/version.txt
+%attr(0644,root,root) 		 			/usr/share/doc/%{name}/*

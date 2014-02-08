@@ -19,7 +19,7 @@
 
 package_name=sisiya-client-checks
 root_dir=$(DESTDIR)
-dst_dir=$(root_dir)/usr/share
+dst_dir=$(root_dir)/usr/share/$(package_name)
 dst_etc=$(root_dir)/etc
 dst_cron=$(root_dir)/etc/cron.d
 dst_man=$(root_dir)/usr/share/man
@@ -30,14 +30,14 @@ install:
 	install -d		$(dst_cron)
 	install -d		$(dst_etc)/sisiya/$(package_name)
 	install -d		$(dst_etc)/sisiya/$(package_name)/conf.d
-	install -d -m 700	$(dst_dir)/$(package_name)/misc
-	install -d -m 700	$(dst_dir)/$(package_name)/scripts
-	install -d -m 700	$(dst_dir)/$(package_name)/utils
+	install -d -m 700	$(dst_dir)/misc
+	install -d -m 700	$(dst_dir)/scripts
+	install -d -m 700	$(dst_dir)/utils
 	install -m 600 etc/cron.d/$(package_name)				$(dst_cron)
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config.pm 		$(dst_etc)/sisiya/$(package_name)
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config_local.conf	$(dst_etc)/sisiya/$(package_name)
 	install -m 600 etc/sisiya/$(package_name)/conf.d/* 			$(dst_etc)/sisiya/$(package_name)/conf.d
 	install -m 644 changelog copyright version.txt 				$(doc_dir)
-	install -m 600 misc/* 							$(dst_dir)/$(package_name)/misc
-	install -m 700 scripts/*						$(dst_dir)/$(package_name)/scripts
-	install -m 700 utils/*							$(dst_dir)/$(package_name)/utils
+	install -m 600 misc/* 							$(dst_dir)/misc
+	install -m 700 scripts/*						$(dst_dir)/scripts
+	install -m 700 utils/*							$(dst_dir)/utils

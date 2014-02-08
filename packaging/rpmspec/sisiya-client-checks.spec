@@ -46,6 +46,4 @@ make "DESTDIR=%{buildroot}" install
 %attr(0644,root,root) 					%{install_dir}/misc/*
 %attr(0755,root,root) 					%{install_dir}/scripts/*
 %attr(0755,root,root) 					%{install_dir}/utils/*
-%attr(0644,root,root) 		 			/usr/share/doc/%{name}/changelog
-%attr(0644,root,root) 		 			/usr/share/doc/%{name}/copyright
-%attr(0644,root,root) 		 			/usr/share/doc/%{name}/version.txt
+%attr(0644,root,root) 		 			/usr/share/doc/%{name}/*
