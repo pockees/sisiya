@@ -33,6 +33,7 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #### the default values
 our $log_file = '/var/log/secure';
+our $journalctl_prog = '/usr/bin/journalctl';
 our @strings = ('bad username', 'illegal', 'Invalid user', 'failed password for', 'POSSIBLE BREAKIN ATTEMPT');
 #### end of the default values
 #######################################################################################
@@ -49,16 +50,22 @@ my $statusid = $SisIYA_Config::statusids{'ok'};
 my $error_messages = '';
 my $warning_messages = '';
 my $ok_messages = '';
+my @a;
 
-if (! -f $log_file) {
+if (-f $log_file) {
+	my $file;
+	open($file, '<', $log_file) || die "$0: Could not open file $log_file! $!";
+	@a = <$file>;
+	close $file;
+
+} elsif ( -f $journalctl_prog) {
+	@a = `$journalctl_prog _COMM=sshd`;
+} else {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: Could not find log file $log_file!";
+	$message_str = "ERROR: Neither $log_file nor $journalctl_prog is available!";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
-my $file;
-open($file, '<', $log_file) || die "$0: Could not open file $log_file! $!";
-my @a = <$file>;
-close $file;
+
 my $s;
 my @b;
 foreach my $x (@strings) {

@@ -24,7 +24,7 @@ backup=(
 	'etc/sisiya/sisiya-client-checks/conf.d/sisiya_baan_users.conf' 
 	'etc/sisiya/sisiya-client-checks/conf.d/sisiya_battery.conf' 
 	'etc/sisiya/sisiya-client-checks/conf.d/sisiya_dmesg.conf' 
-	'etc/sisiya/sisiya-client-checks/conf.d/sisiya_fs.conf' 
+	'etc/sisiya/sisiya-client-checks/conf.d/sisiya_filesystem.conf' 
 	'etc/sisiya/sisiya-client-checks/conf.d/sisiya_hpasm_cpu.conf' 
 	'etc/sisiya/sisiya-client-checks/conf.d/sisiya_hpasm_fans.conf' 
 	'etc/sisiya/sisiya-client-checks/conf.d/sisiya_hpasm_powersupply.conf' 
