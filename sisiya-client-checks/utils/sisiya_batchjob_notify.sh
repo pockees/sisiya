@@ -26,6 +26,7 @@ if test $# -ne 3 ; then
 fi
 
 base_dir="/usr/share/sisiya-client-checks"
+conf_dir="/etc/sisiya/sisiya-client-checks"
 send_message_prog="$base_dir/utils/sisiya_send_message.pl"
 expire="$1"
 status_str="$2"
@@ -39,7 +40,7 @@ fi
 message_str="$org_message"
 data_message_str=""
 ###################################################################################################
-perl -I$base_dir ${send_message_prog} $service_str $status_str $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+perl -I$conf_dir ${send_message_prog} $service_str $status_str $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 sleep 1
 exit 0
 ###################################################################################################

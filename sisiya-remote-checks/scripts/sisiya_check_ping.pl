@@ -81,7 +81,7 @@ sub check_ping
 			$packet_loss = (split(/%/, (split(/,/, $info_str))[2]))[0];
 			$data_str .= '<entry name="packet_loss" type="numeric" unit="ms">'.$packet_loss.'</entry>';
 		}
-		$response_time = (split(/\s+/, (split(/,/, $info_str))[3]))[1];
+		$response_time = (split(/\s+/, (split(/,/, $info_str))[4]))[1];
 		$data_str .= '<entry name="response_time" type="numeric" unit="">'.$response_time.'</entry>';
 	}
 	$x_str .= "<statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg>$data_str</datamsg></data></message></system>";
