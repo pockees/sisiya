@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=forking
 PIDFile=/var/run/sisiyad.pid
-ExecStart=/usr/sbin/sisiyad /etc/sisiyad.conf 
+ExecStart=/usr/sbin/sisiyad /etc/sisiya/sisiyad/sisiyad.conf 
 
 [Install]
 WantedBy=multi-user.target
