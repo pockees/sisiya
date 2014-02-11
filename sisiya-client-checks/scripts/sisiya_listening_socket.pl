@@ -83,7 +83,7 @@ sub is_listening_socket
 	for my $i (0..$#netstat_list) {
 		$interface_port_str = "$sockets[$j]{'interface'}:$sockets[$j]{'port'}";
 		#print STDERR "$netstat_list[$i][0] [$netstat_list[$i][5]] [$netstat_list[$i][6]] $netstat_list[$i][3] $interface_port_str\n";
-		if ($sockets[$j]{'protocol'} eq 'tcp') {
+		if (($sockets[$j]{'protocol'} eq 'tcp') || ($sockets[$j]{'protocol'} eq 'tcp6')) {
 			if (
 				($netstat_list[$i][0] eq $sockets[$j]{'protocol'})
 			&& 	($netstat_list[$i][3] eq $interface_port_str)
@@ -138,7 +138,7 @@ if ($#sockets > -1) {
 		$j = 0;
 		foreach my $k (@b) {
 			#print STDERR "$k ";
-			if (($j == 6) && ($netstat_list[$i][0] eq 'tcp')) {
+			if (($j == 6) && (($netstat_list[$i][0] eq 'tcp') || ($netstat_list[$i][0] eq 'tcp6'))) {
 				# extract the progname part of "PID/progname" string
 				# and only add the line if it has a valid progname
 				@c = split(/\//, $k);
