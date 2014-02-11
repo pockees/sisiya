@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $acpi_prog = '/usr/sbin/acpi';
 our $proc_acpi_battery_dir = '/proc/acpi/battery';
 our $proc_acpi_ac_adapter_dir = '/proc/acpi/ac_adapter/AC';
 our @charged_percents;
@@ -62,7 +61,7 @@ my $warning_str = '';
 
 sub use_acpi
 {
-	my @a = `$acpi_prog -bi`;
+	my @a = `$SisIYA_Config::external_progs{'acpi'} -bi`;
 	my $retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
@@ -129,7 +128,7 @@ sub use_acpi
 			$warning_str .= " WARNING: $a[$j]! $a[$j + 1].";
 		}
 	}
-	@a = `$acpi_prog -a`;
+	@a = `$SisIYA_Config::external_progs{'acpi'} -a`;
 	$retcode = $? >>=8;
 	if ($retcode == 0) {
 		my $s = "@a";
@@ -235,9 +234,9 @@ sub use_proc_dir
 }
 ################################################################################
 if (! -d $proc_acpi_battery_dir) {
-	if (! -f $acpi_prog) {
+	if (! -f $SisIYA_Config::external_progs{'acpi'}) {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$message_str = "ERROR: Both directory $proc_acpi_battery_dir and acpi program $acpi_prog does not exist!";
+		$message_str = "ERROR: Both directory $proc_acpi_battery_dir and acpi program $SisIYA_Config::external_progs{'acpi'} does not exist!";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {

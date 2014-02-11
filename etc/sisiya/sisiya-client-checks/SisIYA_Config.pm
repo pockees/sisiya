@@ -106,6 +106,34 @@ our %checks = (
 		'users'	 		=> { 'auto' => 1, 'script' => 'sisiya_users.pl' 		}
 	);
 
+our %external_progs = (
+		'acpi'		=> '/usr/sbin/acpi',
+		'df'		=> '/bin/df',
+		'dmesg'		=> '/bin/dmesg',
+		'errpt'		=> '/usr/bin/errpt',
+		'hpacucli'	=> '/usr/sbin/hpacucli',
+		'hpasmcli'	=> '/sbin/hpasmcli',
+		'ip'		=> '/sbin/ip',
+		'journalctl'	=> '/usr/bin/journalctl',
+		'licmon'	=> '/usr/bin/licmon6.1',
+		'lpstat'	=> '/usr/bin/lpstat',
+		'mailq'		=> '/usr/bin/mailq',
+		'mdadm'		=> '/sbin/mdadm',
+		'mpstat'	=> '/sur/bin/mpstat',
+		'mysql'		=> '/usr/bin/mysql',
+		'netstat'	=> '/usr/bin/netstat',
+		'ntpq'		=> '/usr/bin/ntpq',
+		'ps'		=> '/usr/bin/ps',
+		'sensors'	=> '/usr/bin/sensors',
+		'slmcmd'	=> '/usr/bin/slmcmd',
+		'smartctl'	=> '/usr/sbin/smartctl',
+		'sqlplus'	=> '/usr/bin/sqlplus',
+		'swap'		=> '/usr/sbin/swap',
+		'tune2fs'	=> '/sbin/tune2fs',
+		'uptime'	=> '/usr/bin/uptime',
+		'vmstat'	=> '/usr/bin/vmstat',
+	);
+
 our %statusids = (
 	'info' 		=> 1,	# 2^0 
 	'ok' 		=> 2,	# 2^1

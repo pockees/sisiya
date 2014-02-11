@@ -161,11 +161,11 @@ $data_str = '<entries>';
 $data_str .= '<entry name="swap_total" type="numeric">'.trim($swap_total).'</entry>';
 $data_str .= '<entry name="swap_free" type="numeric">'.trim($swap_free).'</entry>';
 $data_str .= '<entry name="swap_used" type="numeric">'.trim($swap_used).'</entry>';
-$data_str .= '<entry name="swap_used_percent" type="numeric">'.trim($swap_percent).'</entry>';
+$data_str .= '<entry name="swap_usage_percent" type="numeric">'.trim($swap_percent).'</entry>';
 $data_str .= '<entry name="ram_total" type="numeric">'.trim($ram_total).'</entry>';
 $data_str .= '<entry name="ram_free" type="numeric">'.trim($ram_free).'</entry>';
 $data_str .= '<entry name="ram_used" type="numeric">'.trim($ram_used).'</entry>';
-$data_str .= '<entry name="ram_used_percent" type="numeric">'.trim($ram_percent).'</entry>';
+$data_str .= '<entry name="ram_usage_percent" type="numeric">'.trim($ram_percent).'</entry>';
 $data_str .= '</entries>';
 
 ###################################################################################

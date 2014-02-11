@@ -1,6 +1,6 @@
 sisiya-client-checks (0.6.31-1) UNRELEASED; urgency=low
 
-  * 
+  * added external programs list in the SisIYA_Config.pm
   * active checks are controlled via SisIYA_Config.pm configuration file
   * added default configuration files for every check
   * changed the location of scripts and config files to conform with FSH

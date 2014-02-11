@@ -26,6 +26,9 @@ use SisIYA_Config;
 if (-f $SisIYA_Config::local_conf) {
 	require $SisIYA_Config::local_conf;
 }
+if (-f $SisIYA_Config::functions) {
+	require $SisIYA_Config::functions;
+}
 #######################################################################################
 #######################################################################################
 #### the default values
@@ -46,46 +49,60 @@ my $statusid = $SisIYA_Config::statusids{'ok'};
 my $error_messages = '';
 my $warning_messages = '';
 my $ok_messages = '';
+my $retcode;
+my @a;
 my $x;
+my $cmd_path; # the command's full path
+my $cmd_str; # the command plus the command arguments if any
+
+if ($SisIYA_Config::osname eq 'AIX') {
+	### AIX does not have dmesg command. I use alog instead. alog -L lists log types.
+	#str=`alog -o -t console | head -n 1`
+	#use the following command to clear the log file : errclear -i /var/adm/ras/errlog 0
+	#str=`errpt | head -n 1`
+	
+	$cmd_path = $SisIYA_Config::external_progs{'errpt'};
+} else {
+	$cmd_path = $SisIYA_Config::external_progs{'dmesg'};
+}
+$cmd_str = $cmd_path;
+if (! -f $cmd_path) {
+	$message_str = "ERROR: External program $cmd_path doesn not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+@a = `$cmd_str`;
+$retcode = $? >>=8;
+if ($retcode != 0) {
+	$message_str = "ERROR: Could not execute $cmd_str command!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+#print STDERR "@a";
 
 $data_str = '<entries>';
 foreach (@error_strings) {
-	if ($SisIYA_Config::osname eq 'AIX') {
-		### AIX does not have dmesg command. I use alog instead. alog -L lists log types.
-		#str=`alog -o -t console | head -n 1`
-		#use the following command to clear the log file : errclear -i /var/adm/ras/errlog 0
-		#str=`errpt | head -n 1`
-		chomp($x = `errpt | head -n 1`);
+	print STDERR grep(/$_/, @a);
+	$x = (grep(/$_/, @a))[0];
+	#if (grep(/$_/i, @a)) {
+	#	$x = (grep(/$_/i, @a))[0];
+	#}
+	print STDERR "x=[$x]\n";
+	if (!$x) {
+		$ok_messages .= "[$_]";
 	}
 	else {
-		chomp($x = `dmesg | grep -i "$_" | head -n 1`);
-	}
-	if ($x ne '') {
 		$error_messages .= " ERROR: [$x] contains [$_]!";
 		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
-	}
-	else {
-		$ok_messages .= "[$_]";
 	}
 }
 
 foreach (@warning_strings) {
-	if ($SisIYA_Config::osname eq 'AIX') {
-		### AIX does not have dmesg command. I use alog instead. alog -L lists log types.
-		#str=`alog -o -t console | head -n 1`
-		#use the following command to clear the log file : errclear -i /var/adm/ras/errlog 0
-		#str=`errpt | head -n 1`
-		chomp($x = `errpt | head -n 1`);
+	$x = (grep(/$_/i, @a))[0];
+	if (!$x) {
+		$ok_messages .= "[$_]";
 	}
 	else {
-		chomp($x = `dmesg | grep -i "$_" | head -n 1`);
-	}
-	if ($x ne '') {
 		$warning_messages .= " WARNING: [$x] contains [$_]!";
 		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
-	}
-	else {
-		$ok_messages .= "[$_]";
 	}
 }
 $data_str .= '</entries>';
@@ -104,6 +121,5 @@ if ($ok_messages ne '') {
 }
 
 ################################################################################
-print "dmesg$SisIYA_Config::FS<msg>$message_str</msg><datamsg>$data_str</datamsg>\n";
-exit $statusid;
+print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ################################################################################
