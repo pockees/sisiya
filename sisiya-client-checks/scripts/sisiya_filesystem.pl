@@ -145,7 +145,7 @@ elsif ($SisIYA_Config::osname eq 'SunOS') {
 		}
 	}
 }
-my %totals = { 'available' => 0, 'capacity' =>0, 'total' => 0, 'used' => 0 };
+my %totals = ( 'available' => 0, 'capacity' =>0, 'total' => 0, 'used' => 0 );
 for my $k (keys %file_systems) {
 	#print STDERR "-----> : key=[$k] type=[$file_systems{$k}{'type'}] total=[$file_systems{$k}{'total'}] used=[$file_systems{$k}{'used'}] available=[$file_systems{$k}{'available'}] capacity=[$file_systems{$k}{'capacity'}] mountded on=[$file_systems{$k}{'mounted_on'}]\n";
 	$percent_error = $percents{'error'};
@@ -175,14 +175,14 @@ if ($totals{'total'} > 0) {
 	$totals{'capacity'} = 100 * $totals{'used'} / $totals{'total'};
 }
 $data_str = '<entries>';
-$data_str .= '<entry name="disk_free" type="numeric">'.$totals{'available'}.'</entry>';
-$data_str .= '<entry name="disk_total" type="numeric">'.$totals{'total'}.'</entry>';
-$data_str .= '<entry name="disk_used" type="numeric">'.$totals{'used'}.'</entry>';
+$data_str .= '<entry name="disk_free" type="numeric" unit="K">'.$totals{'available'}.'</entry>';
+$data_str .= '<entry name="disk_total" type="numeric" unit="K">'.$totals{'total'}.'</entry>';
+$data_str .= '<entry name="disk_used" type="numeric" unit="K">'.$totals{'used'}.'</entry>';
 $data_str .= '<entry name="disk_usage_percent" type="numeric">'.$totals{'capacity'}.'</entry>';
 for my $k (keys %file_systems) {
-	$data_str .= '<entry name="disk_total" volume="'.$file_systems{$k}{'mounted_on'}.'" type="numeric">'.$file_systems{$k}{'total'}.'</entry>';
-	$data_str .= '<entry name="disk_used" volume="'.$file_systems{$k}{'mounted_on'}.'" type="numeric">'.$file_systems{$k}{'used'}.'</entry>';
-	$data_str .= '<entry name="disk_free" volume="'.$file_systems{$k}{'mounted_on'}.'" type="numeric">'.$file_systems{$k}{'available'}.'</entry>';
+	$data_str .= '<entry name="disk_total" volume="'.$file_systems{$k}{'mounted_on'}.'" type="numeric" unit="K">'.$file_systems{$k}{'total'}.'</entry>';
+	$data_str .= '<entry name="disk_used" volume="'.$file_systems{$k}{'mounted_on'}.'" type="numeric" unit="K">'.$file_systems{$k}{'used'}.'</entry>';
+	$data_str .= '<entry name="disk_free" volume="'.$file_systems{$k}{'mounted_on'}.'" type="numeric" unit="K">'.$file_systems{$k}{'available'}.'</entry>';
 	$data_str .= '<entry name="disk_usage_percent" volume="'.$file_systems{$k}{'mounted_on'}.'" type="numeric">'.$file_systems{$k}{'capacity'}.'</entry>';
 }
 $data_str .= '</entries>';
