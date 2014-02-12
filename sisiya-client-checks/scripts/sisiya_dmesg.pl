@@ -80,29 +80,23 @@ if ($retcode != 0) {
 
 $data_str = '<entries>';
 foreach (@error_strings) {
-	print STDERR grep(/$_/, @a);
 	$x = (grep(/$_/, @a))[0];
-	#if (grep(/$_/i, @a)) {
-	#	$x = (grep(/$_/i, @a))[0];
-	#}
-	print STDERR "x=[$x]\n";
-	if (!$x) {
-		$ok_messages .= "[$_]";
-	}
-	else {
+	if (defined $x) {
 		$error_messages .= " ERROR: [$x] contains [$_]!";
 		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
+	} else {
+		$ok_messages .= "[$_]";
 	}
 }
 
 foreach (@warning_strings) {
 	$x = (grep(/$_/i, @a))[0];
-	if (!$x) {
-		$ok_messages .= "[$_]";
-	}
-	else {
+	if (defined $x) {
 		$warning_messages .= " WARNING: [$x] contains [$_]!";
 		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
+	}
+	else {
+		$ok_messages .= "[$_]";
 	}
 }
 $data_str .= '</entries>';
