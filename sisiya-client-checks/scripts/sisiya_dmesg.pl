@@ -77,11 +77,14 @@ if ($retcode != 0) {
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 #print STDERR "@a";
-
+my @b;
 $data_str = '<entries>';
 foreach (@error_strings) {
-	$x = (grep(/$_/, @a))[0];
-	if (defined $x) {
+	#$x = '';
+	#$x = (grep(/$_/i, @a))[0];
+	@b = grep(/$_/i, @a);
+	if ($b) {
+		$x = $b[0];
 		$error_messages .= " ERROR: [$x] contains [$_]!";
 		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
 	} else {
@@ -90,8 +93,11 @@ foreach (@error_strings) {
 }
 
 foreach (@warning_strings) {
-	$x = (grep(/$_/i, @a))[0];
-	if (defined $x) {
+	#$x = '';
+	#$x = (grep(/$_/i, @a))[0];
+	@b = grep(/$_/i, @a);
+	if ($b) {
+		$x = $b[0];
 		$warning_messages .= " WARNING: [$x] contains [$_]!";
 		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
 	}
