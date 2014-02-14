@@ -32,8 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $sensors_prog = '/usr/bin/sensors';
-our $acpi_prog = '/usr/sbin/acpi';
 our $proc_acpi_dir = '/proc/acpi/thermal_zone';
 our %default_temperatures = ( 'warning' => 70, 'error' => 80 );
 our %temperatures;
@@ -60,7 +58,7 @@ my $warning_str = '';
 
 sub use_acpi
 {
-	my @a_all = `$acpi_prog -ti`;
+	my @a_all = `$SisIYA_Config::external_progs{'acpi'} -ti`;
 	my $retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
@@ -210,7 +208,7 @@ sub use_proc_dir
 
 sub use_sensors
 {
-	my @a = `$sensors_prog -A`;
+	my @a = `$SisIYA_Config::external_progs{'sensors'} -A`;
 	my $retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
@@ -300,14 +298,14 @@ sub use_sensors
 	}
 }
 ################################################################################
-if ( -f $sensors_prog) {
+if ( -f $SisIYA_Config::external_progs{'sensors'}) {
 	use_sensors();
 }
 else {
 	if (! -d $proc_acpi_dir) {
-		if (! -f $acpi_prog) {
+		if (! -f $SisIYA_Config::external_progs{'acpi'}) {
 			$statusid = $SisIYA_Config::statusids{'error'};
-			$message_str = "ERROR: Directory $proc_acpi_dir, $acpi_prog and $sensors_prog programs does not exist!";
+			$message_str = "ERROR: Directory $proc_acpi_dir, $SisIYA_Config::external_progs{'acpi'} and $SisIYA_Config::external_progs{'sensors'} programs does not exist!";
 			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
