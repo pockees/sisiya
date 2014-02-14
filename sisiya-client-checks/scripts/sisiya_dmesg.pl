@@ -82,7 +82,7 @@ $data_str = '<entries>';
 foreach (@error_strings) {
 	#$x = '';
 	#$x = (grep(/$_/i, @a))[0];
-	@b = grep(/$_/i, @a);
+	@b = grep(/\Q$_\E/i, @a);
 	if ($b) {
 		$x = $b[0];
 		$error_messages .= " ERROR: [$x] contains [$_]!";
@@ -95,7 +95,7 @@ foreach (@error_strings) {
 foreach (@warning_strings) {
 	#$x = '';
 	#$x = (grep(/$_/i, @a))[0];
-	@b = grep(/$_/i, @a);
+	@b = grep(/\Q$_\E/i, @a);
 	if ($b) {
 		$x = $b[0];
 		$warning_messages .= " WARNING: [$x] contains [$_]!";
