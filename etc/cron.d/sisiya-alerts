@@ -1,0 +1,2 @@
+#### SisIYA : Send alerts if any.
+* * * * * root php -q __WEB_ROOT_DIR__/utils/sisiya_alerts.php __WEB_BASE_DIR__ > /dev/null

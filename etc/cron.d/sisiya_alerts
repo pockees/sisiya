@@ -1,2 +1,0 @@
-#### SisIYA : Send alerts if any.
-* * * * * root php /var/www/html/sisiya/sisiya_alerts.php > /dev/null

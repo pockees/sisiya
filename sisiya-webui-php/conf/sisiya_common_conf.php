@@ -31,6 +31,9 @@ $progNameSisIYA_GUI=$rootDir.'/sisiya_gui.php';
 global $progNameSisIYA_Admin;
 $progNameSisIYA_Admin=$rootDir.'/sisiya_admin.php';
 
+global $defaultTimezone;
+$defaultTimezone = 'Europe/Istanbul';
+
 # default language
 global $defaultLanguage;
 $defaultLanguage='tr';

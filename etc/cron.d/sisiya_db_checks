@@ -1,2 +1,0 @@
-#### SisIYA : Check database connections.
-0-59/5 * * * * root /opt/sisiya-server-checks/scripts/sisiya_check_dbs.sh /opt/sisiya-server-checks/conf/sisiya_server_checks.conf 10

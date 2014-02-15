@@ -20,8 +20,19 @@
 #session_start();
 error_reporting(E_ALL);
 
+if (count($argv) != 2) {
+	echo "Usage   : $argv[0] web_root_dir\n";
+	echo "Example : $argv[0] /srv/http/sisiya-webui-php\n";
+	exit(1);
+}
+
+if (! defined('STDIN')) {
+	echo "This script should not be run from web!";
+	exit(1);
+}
 global $rootDir,$progName;
-$rootDir='/var/www/html/sisiya';
+$progName = $argv[0];
+$rootDir = $argv[1];
 
 include_once($rootDir."/conf/sisiya_common_conf.php");
 include_once($rootDir."/conf/sisiya_gui_conf.php");
