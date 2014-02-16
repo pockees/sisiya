@@ -41,7 +41,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $mysql_prog = 'mysql';
 our $dba_user = 'mysql';
 our $dba_password = 'mysql123654';
 our $dba_database = 'mysql';
@@ -86,8 +85,13 @@ my $status_message;
 
 my $i = 0;
 if ($#dbs > -1) {
+	if (! -f $SisIYA_Config::external_progs{'mysql'}) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$message_str = "ERROR: External program $SisIYA_Config::external_progs{'mysql'} does not exist!";
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+	}
 	# check the MySQL connection
-	`$mysql_prog -u$dba_user -p$dba_password -D $dba_database -NBt -e "show tables"`;
+	`$SisIYA_Config::external_progs{'mysql'} -u$dba_user -p$dba_password -D $dba_database -NBt -e "show tables"`;
 	my $retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
@@ -97,7 +101,7 @@ if ($#dbs > -1) {
 
 	for $i (0..$#dbs) {
 		#print STDERR "$dbs[$i]{'db_name'}...\n";
-		@a = `$mysql_prog -u$dba_user -p$dba_password -D $dbs[$i]{'db_name'} -NBt -e "show tables"`;
+		@a = `$SisIYA_Config::external_progs{'mysql'} -u$dba_user -p$dba_password -D $dbs[$i]{'db_name'} -NBt -e "show tables"`;
 		$retcode = $? >>=8;
 		if ($retcode != 0) {
 			$error_str .= " ERROR: Could not get table list for $dbs[$i]{'db_name'} $dbs[$i]{'description'}!";
@@ -108,7 +112,7 @@ if ($#dbs > -1) {
 				$table_name = trim((split(/\|/, $_))[1]);
 				#print STDERR "---------------------------------\n";
 				#print STDERR "Checking $dbs[$i]{'db_name'} $table_name ...\n";;
-				@b = `$mysql_prog -u$dba_user -p$dba_password -D $dbs[$i]{'db_name'} -NBt -e "check table $table_name $dbs[$i]{'check_type'}"`;
+				@b = `$SisIYA_Config::external_progs{'mysql'} -u$dba_user -p$dba_password -D $dbs[$i]{'db_name'} -NBt -e "check table $table_name $dbs[$i]{'check_type'}"`;
 				$retcode = $? >>=8;
 				if ($retcode != 0) {
 					$error_str .= " ERROR: Could not check table $dbs[$i]{'db_name'}:$table_name!";

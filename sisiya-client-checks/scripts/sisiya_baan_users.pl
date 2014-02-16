@@ -32,11 +32,9 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $licmon_prog = '/infor/baan/bse/bin/licmon6.1';
 our %users = ( 'error' => 100, 'warning' => 95 );
 our $env_bse = '/infor/erpln/bse';
 our $env_slmhome = '/infor/slm';
-our $slmcmd_prog = "$env_slmhome/bin/SlmCmd";
 our @slm_servers = ( 'localhost' );
 our $env_bse_tmp = "$env_bse/tmp";
 #### end of the default values
@@ -62,9 +60,11 @@ my @a;
 $ENV{'BSE'} = $env_bse;
 $ENV{'BSE_TMP'} = $env_bse_tmp;
 $ENV{'SLMHOME'} = $env_slmhome;
-if (! -f $licmon_prog) {
-	if (! -f $slmcmd_prog) {
-		exit;
+if (! -f $SisIYA_Config::external_progs{'licmon'}) {
+	if (! -f $SisIYA_Config::external_progs{'SlmCmd'}) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$message_str = "ERROR: Neither $SisIYA_Config::external_progs{'SlmCmd'} nor $SisIYA_Config::external_progs{'licmon'} program does not exist!";
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
 		my $s;
@@ -73,10 +73,10 @@ if (! -f $licmon_prog) {
 		my $desktop_license_count = 0;
 		my ($concurrent_license_count, $named_license_count);
 		for my $i (0..$#slm_servers) {
-			@a = `$slmcmd_prog -mondts $slm_servers[$i]`;
+			@a = `$SisIYA_Config::external_progs{'SlmCmd'} -mondts $slm_servers[$i]`;
 			$retcode = $? >>=8;
 			if ($retcode != 0) {
-				$error_str .= " ERROR: Could not execute $slmcmd_prog command!";
+				$error_str .= " ERROR: Could not execute $SisIYA_Config::external_progs{'SlmCmd'} command!";
 			}
 			#print STDERR @a;
 			chomp(@a = @a);
@@ -119,11 +119,11 @@ if (! -f $licmon_prog) {
 	}
 }
 else {
-	@a = `$licmon_prog -u`;
+	@a = `$SisIYA_Config::external_progs{'licmon'} -u`;
 	#print STDERR @a;
 	$retcode = $? >>=8;
 	if ($retcode != 0) {
-		$error_str .= " ERROR: Could not execute $licmon_prog command!";
+		$error_str .= " ERROR: Could not execute $SisIYA_Config::external_progs{'licmon'} command!";
 	}
 	else {
 		#chomp(@a = @a);

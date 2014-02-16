@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $mdadm_prog = '/sbin/mdadm';
 #### end of the default values
 #######################################################################################
 my $service_name = 'softraid';
@@ -63,11 +62,16 @@ my $warning_str = '';
 my @raid_arrays;
 my @a;
 
-@a = `$mdadm_prog --detail --scan`;
+if (! -f $SisIYA_Config::external_progs{'mdadm'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'mdadm'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+@a = `$SisIYA_Config::external_progs{'mdadm'} --detail --scan`;
 my $retcode = $? >>=8;
 if ($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: Error executing the $mdadm_prog command! retcode=$retcode";
+	$message_str = "ERROR: Error executing the $SisIYA_Config::external_progs{'mdadm'} command! retcode=$retcode";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $i = 0;
@@ -84,7 +88,7 @@ my $failed_devs;
 my $spare_devs;
 my $rebuild_status;
 for $i (0..$#raid_arrays) {
-	@a = `$mdadm_prog --detail $raid_arrays[$i]`;
+	@a = `$SisIYA_Config::external_progs{'mdadm'} --detail $raid_arrays[$i]`;
 	$retcode = $? >>=8;
 	if ($retcode != 0) {
 		$error_str .= " ERROR: Could not get info about $raid_arrays[$i]!";

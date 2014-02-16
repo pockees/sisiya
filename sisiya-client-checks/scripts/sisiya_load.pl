@@ -35,8 +35,6 @@ if (-f $SisIYA_Config::functions) {
 # load avarage is specified by A * 100, where A is the normal load avarage. Example: In 
 # order to specify load avarage limit of 1.2 => 1.2 * 100 = 120
 our %load_avarages = ( 'warning' => 2, 'error' => 5);
-our $uptime_prog = 'uptime';
-our $mpstat_prog = '/usr/bin/mpstat';
 #### end of the default values
 #######################################################################################
 my $service_name = 'load';
@@ -46,7 +44,7 @@ if (-f $module_conf_file) {
 	require $module_conf_file;
 }
 #######################################################################################
-my $message_str = "INFO: Unsupported system for uptodate checking.";
+my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'info'};
 #######################################################################################
@@ -58,7 +56,7 @@ sub get_load_avarage
 		#0.04 0.09 0.13 1/410 11983
 		my $x;
 		my $file;
-		open($file, '<', '/proc/loadavg') || die "$0: Could not open file /proc/loadavg! $!";
+		open($file, '<', '/proc/loadavg') or return $n;
 		$x = <$file>;
 		close $file;
 		#chomp($x);
@@ -67,11 +65,11 @@ sub get_load_avarage
 	elsif ($SisIYA_Config::osname eq 'SunOS') {
 		# uptime
 		# 10:16am  up  3 users,  load average: 0.01, 0.02, 0.01
-		my @a = `$uptime_prog`;
+		my @a = `$SisIYA_Config::external_progs{'uptime'}`;
 		my $retcode = $? >>=8;
 		if ($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
-			$message_str = "ERROR: Error executing the uptime command $uptime_prog! retcode=$retcode";
+			$message_str = "ERROR: Error executing the uptime command $SisIYA_Config::external_progs{'uptime'}! retcode=$retcode";
 			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
@@ -86,10 +84,15 @@ sub get_cpu_usage
 {
 	my $s = '';
 
+	if (! -f $SisIYA_Config::external_progs{'top'}) {
+		return $s;
+	}
 	if ($SisIYA_Config::osname eq 'Linux') {
-		my @a = `top -b -n 1`;
+		my @a = `$SisIYA_Config::external_progs{'top'} -b -n 1`;
 		# starts with Cpu(s): or %Cpu(s):
 		$s = (grep(/^.*[C,c]pu[0-9,(]/, @a))[0];
+	} else {
+		return $s;
 	}
 	# the grep above undefines the $s
 	if ((defined $s) && ($s ne '')) {
@@ -105,7 +108,11 @@ sub get_cpu_info
 {
 	my $s = '';
 	if ($SisIYA_Config::osname eq 'Linux') {
-		chomp(my @a =`cat /proc/cpuinfo`);
+		my $file;
+		open($file, '<', '/proc/cpuinfo') or return $s;
+		$a = <$file>;
+		close $file;
+		chomp(@a = @a);
 		my @b = grep(/^processor/, @a);
 		my $cpu_count = @b;
 		### I assume that all CPUs are of the same model. Actually this may not be the case.
@@ -122,7 +129,11 @@ sub get_cpu_info
 sub get_cpu_utilization
 {
 	my $s = '';
-	my @a = `$mpstat_prog`;
+
+	if (! -f $SisIYA_Config::external_progs{'mpstat'}) {
+		return $s;
+	}
+	my @a = `$SisIYA_Config::external_progs{'mpstat'}`;
 	my $retcode = $? >>=8;
 	if ($retcode == 0) {
 		#04:14:37 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle

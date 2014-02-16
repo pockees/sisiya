@@ -32,9 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $sunos_swap_prog = '/usr/sbin/swap';
-our $sunos_prtconf_prog = '/usr/sbin/prtconf';
-our $sunos_vmstat_prog = '/usr/bin/vmstat';
 our %swap_percents = ( 'warning' => 30, 'error' => 50);
 #### end of the default values
 #######################################################################################
@@ -93,11 +90,16 @@ if ($SisIYA_Config::osname eq 'Linux') {
 #	print STDERR "formated RAM total=".get_size_k($ram_total)."\n";
 }
 elsif ($SisIYA_Config::osname eq 'SunOS') {
-	my @a = `$sunos_swap_prog -s`;
+	if (! -f $SisIYA_Config::external_progs{'swap'}) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$message_str = "ERROR: External program $SisIYA_Config::external_progs{'swap'} does not exist!";
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+	}
+	my @a = `$SisIYA_Config::external_progs{'swap'} -s`;
 	$retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$message_str = " ERROR: Could not execute swap command $sunos_swap_prog!";
+		$message_str = " ERROR: Could not execute swap command $SisIYA_Config::external_progs{'swap'}!";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
@@ -105,11 +107,16 @@ elsif ($SisIYA_Config::osname eq 'SunOS') {
 		$swap_used = (split(/k/, (split(/=/, $a[0]))[1]))[0];
 		$swap_free = $swap_total - $swap_used;
 	}
-	@a = `$sunos_prtconf_prog`;
+	if (! -f $SisIYA_Config::external_progs{'prtconf'}) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$message_str = "ERROR: External program $SisIYA_Config::external_progs{'prtconf'} does not exist!";
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+	}
+	@a = `$SisIYA_Config::external_progs{'prtconf'}`;
 	$retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$message_str = " ERROR: Could not execute prtconf command $sunos_prtconf_prog!";
+		$message_str = " ERROR: Could not execute prtconf command $SisIYA_Config::external_progs{'prtconf'}!";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 	else {
@@ -117,11 +124,16 @@ elsif ($SisIYA_Config::osname eq 'SunOS') {
 		$ram_total = (split(/\s+/, (split(/:/, $s))[1]))[1];
 		$ram_total = 1024 * $ram_total;
 		$ram_free = 0;
-		@a = `$sunos_vmstat_prog 1 2`;
+		if (! -f $SisIYA_Config::external_progs{'vmstat'}) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$message_str = "ERROR: External program $SisIYA_Config::external_progs{'vmstat'} does not exist!";
+			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+		}
+		@a = `$SisIYA_Config::external_progs{'vmstat'} 1 2`;
 		$retcode = $? >>=8;
 		if ($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
-			$message_str = " ERROR: Could not execute vmstat command $sunos_vmstat_prog!";
+			$message_str = " ERROR: Could not execute vmstat command $SisIYA_Config::external_progs{'vmstat'}!";
 			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {

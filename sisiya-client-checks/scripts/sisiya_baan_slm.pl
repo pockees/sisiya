@@ -33,7 +33,7 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #### the default values
 our $env_slmhome = '/infor/slm';
-our $slmcmd_prog = "$env_slmhome/bin/SlmCmd";
+our $SisIYA_Config::external_progs{'SlmCmd'} = "$env_slmhome/bin/SlmCmd";
 our $slm_license_file = "$env_slmhome/license/1/6005/license.xml";
 our $env_bse = '/infor/erpln/bse';
 our $env_bse_tmp = "$env_bse/tmp";
@@ -68,9 +68,15 @@ my $port_str;
 my $udpport_str;
 my $host_str;
 my $mode_str;
+
+if (! -f $SisIYA_Config::external_progs{'SlmCmd'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'SlmCmd'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
 for my $i (0..$#slm_servers) {
 	#print STDERR "SLM server $slm_servers[$i]{'server'}...\n";
-	@a = `$slmcmd_prog -montts $slm_servers[$i]{'server'}`;
+	@a = `$SisIYA_Config::external_progs{'SlmCmd'} -montts $slm_servers[$i]{'server'}`;
 	#print STDERR @a;
 	$retcode = $? >>=8;
 	if ($retcode != 0) {

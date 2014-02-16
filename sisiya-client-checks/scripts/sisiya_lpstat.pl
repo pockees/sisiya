@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $lpstat_prog = 'lpstat';
 #### end of the default values
 #######################################################################################
 my $service_name = 'lpstat';
@@ -47,7 +46,13 @@ my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 my $ok_str = '';
 my $error_str = '';
-my @a = `$lpstat_prog -p 2>/dev/null`;
+
+if (! -f $SisIYA_Config::external_progs{'lpstat'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'lpstat'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+my @a = `$SisIYA_Config::external_progs{'lpstat'} -p 2>/dev/null`;
 my @b;
 my $retcode = $? >>=8;
 my $device_name;

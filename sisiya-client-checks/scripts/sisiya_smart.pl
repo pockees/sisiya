@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $smartctl_prog = '/usr/sbin/smartctl';
 our @disks;
 #push @disks , { 'device' => '/dev/sda', 'warning' => 31, 'error' => 35 };
 #push @disks , { 'device' => '/dev/sdb', 'warning' => 30, 'error' => 34 };
@@ -54,8 +53,14 @@ my $ok_str = '';
 my $warning_str = '';
 my @a;
 my $retcode;
+
+if (! -f $SisIYA_Config::external_progs{'smartctl'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'smartctl'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
 if ($#disks > -1) {
-	`$smartctl_prog -h >/dev/null`;
+	`$SisIYA_Config::external_progs{'smartctl'} -h >/dev/null`;
 	$retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};
@@ -67,8 +72,8 @@ my $temp;
 my $s;
 my $i;
 for $i (0..$#disks) {
-	#@a = `$smartctl_prog -a -d ata  $disks[$i]{'device'} 2>/dev/null`;
-	@a = `$smartctl_prog -a -d auto  $disks[$i]{'device'} 2>/dev/null`;
+	#@a = `$SisIYA_Config::external_progs{'smartctl'} -a -d ata  $disks[$i]{'device'} 2>/dev/null`;
+	@a = `$SisIYA_Config::external_progs{'smartctl'} -a -d auto  $disks[$i]{'device'} 2>/dev/null`;
 	$retcode = $? >>=8;
 	if ($retcode == 2) {
 		$error_str .= " ERROR: Could not get info about $disks[$i]{'device'}! retcode=$retcode";

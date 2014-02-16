@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 ###############################################################################
 #### the default values
-our $hpasmcli_prog = '/sbin/hpasmcli';
 #### end of the default values
 ################################################################################
 my $service_name = 'fanspeed';
@@ -51,7 +50,12 @@ my $ok_str = '';
 my $warning_str = '';
 
 ################################################################################
-my @a = `$hpasmcli_prog -s "show fans"`;
+if (! -f $SisIYA_Config::external_progs{'hpasmcli'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'hpasmcli'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+my @a = `$SisIYA_Config::external_progs{'hpasmcli'} -s "show fans"`;
 my $retcode = $? >>=8;
 if ($retcode == 0) {
 	@a = grep(/#/, @a);

@@ -32,10 +32,8 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $baan_edi_db_prog = '';
-##our $baan_edi_db_prog="$SisIYA_Config::utils_dir/sisiya_baan_edi_oracle.pl"
 ######
-# this program should print the row numbers of ecedi700, ecedi750 and ecedi751 Baan EDI
+# The baan_edi_db program should print the row numbers of ecedi700, ecedi750 and ecedi751 Baan EDI
 # tables for the corresponding company in the form of table_name,row_count each line.
 # Example:
 # ecedi751,17
@@ -59,20 +57,20 @@ my $info_str = '';
 my $ok_str = '';
 my $warning_str = '';
 
-if ($baan_edi_db_prog eq '') {
+if (! -f $SisIYA_Config::external_progs{'baan_edi_db'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: There is no defined Baan EDI db script!";
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'baan_edi_db'} does not exist!";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 
 my %table_row_counts = ( 'ecedi700' => 0, 'ecedi750' => 0, 'ecedi751' => 0 ); 
 
 #my @a = ( "ecedi700,19\n", "ecedi750,3\n", "ecedi751,8\n" );
-my @a = `$baan_edi_db_prog`;
+my @a = `$SisIYA_Config::external_progs{'baan_edi_db'}`;
 my $retcode = $? >>=8;
 if ($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: Error executing the $baan_edi_db_prog command! retcode=$retcode";
+	$message_str = "ERROR: Error executing the $SisIYA_Config::external_progs{'baan_edi_db'} command! retcode=$retcode";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $n;

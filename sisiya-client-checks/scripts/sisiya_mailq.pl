@@ -32,9 +32,7 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $mailq_prog = 'mailq';
 our %mailq = ('error' => 5, 'warning' => 3);
-#our $mailq_prog = '/usr/share/sisiya-client-checks/utils/sisiya_mailq.sh';
 #### end of the default values
 #######################################################################################
 my $service_name = 'mailq';
@@ -48,11 +46,16 @@ my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 
-my @a = qx/$mailq_prog/;
+if (! -f $SisIYA_Config::external_progs{'mailq'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'mailq'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+my @a = qx/$SisIYA_Config::external_progs{'mailq'}/;
 my $retcode = $? >>=8;
 if ($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: Error executing the $mailq_prog command! retcode=$retcode";
+	$message_str = "ERROR: Error executing the $SisIYA_Config::external_progs{'mailq'} command! retcode=$retcode";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my $queue_count;

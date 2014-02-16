@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $sqlplus_prog = 'sqlplus';
 our %percents = ( 'warning' => 95, 'error' => 90 );
 our $db_name = 'TIGER';
 our $db_user = 'system';
@@ -61,9 +60,14 @@ $ENV{'ORACLE_HOME'} = $env_oracle_home;
 $ENV{'PATH'} = $env_oracle_bin.':'.$ENV{'PATH'};
 $ENV{'NLS_LANG'} = $env_nls_lang;
 
+if (! -f $SisIYA_Config::external_progs{'sqlplus'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'sqlplus'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
 my %tablespaces;
 my $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_tablespace.sql';
-my @a = `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`;
+my @a = `$SisIYA_Config::external_progs{'sqlplus'} -S $db_user/$db_password\@$db_name \@$sql_file`;
 my @b;
 #print STDERR "@a\n";
 foreach (@a) {

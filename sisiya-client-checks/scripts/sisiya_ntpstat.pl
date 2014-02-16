@@ -32,8 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $ntpstat_prog = '/usr/bin/ntpstat';
-our $ntpq_prog = '/usr/bin/ntpq';
 #### end of the default values
 #######################################################################################
 my $service_name = 'ntpstat';
@@ -90,7 +88,8 @@ sub get_synchronized_peer
 my $message_str = '';
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'error'};
-my @a = `$ntpstat_prog 2>/dev/null`;
+
+my @a = `$SisIYA_Config::external_progs{'ntpstat'} 2>/dev/null`;
 my $retcode = $? >>=8;
 my $status_flag = 0;
 
@@ -125,7 +124,13 @@ elsif ($retcode == 2) {
 	$message_str = "ERROR: The system clock is not synchronized! Could not contact the ntp daemon!";
 }
 elsif ($retcode == 127) {
-	@a = `$ntpq_prog -np 2>&1`;
+	if (! -f $SisIYA_Config::external_progs{'ntpq'}) {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$data_str = '<entries><entry name="is_clock_synchronized" type="boolean">'.$status_flag.'</entry></entries>';
+		$message_str = "ERROR: External program $SisIYA_Config::external_progs{'ntpq'} does not exist!";
+		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+	}
+	@a = `$SisIYA_Config::external_progs{'ntpq'} -np 2>&1`;
 	$retcode = $? >>=8;
 	if (grep(/Connection refused/, @a)) {
 		print STDERR "Connection refused\n";

@@ -44,7 +44,13 @@ if (-f $module_conf_file) {
 #######################################################################################
 my $message_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
-my @a = `ps -ef`;
+
+if (! -f $SisIYA_Config::external_progs{'ps'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'ps'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+my @a = `$SisIYA_Config::external_progs{'ps'} -ef`;
 my $n = @a;
 if ($n >= $process_counts{'error'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};

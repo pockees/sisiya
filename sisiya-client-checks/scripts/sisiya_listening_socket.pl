@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $netstat_prog = 'netstat';
 our @sockets;
 #our @sockets = ( 
 #		{
@@ -122,9 +121,14 @@ sub is_listening_socket
 	return $found;
 }
 
+if (! -f $SisIYA_Config::external_progs{'netstat'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'netstat'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
 my ($i, $j);
 if ($#sockets > -1) {
-	@a = `$netstat_prog -nlp`;
+	@a = `$SisIYA_Config::external_progs{'netstat'} -nlp`;
 	my $retcode = $? >>=8;
 	if ($retcode != 0) {
 		$statusid = $SisIYA_Config::statusids{'error'};

@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $hpacucli_prog = '/usr/sbin/hpacucli';
 our %default_temperatures = ( 'warning' => 70, 'error' => 80 );
 our %temperatures;
 #### end of the default values
@@ -53,8 +52,13 @@ my $ok_str = '';
 my $warning_str = '';
 #######################################################################################
 
+if (! -f $SisIYA_Config::external_progs{'hpacucli'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'hpacucli'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
 my (@a, @b, @c, @d, $s, $retcode);
-@a = `$hpacucli_prog ctrl all show status`;
+@a = `$SisIYA_Config::external_progs{'hpacucli'} ctrl all show status`;
 $retcode = $? >>=8;
 if ($retcode == 0) {
 	#chomp(@a = @a);
@@ -65,7 +69,7 @@ if ($retcode == 0) {
 	foreach (@ctrls) {
 		$ctrlid = trim((split(/Slot/, $_))[1]);
 		#print STDERR "ctrl id = [$ctrlid]\n";
-		@a = `$hpacucli_prog ctrl slot=$ctrlid show detail`;
+		@a = `$SisIYA_Config::external_progs{'hpacucli'} ctrl slot=$ctrlid show detail`;
 			#$ctrlid = 1;
 			#@a = (
 			#'Smart Array P400 in Slot 1',
@@ -113,7 +117,7 @@ if ($retcode == 0) {
 					$error_str .= " ERROR: Battery/Capacitor status for the controller in slot $ctrlid is $battery_status (!=OK)!";
 				}
 			}
-			@b = `$hpacucli_prog ctrl slot=$ctrlid logicaldrive all show`;
+			@b = `$SisIYA_Config::external_progs{'hpacucli'} ctrl slot=$ctrlid logicaldrive all show`;
 			$retcode = $? >>=8;
 			if ($retcode == 0) {
 				@b = grep(/logicaldrive/, @b);
@@ -122,7 +126,7 @@ if ($retcode == 0) {
 				#print STDERR "Total logical drives = [$total_logical_drives]\n";
 				for $i (1..$total_logical_drives) {
 					#print STDERR "Processing logical drive $i...\n";
-					@c = `$hpacucli_prog ctrl slot=$ctrlid logicaldrive $i show`;
+					@c = `$SisIYA_Config::external_progs{'hpacucli'} ctrl slot=$ctrlid logicaldrive $i show`;
 					$retcode = $? >>=8;
 					if ($retcode == 0) {
 						#print STDERR @c;
@@ -163,7 +167,7 @@ if ($retcode == 0) {
 
 # check individual logical and physical drives
 my ($total_logical_drives, $total_physical_drives, $faulty_logical_drive_count, $faulty_physical_drive_count);
-@a = `$hpacucli_prog ctrl all show config`;
+@a = `$SisIYA_Config::external_progs{'hpacucli'} ctrl all show config`;
 $retcode = $? >>=8;
 if ($retcode == 0) {
 	#chomp(@a = @a);

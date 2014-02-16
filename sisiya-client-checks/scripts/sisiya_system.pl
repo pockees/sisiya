@@ -33,12 +33,10 @@ if (-f $SisIYA_Config::functions) {
 ## the default values
 # uptimes are given in minutes
 our %uptimes = ('error' => 1440, 'warning' => 4320);
-our $uptime_prog = 'uptime';
 ### to get information about the server
 our $info_prog = '';
 ##our $info_prog="$SisIYA_Config::base_dir/special/system_info_hpasm.sh"
 our $version_file = "/usr/share/doc/sisiya-client-checks/version.txt";
-our $ip_prog = '/sbin/ip';
 #### end of the default values
 ################################################################################
 my $service_name = 'system';
@@ -57,7 +55,6 @@ sub get_uptime_in_minutes
 	my $x;
 	my $uptime_in_minutes = 0;
 
-	#chomp($x = `/bin/cat /proc/uptime`);
 	if ($SisIYA_Config::osname eq 'Linux') {
 		my $file;
 		open($file, '<', '/proc/uptime') || die "$0: Could not open file /proc/uptime! $!";
@@ -71,11 +68,16 @@ sub get_uptime_in_minutes
 	if ($SisIYA_Config::osname eq 'SunOS') {
 		#uptime   
 		# 11:52am  up  1 user,  load average: 0.04, 0.02, 0.04
-		my @a = `$uptime_prog`;
+		if (! -f $SisIYA_Config::external_progs{'uptime'}) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$message_str = "ERROR: External program $SisIYA_Config::external_progs{'uptime'} does not exist!";
+			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+		}
+		my @a = `$SisIYA_Config::external_progs{'uptime'}`;
 		my $retcode = $? >>=8;
 		if ($retcode != 0) {
 			$statusid = $SisIYA_Config::statusids{'error'};
-			$message_str = "ERROR: Error executing the uptime command $uptime_prog! retcode=$retcode";
+			$message_str = "ERROR: Error executing the uptime command $SisIYA_Config::external_progs{'uptime'}! retcode=$retcode";
 			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 		}
 		else {
@@ -134,7 +136,7 @@ if ($version_file ne '') {
 	}
 }
 # add IP information
-my @a = `$ip_prog -4 a`;
+my @a = `$SisIYA_Config::external_progs{'ip'} -4 a`;
 my $retcode = $? >>=8;
 if ($retcode == 0) {
 	@a = grep(/inet/, @a);

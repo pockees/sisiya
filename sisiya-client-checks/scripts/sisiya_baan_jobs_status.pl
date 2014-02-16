@@ -32,8 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $baan_jobs_status_db_prog = '';
-##our $baan_jobs_status_db_prog="$SisIYA_Config::utils_dir/sisiya_baan_jobs_status_oracle.pl"
 #### end of the default values
 #######################################################################################
 my $service_name = 'baan_jobs_status';
@@ -52,9 +50,9 @@ my $info_str = '';
 my $ok_str = '';
 my $warning_str = '';
 
-if ($baan_jobs_status_db_prog eq '') {
+if (! -f $SisIYA_Config::external_progs{'baan_jobs_status_db'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: There is no defined Baan Jobs status db script!";
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'baan_jobs_status_db'} does not exist!";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 

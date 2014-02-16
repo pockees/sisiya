@@ -48,10 +48,10 @@ my $statusid = $SisIYA_Config::statusids{'info'};
 my @a;
 
 if ($SisIYA_Config::osname eq 'HP-UX') {
-	@a = `who -R`;
+	@a = `$SisIYA_Config::external_progs{'who'} -R`;
 }
 else {
-	@a = `who`;
+	@a = `$SisIYA_Config::external_progs{'who'}`;
 }
 my $user_list = "@a";
 my @root_users = grep(/root/, @a);

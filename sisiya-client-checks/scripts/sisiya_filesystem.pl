@@ -31,8 +31,6 @@ if (-f $SisIYA_Config::functions) {
 }
 ###############################################################################
 #### the default values
-our $df_prog = 'df';
-our $tune2fs_prog = '/sbin/tune2fs';
 our %percents = ('warning' => 85, 'error' => 90); 
 our @exclude_list = ( '/proc', '/dev/shm', '/var/media', 'devtmpfs', 'tmpfs');
 our %exception_list;
@@ -61,7 +59,7 @@ sub get_filesystem_state
 		#print STDERR "fs_type = $fs_type is not appicable.\n";
 		return $state;
 	}
-	my @a =   `$tune2fs_prog -l $fs_device 2>/dev/null`;
+	my @a =   `$SisIYA_Config::external_progs{'tune2fs'} -l $fs_device 2>/dev/null`;
 	my $retcode = $? >>=8;
 	if ($retcode == 0) {
 		@a = grep(/^Filesystem state/, @a);
@@ -85,9 +83,14 @@ my $fs_state;
 my $percent_error;
 my $percent_warning;
 
+if (! -f $SisIYA_Config::external_progs{'df'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'df'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
 if ($SisIYA_Config::osname eq 'Linux') {
-	#my @a = `$df_prog -TPk`;
-	my @a = grep(/^\//, `$df_prog -TPkl`);
+	#my @a = `$SisIYA_Config::external_progs{'df'} -TPk`;
+	my @a = grep(/^\//, `$SisIYA_Config::external_progs{'df'} -TPkl`);
 	my $found;
 	foreach my $fs (@a) {
 		chomp($fs);
@@ -116,8 +119,8 @@ if ($SisIYA_Config::osname eq 'Linux') {
 	}
 }
 elsif ($SisIYA_Config::osname eq 'SunOS') {
-	#my @a = `$df_prog -TPk`;
-	my @a = grep(/^\//, `$df_prog -k`);
+	#my @a = `$SisIYA_Config::external_progs{'df'} -TPk`;
+	my @a = grep(/^\//, `$SisIYA_Config::external_progs{'df'} -k`);
 	my $found;
 	foreach my $fs (@a) {
 		chomp($fs);

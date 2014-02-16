@@ -31,13 +31,6 @@ if (-f $SisIYA_Config::functions) {
 }
 ###############################################################################
 #### the default values
-our %update_progs = (
-	'apt_cache'	=> '/usr/bin/apt-cache', 
-	'apt_check' 	=> '/usr/lib/update-notifier/apt-check', 
-	'pacman' 	=> '/usr/bin/pacman', 
-	'yum' 		=> '/usr/bin/yum', 
-	'zypper' 	=> '/usr/bin/zypper'
-);
 #### end of the default values
 ################################################################################
 ################################################################################
@@ -51,20 +44,20 @@ if (-f $module_conf_file) {
 
 sub use_pacman
 {
-	`$update_progs{'pacman'} --sync --refresh >/dev/null`;
-	chomp(my @a = `$update_progs{'pacman'} --query --upgrades`);
+	`$SisIYA_Config::external_progs{'pacman'} --sync --refresh >/dev/null`;
+	chomp(my @a = `$SisIYA_Config::external_progs{'pacman'} --query --upgrades`);
 	return @a;
 }
 
 sub use_apt_check
 {
-	chomp(my $s =`$update_progs{'apt_check'} 2>&1`);
+	chomp(my $s =`$SisIYA_Config::external_progs{'apt_check'} 2>&1`);
 	return (split(/;/, $s))[0] + (split(/;/, $s))[1];
 }
 
 sub use_yum
 {
-	chomp(my @a = `$update_progs{'yum'} -q list updates`);
+	chomp(my @a = `$SisIYA_Config::external_progs{'yum'} -q list updates`);
 	@a = grep(!/^Updated Packages/, grep(!/^Updated Packages/, @a));
 	return @a;
 }
@@ -72,7 +65,7 @@ sub use_yum
 sub use_zypper
 {
 	my $n;
-	chomp($n = `$update_progs{'zypper'} --non-interactive list-updates | grep "^v |" |  wc -l`);
+	chomp($n = `$SisIYA_Config::external_progs{'zypper'} --non-interactive list-updates | grep "^v |" |  wc -l`);
 	return $n;
 }
 
@@ -82,16 +75,16 @@ my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'info'};
 my $n = -1;
 
-if (-x $update_progs{'yum'}) {
+if (-x $SisIYA_Config::external_progs{'yum'}) {
 	$n = use_yum();
 }
-elsif (-x $update_progs{'apt_check'}) {
+elsif (-x $SisIYA_Config::external_progs{'apt_check'}) {
 	$n = use_apt_check();
 }
-elsif (-x $update_progs{'pacman'}) {
+elsif (-x $SisIYA_Config::external_progs{'pacman'}) {
 	$n = use_pacman();
 }
-elsif (-x $update_progs{'zypper'}) {
+elsif (-x $SisIYA_Config::external_progs{'zypper'}) {
 	$n = use_zypper();
 }
 

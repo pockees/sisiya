@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $hpasmcli_prog = '/sbin/hpasmcli';
 our %default_temperatures = ( 'warning' => 70, 'error' => 80 );
 our %temperatures;
 #### end of the default values
@@ -54,7 +53,12 @@ my $ok_str = '';
 my $warning_str = '';
 
 #######################################################################################
-my @a = `$hpasmcli_prog -s "show temp"`;
+if (! -f $SisIYA_Config::external_progs{'hpasmcli'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'hpasmcli'} does not exist!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+my @a = `$SisIYA_Config::external_progs{'hpasmcli'} -s "show temp"`;
 my $retcode = $? >>=8;
 if ($retcode == 0) {
 	@a = grep(/#/, @a);

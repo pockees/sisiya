@@ -33,7 +33,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #### the default values
 our $log_file = '/var/log/secure';
-our $journalctl_prog = '/usr/bin/journalctl';
 our @strings = ('bad username', 'illegal', 'Invalid user', 'failed password for', 'POSSIBLE BREAKIN ATTEMPT');
 #### end of the default values
 #######################################################################################
@@ -58,11 +57,11 @@ if (-f $log_file) {
 	@a = <$file>;
 	close $file;
 
-} elsif ( -f $journalctl_prog) {
-	@a = `$journalctl_prog _COMM=sshd`;
+} elsif ( -f $SisIYA_Config::external_progs{'journalctl'}) {
+	@a = `$SisIYA_Config::external_progs{'journalctl'} _COMM=sshd`;
 } else {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: Neither $log_file nor $journalctl_prog is available!";
+	$message_str = "ERROR: Neither $log_file nor $SisIYA_Config::external_progs{'journalctl'} is available!";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 
