@@ -110,7 +110,7 @@ sub get_cpu_info
 	if ($SisIYA_Config::osname eq 'Linux') {
 		my $file;
 		open($file, '<', '/proc/cpuinfo') or return $s;
-		$a = <$file>;
+		my @a = <$file>;
 		close $file;
 		chomp(@a = @a);
 		my @b = grep(/^processor/, @a);

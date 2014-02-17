@@ -43,11 +43,13 @@ if (-f $module_conf_file) {
 }
 #######################################################################################
 my $message_str = '';
+my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 
 if (! -f $SisIYA_Config::external_progs{'ps'}) {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'ps'} does not exist!";
+	$data_str = '<entries><entry name="number_of_processes" type="numeric">0</entry></entries>';
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 my @a = `$SisIYA_Config::external_progs{'ps'} -ef`;
@@ -63,7 +65,7 @@ if ($n >= $process_counts{'warning'}) {
 else {
 	$message_str = "OK: There are $n running processes.";
 }
-my $data_str = '<entries><entry name="number_of_processes" type="numeric">'.$n.'</entry></entries>';
+$data_str = '<entries><entry name="number_of_processes" type="numeric">'.$n.'</entry></entries>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
