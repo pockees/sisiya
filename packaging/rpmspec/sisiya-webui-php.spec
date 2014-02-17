@@ -56,10 +56,10 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 %files
 %defattr(-,root,root)
 %dir %attr(0755,root,root) 				/etc/cron.d
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_alerts
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_archive
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_check_expired
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_rss
+%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-alerts
+%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-archive
+%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-check-expired
+%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-rss
 %dir %attr(0755,root,root) 				%{install_dir}
 %attr(0644,root,root) 					%{install_dir}/favicon.ico
 %attr(0644,root,root) 					%{install_dir}/*.php
@@ -89,3 +89,5 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 %dir %attr(0755,root,root) 				%{install_dir}/XMPPHP
 %attr(0644,root,root) 					%{install_dir}/XMPPHP/*.php
 %attr(0644,root,root) 					%{install_dir}/xmlconf
+%dir %attr(0755,root,root) 				%{install_dir}/utils
+%attr(0644,root,root) 					%{install_dir}/utils/*.php

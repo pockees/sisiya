@@ -9,10 +9,10 @@ sisiya_remote_checks_dir=/opt/sisiya-remote-checks
 .PHONY: install
 install:
 	install -d 					$(cron_dir)
-	install -m 600 etc/cron.d/sisiya_alerts		$(cron_dir)
-	install -m 600 etc/cron.d/sisiya_archive	$(cron_dir)
-	install -m 600 etc/cron.d/sisiya_check_expired	$(cron_dir)
-	install -m 600 etc/cron.d/sisiya_rss		$(cron_dir)
+	cat etc/cron.d/sisiya-alerts 			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)/sisiya-webui-php'g" > $(cron_dir)/sisiya-alerts
+	cat etc/cron.d/sisiya-archive 			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)/sisiya-webui-php'g" > $(cron_dir)/sisiya-archive
+	cat etc/cron.d/sisiya-check-expired	 	| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)/sisiya-webui-php'g" > $(cron_dir)/sisiya-check-expired
+	cat etc/cron.d/sisiya-rss			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)/sisiya-webui-php'g" > $(cron_dir)/sisiya-rss
 	install -m 755 -d 				$(web_dir)/autodiscover
 	install -m 700 autodiscover/discover_systems.sh $(web_dir)/autodiscover/
 	install -m 700 autodiscover/nmap_scan_info.php  $(web_dir)/autodiscover/
@@ -47,7 +47,4 @@ install:
 	install -m 755 -d				$(web_dir)/XMPPHP/
 	install -m 644 XMPPHP/*.php			$(web_dir)/XMPPHP/
 	install -m 755 -d				$(web_dir)/utils
-	cat utils/sisiya_alerts.php 		| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/utils/sisiya_alerts.php
-	cat utils/sisiya_check_expired.php	| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/utils/sisiya_check_expired.php
-	cat utils/sisiya_rss.php 		| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/utils/sisiya_rss.php
-	cat utils/sisiya_updatedb.php 		| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/utils/sisiya_updatedb.php
+	install -m 644 utils/*.php 			$(web_dir)/utils

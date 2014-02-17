@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright (C) 2003 - __YEAR__ Erdal Mutlu
+    Copyright (C) 2003 - 2014 Erdal Mutlu
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ function echo_rss_header()
 	echo '		<link>'.SISIYA_URL.'</link>'."\n";
 	echo '		<description>SisIYA</description>'."\n";
 	echo '		<language>en</language>'."\n";
-	echo '		<copyright>Copyright 2003 - __YEAR__ Erdal Mutlu</copyright>'."\n";
+	echo '		<copyright>Copyright 2003 - 2014 Erdal Mutlu</copyright>'."\n";
 
 }
 

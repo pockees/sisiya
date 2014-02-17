@@ -121,7 +121,7 @@ create_webui_php()
 	mkdir -p $package_dir
 	cp -a ${source_dir}/$package_str/* $package_dir/
 	mkdir -p $package_dir/etc/cron.d
-	for f in "sisiya-alerts" "sisiya-archive" "sisiya-check-expired" "sisiya_rss"
+	for f in "sisiya-alerts" "sisiya-archive" "sisiya-check-expired" "sisiya-rss"
 	do
 		cp -a ${source_dir}/etc/cron.d/$f $package_dir/etc/cron.d/
 	done
