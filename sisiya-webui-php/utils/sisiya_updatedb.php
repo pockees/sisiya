@@ -255,7 +255,7 @@ function move_systemhistorystatusall()
 		$row=$db->fetchRow($result,$i);
 		$ym_str=substr($row[0],0,6);
 		if(table_exists("systemhistorystatus".$ym_str) == false) {
-			if(create_table("create table systemhistorystatus".$ym_str." (sendtime char(14) not null,systemid integer not null references systems(id),serviceid integer not null references services(id),statusid integer not null references status(id),recievetime char(14) not null,str text,data varchar(1024),primary key(sendtime,systemid,serviceid,statusid))") == false)
+			if(create_table("create table systemhistorystatus".$ym_str." (sendtime char(14) not null,systemid integer not null references systems(id),serviceid integer not null references services(id),statusid integer not null references status(id),recievetime char(14) not null,str text,data varchar(4096),primary key(sendtime,systemid,serviceid,statusid))") == false)
 				return false;
 			if(move_records($ym_str) == false) 
 				return false;
@@ -282,7 +282,7 @@ function final_check()
 			$row=$db->fetchRow($result,$i);
 			$ym_str=substr($row[0],0,6);
 			if(table_exists("systemhistorystatus".$ym_str) == false) {
-				if(create_table("create table systemhistorystatus".$ym_str." (sendtime char(14) not null,systemid integer not null references systems(id),serviceid integer not null references services(id),statusid integer not null references status(id),recievetime char(14) not null,str text,data varchar(1024),primary key(sendtime,systemid,serviceid,statusid))") == false) {
+				if(create_table("create table systemhistorystatus".$ym_str." (sendtime char(14) not null,systemid integer not null references systems(id),serviceid integer not null references services(id),statusid integer not null references status(id),recievetime char(14) not null,str text,data varchar(4096),primary key(sendtime,systemid,serviceid,statusid))") == false) {
 					return false;
 				}
 			}

@@ -180,7 +180,7 @@ CREATE TABLE systemhistorystatusall (
 	statusid	integer		NOT NULL REFERENCES status(id),
 	recievetime	char(14)	NOT NULL,
 	str		text,
-	data		varchar(1024),
+	data		varchar(4096),
 	primary key(sendtime,systemid,serviceid,statusid)
 )
 ENGINE = INNODB;
@@ -196,7 +196,7 @@ CREATE TABLE systemhistorystatustmp (
 	statusid	integer		NOT NULL REFERENCES status(id),
 	recievetime	char(14)	NOT NULL,
 	str		text,
-	data		varchar(1024),
+	data		varchar(4096),
 	primary key(sendtime,systemid,serviceid,statusid)
 )
 ENGINE = INNODB;
@@ -212,7 +212,7 @@ CREATE TABLE systemhistorystatusqueue (
 	statusid	integer		NOT NULL REFERENCES status(id),
 	recievetime	char(14)	NOT NULL,
 	str		text,
-	data		varchar(1024),
+	data		varchar(4096),
 	primary key(sendtime,systemid,serviceid,statusid)
 )
 ENGINE = INNODB;
@@ -228,7 +228,7 @@ CREATE TABLE systemhistorystatus (
 	statusid	integer		NOT NULL REFERENCES status(id),
 	recievetime	char(14)	NOT NULL,
 	str		text		NOT NULL,
-	data		varchar(1024),
+	data		varchar(4096),
 	primary key(sendtime,systemid,serviceid,statusid)
 )
 ENGINE = INNODB;
@@ -245,7 +245,7 @@ CREATE TABLE systemservicestatus (
 	changetime	char(14)	NOT NULL,
 	expires		integer		NOT NULL,
 	str		text		NOT NULL,
-	data		varchar(1024),
+	data		varchar(4096),
 	primary key(systemid,serviceid)
 )
 ENGINE = INNODB;
