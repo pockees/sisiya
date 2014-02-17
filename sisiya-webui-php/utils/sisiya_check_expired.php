@@ -19,9 +19,9 @@
 */
 error_reporting(E_ALL);
 
-if (count($argv) != 2) {
-	echo "Usage   : $argv[0] web_root_dir\n";
-	echo "Example : $argv[0] /srv/http/sisiya-webui-php\n";
+if (count($argv) != 3) {
+	echo "Usage   : $argv[0] web_root_dir send_message_prog\n";
+	echo "Example : $argv[0] /srv/http/sisiya-webui-php /usr/share/sisiya-client-checks/utils/sisiya_send_message2.sh\n";
 	exit(1);
 }
 
@@ -32,24 +32,31 @@ if (! defined('STDIN')) {
 global $rootDir,$progName;
 $prog_name = $argv[0];
 $rootDir = $argv[1];
+$send_message_prog = $argv[2];
+# status ID for noretport status
+$status_noreport = 16;
 
 include_once($rootDir."/conf/sisiya_common_conf.php");
 include_once($rootDir."/conf/sisiya_gui_conf.php");
 
-function is_expired($t_str, $now_in_minutes)
+function is_expired($t_str, $now_time, $expired)
 {
 	$year = substr($t_str, 0, 4);
 	$month = substr($t_str, 4, 2);
 	$days = substr($t_str, 6, 2);
 	$hours = substr($t_str, 8, 2);
 	$minutes = substr($t_str, 10, 2);
-	$t_in_minutes = $year * $month * $days;
-	echo date('YmdHis')."\n";
-	echo "year=$year month=$month days=$days hours=$hours minutes=$minutes seconds=$seconds result = ".$result."\n";
-	return(true);
+	$seconds = substr($t_str, 12, 2);
+	$t = strtotime($year.'-'.$month.'-'.$days.' '.$hours.':'.$minutes.':'.$seconds);
+	$diff_in_minutes = round((abs($now_time - $t) / 60), 0); 
+	#echo "diff= $diff_in_minutes expired = $expired\n";
+	if ($diff_in_minutes > $expired)
+		return(true);
+	return(false);
 }
 
 date_default_timezone_set($defaultTimezone);
+$now_time = strtotime(date('Y-m-d H:i:s'));
 $sql_str = "select a.hostname,b.serviceid,b.statusid,b.updatetime,b.expires from systems as a left join systemservicestatus as b on a.id=b.systemid where a.active='t'";
 $result = $db->query($sql_str);
 $row_count = $db->getRowCount($result);	
@@ -57,16 +64,25 @@ for($i = 0; $i<$row_count; $i++) {
 	$row = $db->fetchRow($result,$i);
 	$expire = $row[4];
 	if ($expire == 0) {
-		echo 'This service never expires. 1 system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]." Skipping...\n";
+		#echo 'This service never expires. 1 system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]." Skipping...\n";
 		continue;
 	}	
 	#echo 'system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]."\n";
 	if ($row[2] == '') {
-		#echo "1. type Send message that the service has expired!\n";
-		echo '1 system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]."\n";
+		#echo '1 Expired: system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]."\n";
+		$expire = 1;	# never expires
+		$message_str = "There is no response from this system!";
+		exec("$send_message_prog $row[0] $row[1] $status_noreport $expire \"$message_str\"");
+		continue;
 	}
-	if (is_expired($row[3])) {
-		echo '2 system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]."\n";
+	if (is_expired($row[3], $now_time, $expire)) {
+		#echo '2 Expired: system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]."\n";
+		$s = '';
+		if ($expire > 1) 
+			$s = 's';
+		$message_str = "The service check expired! It was valid for $expire minute$s!";
+		$expire = 0;	# never expires
+		exec("$send_message_prog $row[0] $row[1] $status_noreport $expire \"$message_str\"");
 	}
 }	
 ?>

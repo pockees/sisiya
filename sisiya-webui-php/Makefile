@@ -13,6 +13,9 @@ install:
 	install -m 600 etc/cron.d/sisiya_archive	$(cron_dir)
 	install -m 600 etc/cron.d/sisiya_check_expired	$(cron_dir)
 	install -m 600 etc/cron.d/sisiya_rss		$(cron_dir)
+	install -m 755 -d 				$(web_dir)/autodiscover
+	install -m 700 autodiscover/discover_systems.sh $(web_dir)/autodiscover/
+	install -m 700 autodiscover/nmap_scan_info.php  $(web_dir)/autodiscover/
 	install -m 755 -d 				$(web_dir)/style
 	install -m 644 style/*.css 			$(web_dir)/style
 	install -m 755 -d 				$(web_dir)/javascript
@@ -22,9 +25,6 @@ install:
 	install -m 644 sisiya_admin.php 		$(web_dir)
 	install -m 644 sisiya_gui.php 			$(web_dir)
 	install -m 644 sisiya_login.php 		$(web_dir)
-	install -m 644 sisiya_alerts.php 		$(web_dir)
-	install -m 644 sisiya_rss.php 			$(web_dir)
-	install -m 644 sisiya_updatedb.php 		$(web_dir)
 	install -m 644 README.txt			$(web_dir)
 	install -m 644 INSTALL.txt			$(web_dir)
 	cd $(web_dir) && ln -sf sisiya_gui.php index.php
@@ -46,6 +46,8 @@ install:
 	install install/* 				$(web_dir)/install/
 	install -m 755 -d				$(web_dir)/XMPPHP/
 	install -m 644 XMPPHP/*.php			$(web_dir)/XMPPHP/
-	install -m 755 -d 				$(web_dir)/autodiscover
-	install -m 700 autodiscover/discover_systems.sh $(web_dir)/autodiscover/
-	install -m 700 autodiscover/nmap_scan_info.php  $(web_dir)/autodiscover/
+	install -m 755 -d				$(web_dir)/utils
+	cat utils/sisiya_alerts.php 		| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/utils/sisiya_alerts.php
+	cat utils/sisiya_check_expired.php	| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/utils/sisiya_check_expired.php
+	cat utils/sisiya_rss.php 		| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/utils/sisiya_rss.php
+	cat utils/sisiya_updatedb.php 		| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/utils/sisiya_updatedb.php

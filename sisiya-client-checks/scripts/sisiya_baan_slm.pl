@@ -33,7 +33,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #### the default values
 our $env_slmhome = '/infor/slm';
-our $SisIYA_Config::external_progs{'SlmCmd'} = "$env_slmhome/bin/SlmCmd";
 our $slm_license_file = "$env_slmhome/license/1/6005/license.xml";
 our $env_bse = '/infor/erpln/bse';
 our $env_bse_tmp = "$env_bse/tmp";

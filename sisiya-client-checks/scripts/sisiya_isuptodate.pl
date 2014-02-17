@@ -51,7 +51,7 @@ sub use_pacman
 
 sub use_apt_check
 {
-	chomp(my $s =`$SisIYA_Config::external_progs{'apt_check'} 2>&1`);
+	chomp(my $s =`$SisIYA_Config::external_progs{'apt-check'} 2>&1`);
 	return (split(/;/, $s))[0] + (split(/;/, $s))[1];
 }
 
@@ -78,7 +78,7 @@ my $n = -1;
 if (-x $SisIYA_Config::external_progs{'yum'}) {
 	$n = use_yum();
 }
-elsif (-x $SisIYA_Config::external_progs{'apt_check'}) {
+elsif (-x $SisIYA_Config::external_progs{'apt-check'}) {
 	$n = use_apt_check();
 }
 elsif (-x $SisIYA_Config::external_progs{'pacman'}) {
