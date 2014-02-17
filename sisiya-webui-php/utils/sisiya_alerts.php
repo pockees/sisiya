@@ -79,15 +79,15 @@ function send_sms_xml($phone_number,$msg)
 	$SMS_TITLE = 'MESAJSERVSI';
 	
 	$xml_str = '<?xml version="1.0" encoding="UTF-8"?>';
-	$xml_str. = '<SendSms><Version>1.0</Version>';
-	$xml_str. = '<Kullanici>'.$SMS_USER.'</Kullanici>';
-	$xml_str. = '<Sifre>'.$SMS_PASSWORD.'</Sifre>';
-	$xml_str. = '<Baslik>'.$SMS_TITLE.'</Baslik>';
-	$xml_str. = '<SmsList><GsmList>';
-	$xml_str. = '<Gsm>'.$phone_number.'</Gsm>';
-	$xml_str. = '</GsmList><MesajList>';
-	$xml_str. = '<Mesaj>'.$msg.'</Mesaj>';
-	$xml_str. = '</MesajList></SmsList><Tarih></Tarih><Saat></Saat><Gecerlilik></Gecerlilik></SendSms>';
+	$xml_str.= '<SendSms><Version>1.0</Version>';
+	$xml_str.= '<Kullanici>'.$SMS_USER.'</Kullanici>';
+	$xml_str.= '<Sifre>'.$SMS_PASSWORD.'</Sifre>';
+	$xml_str.= '<Baslik>'.$SMS_TITLE.'</Baslik>';
+	$xml_str.= '<SmsList><GsmList>';
+	$xml_str.= '<Gsm>'.$phone_number.'</Gsm>';
+	$xml_str.= '</GsmList><MesajList>';
+	$xml_str.= '<Mesaj>'.$msg.'</Mesaj>';
+	$xml_str.= '</MesajList></SmsList><Tarih></Tarih><Saat></Saat><Gecerlilik></Gecerlilik></SendSms>';
 	$url  =  'http://'.$SMS_SERVER.'/xmlpost/';
     	echo $contents = file_get_contents($url);
 }
@@ -204,7 +204,7 @@ function format_message_old($service_id,$msg)
 		$a = split('[ ]',$msg);
 		$str = "";
 		foreach($a as $key =>$value) {
-			$str. = $value."\n";
+			$str.= $value."\n";
 		}
 		return $str;
 	}
@@ -221,11 +221,11 @@ function alert_systems()
 	###		  0	  1	    2	      3		4	5	 6	7	    8	      9		10	  11
 	$sql_str = "select b.name,b.surname,b.email,c.changetime,c.str,d.hostname,i.str,a.alerttime,a.expire,a.userid,a.systemid,a.alerttypeid";
 	###		12	13	14 
-	$sql_str. = ",a.statusid,f.str,c.str from usersystemalert a,users b,systemstatus c,systems d,status e,userproperties f,";
-	$sql_str. = "interface i,strkeys s,languages l where d.active='t' and a.userid=b.id and a.systemid=c.systemid ";
-	$sql_str. = "and a.statusid=c.statusid and a.systemid=d.id and a.statusid=e.id and a.enabled='t' and a.userid=f.userid and ";
-	$sql_str. = "e.keystr=s.keystr and s.id=i.strkeyid and i.languageid=l.id and l.code='".$defaultLanguage."'";
-	$sql_str. = " order by a.userid";
+	$sql_str.= ",a.statusid,f.str,c.str from usersystemalert a,users b,systemstatus c,systems d,status e,userproperties f,";
+	$sql_str.= "interface i,strkeys s,languages l where d.active='t' and a.userid=b.id and a.systemid=c.systemid ";
+	$sql_str.= "and a.statusid=c.statusid and a.systemid=d.id and a.statusid=e.id and a.enabled='t' and a.userid=f.userid and ";
+	$sql_str.= "e.keystr=s.keystr and s.id=i.strkeyid and i.languageid=l.id and l.code='".$defaultLanguage."'";
+	$sql_str.= " order by a.userid";
 	$result = $db->query($sql_str);
 	$row_count = $db->getRowCount($result);	
 	for($i = 0;$i<$row_count;$i++) {
@@ -283,14 +283,14 @@ function alert_systemservice()
 	###		  0	  1	    2	      3		4	5	 6	7	    8	      9		10	  11
 	$sql_str = "select b.name,b.surname,b.email,c.changetime,c.str,d.hostname,i.str,a.alerttime,a.expire,a.userid,a.systemid,a.alerttypeid";
 	###		12	13	14   	  15
-	$sql_str. = ",a.statusid,i2.str,a.serviceid,g.str from usersystemservicealert a,users b,systemservicestatus c,systems d,status e,";
-	$sql_str. = "services f,userproperties g,interface i,strkeys s,languages l,interface i2,strkeys s2,languages l2";
-	$sql_str. = " where d.active='t' and a.userid=b.id and a.systemid=c.systemid and a.serviceid=c.serviceid and a.statusid=c.statusid";
-	$sql_str. = " and a.systemid=d.id and a.statusid=e.id and a.serviceid=f.id and a.enabled='t' and a.userid=g.userid";
-	$sql_str. = " and a.userid=g.userid";
-	$sql_str. = " and e.keystr=s.keystr and s.id=i.strkeyid and i.languageid=l.id and l.code='".$defaultLanguage."'";
-	$sql_str. = " and f.keystr=s2.keystr and s2.id=i2.strkeyid and i2.languageid=l2.id and l2.id=l.id";
-	$sql_str. = " order by a.userid";
+	$sql_str.= ",a.statusid,i2.str,a.serviceid,g.str from usersystemservicealert a,users b,systemservicestatus c,systems d,status e,";
+	$sql_str.= "services f,userproperties g,interface i,strkeys s,languages l,interface i2,strkeys s2,languages l2";
+	$sql_str.= " where d.active='t' and a.userid=b.id and a.systemid=c.systemid and a.serviceid=c.serviceid and a.statusid=c.statusid";
+	$sql_str.= " and a.systemid=d.id and a.statusid=e.id and a.serviceid=f.id and a.enabled='t' and a.userid=g.userid";
+	$sql_str.= " and a.userid=g.userid";
+	$sql_str.= " and e.keystr=s.keystr and s.id=i.strkeyid and i.languageid=l.id and l.code='".$defaultLanguage."'";
+	$sql_str.= " and f.keystr=s2.keystr and s2.id=i2.strkeyid and i2.languageid=l2.id and l2.id=l.id";
+	$sql_str.= " order by a.userid";
 
 	$result = $db->query($sql_str);
 	$row_count = $db->getRowCount($result);	

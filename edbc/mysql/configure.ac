@@ -57,7 +57,8 @@ MYSQL_INC=-I/usr/include/mysql
 MYSQL_LIB=-L/usr/lib/mysql
 MYSQL_LFLAGS=-lmysqlclient
 
-MYSQL_LIB=`mysql_config --libs | cut -d " " -f 1`
+#MYSQL_LIB=`mysql_config --libs | cut -d " " -f 1`
+MYSQL_LIB=`mysql_config --libs`
 #case "${host}" in
 #	*86-*-linux*)
 #		MYSQL_LIB=-L/usr/lib/mysql
