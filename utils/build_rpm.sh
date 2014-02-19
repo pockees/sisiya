@@ -29,30 +29,30 @@ version="$1"
 echo $version
 repo_dir=arch-repo.sisiya.org
 rpms_dir=../RPMS
+machine_arch=`uname -m`
 
 package_list="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images sisiya-edbc-libs sisiyad"
-package_list_any="sisiya-client-checks-${version}.noacrh.rpm sisiya-remote-checks-${version}.noarch.rpm sisiya-webui-php-${version}.noarch.rpm sisiya-webui-images-${version}.noarch.rpm"
-package_list_x86_64="sisiyad-${version}.i686.rpm sisiya-edbc-libs-${version}.i686.rpm"
-package_list_x86_64="sisiyad-${version}.x86_64.rpm sisiya-edbc-libs-${version}.x86_64.rpm"
+package_list_noarch="sisiya-client-checks-${version}.noarch.rpm sisiya-remote-checks-${version}.noarch.rpm sisiya-webui-php-${version}.noarch.rpm sisiya-webui-images-${version}.noarch.rpm"
+package_list_binary="sisiyad-${version} sisiya-edbc-libs-${version}"
 
 ## create repository directory structure
-#for d in $repo_dir/os/any $repo_dir/os/i686 $repo_dir/os/x86_64
-#do
-#	mkdir -p $d
-#done
+for d in $repo_dir/os/any $repo_dir/os/i686 $repo_dir/os/x86_64
+do
+	mkdir -p $d
+done
 
 for f in $package_list
 do
 	echo "Building $f-${version}.tar.gz ..."
-	rpmbuild -ta rpm/$f-${version}.tar.gz
+	#rpmbuild -ta rpm/$f-${version}.tar.gz
 	echo "---------------------"
 done
 
-for f in $package_list_any
+for f in $package_list_noarch
 do
 	ls -l $rpms_dir/noarch/$f
 done
-for f in $package_list_x86_64
+for f in $package_list_binary
 do
-	ls -l $rpms_dir/noarch/$f
+	ls -l $rpms_dir/$machine_arch/$f*.rpm
 done
