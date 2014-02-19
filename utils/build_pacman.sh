@@ -40,6 +40,15 @@ do
 	mkdir -p $d
 done
 
+for f in $package_list
+do
+	echo "Building $f-${version}.tar.gz ..."
+	rm -f PKGBUILD
+	ln -s PKGBUILD-$f-${version} PKGBUILD
+	makepkg -f 
+	echo "---------------------"
+done
+
 for f in $package_list_x86_64
 do
 	repo-add $repo_dir/os/x86_64/sisiya.db.tar.gz $f
@@ -49,14 +58,4 @@ done
 for f in $package_list
 do
 	ls -l $f-${version}-*pkg.tar.xz
-done
-exit
-
-for f in $package_list
-do
-	echo "Building $f-${version}.tar.gz ..."
-	rm -f PKGBUILD
-	ln -s PKGBUILD-$f-${version} PKGBUILD
-	makepkg -f 
-	echo "---------------------"
 done
