@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script is used to build SisIYA RPM packages.
+# This script is used to build SisIYA debian packages.
 #
 #    Copyright (C) Erdal Mutlu
 #
@@ -27,25 +27,27 @@ if test $# -ne 1 ; then
 fi
 version="$1"
 echo $version
-rpms_dir=../RPMS
 machine_arch=`uname -m`
 
 package_list="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images sisiya-edbc-libs sisiyad"
-package_list_noarch="sisiya-client-checks-${version}.noarch.rpm sisiya-remote-checks-${version}.noarch.rpm sisiya-webui-php-${version}.noarch.rpm sisiya-webui-images-${version}.noarch.rpm"
+package_list_noarch="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images"
 package_list_binary="sisiyad-${version} sisiya-edbc-libs-${version}"
-
-for f in $package_list
-do
-	echo "Building $f-${version}.tar.gz ..."
-	rpmbuild -ta rpm/$f-${version}.tar.gz
-	echo "---------------------"
-done
 
 for f in $package_list_noarch
 do
-	ls -l $rpms_dir/noarch/$f
+	echo "Building ${f}-${version}.tar.gz ..."
+	tar xfz ${f}-${version}.tar.gz
+	dpkg --build ${f}-$version
+	echo "---------------------"
 done
+
 for f in $package_list_binary
 do
-	ls -l $rpms_dir/$machine_arch/$f*.rpm
+	echo "Building ${f}_${version}.orig.tar.gz ..."
+	tar xfz ${f}_${version}.orig.tar.gz
+	cd ${f}-${version} && debuild 
+	cd ..
+	echo "---------------------"
 done
+
+ls -l *${version}*.deb
