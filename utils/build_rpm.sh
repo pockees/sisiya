@@ -50,9 +50,9 @@ done
 
 for f in $package_list_any
 do
-	ls -l $rpms_dir/noarch/$f-${version}-*.rpm
+	ls -l $rpms_dir/noarch/$f-${version}
 done
 for f in $package_list_x86_64
 do
-	ls -l $rpms_dir/noarch/$f-${version}-*.rpm
+	ls -l $rpms_dir/noarch/$f-${version}
 done
