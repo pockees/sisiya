@@ -34,7 +34,7 @@
 %define install_dir %{web_base_dir}/sisiya-webui-php/images/systems
 
 Name: sisiya-webui-images
-Summary: Image collection for SisIYA web user interface. These images are used for assigning to systems
+Summary: Image collection for SisIYA web user interface
 Url: http://www.sisiya.org
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
@@ -59,11 +59,15 @@ make "DESTDIR=%{buildroot}" "WEB_BASE_DIR=%{web_base_dir}" install
 
 %post
 # change ownership 
-chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
+chown  -R  %{www_user}:%{www_group}	%{install_dir}
+
+%build
 
 %files
 %defattr(-,root,root)
-%dir %attr(0775,root,root) 				%{install_dir}
-%attr(0664,root,root) 					%{install_dir}/*
+%attr(0775,root,root)	%dir			%{install_dir}
+%attr(0775,root,root)	%dir			%{web_base_dir}/sisiya-webui-php
+%attr(0775,root,root)	%dir			%{web_base_dir}/sisiya-webui-php/images
+%attr(0664,root,root) 				%{install_dir}/*
 
 %changelog
