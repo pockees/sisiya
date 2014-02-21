@@ -4,7 +4,7 @@ web_dir=$(install_root)$(WEB_BASE_DIR)/sisiya-webui-php
 dst_apache_conf=$(install_root)/etc/httpd/conf.d
 dst_etc=$(install_root)/etc
 cron_dir=$(install_root)/etc/cron.d
-sisiya_remote_checks_dir=/etc/sisiya/sisiya-remote-checks/conf.d
+#sisiya_remote_checks_dir=/etc/sisiya/sisiya-remote-checks/conf.d
 ###########################################################################
 .PHONY: install
 install:
@@ -28,11 +28,11 @@ install:
 	install -m 644 README.txt			$(web_dir)
 	install -m 644 INSTALL.txt			$(web_dir)
 	cd $(web_dir) && ln -sf sisiya_gui.php index.php
-	cd $(web_dir) && ln -sf ${sisiya_remote_checks_dir}	xmlconf
+#	cd $(web_dir) && ln -sf ${sisiya_remote_checks_dir}	xmlconf
 	install -m 755 -d 				$(web_dir)/conf
 	install -m 644 conf/*.php 			$(web_dir)/conf/
-	cat etc/sisiya_apache.conf | sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g"	> $(web_dir)/conf/sisiya_apache.conf
-	cat etc/sisiya_nginx.conf  | sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/conf/sisiya_nginx.conf
+	cat conf/sisiya_apache.conf 			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/conf/sisiya_apache.conf
+	cat conf/sisiya_nginx.conf  			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/conf/sisiya_nginx.conf
 	install -m 755 -d 				$(web_dir)/lib
 	install -m 644 lib/*.php 			$(web_dir)/lib/
 	install -m 755 -d 				$(web_dir)/images
