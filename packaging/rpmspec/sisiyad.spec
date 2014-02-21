@@ -1,15 +1,13 @@
-%define name sisiyad
-
+Name: sisiyad
 Summary: SisIYA daemon.
-Name: %{name}
+Url: http://www.sisiya.org
 Version: 0.6.30.21
 Release: 0
 Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
-License: GPL
+License: GPL-2.0+
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
-Url: http://www.sisiya.org
 BuildRoot:%{_tmppath}/%{name}-%{version}-%{release}-root
 %if 0%{?suse_version} 
 BuildRequires: autoconf automake doxygen gcc-c++ mysql-devel postgresql-devel
@@ -93,3 +91,5 @@ rm -rf %{buildroot}
 %attr(0700,root,root) 				/usr/sbin/sisiyad
 %attr(0644,root,root) 				/usr/share/man/man5/sisiyad.conf.5.gz
 %attr(0644,root,root) 				/usr/share/man/man8/sisiyad.8.gz
+
+%changelog

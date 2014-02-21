@@ -1,9 +1,23 @@
-%define name sisiya-client-checks
+#    Copyright (C) Erdal Mutlu
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-%define install_dir /usr/share/%{name}
 
 Summary: SisIYA client programs and checks
-Name:%{name} 
+Name: sisiya-client-checks
+%define install_dir /usr/share/%{name}
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
 Version: __VERSION__
@@ -29,20 +43,20 @@ make "DESTDIR=%{buildroot}" install
 
 %files
 %defattr(-,root,root)
-%dir %attr(0755,root,root) 				/etc/cron.d
+%attr(0755,root,root) 		%dir			/etc/cron.d
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/%{name}
-%dir %attr(0755,root,root) 				/etc/sisiya
-%dir %attr(0755,root,root) 				/etc/sisiya/%{name}
-%dir %attr(0755,root,root) 				/etc/sisiya/%{name}/conf.d
+%attr(0755,root,root) 		%dir			/etc/sisiya
+%attr(0755,root,root) 		%dir			/etc/sisiya/%{name}
+%attr(0755,root,root) 		%dir			/etc/sisiya/%{name}/conf.d
 %attr(0644,root,root) 		%config(noreplace)	/etc/sisiya/%{name}/conf.d/*
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Config.pm
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Config_local.conf
-%dir %attr(0755,root,root) 				%{install_dir}
-%dir %attr(0755,root,root) 				%{install_dir}/misc
-%dir %attr(0755,root,root) 				%{install_dir}/scripts
-%dir %attr(0755,root,root) 				%{install_dir}/utils
+%attr(0755,root,root) 		%dir			%{install_dir}
+%attr(0755,root,root) 		%dir			%{install_dir}/misc
+%attr(0755,root,root) 		%dir			%{install_dir}/scripts
+%attr(0755,root,root) 		%dir			%{install_dir}/utils
 %attr(0644,root,root) 					%{install_dir}/misc/*
 %attr(0755,root,root) 					%{install_dir}/scripts/*
 %attr(0755,root,root) 					%{install_dir}/utils/*
-%dir %attr(0755,root,root) 				/usr/share/doc/%{name}
+%attr(0755,root,root) 		%dir			/usr/share/doc/%{name}
 %attr(0644,root,root) 		 			/usr/share/doc/%{name}/*
