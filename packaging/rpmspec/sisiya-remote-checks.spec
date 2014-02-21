@@ -1,8 +1,5 @@
 %define name sisiya-remote-checks
 
-%define version __VERSION__
-%define release __RELEASE__
-
 %define install_dir /usr/share/%{name}
 
 ### define distro
@@ -19,14 +16,13 @@
 %define www_group www
 %endif
 
-Summary: The SisIYA remote check programs that are run from a central server. 
+Summary: SisIYA remote check programs that are run from a central server 
 Name:%{name} 
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
-Version: %{version}
-Release: %{release}
-#Obsoletes: $version-$release
-Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}-%{release}.tar.gz
+Version: __VERSION__
+Release: 0
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
@@ -37,7 +33,7 @@ Requires: bash, bind-utils, curl, ftp, iputils, net-snmp, net-snmp-utils, perl, 
 Summary: The SisIYA server / remote check programs that are run from a central server. This is normally the server where SisIYA daemon runs.
 
 %prep 
-%setup -n %{name}-%{version}-%{release}
+%setup -n %{name}-%{version}
 
 %install
 rm -rf %{buildroot}
@@ -53,11 +49,13 @@ chgrp -R %{www_group}	/etc/sisiya/sisiya-remote-checks/conf.d
 %dir %attr(0755,root,root) 				/etc/cron.d
 #%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya_db_checks
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-remote-checks
-%attr(0750,root,root)	 	%dir 			%{install_dir}
+%attr(0755,root,root)		%dir			/etc/sisiya
+%attr(0755,root,root) 		%dir			/etc/sisiya/%{name}
 %attr(0755,root,root) 		%dir			/etc/sisiya/%{name}/conf.d
 %attr(0664,root,root) 		%config(noreplace)	/etc/sisiya/%{name}/conf.d/*
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Remote_Config.pm
 %attr(0644,root,root) 		%config(noreplace) 	/etc/sisiya/%{name}/SisIYA_Remote_Config_local.conf
+%attr(0750,root,root)	 	%dir 			%{install_dir}
 %attr(0750,root,root) 		%dir 			%{install_dir}/lib
 %attr(0750,root,root)		%dir			%{install_dir}/misc
 %attr(0750,root,root) 		%dir 			%{install_dir}/scripts
@@ -68,4 +66,5 @@ chgrp -R %{www_group}	/etc/sisiya/sisiya-remote-checks/conf.d
 %attr(0700,root,root) 					%{install_dir}/scripts/*.*
 %attr(0600,root,root) 					%{install_dir}/src/*.*
 %attr(0700,root,root) 					%{install_dir}/utils/*.*
+%attr(0755,root,root)		%dir 			/usr/share/doc/%{name}
 %attr(0644,root,root) 		 			/usr/share/doc/%{name}/*

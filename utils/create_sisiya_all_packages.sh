@@ -51,7 +51,8 @@ create_webui_images()
 	year_str=`date +%Y` 
 
 	package_str="sisiya-webui-images"
-	package_name="${package_str}-${version_str}-$release_str"
+	#package_name="${package_str}-${version_str}-$release_str"
+	package_name="${package_str}-${version_str}"
 	package_dir="$base_dir/tmp/${package_name}"
 	version_major_str=`echo $version_str | cut -d "." -f 1,2`
 	version_minor_str=`echo $version_str | cut -d "." -f 3`
@@ -111,7 +112,8 @@ create_webui_php()
 	year_str=`date +%Y` 
 
 	package_str="sisiya-webui-php"
-	package_name="${package_str}-${version_str}-$release_str"
+	#package_name="${package_str}-${version_str}-$release_str"
+	package_name="${package_str}-${version_str}"
 	package_dir="$base_dir/tmp/${package_name}"
 	version_major_str=`echo $version_str | cut -d "." -f 1,2`
 	version_minor_str=`echo $version_str | cut -d "." -f 3`
@@ -179,7 +181,8 @@ create_sisiyad()
 	local_dir=$5
 
 	package_str="sisiyad"
-	package_name="${package_str}-${version_str}-$release_str"
+	#package_name="${package_str}-${version_str}-$release_str"
+	package_name="${package_str}-${version_str}"
 	package_dir="$base_dir/tmp/${package_name}"
 	version_major_str=`echo $version_str | cut -d "." -f 1,2`
 	version_minor_str=`echo $version_str | cut -d "." -f 3`
@@ -248,7 +251,8 @@ create_edbc_libs()
 	local_dir=$5
 
 	package_str="sisiya-edbc-libs"
-	package_name="${package_str}-${version_str}-$release_str"
+	#package_name="${package_str}-${version_str}-$release_str"
+	package_name="${package_str}-${version_str}"
 	package_dir="$base_dir/tmp/${package_name}"
 	version_major_str=`echo $version_str | cut -d "." -f 1,2`
 	version_minor_str=`echo $version_str | cut -d "." -f 3`
@@ -308,7 +312,8 @@ create_remote_checks()
 	year_str=`date +%Y` 
 
 	package_str="sisiya-remote-checks"
-	package_name="${package_str}-${version_str}-$release_str"
+	#package_name="${package_str}-${version_str}-$release_str"
+	package_name="${package_str}-${version_str}"
 	package_dir="$base_dir/tmp/${package_name}"
 
 	### common package directory for all package types (rpm, deb, pacman ...)
@@ -384,7 +389,8 @@ create_client_checks()
 	year_str=`date +%Y` 
 
 	package_str="sisiya-client-checks"
-	package_name="${package_str}-${version_str}-$release_str"
+	#package_name="${package_str}-${version_str}-$release_str"
+	package_name="${package_str}-${version_str}"
 	package_dir="$base_dir/tmp/${package_name}"
 
 	### common package directory for all package types (rpm, deb, pacman ...)

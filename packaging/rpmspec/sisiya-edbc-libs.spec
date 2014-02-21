@@ -1,8 +1,5 @@
 %define name sisiya-edbc-libs
 
-%define version __VERSION__
-%define release __RELEASE__
-
 ### define distro
 #%define is_redhat 	%(test -e /etc/redhat-release 	&& echo 1 || echo 0)
 %define is_mandrake 	%(test -e /etc/mandrake-release && echo 1 || echo 0)
@@ -12,12 +9,10 @@
 
 Summary: Libraries written in C++ for Database connectivity like JDBC.
 Name:%{name} 
-#BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
-Version: %{version}
-Release: %{release}
-#Obsoletes: $version-$release
-Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}-%{release}.tar.gz
+Version: __VERSION__
+Release: 0
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
@@ -33,7 +28,7 @@ Requires: mysql-libs postgresql-libs
 This package contains the SisIYA EDBC libraries.
 
 %prep 
-%setup -n %{name}-%{version}-%{release}
+%setup -n %{name}-%{version}
 
 %build
 ./bootstrap create

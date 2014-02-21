@@ -32,7 +32,7 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our %percents = ( 'warning' => 95, 'error' => 90 );
+our %percents = ( 'warning' => 90, 'error' => 95 );
 our $db_name = 'TIGER';
 our $db_user = 'system';
 our $db_password = 'manager';

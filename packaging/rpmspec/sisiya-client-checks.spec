@@ -1,18 +1,15 @@
 %define name sisiya-client-checks
 
-%define version __VERSION__
-%define release __RELEASE__
-
 %define install_dir /usr/share/%{name}
 
-Summary: The SisIYA client checks.
+Summary: SisIYA client programs and checks
 Name:%{name} 
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
-Version: %{version}
-Release: %{release}
+Version: __VERSION__
+Release: 0
 #Obsoletes: $version-$release
-Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}-%{release}.tar.gz
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
@@ -23,7 +20,7 @@ Requires: perl, sysstat
 The SisIYA client programs and checks. This package is installed on every server that is going to be monitored by SisIYA.
 
 %prep 
-%setup -n %{name}-%{version}-%{release}
+%setup -n %{name}-%{version}
 
 %install
 rm -rf %{buildroot}
@@ -33,7 +30,8 @@ make "DESTDIR=%{buildroot}" install
 %files
 %defattr(-,root,root)
 %dir %attr(0755,root,root) 				/etc/cron.d
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-client-checks
+%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/%{name}
+%dir %attr(0755,root,root) 				/etc/sisiya
 %dir %attr(0755,root,root) 				/etc/sisiya/%{name}
 %dir %attr(0755,root,root) 				/etc/sisiya/%{name}/conf.d
 %attr(0644,root,root) 		%config(noreplace)	/etc/sisiya/%{name}/conf.d/*
@@ -46,4 +44,5 @@ make "DESTDIR=%{buildroot}" install
 %attr(0644,root,root) 					%{install_dir}/misc/*
 %attr(0755,root,root) 					%{install_dir}/scripts/*
 %attr(0755,root,root) 					%{install_dir}/utils/*
+%dir %attr(0755,root,root) 				/usr/share/doc/%{name}
 %attr(0644,root,root) 		 			/usr/share/doc/%{name}/*

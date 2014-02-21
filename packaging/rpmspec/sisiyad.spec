@@ -1,15 +1,10 @@
 %define name sisiyad
 
-%define version __VERSION__
-%define release __RELEASE__
-%define Source_Release __RELEASE__
-
-
 Summary: SisIYA daemon.
 Name: %{name}
-Version: %{version}
-Release: %{Source_Release}%{?dist}
-Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}-%{Source_Release}.tar.gz
+Version: 0.6.30.21
+Release: 0
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
@@ -30,7 +25,7 @@ The SisIYA daemon is a program which receives incomming SisIYA messages and reco
 in a database system.
 
 %prep 
-%setup -n %{name}-%{version}-%{Source_Release}
+%setup -n %{name}-%{version}
 
 %build
 ./bootstrap create
@@ -64,8 +59,8 @@ fi
 	service sisiyad restart > /dev/null 
 %endif
 %else
-	systemctl daemon-reload
-	systemctl restart sisiyad 
+	/usr/bin/systemctl daemon-reload
+	/usr/bin/systemctl restart sisiyad 
 %endif
 
 %preun 
@@ -79,8 +74,8 @@ fi
 	chkconfig --del sisiyad
 %endif
 %else
-	systemctl stop sisiyad
-	systemctl disable sisiyad
+	/usr/bin/systemctl stop sisiyad
+	/usr/bin/systemctl disable sisiyad
 %endif
 
 %clean 
@@ -89,6 +84,10 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 #%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
+%attr(0700,root,root) 				/etc/sisiya
+%attr(0700,root,root) 				/etc/sisiya/sisiyad
+%attr(0700,root,root) 				/etc/systemd
+%attr(0700,root,root) 				/etc/systemd/system
 %attr(0600,root,root) 	%config(noreplace) 	/etc/sisiya/sisiyad/sisiyad.conf
 %attr(0700,root,root) 				%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}
 %attr(0700,root,root) 				/usr/sbin/sisiyad

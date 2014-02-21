@@ -1,9 +1,5 @@
 %define name sisiya-webui-php
 
-%define version __VERSION__
-%define release __RELEASE__
-
-
 %if 0%{?rhel_version}
 	%define web_base_dir /var/www/html
 	%define www_user  apache
@@ -22,13 +18,13 @@
 
 %define install_dir %{web_base_dir}/%{name}
 
-Summary: PHP web UI for SisIYA.
+Summary: PHP web UI for SisIYA
 Name:%{name} 
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
-Version: %{version}
-Release: %{release}
-Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}-%{release}.tar.gz
+Version: __VERSION__
+Release: 0
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Tools
@@ -39,7 +35,7 @@ Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, nmap, sisiya-client
 PHP web UI for SisIYA.
 
 %prep 
-%setup -n %{name}-%{version}-%{release}
+%setup -n %{name}-%{version}
 
 %install
 rm -rf %{buildroot}

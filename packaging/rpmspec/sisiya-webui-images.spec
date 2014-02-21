@@ -1,8 +1,5 @@
 %define name sisiya-webui-images
 
-%define version __VERSION__
-%define release __RELEASE__
-	
 %if 0%{?rhel_version}
 	%define web_base_dir /var/www/html
 	%define www_user  apache
@@ -21,14 +18,13 @@
 
 %define install_dir %{web_base_dir}/sisiya-webui-php/images/systems
 
-Summary: Image collection for SisIYA web user interface. These images are used for assigning to systems.
+Summary: Image collection for SisIYA web user interface. These images are used for assigning to systems
 Name:%{name} 
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
-Version: %{version}
-Release: %{release}
-#Obsoletes: $version-$release
-Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}-%{release}.tar.gz
+Version: __VERSION__
+Release: 0
+Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
 License: GPL
 Vendor: Erdal Mutlu
 Group: System Environment/Tools
@@ -39,7 +35,7 @@ Requires: sisiya-webui-php
 Image collection for SisIYA web GUI. These images are used for assigning to systems. These are mostly images of various hardware.
 
 %prep 
-%setup -n %{name}-%{version}-%{release}
+%setup -n %{name}-%{version}
 
 %install
 rm -rf %{buildroot}
