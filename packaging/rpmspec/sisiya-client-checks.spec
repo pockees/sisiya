@@ -27,7 +27,7 @@ License: GPL-2.0+
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
-Requires: perl, cron, sysstat
+Requires: perl, sysstat
 %description 
 The SisIYA client programs and checks. This package is installed on every server that is going to be monitored by SisIYA.
 
@@ -43,7 +43,6 @@ make "DESTDIR=%{buildroot}" install
 
 %files
 %defattr(-,root,root)
-#%attr(0755,root,root)		%dir			/etc/cron.d
 %attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/%{name}
 %attr(0755,root,root) 		%dir			/etc/sisiya
 %attr(0755,root,root) 		%dir			/etc/sisiya/%{name}

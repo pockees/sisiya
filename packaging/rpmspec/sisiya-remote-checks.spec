@@ -17,7 +17,7 @@
 %define www_user  apache
 %define www_group apache
 
-%if %is_suse
+%if 0%{?suse_version} 
 %define www_user  wwwrun
 %define www_group www
 %endif
@@ -53,7 +53,6 @@ chgrp    %{www_group}	/etc/sisiya/sisiya-remote-checks
 chgrp -R %{www_group}	/etc/sisiya/sisiya-remote-checks/conf.d
 
 %files
-%attr(0755,root,root)		%dir			/etc/cron.d
 %attr(0755,root,root)		%dir			/etc/sisiya
 %attr(0755,root,root) 		%dir			/etc/sisiya/%{name}
 %attr(0755,root,root) 		%dir			/etc/sisiya/%{name}/conf.d

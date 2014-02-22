@@ -45,7 +45,7 @@ License: GPL-2.0+
 Vendor: Erdal Mutlu
 Group: System Environment/Tools
 Packager: Erdal Mutlu <erdal@sisiya.org>
-Requires: bash, cron, httpd, php, php-mysql, php-gd, php-mbstring, nmap, sisiya-client-checks
+Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, nmap, sisiya-client-checks
 %description 
 PHP web user and administration interface for SisIYA.
 
@@ -65,7 +65,6 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 
 %files
 %defattr(-,root,root)
-%attr(0755,root,root)		%dir			/etc/cron.d
 %attr(0755,root,root)		%dir			%{install_dir}
 %attr(0755,root,root) 		%dir			%{install_dir}/conf
 %attr(0755,root,root)		%dir			%{install_dir}/javascript
