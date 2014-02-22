@@ -23,16 +23,18 @@ BuildRoot: %{_builddir}/%{name}-root
 Version: __VERSION__
 Release: 0
 Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
-License: GPL
+License: GPL-2.0+
 Vendor: Erdal Mutlu
 Group: System Environment/Daemons
 Packager: Erdal Mutlu <erdal@sisiya.org>
-Requires: perl, sysstat
+Requires: perl, cron, sysstat
 %description 
 The SisIYA client programs and checks. This package is installed on every server that is going to be monitored by SisIYA.
 
 %prep 
 %setup -n %{name}-%{version}
+
+%build
 
 %install
 rm -rf %{buildroot}
@@ -58,3 +60,5 @@ make "DESTDIR=%{buildroot}" install
 %attr(0755,root,root) 					%{install_dir}/utils/*
 %attr(0755,root,root)		%dir 			/usr/share/doc/%{name}
 %attr(0644,root,root) 		 			/usr/share/doc/%{name}/*
+
+%changelog
