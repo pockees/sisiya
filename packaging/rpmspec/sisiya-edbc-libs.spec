@@ -18,7 +18,7 @@ Name: sisiya-edbc-libs
 Url: http://www.sisiya.org
 Summary: Libraries written in C++ for Database connectivity like JDBC
 BuildRoot: %{_builddir}/%{name}-root
-Version: 0.6.30.21
+Version: __VERSION__
 Release: 0
 Source0: http://sourceforge.net/projects/sisiya/files/sisiya/%{version}/rpm/%{name}-%{version}.tar.gz
 License: GPL-2.0+
