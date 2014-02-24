@@ -15,7 +15,7 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 Name: sisiyad
-Summary: SisIYA daemon.
+Summary: SisIYA daemon
 Url: http://www.sisiya.org
 Version: __VERSION__
 Release: 0
@@ -27,7 +27,7 @@ Packager: Erdal Mutlu <erdal@sisiya.org>
 BuildRoot:%{_tmppath}/%{name}-root
 %if 0%{?suse_version} 
 BuildRequires: autoconf automake doxygen gcc-c++ mysql-devel postgresql-devel
-Requires: libmysqlclient18 libpq5
+Requires: systemd, libmysqlclient18 libpq5
 %else
 BuildRequires: autoconf automake doxygen gcc-c++ mysql-devel postgresql-devel
 Requires: mysql-libs postgresql-libs
@@ -72,9 +72,9 @@ fi
 %if 0%{?rhel_version} < 700 
 	service sisiyad restart > /dev/null 
 %endif
-%else
-	/usr/bin/systemctl daemon-reload
-	/usr/bin/systemctl restart sisiyad 
+#%else
+#	/usr/bin/systemctl daemon-reload
+#	/usr/bin/systemctl restart sisiyad 
 %endif
 
 %preun 
@@ -87,9 +87,9 @@ fi
 	service sisiyad stop > /dev/null 2>&1
 	chkconfig --del sisiyad
 %endif
-%else
-	/usr/bin/systemctl stop sisiyad
-	/usr/bin/systemctl disable sisiyad
+#%else
+#	/usr/bin/systemctl stop sisiyad
+#	/usr/bin/systemctl disable sisiyad
 %endif
 
 %clean 
@@ -100,8 +100,17 @@ rm -rf %{buildroot}
 #%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
 %attr(0700,root,root) 				/etc/sisiya
 %attr(0700,root,root) 				/etc/sisiya/sisiyad
-%attr(0700,root,root) 				/etc/systemd
-%attr(0700,root,root) 				/etc/systemd/system
+%if 0%{?rhel_version}
+%if 0%{?rhel_version} < 700 
+%attr(0700,root,root) 	%dir			/etc/systemd
+%attr(0700,root,root) 	%dir			/etc/systemd/system
+%endif
+%else
+%attr(0700,root,root) 	%dir			/etc/systemd
+%attr(0700,root,root) 	%dir			/etc/systemd/system
+%endif
+
+
 %attr(0600,root,root) 	%config(noreplace) 	/etc/sisiya/sisiyad/sisiyad.conf
 %attr(0700,root,root) 				%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}
 %attr(0700,root,root) 				/usr/sbin/sisiyad

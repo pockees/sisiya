@@ -64,4 +64,5 @@ install:
 	gzip -9 $(install_root)/usr/share/man/man5/*
 	gzip -9 $(install_root)/usr/share/man/man8/*
 	install -m 600 sisiyad.conf $(install_root)/etc/sisiya/sisiyad
+	strip sisiyad
 	install -m 700 sisiyad $(install_root)/usr/sbin
