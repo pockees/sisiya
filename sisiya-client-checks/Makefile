@@ -37,7 +37,7 @@ install:
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config.pm 		$(dst_etc)/sisiya/$(package_name)
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Config_local.conf	$(dst_etc)/sisiya/$(package_name)
 	install -m 600 etc/sisiya/$(package_name)/conf.d/* 			$(dst_etc)/sisiya/$(package_name)/conf.d
-	install -m 644 changelog copyright version.txt 				$(doc_dir)
+	install -m 644 debian/changelog debian/copyright version.txt		$(doc_dir)
 	install -m 600 misc/* 							$(dst_dir)/misc
 	install -m 700 scripts/*						$(dst_dir)/scripts
 	install -m 700 utils/*							$(dst_dir)/utils

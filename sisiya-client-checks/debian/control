@@ -1,0 +1,13 @@
+Source: sisiya-client-checks
+Section: admin
+Priority: optional
+Maintainer: Erdal Mutlu <erdal@sisiya.org>
+Homepage: http://www.sisiya.org
+Build-Depends: debhelper
+Standards-Version: 3.9.3
+
+Package: sisiya-client-checks
+Architecture: all
+Depends: perl
+Description: SisIYA client programs and checks. This package is installed on 
+  every server that is going to be monitored by SisIYA.
