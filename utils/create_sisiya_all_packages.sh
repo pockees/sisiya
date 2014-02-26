@@ -428,7 +428,8 @@ create_client_checks()
 	deb_root_dir="$base_dir/deb/$package_name"
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
-	for f in etc debian
+	mkdir -p $deb_root_dir 
+	for f in etc debian version.txt
 	do
 		cp -a $package_dir/$f $deb_root_dir
 	done
