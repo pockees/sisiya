@@ -402,7 +402,7 @@ create_client_checks()
 	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d/
 	mkdir -p $package_dir/etc/sisiya
 	cp -a ${source_dir}/etc/sisiya/$package_str/ $package_dir/etc/sisiya
-	cat ${source_dir}/$package_str/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/copyright
+	cat ${source_dir}/$package_str/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
 
 	find $package_dir/ -type d -exec chmod 755 {} \;
 	find $package_dir/ -type f -exec chmod 644 {} \;
@@ -428,32 +428,18 @@ create_client_checks()
 	deb_root_dir="$base_dir/deb/$package_name"
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
+	cp -a $package_dir/etc $deb_root_dir/ 
 	mkdir -p $deb_root_dir/usr/share/${package_str} 
 	for f in misc scripts utils
 	do
 		cp -a $package_dir/$f ${deb_root_dir}/usr/share/${package_str}/ 
 	done
-	mkdir -p $deb_root_dir/usr/share/doc/$package_str
-	for f in changelog copyright version.txt changelog.Debian
-	do
-		cp $package_dir/$f $deb_root_dir/usr/share/doc/$package_str
-	done
-	gzip --best $deb_root_dir/usr/share/doc/$package_str/changelog*
-
-	mkdir $deb_root_dir/DEBIAN  
-	cp $source_dir/packaging/debian/${package_str}-conffiles $deb_root_dir/DEBIAN/conffiles
-	cp $source_dir/packaging/copyright $deb_root_dir/DEBIAN/
-	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
-	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
-	cp -a $package_dir/etc $deb_root_dir/ 
 
 	find $deb_root_dir/ -type d -exec chmod 755 {} \;
 	find $deb_root_dir/ -type f -exec chmod 644 {} \;
 	find $deb_root_dir/ -name "*.pl" -exec chmod 755 {} \;
 	find $deb_root_dir/ -name "*.sh" -exec chmod 755 {} \;
 	find $deb_root_dir/etc -type f -exec chmod 644 {} \;
-
-	chmod 755 $deb_root_dir/DEBIAN/postinst
 
 	(cd $base_dir/deb ; tar czf ${package_name}.tar.gz $package_name) 
 	rm -rf $deb_root_dir 

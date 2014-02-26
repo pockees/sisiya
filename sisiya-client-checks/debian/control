@@ -8,6 +8,6 @@ Standards-Version: 3.9.3
 
 Package: sisiya-client-checks
 Architecture: all
-Depends: perl
+Depends: perl, ${misc:Depends}
 Description: SisIYA client programs and checks. This package is installed on 
-  every server that is going to be monitored by SisIYA.
+ every server that is going to be monitored by SisIYA.
