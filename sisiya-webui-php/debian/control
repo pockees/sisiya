@@ -9,4 +9,6 @@ Standards-Version: 3.9.3
 Package: sisiya-webui-php
 Architecture: all
 Depends: php5, php5-gd, php5-mysql, php5-pgsql, ${misc:Depends}
-Description: PHP web user and administration interface for SisIYA
+Description: PHP web user and administration interface for SisIYA.
+ This package also includes scripts to create the SisIYA database.
+ Please read the INSTALL.txt file for configuration instructions.
