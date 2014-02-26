@@ -445,7 +445,7 @@ create_client_checks()
 	find $deb_root_dir/ -name "*.sh" -exec chmod 755 {} \;
 	find $deb_root_dir/etc -type f -exec chmod 644 {} \;
 
-	(cd $base_dir/deb ; tar czf ${package_name}.tar.gz $package_name) 
+	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"
 	################################################################################################################################################

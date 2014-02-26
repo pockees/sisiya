@@ -1,5 +1,6 @@
-sisiya-client-checks (0.6.31-1) UNRELEASED; urgency=low
+sisiya-client-checks (0.6.30.21) UNRELEASED; urgency=low
 
+  * added files for building Debian package natively
   * added external programs list in the SisIYA_Config.pm
   * active checks are controlled via SisIYA_Config.pm configuration file
   * added default configuration files for every check
