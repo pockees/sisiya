@@ -29,23 +29,16 @@ version="$1"
 echo $version
 machine_arch=`uname -m`
 
-package_list="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images sisiya-edbc-libs sisiyad"
 package_list_noarch="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images"
-package_list_binary="sisiyad-${version} sisiya-edbc-libs-${version}"
+#package_list="sisiya-client-checks sisiyad-${version} sisiya-edbc-libs-${version}"
+package_list="sisiya-client-checks sisiya-remote-checks"
 
-for f in $package_list_noarch
-do
-	echo "Building ${f}-${version}.tar.gz ..."
-	tar xfz ${f}-${version}.tar.gz
-	dpkg --build ${f}-$version
-	echo "---------------------"
-done
-
-for f in $package_list_binary
+for f in $package_list
 do
 	echo "Building ${f}_${version}.orig.tar.gz ..."
 	tar xfz ${f}_${version}.orig.tar.gz
-	cd ${f}-${version} && debuild 
+	#cd ${f}-${version} && debuild 
+	cd ${f}-${version} && debuild -k7F640C1A
 	cd ..
 	echo "---------------------"
 done

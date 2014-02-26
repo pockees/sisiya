@@ -326,7 +326,13 @@ create_remote_checks()
 	cp ${source_dir}/etc/cron.d/$package_str $package_dir/etc/cron.d
 	mkdir -p $package_dir/etc/sisiya
 	cp -a ${source_dir}/etc/sisiya/$package_str $package_dir/etc/sisiya
-	cat ${source_dir}/$package_str/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/copyright
+	cat ${source_dir}/$package_str/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
+
+	find $package_dir/ -type d -exec chmod 755 {} \;
+	find $package_dir/ -type f -exec chmod 644 {} \;
+	find $package_dir/ -name "*.pl" -exec chmod 755 {} \;
+	find $package_dir/ -name "*.sh" -exec chmod 755 {} \;
+	find $package_dir/etc -type f -exec chmod 644 {} \;
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
@@ -343,24 +349,20 @@ create_remote_checks()
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
-	echo -n "Creating ${deb_root_dir}.tar.gz ..."
+	echo -n "Creating $base_dir/deb/${package_str}_${version_str}.orig.tar.gz ..."
 	rm -rf $deb_root_dir 
+	mkdir -p $deb_root_dir 
 	mkdir -p $deb_root_dir/usr/share/${package_str} 
 	mkdir -p $deb_root_dir/usr/share/doc/${package_str} 
+	for f in etc debian version.txt
+	do
+		cp -a $package_dir/$f $deb_root_dir
+	done
 	for f in misc scripts utils
 	do
 		cp -a $package_dir/$f ${deb_root_dir}/usr/share/${package_str} 
 	done
-	for f in changelog version.txt copyright
-	do
-		cp -a $package_dir/$f ${deb_root_dir}/usr/share/doc/${package_str} 
-	done
-	mkdir $deb_root_dir/DEBIAN
-	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
-	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
-	chmod 755 $deb_root_dir/DEBIAN/postinst
-	cp -a $package_dir/etc $deb_root_dir/ 
-	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
+	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"
 	################################################################################################################################################
@@ -409,7 +411,6 @@ create_client_checks()
 	find $package_dir/ -name "*.pl" -exec chmod 755 {} \;
 	find $package_dir/ -name "*.sh" -exec chmod 755 {} \;
 	find $package_dir/etc -type f -exec chmod 644 {} \;
-
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################

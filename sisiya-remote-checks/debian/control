@@ -1,0 +1,13 @@
+Source: sisiya-remote-checks
+Section: admin
+Priority: optional
+Maintainer: Erdal Mutlu <erdal@sisiya.org>
+Homepage: http://www.sisiya.org
+Build-Depends: debhelper
+Standards-Version: 3.9.3
+
+Package: sisiya-remote-checks
+Architecture: all
+Depends: perl, ${misc:Depends}
+Description: SisIYA remote check programs that are run from a central server. 
+ These scripts are used to check the status of various services like HTTP, SMTP etc remotely.

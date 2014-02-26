@@ -1,3 +1,0 @@
-#!/bin/bash
-chown root:root -R /etc/cron.d/sisiya-remote-checks
-chown root:www-data -R /etc/cron.d/sisiya-remote-checks

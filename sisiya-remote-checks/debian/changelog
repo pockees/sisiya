@@ -1,0 +1,11 @@
+sisiya-remote-checks (0.6.30.21) UNRELEASED; urgency=low
+
+  * added files for building Debian package natively
+ 
+ -- Erdal Mutlu <erdal@sisiya.org>  Wed, 26 Jan 2014 10:08:28 +0200
+
+sisiya-remote-checks (0.6.30-1) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Fri, 31 Jan 2014 11:08:28 +0200

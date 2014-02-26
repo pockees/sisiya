@@ -38,7 +38,7 @@ install:
 	install -m 600 etc/sisiya/$(package_name)/SisIYA_Remote_Config*.*	$(dst_etc)/sisiya/$(package_name)
 	install -m 660 etc/sisiya/$(package_name)/conf.d/*			$(dst_etc)/sisiya/$(package_name)/conf.d
 	install -m 600 etc/cron.d/$(package_name)				$(dst_cron)
-	install -m 644 changelog version.txt copyright				$(doc_dir)
+	install -m 644 debian/changelog debian/copyright version.txt		$(doc_dir)
 	install -m 600 lib/*		 					$(dst_dir)/lib
 	install -m 600 misc/* 							$(dst_dir)/misc
 	install -m 700 scripts/* 						$(dst_dir)/scripts
