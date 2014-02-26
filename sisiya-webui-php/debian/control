@@ -1,0 +1,12 @@
+Source: sisiya-webui-php
+Section: admin
+Priority: optional
+Maintainer: Erdal Mutlu <erdal@sisiya.org>
+Homepage: http://www.sisiya.org
+Build-Depends: debhelper
+Standards-Version: 3.9.3
+
+Package: sisiya-webui-php
+Architecture: all
+Depends: php5, php5-gd, php5-mysql, php5-pgsql, ${misc:Depends}
+Description: PHP web user and administration interface for SisIYA

@@ -1,0 +1,4 @@
+etc/* etc/
+var/* /var/
+*.php var/www/sisiya-webui-php/
+*.txt var/www/sisiya-webui-php/

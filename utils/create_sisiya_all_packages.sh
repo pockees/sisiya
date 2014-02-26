@@ -128,7 +128,7 @@ create_webui_php()
 		cp -a ${source_dir}/etc/cron.d/$f $package_dir/etc/cron.d/
 	done
 	cp -a ${source_dir}/sisiya_ui/XMPPHP $package_dir/
-	echo "$version_str" > $package_dir/version.txt
+	cat ${source_dir}/$package_str/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
 	cat $source_dir/$package_str/conf/sisiya_common_conf.php | sed -e "s/__VERSION__/${version_str}/" -e "s/__YEAR__/${year_str}/"  > $package_dir/conf/sisiya_common_conf.php 
 	################################################################################################################################################
 	### create RPM source package
@@ -147,13 +147,17 @@ create_webui_php()
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
+	web_base_dir="/var/www"
 	rm -rf $deb_root_dir 
-	cp -a $package_dir $deb_root_dir
-	mkdir $deb_root_dir/DEBIAN
-	cat $source_dir/packaging/debian/${package_str}-control 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/control 
-	cat $source_dir/packaging/debian/${package_str}-postinst 	| sed -e "s/__VERSION__/${version_str}/" > $deb_root_dir/DEBIAN/postinst 
-	chmod 755 $deb_root_dir/DEBIAN/postinst
-	(cd $base_dir/deb ; tar cfz ${package_name}.tar.gz $package_name) 
+	mkdir -p $deb_root_dir/$web_base_dir
+	for f in etc debian version.txt
+	do
+		cp -a $package_dir/$f $deb_root_dir
+	done
+
+	cp -a $package_dir $deb_root_dir/$web_base_dir/
+	rm -rf $deb_root_dir/$web_base_dir/debian
+	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"
 	################################################################################################################################################

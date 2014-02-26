@@ -31,7 +31,7 @@ machine_arch=`uname -m`
 
 package_list_noarch="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images"
 #package_list="sisiya-client-checks sisiyad-${version} sisiya-edbc-libs-${version}"
-package_list="sisiya-client-checks sisiya-remote-checks"
+package_list="sisiya-client-checks sisiya-remote-checks sisiya-webui-php"
 
 for f in $package_list
 do
