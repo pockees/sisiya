@@ -426,7 +426,7 @@ create_client_checks()
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
-	echo -n "Creating ${deb_root_dir}.tar.gz ..."
+	echo -n "Creating $base_dir/deb/${package_str}_${version_str}.orig.tar.gz ..."
 	rm -rf $deb_root_dir 
 	mkdir -p $deb_root_dir 
 	for f in etc debian version.txt
