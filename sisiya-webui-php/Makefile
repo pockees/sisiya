@@ -1,9 +1,12 @@
 ### directory definitions #################################################
 install_root=$(DESTDIR)$(prefix)
-web_dir=$(install_root)$(WEB_BASE_DIR)/sisiya-webui-php
+etc_dir=$(install_root)/etc
+web_dir=$(install_root)/usr/share/sisiya-webui-php
+web_tmp_dir=$(install_root)/var/tmp/sisiya-webui-php
+systems_images_dir=$(install_root)/var/lib/sisiya-webui-images
 dst_apache_conf=$(install_root)/etc/httpd/conf.d
 dst_etc=$(install_root)/etc
-cron_dir=$(install_root)/etc/cron.d
+cron_dir=$(etc_dir)/cron.d
 #sisiya_remote_checks_dir=/etc/sisiya/sisiya-remote-checks/conf.d
 ###########################################################################
 .PHONY: install
@@ -38,13 +41,16 @@ install:
 	install -m 755 -d 				$(web_dir)/images
 	install -m 755 -d				$(web_dir)/images/links
 	install -m 755 -d			 	$(web_dir)/images/sisiya
-	install -m 755 -d 				$(web_dir)/images/systems
-	install -m 755 -d 				$(web_dir)/images/tmp
-	install -m 644 images/sisiya/*.gif 		$(web_dir)/images/sisiya/
-	install -m 644 images/sisiya/*.png 		$(web_dir)/images/sisiya/
+	install -m 644 images/sisiya/*.* 		$(web_dir)/images/sisiya/
 	install -m 755 -d 				$(web_dir)/install
 	install install/* 				$(web_dir)/install/
 	install -m 755 -d				$(web_dir)/XMPPHP/
 	install -m 644 XMPPHP/*.php			$(web_dir)/XMPPHP/
 	install -m 755 -d				$(web_dir)/utils
 	install -m 644 utils/*.php 			$(web_dir)/utils
+	install -d 					$(web_tmp_dir)
+	# this directory belongs to sisiya-webui-images package, I create it here to make the packaging software happy
+	mkdir -p 					$(systems_images_dir)
+	# make links
+	cd $(web_dir)/images && ln -sf $(web_tmp_dir) tmp
+	cd $(web_dir)/images && ln -sf $(systems_images_dir) systems

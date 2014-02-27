@@ -16,25 +16,22 @@
 
 
 %if 0%{?rhel_version}
-	%define web_base_dir /var/www/html
 	%define www_user  apache
 	%define www_group apache
 %else
 	%if 0%{?suse_version}
-		%define web_base_dir /srv/www/htdocs
 		%define www_user  wwwrun
 		%define www_group www
 	%else
-		%define web_base_dir /var/www/html
 		%define www_user  apache
 		%define www_group apache
 	%endif
 %endif
 
-%define install_dir %{web_base_dir}/sisiya-webui-php/images/systems
 
 Name: sisiya-webui-images
 Summary: Image collection for SisIYA web user interface
+%define install_dir /var/lib/%{name}
 Url: http://www.sisiya.org
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
@@ -55,7 +52,7 @@ Image collection for SisIYA web GUI. These images are used for assigning to syst
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DESTDIR=%{buildroot}" "WEB_BASE_DIR=%{web_base_dir}" install
+make "DESTDIR=%{buildroot}" install
 
 %post
 # change ownership 
@@ -66,8 +63,6 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}
 %files
 %defattr(-,root,root)
 %attr(0775,root,root)	%dir			%{install_dir}
-%attr(0775,root,root)	%dir			%{web_base_dir}/sisiya-webui-php
-%attr(0775,root,root)	%dir			%{web_base_dir}/sisiya-webui-php/images
 %attr(0664,root,root) 				%{install_dir}/*
 
 %changelog
