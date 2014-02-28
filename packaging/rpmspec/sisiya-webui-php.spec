@@ -16,16 +16,13 @@
 
 
 %if 0%{?rhel_version}
-	%define web_base_dir /var/www/html
 	%define www_user  apache
 	%define www_group apache
 %else
 	%if 0%{?suse_version}
-		%define web_base_dir /srv/www/htdocs
 		%define www_user  wwwrun
 		%define www_group www
 	%else
-		%define web_base_dir /var/www/html
 		%define www_user  apache
 		%define www_group apache
 	%endif
@@ -33,6 +30,7 @@
 
 
 Name: sisiya-webui-php
+%define web_base_dir /usr/share/%{name}
 Summary: PHP web UI for SisIYA
 Url: http://www.sisiya.org
 %define install_dir %{web_base_dir}/%{name}
@@ -55,46 +53,46 @@ PHP web user and administration interface for SisIYA.
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make "DESTDIR=%{buildroot}" "WEB_BASE_DIR=%{web_base_dir}" install
+make "DESTDIR=%{buildroot}" install
 
-%post
+#%post
 # change ownership 
-chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
+#chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 
 %build
 
 %files
-%defattr(-,root,root)
-%attr(0755,root,root)		%dir			%{install_dir}
-%attr(0755,root,root) 		%dir			%{install_dir}/conf
-%attr(0755,root,root)		%dir			%{install_dir}/javascript
-%attr(0755,root,root) 		%dir			%{install_dir}/lib
-%attr(0755,root,root) 		%dir			%{install_dir}/style
-%attr(0755,root,root) 		%dir			%{install_dir}/images
-%attr(0755,root,root) 		%dir			%{install_dir}/images/links
-%attr(0755,root,root) 		%dir			%{install_dir}/images/sisiya
-%attr(0755,root,root) 		%dir			%{install_dir}/images/systems
-%attr(0755,root,root)		%dir			%{install_dir}/install
-%attr(0755,root,root) 		%dir			%{install_dir}/images/tmp
-%attr(0755,root,root) 		%dir			%{install_dir}/XMPPHP
-%attr(0755,root,root) 		%dir			%{install_dir}/utils
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-alerts
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-archive
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-check-expired
-%attr(0600,root,root) 		%config(noreplace) 	/etc/cron.d/sisiya-rss
-%attr(0644,root,root) 					%{install_dir}/favicon.ico
-%attr(0644,root,root) 					%{install_dir}/*.php
-%attr(0644,root,root) 					%{install_dir}/README.txt
-%attr(0644,root,root) 					%{install_dir}/INSTALL.txt
-%attr(0644,root,root) 		%config(noreplace)	%{install_dir}/conf/*.php
-%attr(0644,root,root) 		%config(noreplace)	%{install_dir}/conf/*.conf
-%attr(0644,root,root) 					%{install_dir}/javascript/*.js
-%attr(0644,root,root) 					%{install_dir}/lib/*.php
-%attr(0644,root,root) 					%{install_dir}/style/*.css
-%attr(0644,root,root) 					%{install_dir}/images/sisiya/*.*
-			 				%{install_dir}/install/*
-%attr(0644,root,root) 					%{install_dir}/XMPPHP/*.php
-%attr(0644,root,root) 					%{install_dir}/utils/*.php
-%attr(0755,root,root) 					%{install_dir}/utils/*.sh
+%defattr(-,%{www_user},%{www_group})
+%dir			%{install_dir}
+%dir			%{install_dir}/conf
+%dir			%{install_dir}/javascript
+%dir			%{install_dir}/lib
+%dir			%{install_dir}/style
+%dir			%{install_dir}/images
+%dir			%{install_dir}/images/links
+%dir			%{install_dir}/images/sisiya
+%dir			%{install_dir}/images/systems
+%dir			%{install_dir}/install
+%dir			%{install_dir}/images/tmp
+%dir			%{install_dir}/XMPPHP
+%dir			%{install_dir}/utils
+%config(noreplace) 	/etc/cron.d/sisiya-alerts
+%config(noreplace) 	/etc/cron.d/sisiya-archive
+%config(noreplace) 	/etc/cron.d/sisiya-check-expired
+%config(noreplace) 	/etc/cron.d/sisiya-rss
+			%{install_dir}/favicon.ico
+			%{install_dir}/*.php
+			%{install_dir}/README.txt
+			%{install_dir}/INSTALL.txt
+%config(noreplace)	%{install_dir}/conf/*.php
+%config(noreplace)	%{install_dir}/conf/*.conf
+			%{install_dir}/javascript/*.js
+			%{install_dir}/lib/*.php
+			%{install_dir}/style/*.css
+			%{install_dir}/images/sisiya/*.*
+			%{install_dir}/install/*
+			%{install_dir}/XMPPHP/*.php
+			%{install_dir}/utils/*.php
+			%{install_dir}/utils/*.sh
 
 %changelog

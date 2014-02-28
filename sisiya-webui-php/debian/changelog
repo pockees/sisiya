@@ -1,3 +1,9 @@
+sisiya-webui-php (0.6.30.22) UNRELEASED; urgency=low
+
+  * changaed installation directory
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Fri, 28 Jan 2014 22:08:28 +0200
+
 sisiya-webui-php (0.6.30.21) UNRELEASED; urgency=low
 
   * added files for building Debian package natively
