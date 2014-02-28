@@ -13,14 +13,14 @@ cron_dir=$(etc_dir)/cron.d
 .PHONY: install
 install:
 	install -d 					$(cron_dir)
-	install -m 644 etc/cron.d/sisiya-alerts		$(cron_dir)/sisiya-alerts
-	install 644 etc/cron.d/sisiya-archive 		$(cron_dir)/sisiya-archive
-	install 644 etc/cron.d/sisiya-check-expired 	$(cron_dir)/sisiya-check-expired
-	install 644 etc/cron.d/sisiya-rss		$(cron_dir)/sisiya-rss
+	install -m 644 etc/cron.d/sisiya-alerts		$(cron_dir)
+	install -m 644 etc/cron.d/sisiya-archive 	$(cron_dir)
+	install -m 644 etc/cron.d/sisiya-check-expired 	$(cron_dir)
+	install -m 644 etc/cron.d/sisiya-rss		$(cron_dir)
 	install -m 755 -d 				$(web_dir)/style
 	install -m 644 style/*.css 			$(web_dir)/style
 	install -m 755 -d 				$(web_dir)/javascript
-	install -m 644 javascript/*.js 			$(web_dir)/javascript/
+	install -m 644 javascript/*.js 			$(web_dir)/javascript
 	install -m 755 -d 				$(web_dir)/XMPPHP
 	install -m 644 favicon.ico	 		$(web_dir)
 	install -m 644 sisiya_admin.php 		$(web_dir)
