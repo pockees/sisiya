@@ -94,8 +94,7 @@ chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
 %attr(0644,root,root) 					%{install_dir}/javascript/*.js
 %attr(0644,root,root) 					%{install_dir}/lib/*.php
 %attr(0644,root,root) 					%{install_dir}/style/*.css
-%attr(0644,root,root) 					%{install_dir}/images/sisiya/*.gif
-%attr(0644,root,root) 					%{install_dir}/images/sisiya/*.png
+%attr(0644,root,root) 					%{install_dir}/images/sisiya/*.*
 			 				%{install_dir}/install/*
 %attr(0644,root,root) 					%{install_dir}/XMPPHP/*.php
 %attr(0644,root,root) 					%{install_dir}/utils/*.php
