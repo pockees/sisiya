@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -90,12 +90,12 @@ else {
 }
 
 $navigation_panel_str=getLinkIcon('dashboard',$mainProg.'?menu=dashboard');
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>';
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>';
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
 $navigation_panel_str.='<a href="'.$mainProg.'?menu=system_infos'.'&amp;systemID='.$systemID.'&amp;';
 $navigation_panel_str.='systemName='.$systemName.'&amp;systemType='.$systemType.'">';
-$navigation_panel_str.='<img src="'.$sisiyaImageDir.'/icon_system_infos.png" alt="'.$lrb['sisiya_gui.system_infos.header'].'" title="'.$lrb['sisiya_gui.system_infos.header'].'" /></a>';
+$navigation_panel_str.='<img src="'.SISIYA_IMG_URL.'/icon_system_infos.png" alt="'.$lrb['sisiya_gui.system_infos.header'].'" title="'.$lrb['sisiya_gui.system_infos.header'].'" /></a>';
 
 $h->addHeadContent('<meta http-equiv="cache-control" content="no-cache" />');
 $h->addHeadContent('<meta http-equiv="refresh" content="180" />');
@@ -119,7 +119,7 @@ $html.='</td>';
 $html.='<td>';
 $html.='<a href="'.$mainProg.'?menu=system_infos'.'&amp;systemID='.$systemID.'&amp;';
 $html.='systemName='.$systemName.'&amp;systemType='.$systemType.'">';
-$html.='<img src="'.$sisiyaImageDir.'/icon_system_infos.png" alt="'.$lrb['sisiya_gui.system_infos.header'].'" title="'.$lrb['sisiya_gui.system_infos.header'].'" /></a>';
+$html.='<img src="'.SISIYA_IMG_URL.'/icon_system_infos.png" alt="'.$lrb['sisiya_gui.system_infos.header'].'" title="'.$lrb['sisiya_gui.system_infos.header'].'" /></a>';
 $html.='</td>';
 $html.='</tr>';
 $html.='</table>';
@@ -127,8 +127,8 @@ $html.='</form>';
 
 $html.='<table class="header_system_services">'."\n";
 $html.='<tr><td align="left" rowspan="2">'."\n";
-$html.='<img src="'.$linksImageDir.'/'.$systemName.'.gif" alt="'.$systemName.'" />';
-$html.='<img src="'.$systemsImageDir.'/'.$systemType.'.gif" alt="'.$systemType.'" /></td>'."\n";
+$html.='<img src="'.LINKS_IMG_URL.'/'.$systemName.'.png" alt="'.$systemName.'" />';
+$html.='<img src="'.SYSTEMS_IMG_URL.'/'.$systemType.'.png" alt="'.$systemType.'" /></td>'."\n";
 $html.='<td>';
 $html.="</td></tr></table>\n";
 
@@ -166,9 +166,9 @@ else {
 			$link_str=$mainProg.'?menu=system_service_history'.'&amp;systemID='.$systemID.'&amp;systemName='.$systemName.'&amp;serviceID='.$row[5].'&amp;serviceName='.$row[0].'&amp;startDate=0&amp;systemType='.$systemType;
 			$history_str='';
 			if($withDailyHistory == 't') {
-				$image_file=$tmpImageDir.'/system_service_history_status_'.$systemID.'_'.$row[5].'.png';
-				createSystemServiceHistoryGraphMap($map_str,$link_str,$image_file,$systemID,$row[5],$h,$w);
-				$history_str='<br /><img src="'.$image_file.'" alt="graph" usemap="#map_'.$systemID.'_'.$row[5].'" />';
+				$image_file='system_service_history_status_'.$systemID.'_'.$row[5].'.png';
+				createSystemServiceHistoryGraphMap($map_str,$link_str, TMP_IMG_DIR.'/'.$image_file,$systemID,$row[5],$h,$w);
+				$history_str='<br /><img src="'.TMP_IMG_URL.'/'.$image_file.'" alt="graph" usemap="#map_'.$systemID.'_'.$row[5].'" />';
 				$history_str.=$map_str."\n";
 			}
 			#

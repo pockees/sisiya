@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -61,8 +61,8 @@ $global_status_id=getSystemGlobalStatusID();
 $status_str='Status'.$global_status_id;#under cunstruction'; # =getStatusName($global_status_id);
 
 $navigation_panel_str=getLinkIcon('dashboard',$mainProg.'?menu=dashboard');
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>';
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
 $navigation_panel_str.=$lrb['sisiya_gui.label.OverallSystemStatus'].' : ';
 $navigation_panel_str.='&nbsp;&nbsp;';
 $navigation_panel_str.='<img src="'.getStatusImage($global_status_id).'" alt="'.$status_str.'" title="'.$lrb['sisiya_gui.label.OverallSystemStatus'].'" />';

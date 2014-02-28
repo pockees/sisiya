@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -70,7 +70,7 @@ function getSwitchInfo($switch_name)
 
 function getSwitchTable(&$switch,$switch_info)
 {
-	global $mainProg,$lrb,$sisiyaImageDir;
+	global $mainProg,$lrb;
 
 	$nports=count($switch);
 	$html='';
@@ -112,7 +112,7 @@ function getSwitchTable(&$switch,$switch_info)
 			if($row == null) {
 #				$html.='<td class="empty">'.($k+1).'<br />';
 				$html.='<td class="empty">'.($k+1).'<br />';
-				$html.='<img src="'.$sisiyaImageDir.'/icon_empty_port.png'.'" alt="'.$lrb['sisiya.label.empty_port'].'" />';
+				$html.='<img src="'.SISIYA_IMG_URL.'/icon_empty_port.png'.'" alt="'.$lrb['sisiya.label.empty_port'].'" />';
 				$html.='</td>'."\n";
 			}
 			else {
@@ -137,19 +137,19 @@ function getSwitchTable(&$switch,$switch_info)
 					# port status
 					if($row[13] == 'f') {
 						$html.='<td class="empty">';
-						$html.='<img src="'.$sisiyaImageDir.'/icon_empty_port.png'.'" alt="'.$lrb['sisiya.label.empty_port'].'" title="vlan='.$row[16].'" />';
+						$html.='<img src="'.SISIYA_IMG_URL.'/icon_empty_port.png'.'" alt="'.$lrb['sisiya.label.empty_port'].'" title="vlan='.$row[16].'" />';
 						$html.='</td>'."\n";
 					}
 					else {
 						$html.='<td class="empty">';
-						$html.='<img src="'.$sisiyaImageDir.'/icon_port_up.png'.'" alt="'.$lrb['sisiya.label.empty_port'].'" title="vlan='.$row[16].'" />';
+						$html.='<img src="'.SISIYA_IMG_URL.'/icon_port_up.png'.'" alt="'.$lrb['sisiya.label.empty_port'].'" title="vlan='.$row[16].'" />';
 						$html.='</td>'."\n";
 					}
 				}
 			}
 			else {
 				$html.='<td class="empty">';
-				$html.='<img src="'.$sisiyaImageDir.'/icon_empty_port.png'.'" alt="'.$lrb['sisiya.label.empty_port'].'" />';
+				$html.='<img src="'.SISIYA_IMG_URL.'/icon_empty_port.png'.'" alt="'.$lrb['sisiya.label.empty_port'].'" />';
 				$html.='</td>'."\n";
 			}
 			}
@@ -177,8 +177,8 @@ $html='';
 
 /*
 $navigation_panel_str=getLinkIcon('dashboard',$mainProg.'?menu=dashboard');
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>';
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
  */
 
 $securitygroups_sql='';

@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -33,18 +33,18 @@ $h->setHTMLTag('xmlns="http://www.w3.org/1999/xhtml"');
 $h->setTitle($title);
 $h->addHeadContent('<meta http-equiv="Content-Type" content="text/html; charset='.getCharset().'" />');
 $h->addHeadContent('<meta http-equiv="X-UA-Compatible" content="IE=edge" />');
-$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.$cssDir.'/style_common.css" />');
+$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/style_common.css" />');
 $h->addHeadContent('<link rel="alternate" type="application/rss+xml" title="SisIYA RSS" href="'.$rssFile.'" />');
-$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.$cssDir.'/style_gui.css" />');
+$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/style_gui.css" />');
 $h->addHeadContent('<meta name="author" content="'.$rs['meta-author'].'" />');
 $h->addHeadContent('<meta name="generator" content="'.$rs['meta-generator'].'" />');
 $h->addHeadContent('<meta name="description" content="'.$rs['meta-description'].'" />');
 $h->addHeadContent('<meta name="keywords" content="'.$rs['meta-keywords'].'" />');
-$h->addHeadContent('<script type="text/javascript" src="'.$rootDir.'/javascript/sisiya_common_functions.js"></script>');
+$h->addHeadContent('<script type="text/javascript" src="'.BASE_DIR.'/javascript/sisiya_common_functions.js"></script>');
 $h->addHeadContent('<!-- including GUI menu javascript files -->');
-$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.$cssDir.'/gui_menu.css" />');
-$h->addHeadContent('<script type="text/javascript" src="'.$rootDir.'/javascript/gui_menu.js"></script>');
+$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/gui_menu.css" />');
+$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/gui_menu.js"></script>');
 $h->addHeadContent('<script type="text/javascript" src="'.$menu_file.'"></script>');
-$h->addHeadContent('<script type="text/javascript" src="'.$rootDir.'/javascript/gui_menu_tpl.js"></script>');
+$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/gui_menu_tpl.js"></script>');
 $h->addHeadContent('<!-- included GUI menu javascript files -->');
 ?>

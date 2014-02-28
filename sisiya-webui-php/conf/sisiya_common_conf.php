@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright (C) 2003 - __YEAR__  Erdal Mutlu
+    Copyright (C) 2003 - 2014  Erdal Mutlu
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
@@ -23,77 +23,55 @@ define("YEAR","__YEAR__",false);
 define("SISIYA_URL","http://sisiya.example.com",false);
 
 # Setup wizard
-#include_once($rootDir.'/lib/sisiya_setup_wizard.php');
+#include_once(BASE_URL.'/lib/sisiya_setup_wizard.php');
 
 global $progNameSisIYA_GUI;
-$progNameSisIYA_GUI=$rootDir.'/sisiya_gui.php';
+$progNameSisIYA_GUI = BASE_URL.'/sisiya_gui.php';
 
 global $progNameSisIYA_Admin;
-$progNameSisIYA_Admin=$rootDir.'/sisiya_admin.php';
+$progNameSisIYA_Admin = BASE_URL.'/sisiya_admin.php';
 
 global $defaultTimezone;
 $defaultTimezone = 'Europe/Istanbul';
 
 # default language
 global $defaultLanguage;
-$defaultLanguage='tr';
+$defaultLanguage = 'tr';
 global $defaultCharset;
-$defaultCharset='utf-8';
+$defaultCharset = 'utf-8';
                                                                                                                                                                                                           
 ### password related stuff                                                                                                                                                                                
 global $min_password_length;                                                                                                                                                                              
-$min_password_length=8;                                                                                                                                                                                   
+$min_password_length = 8;                                                                                                                                                                                   
 global $salt_length;                                                                                                                                                                                      
-$salt_length=12; ### Use MD5 with 12 character salt                                                                                                                                                       
+$salt_length = 12; ### Use MD5 with 12 character salt                                                                                                                                                       
 
 global $resourceDir;
-$resourceDir=$rootDir;
-
-global $confDir;
-$confDir=$rootDir."/conf";
+$resourceDir=BASE_URL;
 
 global $libDir;
-$libDir=$rootDir.'/lib';
+$libDir=BASE_URL.'/lib';
 
 global $cssDir;
-$cssDir=$rootDir."/style";
-
-global $imgDir;
-#$imgDir=$rootDir."/images";
-$imgDir="images";
-
-global $linksImageDir;
-$linksImageDir=$imgDir.'/links';
-
-global $sisiyaImageDir;
-$sisiyaImageDir=$imgDir.'/sisiya';
-
-global $imgSystemsDirName;
-$imgSystemsDirName='systems';
-
-global $systemsImageDir;
-$systemsImageDir=$imgDir.'/'.$imgSystemsDirName;
-
-global $tmpImageDir;
-$tmpImageDir=$imgDir.'/tmp';
+$cssDir=BASE_URL."/style";
 
 global $sessionName;
 $sessionName='sisiya_SID';
 
 global $loginProg;
-$loginProg=$rootDir.'/sisiya_login.php';
+$loginProg=BASE_URL.'/sisiya_login.php';
 
 global $rssFile;
-$rssFile=$rootDir.'/sisiya_rss.xml';
+$rssFile=BASE_URL.'/sisiya_rss.xml';
 
 # Database classes
-include_once($rootDir.'/lib/dbclass.php');
+include_once(BASE_URL.'/lib/dbclass.php');
 
 # HTML Document class
 include_once($libDir.'/documentClass.php');
 
 # Database configuration
-include_once($rootDir.'/conf/dbconf.php');
+include_once(CONF_DIR.'/dbconf.php');
 
 # Common functions
 include_once($libDir.'/sisiya_common_functions.php');

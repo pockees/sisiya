@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -373,9 +373,9 @@ function displayLinkIcon($action,$url_str)
 
 function getLinkIcon($action,$url_str)
 {
-	global $sisiyaImageDir,$lrb;
+	global $lrb;
 
-	$s='<a href="'.$url_str.'"><img src="'.$sisiyaImageDir.'/icon_'.$action.'.png" alt="'.$lrb['sisiya_admin.button.'.$action].'" title="'.$lrb['sisiya_admin.button.'.$action.'.description'].'" /></a>';
+	$s='<a href="'.$url_str.'"><img src="'.SISIYA_IMG_URL.'/icon_'.$action.'.png" alt="'.$lrb['sisiya_admin.button.'.$action].'" title="'.$lrb['sisiya_admin.button.'.$action.'.description'].'" /></a>';
 	return $s;
 }
 
@@ -482,81 +482,81 @@ function displayStatusImage($status_id)
 
 function getStatusImage($status_id)
 {
-	global $sisiyaImageDir,$statusNames;
+	global $statusNames;
 	
 	if($status_id == 1)
-		return($sisiyaImageDir.'/'.$statusNames[STATUS_INFO].'_big.png');
+		return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_INFO].'_big.png');
 	else if($status_id > 1 and $status_id < 4)
-		return($sisiyaImageDir.'/'.$statusNames[STATUS_OK].'_big.png');
+		return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_OK].'_big.png');
 	else if($status_id >= 4 and $status_id < 8)
-		return($sisiyaImageDir.'/'.$statusNames[STATUS_WARNING].'_big.png');
+		return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_WARNING].'_big.png');
 	else if($status_id >= 8 and $status_id < 16)
-		return($sisiyaImageDir.'/'.$statusNames[STATUS_ERROR].'_big.png');
+		return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_ERROR].'_big.png');
 	else if($status_id < 32) {
 		$t=$status_id-STATUS_NOREPORT;
 		if($status_id == STATUS_NOREPORT)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_NOREPORT].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_NOREPORT].'_big.png');
 		else if($t < STATUS_WARNING)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_NOREPORT].'Green_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_NOREPORT].'Green_big.png');
 		else if($t < STATUS_ERROR)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_NOREPORT].'Yellow_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_NOREPORT].'Yellow_big.png');
 		else 
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_NOREPORT].'Red_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_NOREPORT].'Red_big.png');
 	}
 	else if($status_id < 64) {
 		$t=$status_id-STATUS_UNAVAILABLE;
 		if($status_id == STATUS_UNAVAILABLE)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_UNAVAILABLE].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_UNAVAILABLE].'_big.png');
 		else if($t < STATUS_WARNING)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_UNAVAILABLE].'Green_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_UNAVAILABLE].'Green_big.png');
 		else if($t < STATUS_ERROR)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_UNAVAILABLE].'Yellow_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_UNAVAILABLE].'Yellow_big.png');
 		else
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_UNAVAILABLE].'Red_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_UNAVAILABLE].'Red_big.png');
 	}
 	else if($status_id < 128) {
 		$t=$status_id-STATUS_MWARNING;
 		if($status_id == STATUS_MWARNING)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MWARNING].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MWARNING].'_big.png');
 		else if($t < STATUS_WARNING)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MWARNING].'Green_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MWARNING].'Green_big.png');
 		else if($t < STATUS_ERROR)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MWARNING].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MWARNING].'_big.png');
 		else
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MWARNING].'Red_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MWARNING].'Red_big.png');
 	}
 	else if($status_id < 256) {
 		$t=$status_id-STATUS_MERROR;
 		if($status_id == STATUS_MERROR)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MERROR].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MERROR].'_big.png');
 		else if($t < STATUS_WARNING)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MERROR].'Green_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MERROR].'Green_big.png');
 		else if($t < STATUS_ERROR)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MERROR].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MERROR].'_big.png');
 		else
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MERROR].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MERROR].'_big.png');
 	}
 	else if($status_id < 512) {
 		$t=$status_id-STATUS_MNOREPORT;
 		if($status_id == STATUS_MNOREPORT)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MNOREPORT].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MNOREPORT].'_big.png');
 		else if($t < STATUS_WARNING)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MNOREPORT].'Green_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MNOREPORT].'Green_big.png');
 		else if($t < STATUS_ERROR)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MNOREPORT].'Yellow_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MNOREPORT].'Yellow_big.png');
 		else
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MNOREPORT].'Red_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MNOREPORT].'Red_big.png');
 	}
 	else {
 		$t=$status_id-STATUS_MUNAVAILABLE;
 		if($status_id == STATUS_MUNAVAILABLE)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MUNAVAILABLE].'_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MUNAVAILABLE].'_big.png');
 		else if($t < STATUS_WARNING)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MUNAVAILABLE].'Green_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MUNAVAILABLE].'Green_big.png');
 		else if($t < STATUS_ERROR)
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MUNAVAILABLE].'Yellow_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MUNAVAILABLE].'Yellow_big.png');
 		else
-			return($sisiyaImageDir.'/'.$statusNames[STATUS_MUNAVAILABLE].'Red_big.png');
+			return(SISIYA_IMG_URL.'/'.$statusNames[STATUS_MUNAVAILABLE].'Red_big.png');
 	}
 }
 

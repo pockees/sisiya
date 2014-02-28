@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -88,13 +88,13 @@ $date_str=getHTTPValue('date_str');
 if($date_str == '') 
 	$date_str=$d;
 $navigation_panel_str=getLinkIcon('dashboard',$mainProg.'?menu=dashboard');
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>'; 
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>'; 
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>'; 
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>'; 
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
 $navigation_panel_str.='<a href="'.$mainProg.'?menu=system_services'.'&amp;systemID='.$parameters['systemID'];
 $navigation_panel_str.='&amp;systemName='.$parameters['systemName'].'&amp;systemType='.$parameters['systemType'].'">';
-#$navigation_panel_str.='<img src="'.$sisiyaImageDir.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />['.$systemName.']</a>'."\n";
-$navigation_panel_str.='<img src="'.$sisiyaImageDir.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />'."\n";
+#$navigation_panel_str.='<img src="'.SISIYA_IMG_URL.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />['.$systemName.']</a>'."\n";
+$navigation_panel_str.='<img src="'.SISIYA_IMG_URL.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />'."\n";
 
 $h=$_SESSION['h'];
 $h->addContent('<div class="div_container">');
@@ -102,8 +102,8 @@ $h->addContent('	<div class="div_subheader_center">');
 $h->addContent('		<table class="tx0">');
 $h->addContent('		<tr>');
 $h->addContent('			<td class="left">');
-$h->addContent('				<img src="'.$linksImageDir.'/'.$parameters['systemName'].'.gif" alt="'.$parameters['systemName'].'" />');
-$h->addContent('				<img src="'.$systemsImageDir.'/'.$parameters['systemType'].'.gif" alt="'.$parameters['systemType'].'" />');
+$h->addContent('				<img src="'.LINKS_IMG_URL.'/'.$parameters['systemName'].'.png" alt="'.$parameters['systemName'].'" />');
+$h->addContent('				<img src="'.SYSTEMS_IMG_URL.'/'.$parameters['systemType'].'.png" alt="'.$parameters['systemType'].'" />');
 $h->addContent('			</td>');
 $h->addContent('			<td class="left">');
 $h->addContent('				<h2>['.$parameters['systemName'].']</h2>');

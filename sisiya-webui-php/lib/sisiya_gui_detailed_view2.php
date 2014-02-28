@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -32,8 +32,8 @@ if($effectsglobal != '')
 	$effectsglobal_str=" and c.effectsglobal='".$effectsglobal."' ";
 /*
 $navigation_panel_str=getLinkIcon('dashboard',$mainProg.'?menu=dashboard');
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>';
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>';
  */
 
 $h->addHeadContent('<meta http-equiv="cache-control" content="no-cache" />');
@@ -82,7 +82,7 @@ else {
 			$html.='<tr class="row">'."\n";
 			$html.='<td><a href="'.$mainProg.'?menu=system_services'.'&amp;systemID='.$row[1];
 			$html.='&amp;systemName='.$row[0].'&amp;systemType='.$row[7].'">';
-			$html.='<img src="'.$systemsImageDir.'/'.$row[7].'.gif" alt="'.$row[7].'" height="25" /><br />';
+			$html.='<img src="'.SYSTEMS_IMG_URL.'/'.$row[7].'.png" alt="'.$row[7].'" height="25" /><br />';
 			$html.=$row[0].'</a></td>';
 			if($row[8] == 'f')
 				$html.='<td class="effectsfalse center">';

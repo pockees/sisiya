@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -33,20 +33,20 @@ $h->setHTMLTag('xmlns="http://www.w3.org/1999/xhtml"');
 $h->setTitle($title);
 $h->addHeadContent('<meta http-equiv="Content-Type" content="text/html; charset='.getCharset().'" />');
 $h->addHeadContent('<meta http-equiv="X-UA-Compatible" content="IE=edge" />');
-$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.$cssDir.'/style_common.css" />');
-$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.$cssDir.'/style_admin.css" />');
-$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.$cssDir.'/menu.css" />');
+$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/style_common.css" />');
+$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/style_admin.css" />');
+$h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/menu.css" />');
 $h->addHeadContent('<meta name="author" content="'.$rs['meta-author'].'" />');
 $h->addHeadContent('<meta name="generator" content="'.$rs['meta-generator'].'" />');
 $h->addHeadContent('<meta name="description" content="'.$rs['meta-description'].'" />');
 $h->addHeadContent('<meta name="keywords" content="'.$rs['meta-keywords'].'" />');
 $h->addHeadContent('<meta name="keywords" content="'.$rs['meta-keywords'].'" />');
-$h->addHeadContent('<script type="text/javascript" src="'.$rootDir.'/javascript/sisiya_common_functions.js"></script>');
+$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/sisiya_common_functions.js"></script>');
 if(preg_match("/sisiya_admin.php/",$progName)) {
 	$h->addHeadContent('<!-- including menu javascript files -->');
-	$h->addHeadContent('<script type="text/javascript" src="javascript/menu.js"></script>');
+	$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/menu.js"></script>');
 	$h->addHeadContent('<script type="text/javascript" src=" <?php echo $menu_file; ?> "></script>');
-	$h->addHeadContent('<script type="text/javascript" src="javascript/menu_tpl.js"></script>');
+	$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/menu_tpl.js"></script>');
 	$h->addHeadContent('<!-- included menu javascript files -->');
 }
 ?>

@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -22,8 +22,10 @@ error_reporting(E_ALL);
 global $rootDir;
 $rootDir=".";
 
-include_once($rootDir."/conf/sisiya_common_conf.php");
-include_once($rootDir."/conf/sisiya_admin_conf.php");
+include_once("config.php");
+include_once(CONF_DIR."/sisiya_common_conf.php");
+include_once(CONF_DIR."/sisiya_admin_conf.php");
+
 startSession($sessionName);
 
 $menu=getHTTPValue('menu');

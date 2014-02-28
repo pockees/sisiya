@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -23,16 +23,16 @@ error_reporting(E_ALL);
 ###########################################################
 function getSystemServiceStatusHistoryPanel($effectsglobal='')
 {
-	global $lrb,$sisiyaImageDir,$tmpImageDir,$statusNames;
+	global $lrb,$statusNames;
 
 	$title_str=$lrb['sisiya.label.HistoryOfServices'];
 	if ($effectsglobal == '') {
 		$effectsglobal_str='';
-		$image_file=$tmpImageDir.'/system_service_status_history_all.png';
+		$image_file = 'system_service_status_history_all.png';
 	}
 	else {
 		$effectsglobal_str=" and b.effectsglobal='".$effectsglobal."'";
-		$image_file=$tmpImageDir.'/system_service_status_history_'.$effectsglobal.'.png';
+		$image_file = 'system_service_status_history_'.$effectsglobal.'.png';
 	}
 
 
@@ -43,7 +43,7 @@ function getSystemServiceStatusHistoryPanel($effectsglobal='')
 	#$html.='<caption class="dashboard">'.$lrb['sisiya_admin.label.system_status'].'</caption>'."\n";
 	$html.='<caption class="dashboard">'.$title_str.'</caption>'."\n";
 	$html.="<tr>\n";
-	$html.='<td colspan="2"><img src="'.$image_file.'" alt="System status pie" /></td>';
+	$html.='<td colspan="2"><img src="'.TMP_IMG_URL.'/'.$image_file.'" alt="System status pie" /></td>';
 	$html.="</tr>\n";
 	$html.="</table>\n";
 
@@ -53,7 +53,7 @@ function getSystemServiceStatusHistoryPanel($effectsglobal='')
 
 function getSystemServiceStatusHistory(&$image_file,$sql_str)
 {
-	global $db,$tmpImageDir;
+	global $db;
 
 	debug('sql_str='.$sql_str);
 	$result=$db->query($sql_str);
@@ -249,7 +249,7 @@ function createHistoryLineGraph($result,$image_file,$H,$W)
 			}
 		}
 	}
-	if (imagepng($im,$image_file) == false)
+	if (imagepng($im, TMP_IMG_DIR.'/'.$image_file) == false)
 		debug("ERROR: Yaratamadim");
 	else
 		debug("OK: Yarattim.");
@@ -377,14 +377,14 @@ function createSystemStatusPie($info_count, $ok_count, $warning_count, $error_co
 		if ($z5 <> $z6)
 			imagefilledarc($image, $cx, $cy, 2 * $rx, 2 * $ry, $z5, $z6, $gray, IMG_ARC_PIE);
 	}
-	imagepng($image, $image_file);
+	imagepng($image, TMP_IMG_DIR.'/'.$image_file);
 	imagedestroy($image);
 }
 
 
 function getNavigationPan()
 {
-	global $lrb,$mainProg,$debug_str,$sisiyaImageDir;
+	global $lrb,$mainProg,$debug_str;
 /*
 	$html='';
 	$html.='<table class="navigation">'."\n";
@@ -400,10 +400,10 @@ function getNavigationPan()
 #	$html.='<table class="navigation">'."\n";
 #	$html.='<tr class="row">'."\n";
 #	$html.='<td>';
-	$html.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>';
-	$html.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>';
-	$html.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
-	$html.='<a href="'.$mainProg.'?menu=system_services'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.label.system_services'].'" /></a>';
+	$html.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>';
+	$html.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>';
+	$html.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
+	$html.='<a href="'.$mainProg.'?menu=system_services'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.label.system_services'].'" /></a>';
 #	$html.="</td></tr>\n";
 #	$html.="</table>\n";
 
@@ -412,7 +412,7 @@ function getNavigationPan()
 
 function getSystemStatusCount(&$info_count,&$ok_count,&$warning_count,&$error_count,&$other_count,&$image_file,$sql_str)
 {
-	global $db,$tmpImageDir;
+	global $db;
 
 	$info_count=0;
 	$ok_count=0;
@@ -457,7 +457,7 @@ function getSystemStatusCount(&$info_count,&$ok_count,&$warning_count,&$error_co
 
 function getSystemStatusPanel($effectsglobal='')
 {
-	global $lrb, $force_login, $mainProg, $sisiyaImageDir, $tmpImageDir, $statusNames;
+	global $lrb, $force_login, $mainProg, $statusNames;
 
 	$info_percent=0;
 	$ok_percent=0;
@@ -469,12 +469,12 @@ function getSystemStatusPanel($effectsglobal='')
 	if ($effectsglobal == '') {
 		$effectsglobal_str='';
 		$effectsglobal_link_str='';
-		$image_file=$tmpImageDir.'/system_status_pie_all.png';
+		$image_file = 'system_status_pie_all.png';
 	}
 	else {
 		$effectsglobal_str=" and b.effectsglobal='".$effectsglobal."'";
 		$effectsglobal_link_str='&amp;effectsglobal='.$effectsglobal;
-		$image_file=$tmpImageDir.'/system_status_pie_'.$effectsglobal.'.png';
+		$image_file = 'system_status_pie_'.$effectsglobal.'.png';
 	}
 
 	$link_str=$mainProg.'?menu=detailed_view2'.$effectsglobal_link_str;
@@ -502,30 +502,30 @@ function getSystemStatusPanel($effectsglobal='')
 	$html.='<tr class="row">'."\n";
 	$html.='<td class="center">'.$lrb['sisiya_gui.label.total'].'</td>';
 	$html.='<td class="right">'.$total.'</td>';
-	$html.='<td rowspan="6"><a href="'.$link_str.'"><img src="'.$image_file.'" alt="System status pie" /></a></td>';
+	$html.='<td rowspan="6"><a href="'.$link_str.'"><img src="'.TMP_IMG_URL.'/'.$image_file.'" alt="System status pie" /></a></td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" /></td>';
 #	$html.='<td class="right">'.$error_percent.'%</td>';
 	$html.='<td class="right">'.$error_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" /></td>';
 #	$html.='<td class="right">'.$warning_percent.'%</td>';
 	$html.='<td class="right">'.$warning_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" /></td>';
 #	$html.='<td class="right">'.$ok_percent.'%</td>';
 	$html.='<td class="right">'.$ok_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" /></td>';
 #	$html.='<td class="right">'.$info_percent.'%</td>';
 	$html.='<td class="right">'.$info_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_NOREPORT].'.png" alt="'.$statusNames[STATUS_NOREPORT].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_NOREPORT].'.png" alt="'.$statusNames[STATUS_NOREPORT].'" /></td>';
 #	$html.='<td class="right">'.$other_percent.'%</td>';
 	$html.='<td class="right">'.$other_count.'</td>';
 	$html.="</tr>\n";
@@ -539,7 +539,7 @@ function getSystemStatusPanel($effectsglobal='')
 
 function getSystemStatusPanel2()
 {
-	global $lrb, $force_login, $tmpImageDir, $statusNames;
+	global $lrb, $force_login, $statusNames;
 
 	$info_percent=0;
 	$ok_percent=0;
@@ -551,7 +551,7 @@ function getSystemStatusPanel2()
 		$securitygroups_sql=' and a.systemid in (select sgs.systemid from securitygroupsystem sgs,securitygroupuser sgu where sgs.securitygroupid=sgu.securitygroupid and sgu.userid='.$_SESSION['user_id'].')';
 	####################################################################################################################################################
 	$sql_str="select a.statusid,count(a.statusid) from systemstatus a,systems b where a.systemid=b.id ".$securitygroups_sql." and b.active='t' and b.effectsglobal='f' group by a.statusid order by a.statusid;";
-	$image_file=$tmpImageDir.'/system_status_pie2.png';
+	$image_file='system_status_pie2.png';
 	getSystemStatusCount($info_count,$ok_count,$warning_count,$error_count,$image_file,$sql_str); 
 	$total=$info_count+$ok_count+$warning_count+$error_count;
 	if ($total > 0) {
@@ -569,25 +569,25 @@ function getSystemStatusPanel2()
 	$html.='<tr class="row">'."\n";
 	$html.='<td class="center">'.$lrb['sisiya_gui.label.total'].'</td>';
 	$html.='<td class="right">'.$total.'</td>';
-	$html.='<td rowspan="5"><img src="'.$image_file.'" alt="System status pie" /></td>';
+	$html.='<td rowspan="5"><img src="'.TMP_IMG_URL.'/'.$image_file.'" alt="System status pie" /></td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$tmpImageDir.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" /></td>';
+	$html.='<td class="center"><img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" /></td>';
 #	$html.='<td class="right">'.$error_percent.'%</td>';
 	$html.='<td class="right">'.$error_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$tmpImageDir.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" /></td>';
+	$html.='<td class="center"><img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" /></td>';
 #	$html.='<td class="right">'.$warning_percent.'%</td>';
 	$html.='<td class="right">'.$warning_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$tmpImageDir.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" /></td>';
+	$html.='<td class="center"><img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" /></td>';
 #	$html.='<td class="right">'.$ok_percent.'%</td>';
 	$html.='<td class="right">'.$ok_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$tmpImageDir.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" /></td>';
+	$html.='<td class="center"><img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" /></td>';
 #	$html.='<td class="right">'.$info_percent.'%</td>';
 	$html.='<td class="right">'.$info_count.'</td>';
 	$html.="</tr>\n";
@@ -599,7 +599,7 @@ function getSystemStatusPanel2()
 
 function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 {
-	global $lrb, $force_login, $sisiyaImageDir, $tmpImageDir, $statusNames, $mainProg;
+	global $lrb, $force_login, $statusNames, $mainProg;
 
 	$info_percent = 0;
 	$ok_percent = 0;
@@ -610,12 +610,12 @@ function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 	if ($effectsglobal == '') {
 		$effectsglobal_str = '';
 		$effectsglobal_link_str = '';
-		$image_file = $tmpImageDir.'/system_'.$serviceID.'_all_service_status_pie.png';
+		$image_file = 'system_'.$serviceID.'_all_service_status_pie.png';
 	}
 	else {
 		$effectsglobal_str = " and b.effectsglobal='".$effectsglobal."'";
 		$effectsglobal_link_str = '&amp;effectsglobal='.$effectsglobal;
-		$image_file = $tmpImageDir.'/system_'.$serviceID.'_'.$effectsglobal.'_service_status_pie.png';
+		$image_file = 'system_'.$serviceID.'_'.$effectsglobal.'_service_status_pie.png';
 	}
 	$securitygroups_sql = '';
 	if ($force_login && !$_SESSION['hasAllSystems']) 
@@ -635,7 +635,7 @@ function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 		#echo "info_percent=$info_percent ok_percent=$ok_percent warning_percent=$warning_percent error_percent=$error_percent= error_percent=$error_percent= other_percent=$other_percent<br>";
 	}
 
-	$link_str=$mainProg.'?menu=service_view&amp;serviceID='.$serviceID.$effectsglobal_link_str.'&amp;imageFile='.$image_file;
+	$link_str=$mainProg.'?menu=service_view&amp;serviceID='.$serviceID.$effectsglobal_link_str.'&amp;imageFile='.TMP_IMG_URL.'/'.$image_file;
 
 	$html='';
 	$html.='<table class="dashboard">'."\n";
@@ -644,40 +644,40 @@ function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 	$html.='<tr class="row">'."\n";
 	$html.='<td class="center">'.$lrb['sisiya_gui.label.total'].'</td>';
 	$html.='<td class="right">'.$total.'</td>';
-	$html.='<td rowspan="6"><a href="'.$link_str.'"><img src="'.$image_file.'" alt="System status pie" /></a></td>';
+	$html.='<td rowspan="6"><a href="'.$link_str.'"><img src="'.TMP_IMG_URL.'/'.$image_file.'" alt="System status pie" /></a></td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" /></td>';
 #	$html.='<td class="right">'.$error_percent.'%</td>';
 	$html.='<td class="right">'.$error_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" /></td>';
 #	$html.='<td class="right">'.$warning_percent.'%</td>';
 	$html.='<td class="right">'.$warning_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" /></td>';
 #	$html.='<td class="right">'.$ok_percent.'%</td>';
 	$html.='<td class="right">'.$ok_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" /></td>';
 #	$html.='<td class="right">'.$info_percent.'%</td>';
 	$html.='<td class="right">'.$info_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_NOREPORT].'.png" alt="'.$statusNames[STATUS_NOREPORT].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_NOREPORT].'.png" alt="'.$statusNames[STATUS_NOREPORT].'" /></td>';
 #	$html.='<td class="right">'.$other_percent.'%</td>';
 	$html.='<td class="right">'.$other_count.'</td>';
 	$html.="</tr>\n";
 /*
 	$html.='<tr class="row">'."\n";
 	$html.='<td colspan="2" class="left">';
-	$html.='<img src="'.$tmpImageDir.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" />&nbsp;'.$info_count.'&nbsp;&nbsp;&nbsp;';
-	$html.='<img src="'.$tmpImageDir.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" />&nbsp;'.$ok_count.'&nbsp;&nbsp;&nbsp;';
-	$html.='<img src="'.$tmpImageDir.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" />&nbsp;'.$warning_count.'&nbsp;&nbsp;&nbsp;';
-	$html.='<img src="'.$tmpImageDir.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" />&nbsp;'.$error_count;
+	$html.='<img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" />&nbsp;'.$info_count.'&nbsp;&nbsp;&nbsp;';
+	$html.='<img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" />&nbsp;'.$ok_count.'&nbsp;&nbsp;&nbsp;';
+	$html.='<img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" />&nbsp;'.$warning_count.'&nbsp;&nbsp;&nbsp;';
+	$html.='<img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" />&nbsp;'.$error_count;
 	$html.='</td>';
 	$html.="</tr>\n";
 */
@@ -689,7 +689,7 @@ function getServiceStatusPanel($serviceID, $label, $effectsglobal = '')
 
 function getSystemServiceStatusPanel($effectsglobal='')
 {
-	global $lrb, $force_login, $sisiyaImageDir, $tmpImageDir, $statusNames;
+	global $lrb, $force_login, $statusNames;
 
 	$info_percent=0;
 	$ok_percent=0;
@@ -700,11 +700,11 @@ function getSystemServiceStatusPanel($effectsglobal='')
 	$title_str=$lrb['sisiya.label.Services'];
 	if ($effectsglobal == '') {
 		$effectsglobal_str='';
-		$image_file=$tmpImageDir.'/system_services_status_pie_all.png';
+		$image_file='system_services_status_pie_all.png';
 	}
 	else {
 		$effectsglobal_str=" and b.effectsglobal='".$effectsglobal."'";
-		$image_file=$tmpImageDir.'/system_services_status_pie_'.$effectsglobal.'.png';
+		$image_file='system_services_status_pie_'.$effectsglobal.'.png';
 	}
 
 	$securitygroups_sql='';
@@ -730,30 +730,30 @@ function getSystemServiceStatusPanel($effectsglobal='')
 	$html.='<tr class="row">'."\n";
 	$html.='<td class="center">'.$lrb['sisiya_gui.label.total'].'</td>';
 	$html.='<td class="right">'.$total.'</td>';
-	$html.='<td rowspan="6"><img src="'.$image_file.'" alt="System status pie" /></td>';
+	$html.='<td rowspan="6"><img src="'.TMP_IMG_URL.'/'.$image_file.'" alt="System status pie" /></td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" /></td>';
 #	$html.='<td class="right">'.$error_percent.'%</td>';
 	$html.='<td class="right">'.$error_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" /></td>';
 #	$html.='<td class="right">'.$warning_percent.'%</td>';
 	$html.='<td class="right">'.$warning_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" /></td>';
 #	$html.='<td class="right">'.$ok_percent.'%</td>';
 	$html.='<td class="right">'.$ok_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" /></td>';
 #	$html.='<td class="right">'.$info_percent.'%</td>';
 	$html.='<td class="right">'.$info_count.'</td>';
 	$html.="</tr>\n";
 	$html.='<tr class="row">'."\n";
-	$html.='<td class="center"><img src="'.$sisiyaImageDir.'/'.$statusNames[STATUS_NOREPORT].'.png" alt="'.$statusNames[STATUS_NOREPORT].'" /></td>';
+	$html.='<td class="center"><img src="'.SISIYA_IMG_URL.'/'.$statusNames[STATUS_NOREPORT].'.png" alt="'.$statusNames[STATUS_NOREPORT].'" /></td>';
 #	$html.='<td class="right">'.$other_percent.'%</td>';
 	$html.='<td class="right">'.$other_count.'</td>';
 	$html.="</tr>\n";
@@ -762,10 +762,10 @@ function getSystemServiceStatusPanel($effectsglobal='')
 /*
 	$html.='<tr class="row">'."\n";
 	$html.='<td colspan="2" class="left">';
-	$html.='<img src="'.$tmpImageDir.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" />&nbsp;'.$info_count.'&nbsp;&nbsp;&nbsp;';
-	$html.='<img src="'.$tmpImageDir.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" />&nbsp;'.$ok_count.'&nbsp;&nbsp;&nbsp;';
-	$html.='<img src="'.$tmpImageDir.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" />&nbsp;'.$warning_count.'&nbsp;&nbsp;&nbsp;';
-	$html.='<img src="'.$tmpImageDir.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" />&nbsp;'.$error_count;
+	$html.='<img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_INFO].'.png" alt="'.$statusNames[STATUS_INFO].'" />&nbsp;'.$info_count.'&nbsp;&nbsp;&nbsp;';
+	$html.='<img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_OK].'.png" alt="'.$statusNames[STATUS_OK].'" />&nbsp;'.$ok_count.'&nbsp;&nbsp;&nbsp;';
+	$html.='<img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_WARNING].'.png" alt="'.$statusNames[STATUS_WARNING].'" />&nbsp;'.$warning_count.'&nbsp;&nbsp;&nbsp;';
+	$html.='<img src="'.TMP_IMG_URL.'/'.$statusNames[STATUS_ERROR].'.png" alt="'.$statusNames[STATUS_ERROR].'" />&nbsp;'.$error_count;
 	$html.='</td>';
 	$html.="</tr>\n";
 */
@@ -777,7 +777,7 @@ function getSystemServiceStatusPanel($effectsglobal='')
 
 function getSystemServiceStatusDailyAveragePanel($effectsglobal='')
 {
-	global $lrb, $force_login, $sisiyaImageDir, $tmpImageDir, $statusNames;
+	global $lrb, $force_login, $statusNames;
 
 	$info_percent=0;
 	$ok_percent=0;
@@ -788,11 +788,11 @@ function getSystemServiceStatusDailyAveragePanel($effectsglobal='')
 	$title_str=$lrb['sisiya.label.DailyAverageOfServices'];
 	if ($effectsglobal == '') {
 		$effectsglobal_str='';
-		$image_file=$tmpImageDir.'/system_service_status_daily_average_pie_all.png';
+		$image_file = 'system_service_status_daily_average_pie_all.png';
 	}
 	else {
 		$effectsglobal_str=" and b.effectsglobal='".$effectsglobal."'";
-		$image_file=$tmpImageDir.'/system_service_status_daily_average_pie_'.$effectsglobal.'.png';
+		$image_file = 'system_service_status_daily_average_pie_'.$effectsglobal.'.png';
 	}
 
 
@@ -817,7 +817,7 @@ function getSystemServiceStatusDailyAveragePanel($effectsglobal='')
 	#$html.='<caption class="dashboard">'.$lrb['sisiya_admin.label.system_status'].'</caption>'."\n";
 	$html.='<caption class="dashboard">'.$title_str.'</caption>'."\n";
 	$html.="<tr>\n";
-	$html.='<td colspan="2"><img src="'.$image_file.'" alt="System status pie" /></td>';
+	$html.='<td colspan="2"><img src="'.TMP_IMG_URL.'/'.$image_file.'" alt="System status pie" /></td>';
 	$html.="</tr>\n";
 	$html.="</table>\n";
 

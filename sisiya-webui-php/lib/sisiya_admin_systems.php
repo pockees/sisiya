@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -23,9 +23,9 @@ error_reporting(E_ALL);
 ### begin of functions
 function getSystemImage($system_id,$system_str,$i)
 {
-	global $sisiyaImageDir,$linksImageDir,$mainProg,$lrb;
+	global $mainProg,$lrb;
 
-	if(is_link($linksImageDir.'/'.$system_str.'.gif')) {
+	if(is_link(LINKS_IMG_URL.'/'.$system_str.'.png')) {
 		$disabled_str='';
 		$title_str=$lrb['sisiya_admin.button.change_image.description'];
 	}
@@ -33,7 +33,7 @@ function getSystemImage($system_id,$system_str,$i)
 		$disabled_str='_disabled';
 		$title_str=$lrb['sisiya_admin.button.set_image.description'];
 	}
-	return '<a href="'.$mainProg.'?menu=change_system_image&amp;systemID='.$system_id.'"><img src="'.$sisiyaImageDir.'/icon_photo'.$disabled_str.'.png" alt="icon_photo'.$disabled_str.'.png" title="'.$title_str.'" /></a>';
+	return '<a href="'.$mainProg.'?menu=change_system_image&amp;systemID='.$system_id.'"><img src="'.SISIYA_IMG_URL.'/icon_photo'.$disabled_str.'.png" alt="icon_photo'.$disabled_str.'.png" title="'.$title_str.'" /></a>';
 }
 ### end of functions
 ###########################################################

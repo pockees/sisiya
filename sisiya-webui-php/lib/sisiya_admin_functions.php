@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 error_reporting(E_ALL);
@@ -314,9 +314,7 @@ function displaySystemTypeImage($system_type)
 
 function getSystemTypeImage($system_type)
 {
-	global $systemsImageDir;
-
-	return($systemsImageDir.'/'.$system_type.'.gif');
+	return(SYSTEMS_IMG_URL.'/'.$system_type.'.png');
 }
 
 function displayPageNumbers($orderby_id,$max_pages,$start_index)
@@ -746,9 +744,9 @@ function file_upload_error_message($error_code)
 
 function removeImageFile($file)
 {
-	global $systemsImageDir,$lrb;
+	global $lrb;
 
-	if(!unlink($systemsImageDir.'/'.$file)) {
+	if(!unlink(SYSTEMS_IMG_URL.'/'.$file)) {
 		$_SESSION['status_type']=STATUS_ERROR;
 		$_SESSION['status_message']=$lrb['sisiya.msg.error.delete'].' ('.$file.')';
 	}
