@@ -31,7 +31,7 @@ rpms_dir=../RPMS
 machine_arch=`uname -m`
 
 package_list="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images sisiya-edbc-libs sisiyad"
-package_list_noarch="sisiya-client-checks-${version}.noarch.rpm sisiya-remote-checks-${version}.noarch.rpm sisiya-webui-php-${version}.noarch.rpm sisiya-webui-images-${version}.noarch.rpm"
+package_list_noarch="sisiya-client-checks-${version} sisiya-remote-checks-${version} sisiya-webui-php-${version} sisiya-webui-images-${version}"
 package_list_binary="sisiyad-${version} sisiya-edbc-libs-${version}"
 
 for f in $package_list
@@ -43,7 +43,7 @@ done
 
 for f in $package_list_noarch
 do
-	ls -l $rpms_dir/noarch/$f
+	ls -l $rpms_dir/noarch/$f*.rpm
 done
 for f in $package_list_binary
 do
