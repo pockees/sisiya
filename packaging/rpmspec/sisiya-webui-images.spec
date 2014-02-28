@@ -54,15 +54,15 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}
 make "DESTDIR=%{buildroot}" install
 
-%post
+#%post
 # change ownership 
-chown  -R  %{www_user}:%{www_group}	%{install_dir}
+#chown  -R  %{www_user}:%{www_group}	%{install_dir}
 
 %build
 
 %files
-%defattr(-,root,root)
-%attr(0775,root,root)	%dir			%{install_dir}
-%attr(0664,root,root) 				%{install_dir}/*
+%defattr(-,%{www_user},%{www_group})
+%dir			%{install_dir}
+%{install_dir}/*
 
 %changelog
