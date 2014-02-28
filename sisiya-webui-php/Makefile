@@ -3,7 +3,6 @@ package_name=sisiya-webui-php
 install_root=$(DESTDIR)$(prefix)
 etc_dir=$(install_root)/etc
 web_dir=$(install_root)/usr/share/sisiya-webui-php
-web_tmp_dir=$(install_root)/var/tmp/sisiya-webui-php
 systems_images_dir=$(install_root)/var/lib/sisiya-webui-images
 dst_apache_conf=$(install_root)/etc/httpd/conf.d
 dst_etc=$(install_root)/etc
@@ -46,9 +45,8 @@ install:
 	install -m 755 -d				$(web_dir)/utils
 	install -m 644 utils/*.php 			$(web_dir)/utils
 	install -m 755 utils/*.sh 			$(web_dir)/utils
-	install -d 					$(web_tmp_dir)
 	# this directory belongs to sisiya-webui-images package, I create it here to make the packaging software happy
 	mkdir -p 					$(systems_images_dir)
 	# make links
-	cd $(web_dir)/images && ln -sf $(web_tmp_dir) tmp
-	cd $(web_dir)/images && ln -sf $(systems_images_dir) systems
+	cd $(web_dir)/images && ln -sf /var/tmp/$(package_name) tmp
+	cd $(web_dir)/images && ln -sf /var/lib/sisiya-webui-images systems
