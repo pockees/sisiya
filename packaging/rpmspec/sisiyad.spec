@@ -98,7 +98,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 #%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
-%attr(0700,root,root) 				/etc/sisiya
+%attr(0755,root,root) 				/etc/sisiya
 %attr(0700,root,root) 				/etc/sisiya/sisiyad
 %if 0%{?rhel_version}
 %if 0%{?rhel_version} < 700 
