@@ -62,8 +62,8 @@ make "DESTDIR=%{buildroot}" install
 
 %files
 %defattr(-,%{www_user},%{www_group})
+%dir			/etc/sisiya/%{name}
 %dir			%{web_base_dir}
-%dir			%{web_base_dir}/conf
 %dir			%{web_base_dir}/javascript
 %dir			%{web_base_dir}/lib
 %dir			%{web_base_dir}/style
@@ -79,12 +79,12 @@ make "DESTDIR=%{buildroot}" install
 %config(noreplace) 	/etc/cron.d/sisiya-archive
 %config(noreplace) 	/etc/cron.d/sisiya-check-expired
 %config(noreplace) 	/etc/cron.d/sisiya-rss
+%config(noreplace)	/etc/sisiya/%{name}/*.php
+%config(noreplace)	/etc/sisiya/%{name}/*.conf
 			%{web_base_dir}/favicon.ico
 			%{web_base_dir}/*.php
 			%{web_base_dir}/README.txt
 			%{web_base_dir}/INSTALL.txt
-%config(noreplace)	%{web_base_dir}/conf/*.php
-%config(noreplace)	%{web_base_dir}/conf/*.conf
 			%{web_base_dir}/javascript/*.js
 			%{web_base_dir}/lib/*.php
 			%{web_base_dir}/style/*.css
