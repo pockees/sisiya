@@ -33,7 +33,6 @@ Name: sisiya-webui-php
 %define web_base_dir /usr/share/%{name}
 Summary: PHP web UI for SisIYA
 Url: http://www.sisiya.org
-%define install_dir %{web_base_dir}/%{name}
 BuildArch: noarch
 BuildRoot: %{_builddir}/%{name}-root
 Version: __VERSION__
@@ -57,42 +56,42 @@ make "DESTDIR=%{buildroot}" install
 
 #%post
 # change ownership 
-#chown  -R  %{www_user}:%{www_group}	%{install_dir}/images/links
+#chown  -R  %{www_user}:%{www_group}	%{web_base_dir}/images/links
 
 %build
 
 %files
 %defattr(-,%{www_user},%{www_group})
-%dir			%{install_dir}
-%dir			%{install_dir}/conf
-%dir			%{install_dir}/javascript
-%dir			%{install_dir}/lib
-%dir			%{install_dir}/style
-%dir			%{install_dir}/images
-%dir			%{install_dir}/images/links
-%dir			%{install_dir}/images/sisiya
-%dir			%{install_dir}/images/systems
-%dir			%{install_dir}/install
-%dir			%{install_dir}/images/tmp
-%dir			%{install_dir}/XMPPHP
-%dir			%{install_dir}/utils
+%dir			%{web_base_dir}
+%dir			%{web_base_dir}/conf
+%dir			%{web_base_dir}/javascript
+%dir			%{web_base_dir}/lib
+%dir			%{web_base_dir}/style
+%dir			%{web_base_dir}/images
+%dir			%{web_base_dir}/images/links
+%dir			%{web_base_dir}/images/sisiya
+%dir			%{web_base_dir}/images/systems
+%dir			%{web_base_dir}/install
+%dir			%{web_base_dir}/images/tmp
+%dir			%{web_base_dir}/XMPPHP
+%dir			%{web_base_dir}/utils
 %config(noreplace) 	/etc/cron.d/sisiya-alerts
 %config(noreplace) 	/etc/cron.d/sisiya-archive
 %config(noreplace) 	/etc/cron.d/sisiya-check-expired
 %config(noreplace) 	/etc/cron.d/sisiya-rss
-			%{install_dir}/favicon.ico
-			%{install_dir}/*.php
-			%{install_dir}/README.txt
-			%{install_dir}/INSTALL.txt
-%config(noreplace)	%{install_dir}/conf/*.php
-%config(noreplace)	%{install_dir}/conf/*.conf
-			%{install_dir}/javascript/*.js
-			%{install_dir}/lib/*.php
-			%{install_dir}/style/*.css
-			%{install_dir}/images/sisiya/*.*
-			%{install_dir}/install/*
-			%{install_dir}/XMPPHP/*.php
-			%{install_dir}/utils/*.php
-			%{install_dir}/utils/*.sh
+			%{web_base_dir}/favicon.ico
+			%{web_base_dir}/*.php
+			%{web_base_dir}/README.txt
+			%{web_base_dir}/INSTALL.txt
+%config(noreplace)	%{web_base_dir}/conf/*.php
+%config(noreplace)	%{web_base_dir}/conf/*.conf
+			%{web_base_dir}/javascript/*.js
+			%{web_base_dir}/lib/*.php
+			%{web_base_dir}/style/*.css
+			%{web_base_dir}/images/sisiya/*.*
+			%{web_base_dir}/install/*
+			%{web_base_dir}/XMPPHP/*.php
+			%{web_base_dir}/utils/*.php
+			%{web_base_dir}/utils/*.sh
 
 %changelog
