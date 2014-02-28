@@ -80,8 +80,9 @@ create_webui_images()
 	deb_root_dir="$base_dir/deb/$package_name"
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
-	cp -a $package_dir $deb_root_dir/usr/share/${package_str}/
-	rm -rf $deb_root_dir/usr/share/${package_str}/debian
+	mkdir -p $deb_root_dir/var/lib/${package_str} 
+	cp -a $package_dir $deb_root_dir/var/lib/${package_str}/
+	rm -rf $deb_root_dir/var/lib/${package_str}/debian
 	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"
@@ -120,7 +121,6 @@ create_webui_php()
 	rm -rf $package_dir
 	mkdir -p $package_dir
 	cp -a ${source_dir}/$package_str/* $package_dir/
-	mkdir -p $deb_root_dir/usr/share/${package_str} 
 	echo "${version_str}-$release_str" > $package_dir/version.txt
 	mkdir -p $package_dir/etc/cron.d
 	for f in "sisiya-alerts" "sisiya-archive" "sisiya-check-expired" "sisiya-rss"
