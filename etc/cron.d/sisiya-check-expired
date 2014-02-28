@@ -1,2 +1,2 @@
 #### SisIYA : Check for expired messages.
-* * * * * root php -q __WEB_BASE_DIR__/utils/sisiya_check_expired.php __WEB_BASE_DIR__ /usr/share/sisiya-client-checks/utils/sisiya_send_message2.sh
+* * * * * root php -q /usr/share/sisiya-webui-php/utils/sisiya_check_expired.php /usr/share/sisiya-webui-php /usr/share/sisiya-client-checks/utils/sisiya_send_message2.sh

@@ -1,4 +1,5 @@
 ### directory definitions #################################################
+package_name=sisiya-webui-php
 install_root=$(DESTDIR)$(prefix)
 etc_dir=$(install_root)/etc
 web_dir=$(install_root)/usr/share/sisiya-webui-php
@@ -12,13 +13,10 @@ cron_dir=$(etc_dir)/cron.d
 .PHONY: install
 install:
 	install -d 					$(cron_dir)
-	cat etc/cron.d/sisiya-alerts 			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)/sisiya-webui-php'g" > $(cron_dir)/sisiya-alerts
-	cat etc/cron.d/sisiya-archive 			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)/sisiya-webui-php'g" > $(cron_dir)/sisiya-archive
-	cat etc/cron.d/sisiya-check-expired	 	| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)/sisiya-webui-php'g" > $(cron_dir)/sisiya-check-expired
-	cat etc/cron.d/sisiya-rss			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)/sisiya-webui-php'g" > $(cron_dir)/sisiya-rss
-	install -m 755 -d 				$(web_dir)/autodiscover
-	install -m 700 autodiscover/discover_systems.sh $(web_dir)/autodiscover/
-	install -m 700 autodiscover/nmap_scan_info.php  $(web_dir)/autodiscover/
+	install -m 644 etc/cron.d/sisiya-alerts		$(cron_dir)/sisiya-alerts
+	install 644 etc/cron.d/sisiya-archive 		$(cron_dir)/sisiya-archive
+	install 644 etc/cron.d/sisiya-check-expired 	$(cron_dir)/sisiya-check-expired
+	install 644 etc/cron.d/sisiya-rss		$(cron_dir)/sisiya-rss
 	install -m 755 -d 				$(web_dir)/style
 	install -m 644 style/*.css 			$(web_dir)/style
 	install -m 755 -d 				$(web_dir)/javascript
@@ -32,10 +30,9 @@ install:
 	install -m 644 INSTALL.txt			$(web_dir)
 	cd $(web_dir) && ln -sf sisiya_gui.php index.php
 #	cd $(web_dir) && ln -sf ${sisiya_remote_checks_dir}	xmlconf
-	install -m 755 -d 				$(web_dir)/conf
-	install -m 644 conf/*.php 			$(web_dir)/conf/
-	cat conf/sisiya_apache.conf 			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/conf/sisiya_apache.conf
-	cat conf/sisiya_nginx.conf  			| sed "s'__WEB_BASE_DIR__'$(WEB_BASE_DIR)'g" > $(web_dir)/conf/sisiya_nginx.conf
+	install -m 755 -d 					$(etc_dir)/sisiya/$(package_name)
+	install -m 644 etc/sisiya/$(package_name)/*.php		$(etc_dir)/sisiya/$(package_name)
+	install -m 644 etc/sisiya/$(package_name)/*.conf	$(etc_dir)/sisiya/$(package_name)
 	install -m 755 -d 				$(web_dir)/lib
 	install -m 644 lib/*.php 			$(web_dir)/lib/
 	install -m 755 -d 				$(web_dir)/images
@@ -48,6 +45,7 @@ install:
 	install -m 644 XMPPHP/*.php			$(web_dir)/XMPPHP/
 	install -m 755 -d				$(web_dir)/utils
 	install -m 644 utils/*.php 			$(web_dir)/utils
+	install -m 755 utils/*.sh 			$(web_dir)/utils
 	install -d 					$(web_tmp_dir)
 	# this directory belongs to sisiya-webui-images package, I create it here to make the packaging software happy
 	mkdir -p 					$(systems_images_dir)
