@@ -100,17 +100,7 @@ rm -rf %{buildroot}
 #%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
 %attr(0755,root,root) 				/etc/sisiya
 %attr(0700,root,root) 				/etc/sisiya/sisiyad
-%if 0%{?rhel_version}
-%if 0%{?rhel_version} < 700 
-%attr(0700,root,root) 	%dir			/etc/systemd
-%attr(0700,root,root) 	%dir			/etc/systemd/system
-%endif
-%else
-%attr(0700,root,root) 	%dir			/etc/systemd
-%attr(0700,root,root) 	%dir			/etc/systemd/system
-%endif
-
-
+						%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}
 %attr(0600,root,root) 	%config(noreplace) 	/etc/sisiya/sisiyad/sisiyad.conf
 %attr(0700,root,root) 				%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}
 %attr(0700,root,root) 				/usr/sbin/sisiyad

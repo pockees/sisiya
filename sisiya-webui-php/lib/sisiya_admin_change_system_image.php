@@ -36,14 +36,14 @@ function getSystemImages()
 		}
 	}
 */
-	if($files = getFilesByExtension(SYSTEMS_IMG_URL,'.png')) {
+	if($files = getFilesByExtension(SYSTEMS_IMG_DIR,'.png')) {
 #	if(count($files) > 0) {
 		sort($files,SORT_STRING);
 		$nrows=count($files);
 		$_SESSION['nrows_change_system_image']=$nrows;
 		for($i=0;$i<$nrows;$i++) {
 			#$html.='<tr><td>'.$files[$i].'</td><td><img src="'.SYSTEMS_IMG_URL.'/'.$files[$i].'" alt="'.$files[$i].'" /></td>';
-			$html.='<tr><td>'.$files[$i].'</td><td><img src="/images/systems/'.$files[$i].'" alt="'.$files[$i].'" /></td>';
+			$html.='<tr><td>'.$files[$i].'</td><td><img src="'.SYSTEMS_IMG_URL.'/'.$files[$i].'" alt="'.$files[$i].'" /></td>';
 			$html.='<td>'.getButtonIcon('update',$i).'<input type="hidden" name="file_name['.$i.']" value="'.$files[$i].'" /></td>';
 			$html.='<td>'.getButtonIcon('delete',$i).'</td></tr>'."\n";
 		}
@@ -88,12 +88,12 @@ function updateImageLink($system_str, $img_file)
 function getSystemImage($system_name)
 {
 
-	$link_file=LINKS_IMG_URL.'/'.$system_name.'.png';
+	$link_file = LINKS_IMG_URL.'/'.$system_name.'.png';
 	#if(($image_str=readlink($link_file)) == false)
 	if((file_exists($link_file)) == false)
 		return '';
 	else {
-		$image_str=readlink($link_file);
+		$image_str = readlink($link_file);
 		return SYSTEMS_IMG_URL.'/'.$image_str;
 	}
 }
@@ -144,7 +144,7 @@ if($_SESSION['is_admin'] == 't') {
 	$html.='<tr class="row">'."\n";
 	$html.='	<td>'.getSelect('systemID',getHTTPValue('systemID'),$systems,"document.forms['change_system_imageForm'].submit();")."</td>\n";
 	$html.='	<td colspan="3">'."\n";
-	$img_file=getSystemImage($systemName);
+	$img_file = getSystemImage($systemName);
 	if($img_file != '')
 		$html.='		<img src="'.$img_file.'" alt="'.$systemName.'" />';
 	$html.="	</td>\n";
