@@ -73,6 +73,7 @@ make "DESTDIR=%{buildroot}" install
 %dir			%{web_base_dir}/images/systems
 %dir			%{web_base_dir}/install
 %dir			%{web_base_dir}/images/tmp
+%dir			%{web_base_dir}/packages
 %dir			%{web_base_dir}/XMPPHP
 %dir			%{web_base_dir}/utils
 %config(noreplace) 	/etc/cron.d/sisiya-alerts
@@ -90,6 +91,7 @@ make "DESTDIR=%{buildroot}" install
 			%{web_base_dir}/style/*.css
 			%{web_base_dir}/images/sisiya/*.*
 			%{web_base_dir}/install/*
+			%{web_base_dir}/packages/*
 			%{web_base_dir}/XMPPHP/*.php
 			%{web_base_dir}/utils/*.php
 			%{web_base_dir}/utils/*.sh

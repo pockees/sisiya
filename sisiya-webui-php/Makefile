@@ -2,7 +2,8 @@
 package_name=sisiya-webui-php
 install_root=$(DESTDIR)$(prefix)
 etc_dir=$(install_root)/etc
-web_dir=$(install_root)/usr/share/sisiya-webui-php
+web_dir=$(install_root)/usr/share/$(package_name)
+packages_dir=$(install_root)/var/lib/$(package_name)/packages
 systems_images_dir=$(install_root)/var/lib/sisiya-webui-images
 dst_apache_conf=$(install_root)/etc/httpd/conf.d
 dst_etc=$(install_root)/etc
@@ -33,15 +34,17 @@ install:
 	install -m 644 etc/sisiya/$(package_name)/*.php		$(etc_dir)/sisiya/$(package_name)
 	install -m 644 etc/sisiya/$(package_name)/*.conf	$(etc_dir)/sisiya/$(package_name)
 	install -m 755 -d 				$(web_dir)/lib
-	install -m 644 lib/*.php 			$(web_dir)/lib/
+	install -m 644 lib/*.php 			$(web_dir)/lib
 	install -m 755 -d 				$(web_dir)/images
 	install -m 755 -d				$(web_dir)/images/links
 	install -m 755 -d			 	$(web_dir)/images/sisiya
-	install -m 644 images/sisiya/*.* 		$(web_dir)/images/sisiya/
+	install -m 644 images/sisiya/*.* 		$(web_dir)/images/sisiya
 	install -m 755 -d 				$(web_dir)/install
-	install install/* 				$(web_dir)/install/
-	install -m 755 -d				$(web_dir)/XMPPHP/
-	install -m 644 XMPPHP/*.php			$(web_dir)/XMPPHP/
+	install install/* 				$(web_dir)/install
+	install -d 					$(packages_dir)
+	install packages/versions.xml			$(packages_dir)
+	install -m 755 -d				$(web_dir)/XMPPHP
+	install -m 644 XMPPHP/*.php			$(web_dir)/XMPPHP
 	install -m 755 -d				$(web_dir)/utils
 	install -m 644 utils/*.php 			$(web_dir)/utils
 	install -m 755 utils/*.sh 			$(web_dir)/utils
@@ -50,3 +53,4 @@ install:
 	# make links
 	cd $(web_dir)/images && ln -sf /var/tmp/$(package_name) tmp
 	cd $(web_dir)/images && ln -sf /var/lib/sisiya-webui-images systems
+	cd $(web_dir) && ln -sf /var/lib/$(package_name)/packages .

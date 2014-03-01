@@ -40,32 +40,32 @@ if(!initialize()) {
 	exit;
 }
 
-$menu=getHTTPValue('menu');
+$menu = getHTTPValue('menu');
 if($menu == '')
-	$menu="overview";
+	$menu = "overview";
 
-$header=$lrb['sisiya_gui.'.$menu.'.header'];
-$title=$lrb['sisiya_gui.'.$menu.'.title'];
+$header = $lrb['sisiya_gui.'.$menu.'.header'];
+$title = $lrb['sisiya_gui.'.$menu.'.title'];
 
 $h=new HTMLDocument();
 
-$menu_file=getLanguageFileName(BASE_URL.'/javascript/gui_menu_items_','.js');
+$menu_file = getLanguageFileName(JAVASCRIPT_URL.'/gui_menu_items_','.js');
 
 include_once(LIB_URL."/sisiya_gui_docheader.php");
 
 $h->addContent('<div class="div_container">');
 
-$language_params='menu='.$menu;
+$language_params = 'menu='.$menu;
 include_once(LIB_URL."/sisiya_gui_header.php");
 $h->addContent('<div class="div_content">');
 $h->addContent('	<div class="div_content_center">');	
-$debug_str='';
+$debug_str = '';
 if(getHTTPValue('debug') != '')
-	$debug_str='&amp;debug=1';
+	$debug_str = '&amp;debug=1';
 $progName=$mainProg.'?menu='.$menu.$debug_str;
 
 $navigation_panel_str='';
-$_SESSION['h']=$h;
+$_SESSION['h'] = $h;
 $h->addContent(getStatusMessage());
 ### save session
 session_write_close();
@@ -78,7 +78,7 @@ $h->addContent('</div> <!-- end of div_content -->');
 include_once(LIB_DIR."/sisiya_gui_footer.php");
 $h->addContent('</div> <!-- end of div_container -->');
 
-$html=$h->get();
+$html = $h->get();
 #####$html=preg_replace('/__NAVIGATION_PANEL__/',$navigation_panel_str,$html,1);
 echo $html;
 ?>

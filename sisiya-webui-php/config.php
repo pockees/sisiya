@@ -21,23 +21,23 @@ error_reporting(E_ALL);
 #error_reporting(E_ALL & ~E_DEPRECATED);
 
 # DIRs
-define('BASE_DIR' ,'/usr/share/sisiya-webui-php',false);
-define('CONF_DIR' ,'/etc/sisiya/sisiya-webui-php',false);
-define('VAR_DIR' ,'/var/lib/sisiya-webui-php',false);
-define('LIB_DIR' ,BASE_DIR.'/lib',false);
-define('LINKS_IMG_DIR' ,VAR_DIR.'/links',false);
-define('PACKAGES_DIR' ,VAR_DIR.'/packages',false);
-define('SYSTEMS_IMG_DIR' ,'/var/lib/sisiya-webui-images',false);
-define('TMP_IMG_DIR' ,'/var/tmp/sisiya-webui-php',false);
+define('BASE_DIR' ,'/usr/share/sisiya-webui-php', false);
+define('CONF_DIR' ,'/etc/sisiya/sisiya-webui-php', false);
+define('VAR_DIR' ,'/var/lib/sisiya-webui-php', false);
+define('LIB_DIR' ,BASE_DIR.'/lib', false);
+define('LINKS_IMG_DIR' ,VAR_DIR.'/links', false);
+define('PACKAGES_DIR' ,VAR_DIR.'/packages', false);
+define('SYSTEMS_IMG_DIR' ,'/var/lib/sisiya-webui-images', false);
+define('TMP_IMG_DIR' ,'/var/tmp/sisiya-webui-php', false);
 # URLs
-define('BASE_URL' ,'.',false);
-define('CSS_URL' ,BASE_URL.'/style',false);
-define('JAVASCRIPT_URL' ,BASE_URL.'/javascript',false);
-define('IMG_URL' ,BASE_URL.'/images',false);
-define('LIB_URL' ,BASE_URL.'/lib',false);
-define('LINKS_IMG_URL' ,IMG_URL.'/links',false);
-define('SISIYA_IMG_URL' ,IMG_URL.'/sisiya',false);
-define('SYSTEMS_IMG_URL' ,IMG_URL.'/systems',false);
-define('TMP_IMG_URL' ,IMG_URL.'/tmp',false);
+define('BASE_URL' ,'.', false);
+define('CSS_URL' ,BASE_URL.'/style', false);
+define('JAVASCRIPT_URL' ,BASE_URL.'/javascript', false);
+define('IMG_URL' ,BASE_URL.'/images', false);
+define('LIB_URL' ,BASE_URL.'/lib', false);
+define('LINKS_IMG_URL' ,IMG_URL.'/links', false);
+define('SISIYA_IMG_URL' ,IMG_URL.'/sisiya', false);
+define('SYSTEMS_IMG_URL' ,IMG_URL.'/systems', false);
+define('TMP_IMG_URL' ,IMG_URL.'/tmp', false);
 
 ?>

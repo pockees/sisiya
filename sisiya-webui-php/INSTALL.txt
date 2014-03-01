@@ -21,8 +21,8 @@
 		on CentOS it is the /etc/httpd/conf.d. After which edit it according to your specific needs.
 	- For Nginx use the sisiya_nginx.conf configuration file. After which edit it according to your specific needs.
 3) Web UI configuration:
-	- Edit the conf/dbconf.php according to the database configuration you have made in the first item.
-	- Edit the conf/sisiya_common_conf.php configuration file.
+	- Edit the /etc/sisiya/sisiya-webui-php/dbconf.php according to the database configuration you have made in the first item.
+	- Edit the /etc/sisiya/sisiya-webui-php/sisiya_common_conf.php configuration file.
 4) Login with user admin and password sisiyaadmin1
 
 

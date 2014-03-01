@@ -49,8 +49,8 @@ $html.='</h2>';
 $html.='</div>';
 
 	$html.='<table class="header_system_info">'."\n";
-	$html.='<tr><td><img src="'.LINKS_IMG_URL.'/'.$systemName.'.gif" alt="'.$systemName.'" />';
-	$html.='<img src="'.SYSTEMS_IMG_URL.'/'.$systemType.'.gif" alt="'.$systemType.'" /></td>'."\n";
+	$html.='<tr><td><img src="'.LINKS_IMG_URL.'/'.$systemName.'.png" alt="'.$systemName.'" />';
+	$html.='<img src="'.SYSTEMS_IMG_URL.'/'.$systemType.'.png" alt="'.$systemType.'" /></td>'."\n";
 	$html.='<td>';
 	$html.='<a href="'.$mainProg.'?menu=system_services'.'&amp;systemID='.$systemID;
 	$html.='&amp;systemName='.$systemName.'&amp;systemType='.$systemType.'">';
