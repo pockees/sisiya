@@ -26,23 +26,11 @@ function getSystemImages()
 	global $allowed_types;
 
 	$html='';
-/*
-	$files=array();
-	for($i=0;$i<count($allowed_types);$i++) {
-		$a=explode('/',$allowed_types[$i]);
-		$ext=$a[1];
-		if($images = getFilesByExtension(SYSTEMS_IMG_URL,$ext)) {
-			$files=array_merge($files,$images);	
-		}
-	}
-*/
-	if($files = getFilesByExtension(SYSTEMS_IMG_DIR,'.png')) {
-#	if(count($files) > 0) {
-		sort($files,SORT_STRING);
-		$nrows=count($files);
-		$_SESSION['nrows_change_system_image']=$nrows;
-		for($i=0;$i<$nrows;$i++) {
-			#$html.='<tr><td>'.$files[$i].'</td><td><img src="'.SYSTEMS_IMG_URL.'/'.$files[$i].'" alt="'.$files[$i].'" /></td>';
+	if($files = getFilesByExtension(SYSTEMS_IMG_DIR, 'png')) {
+		#sort($files, SORT_STRING);
+		$nrows = count($files);
+		$_SESSION['nrows_change_system_image'] = $nrows;
+		for($i = 0; $i < $nrows; $i++) {
 			$html.='<tr><td>'.$files[$i].'</td><td><img src="'.SYSTEMS_IMG_URL.'/'.$files[$i].'" alt="'.$files[$i].'" /></td>';
 			$html.='<td>'.getButtonIcon('update',$i).'<input type="hidden" name="file_name['.$i.']" value="'.$files[$i].'" /></td>';
 			$html.='<td>'.getButtonIcon('delete',$i).'</td></tr>'."\n";
@@ -88,49 +76,48 @@ function updateImageLink($system_str, $img_file)
 function getSystemImage($system_name)
 {
 
-	$link_file = LINKS_IMG_URL.'/'.$system_name.'.png';
-	#if(($image_str=readlink($link_file)) == false)
-	if((file_exists($link_file)) == false)
+	$link_file = LINKS_IMG_DIR.'/'.$system_name.'.png';
+	if ((file_exists($link_file)) == false)
 		return '';
 	else {
-		$image_str = readlink($link_file);
+		$image_str = basename(readlink($link_file));
 		return SYSTEMS_IMG_URL.'/'.$image_str;
 	}
 }
 ### end of functions
 ###########################################################
 $html='';
-if($_SESSION['is_admin'] == 'f')
+if ($_SESSION['is_admin'] == 'f')
 	return;
-#$systems=getSQL2SelectArray("select id,hostname from systems where active='t' order by hostname");
-$systems=getSQL2SelectArray("select id,hostname from systems order by hostname");
-$systemID=getHTTPValue('systemID');
-$systemName=getSystemName($systemID,$systems);
-if(isset($_POST['upload'])) {
-	if(checkUploadFileError($_FILES['upload_file']['error']) && checkUploadFileSize($_FILES['upload_file']['size']) && checkUploadFileType($_FILES['upload_file']['type'],$allowed_types)) {
-			if(file_exists(SYSTEMS_IMG_URL.'/'.$_FILES['upload_file']['name'])) {
-				$_SESSION['status_type']=STATUS_ERROR;
-				$_SESSION['status_message']=$lrb['sisiya_admin.msg.file_exists'].' ('.SYSTEMS_IMG_URL.'/'.$_FILES['upload_file']['name'].')';
+#$systems = getSQL2SelectArray("select id,hostname from systems where active='t' order by hostname");
+$systems = getSQL2SelectArray("select id,hostname from systems order by hostname");
+$systemID = getHTTPValue('systemID');
+$systemName = getSystemName($systemID, $systems);
+if (isset($_POST['upload'])) {
+	if (checkUploadFileError($_FILES['upload_file']['error']) && checkUploadFileSize($_FILES['upload_file']['size']) && checkUploadFileType($_FILES['upload_file']['type'],$allowed_types)) {
+			if(file_exists(SYSTEMS_IMG_DIR.'/'.$_FILES['upload_file']['name'])) {
+				$_SESSION['status_type'] = STATUS_ERROR;
+				$_SESSION['status_message'] = $lrb['sisiya_admin.msg.file_exists'].' ('.SYSTEMS_IMG_DIR.'/'.$_FILES['upload_file']['name'].')';
 			}
 			else {
-				if(!move_uploaded_file($_FILES['upload_file']['tmp_name'],SYSTEMS_IMG_URL.'/'.$_FILES['upload_file']['name'])) {
-					$_SESSION['status_type']=STATUS_ERROR;
-					$_SESSION['status_message']=$lrb['sisiya_admin.msg.couldnot_be_stored'].' ('.SYSTEMS_IMG_URL.')';
+				if(!move_uploaded_file($_FILES['upload_file']['tmp_name'],SYSTEMS_IMG_DIR.'/'.$_FILES['upload_file']['name'])) {
+					$_SESSION['status_type'] = STATUS_ERROR;
+					$_SESSION['status_message'] = $lrb['sisiya_admin.msg.couldnot_be_stored'].' ('.SYSTEMS_IMG_DIR.')';
 				}
 				else {
-					$_SESSION['status_type']=STATUS_OK;
-					$_SESSION['status_message']=$lrb['sisiya.msg.ok.upload'].' ('.SYSTEMS_IMG_URL.'/'.$_FILES['upload_file']['name'].')';
+					$_SESSION['status_type'] = STATUS_OK;
+					$_SESSION['status_message'] = $lrb['sisiya.msg.ok.upload'].' ('.SYSTEMS_IMG_URL.'/'.$_FILES['upload_file']['name'].')';
 					if($systemName != '')
-						updateImageLink($systemName,$_FILES['upload_file']['name']);
+						updateImageLink($systemName, $_FILES['upload_file']['name']);
 				}
 			}
 	}
 }
 else {
-	if(isset($_SESSION['nrows_change_system_image'])) {
-		for($i=0;$i<$_SESSION['nrows_change_system_image'];$i++) {
+	if (isset($_SESSION['nrows_change_system_image'])) {
+		for($i = 0; $i < $_SESSION['nrows_change_system_image']; $i++) {
 			if(isset($_POST['update'][$i])) {
-				updateImageLink($systemName,$_POST['file_name'][$i]);
+				updateImageLink($systemName, $_POST['file_name'][$i]);
 			}
 			else if(isset($_POST['delete'][$i])) {
 				removeImageFile($_POST['file_name'][$i]);
@@ -140,23 +127,23 @@ else {
 }
 $html.='<form id="change_system_imageForm" action="'.$progName.'" method="post" enctype="multipart/form-data">'."\n";
 $html.='<table class="general">'."\n";
-if($_SESSION['is_admin'] == 't') {
-	$html.='<tr class="row">'."\n";
-	$html.='	<td>'.getSelect('systemID',getHTTPValue('systemID'),$systems,"document.forms['change_system_imageForm'].submit();")."</td>\n";
+if ($_SESSION['is_admin'] == 't') {
+	$html .= '<tr class="row">'."\n";
+	$html .= '	<td>'.getSelect('systemID',getHTTPValue('systemID'),$systems,"document.forms['change_system_imageForm'].submit();")."</td>\n";
 	$html.='	<td colspan="3">'."\n";
 	$img_file = getSystemImage($systemName);
 	if($img_file != '')
-		$html.='		<img src="'.$img_file.'" alt="'.$systemName.'" />';
-	$html.="	</td>\n";
-	$html.="</tr>\n";
-	$html.='<tr class="row">'."\n";
-	$html.='	<td class="label">'.$lrb['sisiya_admin.label.add_image_file']."</td>\n";
-	$html.='	<td><input type="file" name="upload_file" /></td>'."\n";
-	$html.='	<td colspan="2" class="center">'.getButtonIcon('upload')."</td>\n";
-	$html.="</tr>\n";
-	$html.=getSystemImages()."\n";
+		$html .= '		<img src="'.$img_file.'" alt="'.$systemName.'" />';
+	$html .= "	</td>\n";
+	$html .= "</tr>\n";
+	$html .= '<tr class="row">'."\n";
+	$html .= '	<td class="label">'.$lrb['sisiya_admin.label.add_image_file']."</td>\n";
+	$html .= '	<td><input type="file" name="upload_file" /></td>'."\n";
+	$html .= '	<td colspan="2" class="center">'.getButtonIcon('upload')."</td>\n";
+	$html .= "</tr>\n";
+	$html .= getSystemImages()."\n";
 }
-$html.="</table>\n";
-$html.="</form>\n";
+$html .= "</table>\n";
+$html .= "</form>\n";
 $h->addContent($html);
 ?>

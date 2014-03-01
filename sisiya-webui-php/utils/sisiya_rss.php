@@ -22,7 +22,7 @@ error_reporting(E_ALL);
 
 if (count($argv) != 2) {
 	echo "Usage   : $argv[0] web_root_dir\n";
-	echo "Example : $argv[0] /srv/http/sisiya-webui-php\n";
+	echo "Example : $argv[0] /var/lib/sisiya-webui-php\n";
 	exit(1);
 }
 
@@ -30,14 +30,15 @@ if (! defined('STDIN')) {
 	echo "This script should not be run from web!";
 	exit(1);
 }
-global $rootDir,$progName;
+global $progName;
 $progName = $argv[0];
-$rootDir = $argv[1];
+$web_root_dir = $argv[1];
 
-include_once($rootDir."/conf/sisiya_common_conf.php");
-include_once($rootDir."/conf/sisiya_gui_conf.php");
+include_once($web_root_dir.'/config.php');
+include_once(CONF_DIR."/sisiya_common_conf.php");
+include_once(CONF_DIR."/sisiya_gui_conf.php");
 
-$output_file_name=$rssFile;
+$output_file_name = $rssFile;
 
 function echo_rss_header()
 {
@@ -93,9 +94,10 @@ function get_pubDate()
 
 function generate_rss()
 {
-	global $db,$output_file_name,$defaultLanguage,$progNameSisIYA_GUI,$rootDir;
+	global $db,$output_file_name,$defaultLanguage,$progNameSisIYA_GUI;
 
-	$gui_url=SISIYA_URL.str_replace($rootDir,'',$progNameSisIYA_GUI);
+	#$gui_url=SISIYA_URL.str_replace($rootDir,'',$progNameSisIYA_GUI);
+	$gui_url = SISIYA_URL;
 
 	$pubDate_str=get_pubDate();
 	###		    0         1    2     3      4      5        6           7

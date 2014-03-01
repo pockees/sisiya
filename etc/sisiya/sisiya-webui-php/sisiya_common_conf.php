@@ -56,7 +56,7 @@ global $rssFile;
 $rssFile=BASE_URL.'/sisiya_rss.xml';
 
 # Database classes
-include_once(BASE_URL.'/lib/dbclass.php');
+include_once(LIB_DIR.'/dbclass.php');
 
 # HTML Document class
 include_once(LIB_DIR.'/documentClass.php');

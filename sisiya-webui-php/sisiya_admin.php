@@ -71,7 +71,7 @@ if($button == $lrb['sisiya_admin.button.logout']) {
 #$user_id = $_SESSION['user_id'];
 #$is_admin = $_SESSION['is_admin'];
 
-$menu_file = getLanguageFileName(JAVASCRIPT_DIR.'/menu_items_','.js');
+$menu_file = getLanguageFileName('menu_items_', '.js');
 
 include_once(LIB_DIR."/sisiya_admin_docheader.php");
 

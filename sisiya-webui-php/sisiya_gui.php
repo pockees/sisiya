@@ -49,7 +49,7 @@ $title = $lrb['sisiya_gui.'.$menu.'.title'];
 
 $h=new HTMLDocument();
 
-$menu_file = getLanguageFileName(JAVASCRIPT_URL.'/gui_menu_items_','.js');
+$menu_file = getLanguageFileName('gui_menu_items_', '.js');
 
 include_once(LIB_URL."/sisiya_gui_docheader.php");
 

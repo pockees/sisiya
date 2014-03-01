@@ -40,11 +40,11 @@ $h->addHeadContent('<meta name="author" content="'.$rs['meta-author'].'" />');
 $h->addHeadContent('<meta name="generator" content="'.$rs['meta-generator'].'" />');
 $h->addHeadContent('<meta name="description" content="'.$rs['meta-description'].'" />');
 $h->addHeadContent('<meta name="keywords" content="'.$rs['meta-keywords'].'" />');
-$h->addHeadContent('<script type="text/javascript" src="'.BASE_DIR.'/javascript/sisiya_common_functions.js"></script>');
+$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/sisiya_common_functions.js"></script>');
 $h->addHeadContent('<!-- including GUI menu javascript files -->');
 $h->addHeadContent('<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/gui_menu.css" />');
 $h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/gui_menu.js"></script>');
-$h->addHeadContent('<script type="text/javascript" src="'.$menu_file.'"></script>');
+$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/'.$menu_file.'"></script>');
 $h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/gui_menu_tpl.js"></script>');
 $h->addHeadContent('<!-- included GUI menu javascript files -->');
 ?>

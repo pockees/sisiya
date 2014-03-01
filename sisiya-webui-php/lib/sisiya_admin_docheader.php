@@ -44,7 +44,7 @@ $h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/sisiy
 if(preg_match("/sisiya_admin.php/",$progName)) {
 	$h->addHeadContent('<!-- including menu javascript files -->');
 	$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/menu.js"></script>');
-	$h->addHeadContent('<script type="text/javascript" src="'.$menu_file.'"></script>');
+	$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/'.$menu_file.'"></script>');
 	$h->addHeadContent('<script type="text/javascript" src="'.JAVASCRIPT_URL.'/menu_tpl.js"></script>');
 	$h->addHeadContent('<!-- included menu javascript files -->');
 }

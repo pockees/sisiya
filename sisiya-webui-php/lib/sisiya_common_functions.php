@@ -565,10 +565,10 @@ function setParameterError($parameter_str)
 }
 
 ### only includes regular files
-function getFilesByExtension($path,$extension='')
+function getFilesByExtension($path, $extension='')
 {
 	$list = array();
-	$dir_handle=opendir($path);
+	$dir_handle = opendir($path);
 	if($dir_handle == false) {
 		echo 'Could not open directory : '.$path."!\n";
 		return(false);
@@ -579,13 +579,13 @@ function getFilesByExtension($path,$extension='')
 		### skip links
 		if(is_link($path.'/'.$file))
 			continue;
-		$filename=explode('.',$file);
-		$ext=$filename[count($filename) - 1];
+		$filename = explode('.', $file);
+		$ext = $filename[count($filename) - 1];
 		if($ext == $extension) 
 			array_push($list,$file);
 	}
 	if(count($list) > 0) {
-		sort($list,SORT_STRING);
+		sort($list, SORT_STRING);
 		return($list);
 	}
 	else
@@ -1013,14 +1013,14 @@ function getStatusMessage()
 	return($html);
 }
 
-function getLanguageFileName($prefix,$suffix)
+function getLanguageFileName($prefix, $suffix)
 {
 	global $defaultLanguage;
 
-	$file_name=$prefix.$_SESSION['language'].$suffix;
+	$file_name = $prefix.$_SESSION['language'].$suffix;
 	### check whether the specified language file exists or not. If does not exist, use the default language file.
-	if(!file_exists($file_name))
-		$file_name=$prefix.$defaultLanguage.$suffix;
+	if(!file_exists(JAVASCRIPT_DIR.'/'.$file_name))
+		$file_name = $prefix.$defaultLanguage.$suffix;
 	return($file_name);
 }
 

@@ -33,7 +33,7 @@ global $adminProg;
 $adminProg=$progNameSisIYA_Admin;
 
 global $rssFile;
-$rssFile=BASE_DIR.'/utils/sisiya_rss.xml';
+$rssFile=BASE_URL.'/sisiya_rss.xml';
 
 
 # functions

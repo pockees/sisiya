@@ -23,7 +23,7 @@ error_reporting(E_ALL);
 # DIRs
 define('BASE_DIR' ,'/usr/share/sisiya-webui-php', false);
 define('CONF_DIR' ,'/etc/sisiya/sisiya-webui-php', false);
-define('JAVASCRIPT_DIR' ,BASE_DIR.'/javascrıpt', false);
+define('JAVASCRIPT_DIR' ,BASE_DIR.'/javascript', false);
 define('VAR_DIR' ,'/var/lib/sisiya-webui-php', false);
 define('LIB_DIR' ,BASE_DIR.'/lib', false);
 define('LINKS_IMG_DIR' ,VAR_DIR.'/links', false);
