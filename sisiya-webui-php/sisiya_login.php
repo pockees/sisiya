@@ -19,9 +19,6 @@
 */
 error_reporting(E_ALL);
 
-global $rootDir;
-$rootDir=".";
-
 include_once("config.php");
 include_once(CONF_DIR."/sisiya_common_conf.php");
 include_once(CONF_DIR."/sisiya_admin_conf.php");
@@ -53,7 +50,7 @@ $button=getHTTPValue('button');
 
 
 #$login_info='<div class="div_login_info">&nbsp;</div>'."\n";	
-$login_info='';	
+$login_info = '';	
 if($button == $lrb['sisiya_admin.button.login']) {
 	if($username != '') { 
 		$login_ok=checkLogin($username,$password);
@@ -68,7 +65,7 @@ if($button == $lrb['sisiya_admin.button.login']) {
 			exit();
 		}
 		else {
-			$login_info=$lrb['sisiya_admin.login.invalid_login'];
+			$login_info = $lrb['sisiya_admin.login.invalid_login'];
 		}
 	}
 }
@@ -76,25 +73,25 @@ if($button == $lrb['sisiya_admin.button.forgot_password']) {
 	$login_info=$lrb['sisiya_admin.login.invalid_username'];
 	if($username != '' && checkUsername($username)) {
 		# send new password
-		$login_info=$lrb['sisiya_admin.login.sent_new_password'];
+		$login_info = $lrb['sisiya_admin.login.sent_new_password'];
 	}
 }
 
 $h=new HTMLDocument();
 
-$language_params='menu='.$menu;
-$title=$lrb['sisiya_admin.login.title'];
-include_once($rootDir."/lib/sisiya_login_docheader.php");
-$header=$lrb['sisiya_admin.login.header'];
-$header_type='login';
+$language_params = 'menu='.$menu;
+$title = $lrb['sisiya_admin.login.title'];
+include_once(LIB_DIR."/sisiya_login_docheader.php");
+$header = $lrb['sisiya_admin.login.header'];
+$header_type = 'login';
 
 $h->addContent('<div class="div_container">');
 $h->addContent('<div class="div_header">');
 
-include_once($rootDir.'/lib/sisiya_gui_logo.php');
+include_once(LIB_DIR.'/sisiya_gui_logo.php');
 $h->addContent($lrb['sisiya_admin.login.header']);
 $h->addContent('<div class="div_float_right small_font">');
-include_once($rootDir.'/lib/sisiya_gui_language.php');
+include_once(LIB_DIR.'/sisiya_gui_language.php');
 $h->addContent('</div>');
 
 $h->addContent('</div> <!-- end of div_header -->');
@@ -120,7 +117,7 @@ $h->addContent('	</form>');
 if($login_info != '') 
 	$h->addContent('<div class="div_login_info">'.$login_info.'</div>');
 $h->addContent('</div> <!-- end of div_login_content -->');
-include_once($rootDir."/lib/sisiya_login_footer.php");
+include_once(LIB_DIR."/sisiya_login_footer.php");
 $h->addContent('</div> <!-- end of div_container -->');
 $h->display();
 ?>

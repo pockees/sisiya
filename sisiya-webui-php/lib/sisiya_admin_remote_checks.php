@@ -35,9 +35,7 @@ function getConfXMLFields($xml)
 
 function loadXMLConf($conf_file_name)
 {
-	global $rootDir;
-
-	$conf_file=$rootDir.'/xmlconf/'.$conf_file_name;
+	$conf_file = BASE_DIR.'/xmlconf/'.$conf_file_name;
 	if(file_exists($conf_file))
 		return(simplexml_load_file($conf_file));
 	return(false);
@@ -46,10 +44,10 @@ function loadXMLConf($conf_file_name)
 
 function getConfXML($conf_file_name,$systems,$fields)
 {
-	global $db,$rootDir;
+	global $db;
 
 	$html='';
-	$conf_file=$rootDir.'/xmlconf/'.$conf_file_name;
+	$conf_file = BASE_DIR.'/xmlconf/'.$conf_file_name;
 	if(file_exists($conf_file)) {
 		$xml=simplexml_load_file($conf_file);
 		if($xml) {
@@ -115,9 +113,7 @@ function getConfXML($conf_file_name,$systems,$fields)
 
 function addToXMLConf($nrows,$fields,$conf_file_name,$systems)
 {
-	global $rootDir;
-
-	$conf_file=$rootDir.'/xmlconf/'.$conf_file_name;
+	$conf_file = BASE_DIR.'/xmlconf/'.$conf_file_name;
 	$str='<?xml version="1.0" encoding="utf-8"?>'."\n";
 	$str.='<systems>'."\n";
 	### add at the begging of the file
@@ -142,9 +138,7 @@ function addToXMLConf($nrows,$fields,$conf_file_name,$systems)
 
 function deleteFromXMLConf($k,$nrows,$fields,$conf_file_name)
 {
-	global $rootDir;
-
-	$conf_file=$rootDir.'/xmlconf/'.$conf_file_name;
+	$conf_file = BASE_DIR.'/xmlconf/'.$conf_file_name;
 	$str='<?xml version="1.0" encoding="utf-8"?>'."\n";
 	$str.='<systems>'."\n";
 	for($i=0;$i<$nrows;$i++) {
@@ -164,9 +158,7 @@ function deleteFromXMLConf($k,$nrows,$fields,$conf_file_name)
 
 function updateXMLConf($nrows,$fields,$conf_file_name)
 {
-	global $rootDir;
-
-	$conf_file=$rootDir.'/xmlconf/'.$conf_file_name;
+	$conf_file = BASE_DIR.'/xmlconf/'.$conf_file_name;
 	$str='<?xml version="1.0" encoding="utf-8"?>'."\n";
 	$str.='<systems>'."\n";
 	for($i=0;$i<$nrows;$i++) {

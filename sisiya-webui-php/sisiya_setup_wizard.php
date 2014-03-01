@@ -19,12 +19,9 @@
 */
 error_reporting(E_ALL);
 
-global $rootDir;
-$rootDir=".";
-
-if(file_exists($rootDir."/conf/sisiya_global.php")) {
-	include_once($rootDir."/conf/sisiya_global.php");
-	if(!file_exists($rootDir."/conf/dbconf_global.php")) {
+if(file_exists(CONF_DIR."/sisiya_global.php")) {
+	include_once(CONF_DIR."/sisiya_global.php");
+	if(!file_exists(CONF_DIR."/dbconf_global.php")) {
 		echo "SisIYA DB is not yet configuret. Running SisIYA Setup wizard...";
 		exit;
 	}

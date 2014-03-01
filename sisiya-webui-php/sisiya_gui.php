@@ -20,8 +20,7 @@
 error_reporting(E_ALL);
 #error_reporting(E_ALL & ~E_DEPRECATED);
 
-global $rootDir,$progName;
-$rootDir=".";
+global $progName;
 
 include_once("config.php");
 include_once(CONF_DIR."/sisiya_common_conf.php");
@@ -50,14 +49,14 @@ $title=$lrb['sisiya_gui.'.$menu.'.title'];
 
 $h=new HTMLDocument();
 
-$menu_file=getLanguageFileName($rootDir.'/javascript/gui_menu_items_','.js');
+$menu_file=getLanguageFileName(BASE_URL.'/javascript/gui_menu_items_','.js');
 
-include_once($libDir."/sisiya_gui_docheader.php");
+include_once(LIB_URL."/sisiya_gui_docheader.php");
 
 $h->addContent('<div class="div_container">');
 
 $language_params='menu='.$menu;
-include_once($libDir."/sisiya_gui_header.php");
+include_once(LIB_URL."/sisiya_gui_header.php");
 $h->addContent('<div class="div_content">');
 $h->addContent('	<div class="div_content_center">');	
 $debug_str='';
@@ -71,12 +70,12 @@ $h->addContent(getStatusMessage());
 ### save session
 session_write_close();
 
-include_once($libDir.'/sisiya_gui_'.$menu.'.php');
+include_once(LIB_URL.'/sisiya_gui_'.$menu.'.php');
 
 $h->addContent('	</div> <!-- end of div_content_center -->');
 $h->addContent('</div> <!-- end of div_content -->');
 
-include_once($rootDir."/lib/sisiya_gui_footer.php");
+include_once(LIB_DIR."/sisiya_gui_footer.php");
 $h->addContent('</div> <!-- end of div_container -->');
 
 $html=$h->get();

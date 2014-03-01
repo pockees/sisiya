@@ -19,10 +19,9 @@
 */
 error_reporting(E_ALL);
 
-global $rootDir, $progName;
+global $progName;
 
 include_once("config.php");
-$rootDir=BASE_URL;
 include_once(CONF_DIR."/sisiya_common_conf.php");
 include_once(CONF_DIR."/sisiya_admin_conf.php");
 
@@ -40,25 +39,25 @@ if(!initialize()) {
 	exit;
 }
 
-$h=new HTMLDocument();
+$h = new HTMLDocument();
 
-$menu=getHTTPValue('menu');
+$menu = getHTTPValue('menu');
 if($menu == '')
 	$menu="systems";
-$table=getHTTPValue('table');
-$table_str='';
+$table = getHTTPValue('table');
+$table_str = '';
 if($table != '') {
-	$table_str='&amp;table='.$table;
-	$header=$lrb['sisiya_admin.'.$table.'.header'];
-	$title=$lrb['sisiya_admin.'.$table.'.title'];
+	$table_str = '&amp;table='.$table;
+	$header = $lrb['sisiya_admin.'.$table.'.header'];
+	$title = $lrb['sisiya_admin.'.$table.'.title'];
 }
 else {
-	$header=$lrb['sisiya_admin.'.$menu.'.header'];
-	$title=$lrb['sisiya_admin.'.$menu.'.title'];
+	$header = $lrb['sisiya_admin.'.$menu.'.header'];
+	$title = $lrb['sisiya_admin.'.$menu.'.title'];
 }
-$language_params='menu='.$menu.$table_str;
+$language_params = 'menu='.$menu.$table_str;
 
-$button=getHTTPValue('button');
+$button = getHTTPValue('button');
 if($button == $lrb['sisiya_admin.button.logout']) {
 	destroySession();
 	### redirect
@@ -66,33 +65,33 @@ if($button == $lrb['sisiya_admin.button.logout']) {
 	exit();
 }
 
-#$user_name=$_SESSION['user_name'];
-#$user_surname=$_SESSION['user_surname'];
-#$valid_user=$_SESSION['valid_user'];
-#$user_id=$_SESSION['user_id'];
-#$is_admin=$_SESSION['is_admin'];
+#$user_name = $_SESSION['user_name'];
+#$user_surname = $_SESSION['user_surname'];
+#$valid_user = $_SESSION['valid_user'];
+#$user_id = $_SESSION['user_id'];
+#$is_admin = $_SESSION['is_admin'];
 
-$menu_file=getLanguageFileName($rootDir.'/javascript/menu_items_','.js');
+$menu_file = getLanguageFileName(JAVASCRIPT_DIR.'/menu_items_','.js');
 
-include_once($libDir."/sisiya_admin_docheader.php");
+include_once(LIB_DIR."/sisiya_admin_docheader.php");
 
 $h->addContent('<div class="div_container">'."\n");
 
-$header_type='main';
-include_once($libDir."/sisiya_admin_header.php");
+$header_type = 'main';
+include_once(LIB_DIR."/sisiya_admin_header.php");
 $h->addContent('<div class="div_content">');
-		$debug_str='';
+		$debug_str = '';
 		if(getHTTPValue('debug') != '')
-			$debug_str='&amp;debug=1';
-		$progName='sisiya_admin.php?menu='.$menu.$table_str.$debug_str;
+			$debug_str = '&amp;debug=1';
+		$progName = 'sisiya_admin.php?menu='.$menu.$table_str.$debug_str;
 
-		include_once($libDir.'/sisiya_admin_'.$menu.'.php');
-		include_once($libDir.'/status_message.php');
+		include_once(LIB_DIR.'/sisiya_admin_'.$menu.'.php');
+		include_once(LIB_DIR.'/status_message.php');
 		### save session
 		session_write_close();
 $h->addContent("</div> <!-- end of div_content -->\n");
 $h->addContent("<p>&nbsp;</p>\n");
-include_once($libDir."/sisiya_admin_footer.php");
+include_once(LIB_DIR."/sisiya_admin_footer.php");
 $h->addContent('</div> <!-- end of div_container -->');
 
 $html=$h->get();

@@ -19,12 +19,12 @@ backup=()
 options=()
 install=
 changelog=
-#source=("$pkgname-$pkgver-$pkgrel.tar.gz")
-source=("http://sourceforge.net/projects/sisiya/files/sisiya/$pkgver/pacman/$pkgname-$pkgver-$pkgrel.tar.gz")
+#source=("$pkgname-$pkgver.tar.gz")
+source=("http://sourceforge.net/projects/sisiya/files/sisiya/$pkgver/pacman/$pkgname-$pkgver.tar.gz")
 noextract=()
 md5sums=('__MD5SUM__') #generate with 'makepkg -g'
 
 package() {
-	cd "$srcdir/$pkgname-$pkgver-$pkgrel"
-	make "DESTDIR=$pkgdir" "WEB_BASE_DIR=/srv/http" install
+	cd "$srcdir/$pkgname-$pkgver"
+	make "DESTDIR=$pkgdir" install
 }

@@ -162,8 +162,6 @@ function displayLanguageBar_old($prog_name,$params)
 
 function getLanguageBar_old($prog_name,$params)
 {
-	global $rootDir;
-
 	$str='';
 	if(isset($_SESSION['langs'])) {
 		foreach($_SESSION['langs']['language_code'] as $language_code) {
@@ -190,9 +188,7 @@ function displayLanguageBar()
 
 function getLanguageBar()
 {
-	global $rootDir;
-
-	$str='';
+	$str = '';
 	if(strpos($_SERVER['REQUEST_URI'],'?') == false)
 		$link_prog=$_SERVER['REQUEST_URI'].'?';
 	else {

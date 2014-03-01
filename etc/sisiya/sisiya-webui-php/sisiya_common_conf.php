@@ -46,20 +46,11 @@ $min_password_length = 8;
 global $salt_length;                                                                                                                                                                                      
 $salt_length = 12; ### Use MD5 with 12 character salt                                                                                                                                                       
 
-global $resourceDir;
-$resourceDir=BASE_URL;
-
-global $libDir;
-$libDir=BASE_URL.'/lib';
-
-global $cssDir;
-$cssDir=BASE_URL."/style";
-
 global $sessionName;
-$sessionName='sisiya_SID';
+$sessionName = 'sisiya_SID';
 
 global $loginProg;
-$loginProg=BASE_URL.'/sisiya_login.php';
+$loginProg = BASE_URL.'/sisiya_login.php';
 
 global $rssFile;
 $rssFile=BASE_URL.'/sisiya_rss.xml';
@@ -68,13 +59,13 @@ $rssFile=BASE_URL.'/sisiya_rss.xml';
 include_once(BASE_URL.'/lib/dbclass.php');
 
 # HTML Document class
-include_once($libDir.'/documentClass.php');
+include_once(LIB_DIR.'/documentClass.php');
 
 # Database configuration
 include_once(CONF_DIR.'/dbconf.php');
 
 # Common functions
-include_once($libDir.'/sisiya_common_functions.php');
+include_once(LIB_DIR.'/sisiya_common_functions.php');
 
 #########################################################################################################
 ### start of :do not change

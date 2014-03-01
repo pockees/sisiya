@@ -26,13 +26,14 @@ if test $# -ne 1 ; then
 	exit 1
 fi
 version="$1"
+release="1"
+march=`uname -m`
 echo $version
 repo_dir=arch-repo.sisiya.org
 
 package_list="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images sisiya-edbc-libs sisiyad"
-package_list_any="sisiya-client-checks-${version}-any.pkg.tar.xz sisiya-remote-checks-${version}-any.pkg.tar.xz sisiya-webui-php-${version}-any.pkg.tar.xz sisiya-webui-images-${version}-any.pkg.tar.xz"
-package_list_i686="sisiya-client-checks-${version}-any.pkg.tar.xz sisiya-remote-checks-${version}-any.pkg.tar.xz sisiya-webui-php-${version}-any.pkg.tar.xz sisiya-webui-images-${version}-any.pkg.tar.xz"
-package_list_x86_64="sisiyad-${version}-x86_64.pkg.tar.xz sisiya-edbc-libs-${version}-x86_64.pkg.tar.xz sisiya-client-checks-${version}-any.pkg.tar.xz sisiya-remote-checks-${version}-any.pkg.tar.xz sisiya-webui-php-${version}-any.pkg.tar.xz sisiya-webui-images-${version}-any.pkg.tar.xz"
+package_list_any="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images"
+package_list_binary="sisiyad sisiya-edbc-libs"
 
 # create repository directory structure
 for d in $repo_dir/os/any $repo_dir/os/i686 $repo_dir/os/x86_64
@@ -49,10 +50,18 @@ do
 	echo "---------------------"
 done
 
-for f in $package_list_x86_64
+for f in $package_list_any
 do
-	repo-add $repo_dir/os/x86_64/sisiya.db.tar.gz $f
-	cp -f $f $repo_dir/os/x86_64/
+	packaged_file=${f}-${version}-${release}-any.pkg.tar.xz
+	repo-add $repo_dir/os/$march/sisiya.db.tar.gz ${f}-${version}-${release}-any.pkg.tar.xz
+	cp -f $packaged_file $repo_dir/os/$march
+done
+
+for f in $package_list_binary
+do
+	packaged_file=${f}-${version}-${release}-${march}.pkg.tar.xz
+	repo-add $repo_dir/os/$march/sisiya.db.tar.gz $packaged_file
+	cp -f $packaged_file $repo_dir/os/$march
 done
 
 for f in $package_list

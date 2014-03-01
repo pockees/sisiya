@@ -25,20 +25,20 @@ $sendMessageProg='/opt/sisiya_client_checks/bin/sisiya_send_message.sh /opt/sisi
 
 ### number of records per page
 global $nrecords_per_page;
-$nrecords_per_page=20;
+$nrecords_per_page = 20;
 
 ### max number of pages to be shown
 global $max_pages;
-$max_pages=5;
+$max_pages = 5;
 
 global $mainProg;
-$mainProg=$progNameSisIYA_Admin;
+$mainProg = $progNameSisIYA_Admin;
 
 global $max_upload_files_size;
-$max_upload_files_size=200000;
+$max_upload_files_size = 200000;
 
 global $allowed_types;
-$allowed_types=array(
+$allowed_types = array(
 		0	=> 'image/gif',
 		1	=> 'image/jpeg',
 		2	=> 'image/png',
@@ -46,7 +46,6 @@ $allowed_types=array(
 	);
 
 # functions
-#include_once($libDir.'/sisiya_common_functions.php');
-include_once($libDir.'/sisiya_admin_functions.php');
+include_once(LIB_DIR.'/sisiya_admin_functions.php');
 
 ?>

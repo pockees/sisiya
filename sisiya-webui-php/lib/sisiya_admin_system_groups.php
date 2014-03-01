@@ -116,6 +116,6 @@ else {
 $html.="</table>\n";
 $html.="</div> <!-- end of div_right -->\n";
 $h->addContent($html);
-include_once($libDir."/sisiya_admin_page_numbers.php");
+include_once(LIB_DIR."/sisiya_admin_page_numbers.php");
 $h->addContent("</form>\n");
 ?>

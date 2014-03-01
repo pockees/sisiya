@@ -23,24 +23,24 @@ error_reporting(E_ALL);
 ### begin of functions
 function getSystemImages()
 {
-	global $systemsImageDir,$allowed_types;
+	global SYSTEMS_IMG_URL,$allowed_types;
 
 	$html='';
 	$files=array();
 	for($i=0;$i<count($allowed_types);$i++) {
 		$a=explode('/',$allowed_types[$i]);
 		$ext=$a[1];
-		if($images = getFilesByExtension($systemsImageDir,$ext)) {
+		if($images = getFilesByExtension(SYSTEMS_IMG_URL,$ext)) {
 			$files=array_merge($files,$images);	
 		}
 	}
-	#if($files = getFilesByExtension($systemsImageDir,'gif')) {
+	#if($files = getFilesByExtension(SYSTEMS_IMG_URL,'gif')) {
 	if(count($files) > 0) {
 		sort($files,SORT_STRING);
 		$nrows=count($files);
 		$_SESSION['nrows_upload_images']=$nrows;
 		for($i=0;$i<$nrows;$i++) {
-			$html.='<tr><td>'.$files[$i].'</td><td><img src="'.$systemsImageDir.'/'.$files[$i].'" alt="'.$files[$i].'" /></td>';
+			$html.='<tr><td>'.$files[$i].'</td><td><img src="'.SYSTEMS_IMG_URL.'/'.$files[$i].'" alt="'.$files[$i].'" /></td>';
 			$html.='<td>'.getButtonIcon('delete',$i).'<input type="hidden" name="file_name['.$i.']" value="'.$files[$i].'" /></td>'."</tr>\n";
 		}
 	}
@@ -53,18 +53,18 @@ if($_SESSION['is_admin'] == 'f')
 	return;
 if(isset($_POST['upload'])) {
 	if(checkUploadFileError($_FILES['file']['error']) && checkUploadFileSize($_FILES['file']['size']) && checkUploadFileType($_FILES['file']['type'],$allowed_types)) {
-			if(file_exists($systemsImageDir.'/'.$_FILES['file']['name'])) {
+			if(file_exists(SYSTEMS_IMG_URL.'/'.$_FILES['file']['name'])) {
 				$_SESSION['status_type']=STATUS_ERROR;
-				$_SESSION['status_message']=$lrb['sisiya_admin.msg.file_exists'].' ('.$systemsImageDir.'/'.$_FILES['file']['name'].')';
+				$_SESSION['status_message']=$lrb['sisiya_admin.msg.file_exists'].' ('.SYSTEMS_IMG_URL.'/'.$_FILES['file']['name'].')';
 			}
 			else {
-				if(!move_uploaded_file($_FILES['file']['tmp_name'],$systemsImageDir.'/'.$_FILES['file']['name'])) {
+				if(!move_uploaded_file($_FILES['file']['tmp_name'],SYSTEMS_IMG_URL.'/'.$_FILES['file']['name'])) {
 					$_SESSION['status_type']=STATUS_ERROR;
-					$_SESSION['status_message']=$lrb['sisiya_admin.msg.couldnot_be_stored'].' ('.$systemsImageDir.')';
+					$_SESSION['status_message']=$lrb['sisiya_admin.msg.couldnot_be_stored'].' ('.SYSTEMS_IMG_URL.')';
 				}
 				else {
 					$_SESSION['status_type']=STATUS_OK;
-					$_SESSION['status_message']=$lrb['sisiya.msg.ok.upload'].' ('.$systemsImageDir.'/'.$_FILES['file']['name'].')';
+					$_SESSION['status_message']=$lrb['sisiya.msg.ok.upload'].' ('.SYSTEMS_IMG_URL.'/'.$_FILES['file']['name'].')';
 				}
 			}
 	}

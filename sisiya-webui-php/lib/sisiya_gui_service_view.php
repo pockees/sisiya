@@ -44,9 +44,9 @@ if($statusID != '-' && $statusID != '')
 $serviceName=getServiceName($serviceID);
 /*
 $navigation_panel_str=getLinkIcon('dashboard',$mainProg.'?menu=dashboard');
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>'; 
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>'; 
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>'; 
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>'; 
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
 */
 
 $h->addHeadContent('<meta http-equiv="cache-control" content="no-cache" />');
@@ -114,14 +114,14 @@ else {
 		for($row_index=0;$row_index<$nrows;$row_index++) {
 			$row=$db->fetchRow($result,$row_index);
 			#
-			$image_file=$tmpImageDir.'/system_service_history_status_'.$row[1].'_'.$serviceID.'.png';
+			$image_file = '/system_service_history_status_'.$row[1].'_'.$serviceID.'.png';
 			$system_link_str=$mainProg.'?menu=system_services'.'&amp;systemID='.$row[1].'&amp;systemName='.$row[0].'&amp;systemType='.$row[6];
 			$link_str=$mainProg.'?menu=system_service_history'.'&amp;systemID='.$row[1].'&amp;systemName='.$row[0].'&amp;serviceID='.$serviceID.'&amp;serviceName='.$serviceName.'&amp;startDate=0&amp;systemType='.$row[6];
 			$history_str='';
 			if($withDailyHistory == 't') {
 				createSystemServiceHistoryGraphMap($map_str,$link_str,$image_file,$row[1],$serviceID,$h,$w);
 				$history_str='<br />';
-				$history_str.='<img src="'.$image_file.'" alt="graph" usemap="#map_'.$row[1].'_'.$serviceID.'" />';
+				$history_str.='<img src="'TMP_IMG_URL.'/'.$image_file.'" alt="graph" usemap="#map_'.$row[1].'_'.$serviceID.'" />';
 				$history_str.=$map_str;
 			}
 			#

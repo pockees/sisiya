@@ -34,13 +34,13 @@ foreach($parameters as $p) {
 }
 /*
 $navigation_panel_str=getLinkIcon('dashboard',$mainProg.'?menu=dashboard');
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>'; 
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>'; 
-$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.$sisiyaImageDir.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=switch_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_switch_view.png" alt="'.$lrb['sisiya_gui.label.switch_view'].'" title="'.$lrb['sisiya_gui.label.switch_view'].'" /></a>'; 
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=overview'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_overview.png" alt="'.$lrb['sisiya_gui.label.overview'].'" title="'.$lrb['sisiya_gui.label.overview'].'" /></a>'; 
+$navigation_panel_str.='<a href="'.$mainProg.'?menu=detailed_view'.$debug_str.'"><img src="'.SISIYA_IMG_URL.'/icon_system_detailed_view.png" alt="'.$lrb['sisiya_gui.label.detailed_view'].'" title="'.$lrb['sisiya_gui.label.detailed_view'].'" /></a>';
 $navigation_panel_str.='<a href="'.$mainProg.'?menu=system_services'.'&amp;systemID='.$systemID;
 $navigation_panel_str.='&amp;systemName='.$systemName.'&amp;systemType='.$systemType.'">';
-#$navigation_panel_str.='<img src="'.$sisiyaImageDir.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />['.$systemName.']</a>'."\n";
-$navigation_panel_str.='<img src="'.$sisiyaImageDir.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />'."\n";
+#$navigation_panel_str.='<img src="'.SISIYA_IMG_URL.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />['.$systemName.']</a>'."\n";
+$navigation_panel_str.='<img src="'.SISIYA_IMG_URL.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />'."\n";
 */
 
 $html='';
@@ -54,7 +54,7 @@ $html.='</div>';
 	$html.='<td>';
 	$html.='<a href="'.$mainProg.'?menu=system_services'.'&amp;systemID='.$systemID;
 	$html.='&amp;systemName='.$systemName.'&amp;systemType='.$systemType.'">';
-	$html.='<img src="'.$sisiyaImageDir.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />'."\n";
+	$html.='<img src="'.SISIYA_IMG_URL.'/icon_system_services.png" alt="'.$lrb['sisiya_gui.system_services.header'].'" title="'.$lrb['sisiya_gui.system_services.header'].'" />'."\n";
 	$html.='</td></tr></table>'."\n";
 
 $html.='<table class="system_infos">'."\n";

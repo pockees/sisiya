@@ -33,10 +33,10 @@ global $adminProg;
 $adminProg=$progNameSisIYA_Admin;
 
 global $rssFile;
-$rssFile=$rootDir.'/sisiya_rss.xml';
+$rssFile=BASE_DIR.'/utils/sisiya_rss.xml';
 
 
 # functions
-include_once($libDir.'/sisiya_common_functions.php');
-include_once($libDir.'/sisiya_gui_functions.php');
+include_once(LIB_DIR.'/sisiya_common_functions.php');
+include_once(LIB_DIR.'/sisiya_gui_functions.php');
 ?>

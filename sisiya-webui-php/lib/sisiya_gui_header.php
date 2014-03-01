@@ -22,7 +22,7 @@ error_reporting(E_ALL);
 
 $h->addContent('<!-- header : start -->');
 $h->addContent('<div class="div_gui_header">');
-include_once($libDir.'/sisiya_gui_logo.php');
+include_once(LIB_DIR.'/sisiya_gui_logo.php');
 $h->addContent('		<div class="div_header_center">'.$header);
 #$h->addContent('<br />__NAVIGATION_PANEL__');
 $h->addContent('</div>');
@@ -37,7 +37,7 @@ else {
 $h->addContent(getLinkIcon('settings',$adminProg));
 $h->addContent(getLinkIcon('download',$mainProg.'?menu=client_programs'));
 $h->addContent(getLinkIcon('rss',$rssFile));
-include_once($libDir.'/sisiya_gui_language.php');
+include_once(LIB_DIR.'/sisiya_gui_language.php');
 $h->addContent('		<br />');
 $h->addContent(getLastUpdated().'<br />');
 
@@ -45,7 +45,7 @@ $h->addContent(getLastUpdated().'<br />');
 $h->addContent('		</div> <!-- end of div_float_right -->');
 $h->addContent('<div class="div_gui_menu">');
 $h->addContent('	<div class="div_gui_menu_inner">');
-include_once($libDir."/sisiya_gui_menu.php");
+include_once(LIB_DIR."/sisiya_gui_menu.php");
 $h->addContent('	</div>');
 $h->addContent('</div>');
 $h->addContent('</div> <!-- end of div_gui_header -->');

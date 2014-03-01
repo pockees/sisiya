@@ -580,12 +580,12 @@ function getSystemNameX($system_id)
 
 ### end of functions
 ###########################################################
-$system_id=getHTTPValue('systemID');
-$service_id=getHTTPValue('serviceID');
-$image_file=$imgDir.'/graph_s.png';
-$image2_file=$imgDir.'/graph_s2.png';
-$h=800;
-$w=800;
+$system_id = getHTTPValue('systemID');
+$service_id = getHTTPValue('serviceID');
+$image_file = '/graph_s.png';
+$image2_file = '/graph_s2.png';
+$h = 800;
+$w = 800;
 
 $sql_str="select a.recievetime, a.statusid from systemhistorystatus a where a.systemid=".$system_id." and a.serviceid=".$service_id." order by a.recievetime desc";
 #echo $sql_str;
@@ -600,8 +600,8 @@ $db->freeResult($result);
 #### for ping
 $h=200;
 $w=800;
-$ping_packets_lost_image_file=$imgDir.'/graph_ping_packets_lost.png';
-$ping_response_times_image_file=$imgDir.'/graph_ping_response_times.png';
+$ping_packets_lost_image_file = '/graph_ping_packets_lost.png';
+$ping_response_times_image_file = '/graph_ping_response_times.png';
 $sql_str="select a.recievetime,a.statusid,a.str from systemhistorystatus a where a.systemid=".$system_id." and a.serviceid=22 order by a.recievetime desc";
 #echo $sql_str;
 $result=$db->query($sql_str);
@@ -614,8 +614,8 @@ $system_name=getSystemNameX($system_id);
 $service_name=getServiceName($service_id);
 echo "System: ".$system_name." service:".$service_name;
 ?>
-<p><img alt="Graph" width="<?php echo $w/1;?>" hight="<?php echo $h/1;?>" src="<?php echo $ping_packets_lost_image_file;?>" /></p>
-<p><img alt="Graph" width="<?php echo $w/1;?>" hight="<?php echo $h/1;?>" src="<?php echo $ping_response_times_image_file;?>" /></p>
+<p><img alt="Graph" width="<?php echo $w/1;?>" hight="<?php echo $h/1;?>" src="<?php echo TMP_IMG_URL.$ping_packets_lost_image_file;?>" /></p>
+<p><img alt="Graph" width="<?php echo $w/1;?>" hight="<?php echo $h/1;?>" src="<?php echo TMP_IMG_URL.$ping_response_times_image_file;?>" /></p>
 
 <?php
 	return;

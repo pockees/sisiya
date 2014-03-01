@@ -24,17 +24,17 @@ error_reporting(E_ALL);
 /*
  * function displaySystemImage($system_id,$system_str,$i)
 {
-	global $imgDir,$sisiyaImageDir,$mainProg,$lrb;
+	global $mainProg,$lrb;
 
-	if(is_link($imgDir.'/'.$system_str.'.gif')) {
-		$disabled_str='';
-		$title_str=$lrb['sisiya_admin.button.change_image.description'];
+	if(is_link(SYSTEMS_IMG_DIR.'/'.$system_str.'.gif')) {
+		$disabled_str = '';
+		$title_str = $lrb['sisiya_admin.button.change_image.description'];
 	}
 	else {
 		$disabled_str='_disabled';
 		$title_str=$lrb['sisiya_admin.button.set_image.description'];
 	}
-	echo '<a href="'.$mainProg.'?menu=change_system_image&amp;systemID='.$system_id.'"><img src="'.$sisiyaImageDir.'/icon_photo'.$disabled_str.'.png" alt="icon_photo'.$disabled_str.'.png" title="'.$title_str.'" /></a>';
+	echo '<a href="'.$mainProg.'?menu=change_system_image&amp;systemID='.$system_id.'"><img src="'.SISIYA_IMG_URL.'/icon_photo'.$disabled_str.'.png" alt="icon_photo'.$disabled_str.'.png" title="'.$title_str.'" /></a>';
 }
  */
 function checkPID($pid)
@@ -59,10 +59,8 @@ function runInBackground($command,$priority=0)
 
 function getTarget()
 {
-	global $rootDir;
-
-	$target='';
-	$target_file=$rootDir.'/autodiscover/discover_'.$_SESSION['user_id'].'_target.txt';
+	$target = '';
+	$target_file = '/autodiscover/discover_'.$_SESSION['user_id'].'_target.txt';
 	if(!is_file($target_file)) {
 		return($target);
 	}
@@ -79,9 +77,7 @@ function getTarget()
 
 function isRunning()
 {
-	global $rootDir;
-
-	$pid_file=$rootDir.'/autodiscover/discover_'.$_SESSION['user_id'].'_pid.txt';
+	$pid_file='/autodiscover/discover_'.$_SESSION['user_id'].'_pid.txt';
 	if(!is_file($pid_file)) {
 		#echo "dosya yok=".$pid_file;
 		return(false);
@@ -107,9 +103,7 @@ function isRunning()
 
 function checkResults()
 {
-	global $rootDir;
-
-	$results_file=$rootDir.'/autodiscover/discover_'.$_SESSION['user_id'].'_results.xml';
+	$results_file='/autodiscover/discover_'.$_SESSION['user_id'].'_results.xml';
 	if(!is_file($results_file)) {
 		#echo "<br />dosya yok=".$results_file;
 		return false;
@@ -122,9 +116,7 @@ function checkResults()
 
 function checkDiscover()
 {
-	global $rootDir;
-
-	$pid_file=$rootDir.'/discover_'.$_SESSION['user_id'].'_pid.txt';
+	$pid_file='/discover_'.$_SESSION['user_id'].'_pid.txt';
 	if(!is_file($pid_file)) {
 	echo "dosya yok=".$pid_file;
 		return;
@@ -169,10 +161,8 @@ function getSystemTypeID($system_type)
 
 function processResults()
 {
-	global $rootDir;
-
 	### read XML file
-	$results_file=$rootDir.'/autodiscover/discover_'.$_SESSION['user_id'].'_results.xml';
+	$results_file='/autodiscover/discover_'.$_SESSION['user_id'].'_results.xml';
 	if(file_exists($results_file)) {
 		#echo '<br />Processing '.$results_file.'...';
 		$xml=simplexml_load_file($results_file);
@@ -264,7 +254,7 @@ else {
 }
 $loading_str='';
 if($isRunning)
-	$loading_str='<p><img src="'.$sisiyaImageDir.'/progress.gif" alt="In Progress" /></p>'."\n";
+	$loading_str='<p><img src="'.SISIYA_IMG_URL.'/progress.gif" alt="In Progress" /></p>'."\n";
 else {
 	$table_header_parameters='';
 	processInputs($formName,$fields);
@@ -353,7 +343,7 @@ if($loading_str != '') {
 }
 else {
 	$h->addContent($html);
-	include_once($libDir."/sisiya_admin_page_numbers.php");
+	include_once(LIB_DIR."/sisiya_admin_page_numbers.php");
 } 
 $h->addContent("</form>\n");
 ?>
