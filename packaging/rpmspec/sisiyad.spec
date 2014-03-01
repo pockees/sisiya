@@ -52,11 +52,13 @@ mkdir -p %{buildroot}
 make "DESTDIR=%{buildroot}" install 
 %if 0%{?rhel_version}
 %if 0%{?rhel_version} < 700 
+	%define sisiyad_service_root_dir /etc
 	%define sisiyad_service_dst_dir /etc/init.d
 	%define sisiyad_service_src_file sisiyad_sysvinit
 	%define sisiyad_service_dst_file sisiyad
 %endif
 %else
+	%define sisiyad_service_root_dir /etc/systemd
 	%define sisiyad_service_dst_dir /etc/systemd/system
 	%define sisiyad_service_src_file sisiyad_systemd
 	%define sisiyad_service_dst_file sisiyad.service
@@ -100,9 +102,10 @@ rm -rf %{buildroot}
 #%attr(0644,root,root) 	%doc 			AUTHORS ChangeLog NEWS README
 %attr(0755,root,root) 				/etc/sisiya
 %attr(0700,root,root) 				/etc/sisiya/sisiyad
-						%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}
-%attr(0600,root,root) 	%config(noreplace) 	/etc/sisiya/sisiyad/sisiyad.conf
+			%dir			%{sisiyad_service_root_dir}
+			%dir			%{sisiyad_service_dst_dir}
 %attr(0700,root,root) 				%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}
+%attr(0600,root,root) 	%config(noreplace) 	/etc/sisiya/sisiyad/sisiyad.conf
 %attr(0700,root,root) 				/usr/sbin/sisiyad
 %attr(0644,root,root) 				/usr/share/man/man5/sisiyad.conf.5.gz
 %attr(0644,root,root) 				/usr/share/man/man8/sisiyad.8.gz
