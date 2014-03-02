@@ -72,20 +72,19 @@ ln -s /var/tmp/%{name} /usr/share/%{name}/images/tmp
 
 %files
 %defattr(-,%{www_user},%{www_group})
+%dir			/etc/sisiya
 %dir			/etc/sisiya/%{name}
 %dir			%{web_base_dir}
 %dir			%{web_base_dir}/javascript
 %dir			%{web_base_dir}/lib
 %dir			%{web_base_dir}/style
 %dir			%{web_base_dir}/images
-%dir			%{web_base_dir}/images/links
 %dir			%{web_base_dir}/images/sisiya
-%dir			%{web_base_dir}/images/systems
 %dir			%{web_base_dir}/install
-%dir			%{web_base_dir}/images/tmp
 %dir			/var/lib/%{name}/packages
-%dir			%{web_base_dir}/packages
 %dir			%{web_base_dir}/XMPPHP
+%dir			/var/lib/%{name}
+%dir			/var/lib/%{name}/packages
 %dir			%{web_base_dir}/utils
 %config(noreplace) 	/etc/cron.d/sisiya-alerts
 %config(noreplace) 	/etc/cron.d/sisiya-archive
@@ -95,14 +94,11 @@ ln -s /var/tmp/%{name} /usr/share/%{name}/images/tmp
 %config(noreplace)	/etc/sisiya/%{name}/*.conf
 			%{web_base_dir}/favicon.ico
 			%{web_base_dir}/*.*
-			%{web_base_dir}/README.txt
-			%{web_base_dir}/INSTALL.txt
 			%{web_base_dir}/javascript/*.js
 			%{web_base_dir}/lib/*.php
 			%{web_base_dir}/style/*.css
 			%{web_base_dir}/images/sisiya/*.*
 			%{web_base_dir}/install/*
-			%{web_base_dir}/packages
 			/var/lib/%{name}/packages/*.*
 			%{web_base_dir}/XMPPHP/*.php
 			%{web_base_dir}/utils/*.php
