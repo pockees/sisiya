@@ -4,7 +4,6 @@ install_root=$(DESTDIR)$(prefix)
 etc_dir=$(install_root)/etc
 web_dir=$(install_root)/usr/share/$(package_name)
 packages_dir=$(install_root)/var/lib/$(package_name)/packages
-systems_images_dir=$(install_root)/var/lib/sisiya-webui-images
 dst_apache_conf=$(install_root)/etc/httpd/conf.d
 dst_etc=$(install_root)/etc
 cron_dir=$(etc_dir)/cron.d
@@ -28,8 +27,6 @@ install:
 	install -m 644 sisiya_login.php 		$(web_dir)
 	install -m 644 README.txt			$(web_dir)
 	install -m 644 INSTALL.txt			$(web_dir)
-	cd $(web_dir) && ln -sf sisiya_gui.php index.php
-#	cd $(web_dir) && ln -sf ${sisiya_remote_checks_dir}	xmlconf
 	install -m 755 -d 					$(etc_dir)/sisiya/$(package_name)
 	install -m 644 etc/sisiya/$(package_name)/*.php		$(etc_dir)/sisiya/$(package_name)
 	install -m 644 etc/sisiya/$(package_name)/*.conf	$(etc_dir)/sisiya/$(package_name)
@@ -48,10 +45,3 @@ install:
 	install -m 755 -d				$(web_dir)/utils
 	install -m 644 utils/*.php 			$(web_dir)/utils
 	install -m 755 utils/*.sh 			$(web_dir)/utils
-	# this directory belongs to sisiya-webui-images package, I create it here to make the packaging software happy
-	mkdir -p 					$(systems_images_dir)
-	# make links
-	#cd $(web_dir)/images && ln -sf /var/tmp/$(package_name) tmp
-	cd $(web_dir)/images && ln -sf /var/lib/sisiya-webui-images systems
-	cd $(web_dir) && ln -sf /var/lib/$(package_name)/packages .
-	cd $(web_dir) && ln -sf /var/lib/$(package_name)/sisiya_rss.xml .

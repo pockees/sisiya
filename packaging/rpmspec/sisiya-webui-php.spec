@@ -42,7 +42,7 @@ License: GPL-2.0+
 Vendor: Erdal Mutlu
 Group: System Environment/Tools
 Packager: Erdal Mutlu <erdal@sisiya.org>
-Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, nmap, sisiya-client-checks
+Requires: bash, httpd, php, php-mysql, php-gd, php-mbstring, nmap, sisiya-client-checks, sisiya-remote-checks, sisiya-webui-images
 %description 
 PHP web user and administration interface for SisIYA.
 
@@ -59,6 +59,14 @@ make "DESTDIR=%{buildroot}" install
 #chown  -R  %{www_user}:%{www_group}	%{web_base_dir}/images/links
 mkdir -p /var/tmp/%{name}
 chown -R %{www_user}:%{www_group} /var/tmp/%{name}
+
+ln -s /etc/sisiya/sisiya-remote-checks/conf.d /usr/share/%{name}/xmlconf
+ln -s /var/lib/%{name}/sisiya_rss.xml /usr/share/%{name}/sisiya_rss.xml
+ln -s /var/lib/%{name}/packages /usr/share/%{name}/packages
+# images dir links
+ln -s /var/lib/%{name}/links /usr/share/%{name}/images/links
+ln -s /var/lib/sisiya-webui-images /usr/share/%{name}/images/systems
+ln -s /var/tmp/%{name} /usr/share/%{name}/images/tmp
 
 %build
 
