@@ -51,7 +51,7 @@ install:
 	# this directory belongs to sisiya-webui-images package, I create it here to make the packaging software happy
 	mkdir -p 					$(systems_images_dir)
 	# make links
-	cd $(web_dir)/images && ln -sf /var/tmp/$(package_name) tmp
+	#cd $(web_dir)/images && ln -sf /var/tmp/$(package_name) tmp
 	cd $(web_dir)/images && ln -sf /var/lib/sisiya-webui-images systems
 	cd $(web_dir) && ln -sf /var/lib/$(package_name)/packages .
 	cd $(web_dir) && ln -sf /var/lib/$(package_name)/sisiya_rss.xml .

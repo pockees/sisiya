@@ -54,9 +54,11 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}
 make "DESTDIR=%{buildroot}" install
 
-#%post
+%post
 # change ownership 
 #chown  -R  %{www_user}:%{www_group}	%{web_base_dir}/images/links
+mkdir -p /var/tmp/%{name}
+chown -R %{www_user}:%{www_group} /var/tmp/%{name}
 
 %build
 
