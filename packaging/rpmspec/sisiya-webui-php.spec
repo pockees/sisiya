@@ -73,7 +73,7 @@ make "DESTDIR=%{buildroot}" install
 %dir			%{web_base_dir}/images/systems
 %dir			%{web_base_dir}/install
 %dir			%{web_base_dir}/images/tmp
-%dir			/var/lib/%{package_name}/packages
+%dir			/var/lib/%{name}/packages
 %dir			%{web_base_dir}/packages
 %dir			%{web_base_dir}/XMPPHP
 %dir			%{web_base_dir}/utils
@@ -93,7 +93,7 @@ make "DESTDIR=%{buildroot}" install
 			%{web_base_dir}/images/sisiya/*.*
 			%{web_base_dir}/install/*
 			%{web_base_dir}/packages
-			/var/lib/%{package_name}/packages/*.*
+			/var/lib/%{name}/packages/*.*
 			%{web_base_dir}/XMPPHP/*.php
 			%{web_base_dir}/utils/*.php
 			%{web_base_dir}/utils/*.sh
