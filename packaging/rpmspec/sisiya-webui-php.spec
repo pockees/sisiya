@@ -83,7 +83,7 @@ make "DESTDIR=%{buildroot}" install
 %config(noreplace)	/etc/sisiya/%{name}/*.php
 %config(noreplace)	/etc/sisiya/%{name}/*.conf
 			%{web_base_dir}/favicon.ico
-			%{web_base_dir}/*.php
+			%{web_base_dir}/*.*
 			%{web_base_dir}/README.txt
 			%{web_base_dir}/INSTALL.txt
 			%{web_base_dir}/javascript/*.js
@@ -91,7 +91,7 @@ make "DESTDIR=%{buildroot}" install
 			%{web_base_dir}/style/*.css
 			%{web_base_dir}/images/sisiya/*.*
 			%{web_base_dir}/install/*
-			%{web_base_dir}/packages/*
+			%{web_base_dir}/packages/*.*
 			%{web_base_dir}/XMPPHP/*.php
 			%{web_base_dir}/utils/*.php
 			%{web_base_dir}/utils/*.sh
