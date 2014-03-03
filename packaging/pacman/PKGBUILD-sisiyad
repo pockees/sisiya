@@ -16,6 +16,7 @@ provides=()
 conflicts=()
 replaces=()
 backup=()
+	'etc/sisiya/sisiyad/sisiyad.conf'
 options=()
 install=
 changelog=

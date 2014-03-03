@@ -30,13 +30,14 @@ if (! defined('STDIN')) {
 	echo "This script should not be run from web!";
 	exit(1);
 }
-global $rootDir,$progName;
+global $web_root_dir,$progName;
 $progName = $argv[0];
-$rootDir = $argv[1];
+$web_root_dir = $argv[1];
 
-include_once($rootDir.'/conf/sisiya_common_conf.php');
-include_once($rootDir.'/conf/sisiya_gui_conf.php');
-include_once($rootDir.'/XMPPHP/XMPP.php');
+include_once(.$web_root_dir.'/config.php');
+include_once(CONF_DIR.'/sisiya_common_conf.php');
+include_once(CONF_DIR.'/sisiya_gui_conf.php');
+include_once($web_root_dir.'/XMPPHP/XMPP.php');
 
 $xmpp_conn = null;
 $connectedFlag = false;

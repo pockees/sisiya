@@ -97,6 +97,7 @@ create_webui_images()
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
+	cp $source_dir/packaging/pacman/${package_str}.install $base_dir/pacman/
 	rm -rf $pacman_root_dir &&
 	echo "OK"
 }
@@ -127,6 +128,8 @@ create_webui_php()
 	do
 		cp -a ${source_dir}/etc/cron.d/$f $package_dir/etc/cron.d/
 	done
+	mkdir -p $package_dir/etc/php/conf.d
+	cp ${source_dir}/etc/sisiya_php_ini.conf $package_dir/etc/php/conf.d
 	mkdir -p $package_dir/etc/sisiya
 	cp -a $source_dir/etc/sisiya/$package_str $package_dir/etc/sisiya
 	cp -a ${source_dir}/sisiya_ui/XMPPHP $package_dir/

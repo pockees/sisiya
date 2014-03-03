@@ -19,8 +19,8 @@
 */
 
 define("VERSION","__VERSION__",false);
-define("YEAR","__YEAR__",false);
-define("SISIYA_URL","http://sisiya.example.com",false);
+define("YEAR","__YERA__",false);
+define("SISIYA_URL","http://sisiya.example.org", false);
 
 # Setup wizard
 #include_once(BASE_URL.'/lib/sisiya_setup_wizard.php');
@@ -56,7 +56,7 @@ global $rssFile;
 $rssFile=BASE_URL.'/sisiya_rss.xml';
 
 # Database classes
-include_once(LIB_DIR.'/dbclass.php');
+include_once(BASE_DIR.'/lib/dbclass.php');
 
 # HTML Document class
 include_once(LIB_DIR.'/documentClass.php');

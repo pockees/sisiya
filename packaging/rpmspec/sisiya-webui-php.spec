@@ -64,6 +64,7 @@ ln -s /etc/sisiya/sisiya-remote-checks/conf.d /usr/share/%{name}/xmlconf
 ln -s /var/lib/%{name}/sisiya_rss.xml /usr/share/%{name}/sisiya_rss.xml
 ln -s /var/lib/%{name}/packages /usr/share/%{name}/packages
 # images dir links
+mkdir -p /var/lib/%{name}/links
 ln -s /var/lib/%{name}/links /usr/share/%{name}/images/links
 ln -s /var/lib/sisiya-webui-images /usr/share/%{name}/images/systems
 ln -s /var/tmp/%{name} /usr/share/%{name}/images/tmp

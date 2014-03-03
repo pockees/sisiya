@@ -1,6 +1,26 @@
 ## arg 1:  the new package version
 post_install() {
-	chown -R http /srv/http/sisiya-webui-php/images/links
-	chown -R http /srv/http/sisiya-webui-php/images/systems
-	chown -R http /srv/http/sisiya-webui-php/images/tmp
+	if test ! -h /usr/share/sisiya-webui-php/index.php ; then
+		ln -s /var/lib/sisiya-webui-php/sisiya_gui.php /usr/share/sisiya-webui-php/index.php
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/images/links ; then
+		mkdir -p /var/lib/sisiya-webui-php/links
+		ln -s /var/lib/sisiya-webui-php/links /usr/share/sisiya-webui-php/images/links
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/images/systems ; then
+		ln -s /var/lib/sisiya-webui-images /usr/share/sisiya-webui-php/images/systems
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/images/tmp ; then
+		mkdir -p /var/tmp/sisiya-webui-php
+		ln -s /var/tmp/sisiya-webui-php /usr/share/sisiya-webui-php/images/tmp
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/packages ; then
+		ln -s /var/lib/sisiya-webui-php/packages /usr/share/sisiya-webui-php/packages
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/xmlconf ; then
+		ln -s /etc/sisiya/sisiya-remote-checks/conf.d /usr/share/sisiya-webui-php/xmlconf
+	fi
+	chown -R http /usr/share/sisiya-webui-php
+	chown -R http /var/lib/sisiya-webui-php
+	chown -R http /var/tmp/sisiya-webui-php
 }

@@ -9,14 +9,19 @@ url="http://www.sisiya.org"
 license=('GPL2')
 groups=()
 #depends=('php' 'php-gd' 'php-mysql' 'php-pgsql')
-depends=('php' 'php-gd' 'php-pgsql')
+depends=('php' 'php-gd' 'php-pgsql' 'sisiya-webui-images')
 makedepends=()
 checkdepends=()
 optdepends=()
 provides=()
 conflicts=()
 replaces=()
-backup=()
+backup=(
+	'etc/sisiya/sisiya-webui-php/dbconf.php'
+	'etc/sisiya/sisiya-webui-php/sisiya_admin_conf.php'
+	'etc/sisiya/sisiya-webui-php/sisiya_common_conf.php'
+	'etc/sisiya/sisiya-webui-php/sisiya_gui_conf.php'
+	)
 options=()
 install=$pkgname.install
 changelog=
