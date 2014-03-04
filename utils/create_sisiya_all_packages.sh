@@ -234,10 +234,10 @@ create_sisiyad()
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
-	echo -n "Creating ${deb_root_dir}.tar.gz ..."
+	echo -n "Creating $base_dir/deb/${package_str}_${version_str}.orig.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir $deb_root_dir
-	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}-${release_str}.orig.tar.gz $package_name) 
+	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"
 	################################################################################################################################################
