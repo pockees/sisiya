@@ -1,15 +1,15 @@
-Source: sisiya-webui-php
-Section: admin
+Source: sisiya-webui-images
+Section: web
 Priority: optional
 Maintainer: Erdal Mutlu <erdal@sisiya.org>
 Homepage: http://www.sisiya.org
 Build-Depends: debhelper, make
 Standards-Version: 3.9.3
 
-Package: sisiya-webui-php
+Package: sisiya-webui-images
 Architecture: all
-Depends: php5, php5-cli, php5-gd, php5-mysql, php5-pgsql, ${misc:Depends}
-Recommends: apache2 | lighttpd | httpd
-Description: PHP web user and administration interface for SisIYA.
- This package also includes scripts to create the SisIYA database.
- Please read the INSTALL.txt file for configuration instructions.
+Depends: ${misc:Depends}
+Recommends: 
+Description: Image collection for SisIYA web GUI. 
+ These images are used for assigning to systems. 
+ These are mostly images of various hardware.
