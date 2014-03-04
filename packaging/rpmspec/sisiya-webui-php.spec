@@ -55,19 +55,43 @@ mkdir -p %{buildroot}
 make "DESTDIR=%{buildroot}" install
 
 %post
-# change ownership 
-#chown  -R  %{www_user}:%{www_group}	%{web_base_dir}/images/links
-mkdir -p /var/tmp/%{name}
-chown -R %{www_user}:%{www_group} /var/tmp/%{name}
+	if test ! -h /usr/share/sisiya-webui-php/index.php ; then
+		ln -s /var/lib/sisiya-webui-php/sisiya_gui.php /usr/share/sisiya-webui-php/index.php
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/images/links ; then
+		mkdir -p /var/lib/sisiya-webui-php/links
+		ln -s /var/lib/sisiya-webui-php/links /usr/share/sisiya-webui-php/images/links
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/images/systems ; then
+		ln -s /var/lib/sisiya-webui-images /usr/share/sisiya-webui-php/images/systems
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/images/tmp ; then
+		mkdir -p /var/tmp/sisiya-webui-php
+		ln -s /var/tmp/sisiya-webui-php /usr/share/sisiya-webui-php/images/tmp
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/packages ; then
+		ln -s /var/lib/sisiya-webui-php/packages /usr/share/sisiya-webui-php/packages
+	fi
+	if test ! -h /usr/share/sisiya-webui-php/xmlconf ; then
+		ln -s /etc/sisiya/sisiya-remote-checks/conf.d /usr/share/sisiya-webui-php/xmlconf
+	fi
+	chown -R http /usr/share/sisiya-webui-php
+	chown -R http /var/lib/sisiya-webui-php
+	chown -R http /var/tmp/sisiya-webui-php
 
-ln -s /etc/sisiya/sisiya-remote-checks/conf.d /usr/share/%{name}/xmlconf
-ln -s /var/lib/%{name}/sisiya_rss.xml /usr/share/%{name}/sisiya_rss.xml
-ln -s /var/lib/%{name}/packages /usr/share/%{name}/packages
-# images dir links
-mkdir -p /var/lib/%{name}/links
-ln -s /var/lib/%{name}/links /usr/share/%{name}/images/links
-ln -s /var/lib/sisiya-webui-images /usr/share/%{name}/images/systems
-ln -s /var/tmp/%{name} /usr/share/%{name}/images/tmp
+%preun
+# initial installation is 1
+# uninstallation is 0
+if test "$1" == "0" ; then
+	for f in /usr/share/sisiya-webui-php/index.php /usr/share/sisiya-webui-php/images/links /usr/share/sisiya-webui-php/images/systems /usr/share/sisiya-webui-php/images/tmp /usr/share/sisiya-webui-php/packages /usr/share/sisiya-webui-php/xmlconf
+	do
+		rm -f $f
+	done
+	for d in /var/tmp/sisiya-webui-php /var/lib/sisiya-webui-php/links
+	do
+		rm -rf $d
+	done
+fi
 
 %build
 
@@ -87,10 +111,10 @@ ln -s /var/tmp/%{name} /usr/share/%{name}/images/tmp
 %dir			/var/lib/%{name}
 %dir			/var/lib/%{name}/packages
 %dir			%{web_base_dir}/utils
-%config(noreplace) 	/etc/cron.d/sisiya-alerts
-%config(noreplace) 	/etc/cron.d/sisiya-archive
-%config(noreplace) 	/etc/cron.d/sisiya-check-expired
-%config(noreplace) 	/etc/cron.d/sisiya-rss
+%attr(0644,root,root)	%config(noreplace) 	/etc/cron.d/sisiya-alerts
+%attr(0644,root,root)	%config(noreplace) 	/etc/cron.d/sisiya-archive
+%attr(0644,root,root)	%config(noreplace) 	/etc/cron.d/sisiya-check-expired
+%attr(0644,root,root)	%config(noreplace) 	/etc/cron.d/sisiya-rss
 %config(noreplace)	/etc/sisiya/%{name}/*.php
 %config(noreplace)	/etc/sisiya/%{name}/*.conf
 			%{web_base_dir}/favicon.ico

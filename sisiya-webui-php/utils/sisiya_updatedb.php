@@ -21,7 +21,7 @@ error_reporting(E_ALL);
 
 if (count($argv) != 2) {
 	echo "Usage   : $argv[0] web_root_dir\n";
-	echo "Example : $argv[0] /srv/http/sisiya-webui-php\n";
+	echo "Example : $argv[0] /usr/share/sisiya-webui-php\n";
 	exit(1);
 }
 

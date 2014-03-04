@@ -71,7 +71,7 @@ for($i = 0; $i<$row_count; $i++) {
 	#echo 'system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]."\n";
 	if ($row[2] == '') {
 		#echo '1 Expired: system = '.$row[0]." serviceid=".$row[1]." status = ".$row[2]." update time : ".$row[3]."\n";
-		$expire = 1;	# never expires
+		$expire = 0;	# never expires
 		$message_str = "There is no response from this system!";
 		exec("$send_message_prog $row[0] $row[1] $status_noreport $expire \"$message_str\"");
 		continue;
