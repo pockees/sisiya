@@ -61,6 +61,7 @@ create_webui_images()
 	rm -rf $package_dir
 	mkdir -p $package_dir
 	cp -a ${source_dir}/$package_str/* $package_dir/
+	echo "${version_str}-$release_str" > $package_dir/version.txt
 	cat ${source_dir}/$package_str/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
 	################################################################################################################################################
 	### create RPM source package
@@ -82,9 +83,11 @@ create_webui_images()
 	echo -n "Creating $base_dir/deb/${package_str}_${version_str}.orig.tar.gz ..."
 	rm -rf $deb_root_dir 
 	mkdir -p $deb_root_dir/var/lib/${package_str} 
-	cp -a $package_dir/debian $deb_root_dir
-	cp -a $package_dir $deb_root_dir/var/lib/${package_str}
-	rm -rf $deb_root_dir/var/lib/${package_str}/debian
+	for f in  debian version.txt
+	do
+		cp -a $package_dir/$f $deb_root_dir
+	done
+	cp -a $package_dir/*.png $deb_root_dir/var/lib/${package_str}
 	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
 	echo "OK"
