@@ -69,6 +69,7 @@ create_webui_images()
 	echo -n "Creating ${rpm_root_dir}.tar.gz ..."
 	rm -rf $rpm_root_dir
 	cp -a $package_dir $rpm_root_dir
+	rm -rf $rpm_root_dir/debian
 	cat $source_dir/packaging/rpmspec/${package_str}.spec 	| sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/"  > $rpm_root_dir/${package_str}.spec 
 	(cd $base_dir/rpm ; tar -cz -f ${package_name}.tar.gz $package_name)
 	rm -rf $rpm_root_dir
@@ -78,7 +79,7 @@ create_webui_images()
 	################################################################################################################################################
 	###
 	deb_root_dir="$base_dir/deb/$package_name"
-	echo -n "Creating ${deb_root_dir}.tar.gz ..."
+	echo -n "Creating $base_dir/deb/${package_str}_${version_str}.orig.tar.gz ..."
 	rm -rf $deb_root_dir 
 	cp -a $package_dir/debian $deb_root_dir/
 	mkdir -p $deb_root_dir/var/lib/${package_str} 
@@ -95,6 +96,7 @@ create_webui_images()
 	echo -n "Creating ${pacman_root_dir}.tar.gz ..."
 	rm -rf $pacman_root_dir 
 	cp -a $package_dir $pacman_root_dir
+	rm -rf $pacman_root_dir/debian
 	(cd $base_dir/pacman ; tar cfz ${package_name}.tar.gz $package_name )
 	md5sum_str=`md5sum $base_dir/pacman/${package_name}.tar.gz | cut -d " " -f 1`
 	cat $source_dir/packaging/pacman/PKGBUILD-${package_str} | sed -e "s/__VERSION__/${version_str}/" -e "s/__RELEASE__/${release_str}/" -e "s/__MD5SUM__/${md5sum_str}/" > $base_dir/pacman/PKGBUILD-$package_name
