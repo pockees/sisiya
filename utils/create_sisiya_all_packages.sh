@@ -80,9 +80,9 @@ create_webui_images()
 	deb_root_dir="$base_dir/deb/$package_name"
 	echo -n "Creating ${deb_root_dir}.tar.gz ..."
 	rm -rf $deb_root_dir 
-	cp -a $package_dir/debian $deb_root_dir
+	cp -a $package_dir/debian $deb_root_dir/
 	mkdir -p $deb_root_dir/var/lib/${package_str} 
-	cp -a $package_dir $deb_root_dir/var/lib/${package_str}
+	cp -a $package_dir $deb_root_dir/var/lib/${package_str}/
 	rm -rf $deb_root_dir/var/lib/${package_str}/debian
 	(cd $base_dir/deb ; tar cfz ${package_str}_${version_str}.orig.tar.gz $package_name) 
 	rm -rf $deb_root_dir 
