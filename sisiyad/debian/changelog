@@ -1,3 +1,9 @@
+sisiyad (0.6.30.22) UNRELEASED; urgency=low
+
+  * code restructering 
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Wed, 26 Feb 2014 17:50:50 +0200
+
 sisiyad (0.6.30) UNRELEASED; urgency=low
 
   * Initial release.
