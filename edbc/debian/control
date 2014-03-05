@@ -2,9 +2,10 @@ Source: sisiya-edbc-libs
 Section: utils
 Priority: optional
 Maintainer: Erdal Mutlu <erdal@sisiya.org>
-Build-Depends: autoconf, g++, make, libmysqlclient-dev, libpq-dev
+Build-Depends: autoconf, debhelper, make, libmysqlclient-dev, libpq-dev
 Standards-Version: 3.9.3
 
 Package: sisiya-edbc-libs
 Architecture: any
+Depends: sisiya-edbc-libs, ${shlibs:Depends}, ${misc:Depends}
 Description: This package contains the SisIYA EDBC headers and libraries.
