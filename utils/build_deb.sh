@@ -31,14 +31,18 @@ machine_arch=`uname -m`
 
 package_list_noarch="sisiya-client-checks sisiya-remote-checks sisiya-webui-php sisiya-webui-images"
 #package_list="sisiya-client-checks sisiyad-${version} sisiya-edbc-libs-${version}"
-package_list="sisiya-client-checks sisiya-remote-checks sisiya-webui-images sisiya-webui-php sisiyad"
+package_list="sisiya-client-checks sisiya-remote-checks sisiya-webui-images sisiya-webui-php sisiyad sisiya-edbc-libs"
 
 for f in $package_list
 do
 	echo "Building ${f}_${version}.orig.tar.gz ..."
 	tar xfz ${f}_${version}.orig.tar.gz
 	#cd ${f}-${version} && debuild 
-	cd ${f}-${version} && debuild -k7F640C1A
+
+	#cd ${f}-${version} && debuild -k7F640C1A
+
+	# build only source
+	cd ${f}-${version} && debuild -S -k7F640C1A
 	cd ..
 	echo "---------------------"
 done

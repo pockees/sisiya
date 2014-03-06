@@ -1,3 +1,9 @@
+sisiya-edbc-libs (0.6.30.24~ppa1) precise; urgency=low
+
+  * uploaded to launchpad.net
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Thu, 6 Mar 2014 15:08:28 +0200
+
 sisiya-edbc-libs (0.6.30.22) UNRELEASED; urgency=low
 
   * code restructering 
