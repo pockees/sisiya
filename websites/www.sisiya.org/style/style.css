@@ -20,8 +20,8 @@ table.header {
 	margin-right: auto;
 
 	border-style: none;
-	border-collapse: collapse; *//* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
-	/*border-spacing: 5em;*/ *//*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 5em;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
 	/*caption-side: top;*/ /* top bottom left right */ /*Sets the position of the table caption*/
 	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
 	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
@@ -44,8 +44,8 @@ table.downloads {
 	margin-right: auto;
 
 	border-style: none;
-	border-collapse: collapse; *//* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
-	/*border-spacing: 5em;*/ *//*Sets the distance that separates cell borders (only for the "separated borders" model)*/
+	border-collapse: collapse; /* collapse separate */ /*Sets whether the table borders are collapsed into a single border or detached as in standard HTML*/
+	/*border-spacing: 5em;*/ /*Sets the distance that separates cell borders (only for the "separated borders" model)*/
 	/*caption-side: top;*/ /* top bottom left right */ /*Sets the position of the table caption*/
 	empty-cells: show; /* show hide */ /* Sets whether or not to show empty cells in a table (only for the "separated borders" model) */
 	table-layout: auto; /* auto fixed */ /*Sets the algorithm used to display the table cells, rows, and columns*/
@@ -57,14 +57,15 @@ table.downloads tr.subheader	td { background-color: #eee; text-align: left; font
 table.downloads tr.row 	td { background-color: white; }
 table.downloads tr.footer	td { background-color: #ddd; }
 /*
-table.downloads a:link {text-decoration: none; color: black}     /* unvisited link */
-table.downloads a:visited {text-decoration: none; color: black}  /* visited link */
-table.downloads a:hover {text-decoration: none; color: blue}   /* mouse over link */
-table.downloads a:active {text-decoration: none; color: black}   /* selected link */
+table.downloads a:link {text-decoration: none; color: black}  
+table.downloads a:visited {text-decoration: none; color: black}
+table.downloads a:hover {text-decoration: none; color: blue}   
+table.downloads a:active {text-decoration: none; color: black}   
 */
 div.date {
   /*background: #eee;*/
-  background: #aee;
+ /* background: #aee;*/
+  background: #4D99E6;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   float: left;
@@ -75,5 +76,6 @@ div.date {
   width: 6em;
   font-size: 10px;
   white-space: nowrap;
-  color: #777;
+  /*color: #777;*/
+  color: white;
 }
