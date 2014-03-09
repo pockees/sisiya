@@ -1,2 +1,2 @@
 #### SisIYA : Update the SisIYA database and archive the system history messages
-02 2 * * * root php -q /usr/share/sisiya-webui-php/utils/sisiya/sisiya_updatedb.php /usr/share/sisiya-webui-php
+02 2 * * * root php -q /usr/share/sisiya-webui-php/utils/sisiya_updatedb.php /usr/share/sisiya-webui-php
