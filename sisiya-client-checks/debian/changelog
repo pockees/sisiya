@@ -1,3 +1,9 @@
+sisiya-client-checks (0.6.30.26~ppa1) precise; urgency=low
+
+  * add data entry to sisiya_temperature.pl client check script
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Sun, 9 Mar 2014 12:29:28 +0200
+
 sisiya-client-checks (0.6.30.25~ppa1) precise; urgency=low
 
   * minor changes in packages

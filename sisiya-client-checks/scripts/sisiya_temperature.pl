@@ -101,6 +101,7 @@ sub use_acpi
 	my @trip_points;
 	my $extra_info;
 	chomp(@a = @a);
+	$data_str = '<entries>';
 	for my $i (0..$#a) {
 		# get trip points into trip_points array 
 		@trip_points = grep(/Thermal $i: trip point/, @a_all);
@@ -131,8 +132,9 @@ sub use_acpi
 			$warning_str .= " WARNING: Temperature is $temperature C (>= $warning_temperature) $a[$i]!";
 		}
 		#$info_str .= "INFO: @trip_points";
-
+		$data_str .= '<entry name="'.$a[$i].'" type="numeric" unit="C">'.$temperature.'</entry>';
 	}
+	$data_str .= '</entries>';
 
 }
 
@@ -151,6 +153,7 @@ sub use_proc_dir
 	if (opendir(my $dh, $proc_acpi_dir)) {
 		my @thermal_dirs = grep{!/^\./} readdir($dh);
 		closedir($dh);
+		$data_str = '<entries>';
 		foreach my $d (@thermal_dirs) {
 			$f = $proc_acpi_dir.'/'.$d.'/state';
 			#print STDERR "$f\n";
@@ -202,7 +205,9 @@ sub use_proc_dir
 			elsif ($temperature >= $warning_temperature) {
 				$warning_str .= " WARNING: Thermal $d:Temperature is $temperature C (>= $warning_temperature)!";
 			}
+			$data_str .= '<entry name="Thermal_'.$d.'" type="numeric" unit="C">'.$temperature.'</entry>';
 		}
+		$data_str .= '</entries>';
 	}
 }
 
@@ -252,6 +257,7 @@ sub use_sensors
 	chomp(@a = @a);
 	@a = grep(/C /, grep(/[°|\+]/, @a));
 	#print STDERR "@a\n";
+	$data_str = '<entries>';
 	for my $i (0..$#a) {
 		$sensor = (split(/:/, $a[$i]))[0];
 		$temperature = trim((split(/[°|C]/, (split(/\+/, (split(/:/, $a[$i]))[1]))[1]))[0]);
@@ -295,7 +301,9 @@ sub use_sensors
 		else {
 			$ok_str .= " OK: $sensor temperature is $temperature C.";
 		}
+		$data_str .= '<entry name="'.$sensor.'" type="numeric" unit="C">'.$temperature.'</entry>';
 	}
+	$data_str .= '</entries>';
 }
 ################################################################################
 if ( -f $SisIYA_Config::external_progs{'sensors'}) {

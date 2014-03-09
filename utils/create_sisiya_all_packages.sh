@@ -141,6 +141,7 @@ create_webui_php()
 	cp -a ${source_dir}/sisiya_ui/XMPPHP $package_dir/
 	cat ${source_dir}/$package_str/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
 	cat $source_dir/etc/sisiya/$package_str/sisiya_common_conf.php | sed -e "s/__VERSION__/${version_str}/" -e "s/__YEAR__/${year_str}/"  > $package_dir/etc/sisiya/$package_str/sisiya_common_conf.php 
+	find $package_dir -name "*.php" -exec sed -i "s/__YEAR__/$year_str/g" {} \;
 	################################################################################################################################################
 	### create RPM source package
 	################################################################################################################################################
@@ -205,18 +206,18 @@ create_sisiyad()
 	### common package directory for all package types (rpm, deb, pacman ...)
 	rm -rf $package_dir
 	mkdir -p $package_dir
-	cp -a ${source_dir}/doc $package_dir/
-	cp -a ${source_dir}/edbc $package_dir/
-	cp -a ${source_dir}/etc $package_dir/
+	cp -a ${source_dir}/doc $package_dir
+	cp -a ${source_dir}/edbc $package_dir
+	cp -a ${source_dir}/etc $package_dir
 	for f in "AUTHORS" "ChangeLog" "COPYING" "INSTALL" "Makefile.am" "bootstrap"  "configure.ac" "NEWS" "README"
 	do
-		cp -a ${source_dir}/$f $package_dir/
+		cp -a ${source_dir}/$f $package_dir
 	done
-	cp -a ${source_dir}/$package_str $package_dir/
+	cp -a ${source_dir}/$package_str $package_dir
 	echo "$version_str" > $package_dir/version.txt
 	echo "$version_str" > $package_dir/edbc/version.txt
 	echo "$version_str" > $package_dir/$package_str/version.txt
-	mv $package_dir/$package_str/debian $package_dir/
+	mv $package_dir/$package_str/debian $package_dir
 	cat ${source_dir}/$package_str/debian/copyright | sed -e "s/__YEAR__/${year_str}/"  > $package_dir/debian/copyright
 	################################################################################################################################################
 	### create RPM source package

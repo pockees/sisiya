@@ -127,7 +127,7 @@ $html.='</form>';
 
 $html.='<table class="header_system_services">'."\n";
 $html.='<tr><td align="left" rowspan="2">'."\n";
-$html.='<img src="'.LINKS_IMG_URL.'/'.$systemName.'.png" alt="'.$systemName.'" />';
+$html.='<img src="'.getSystemNameImageURL($systemName).'" alt="'.$systemName.'" />';
 $html.='<img src="'.SYSTEMS_IMG_URL.'/'.$systemType.'.png" alt="'.$systemType.'" /></td>'."\n";
 $html.='<td>';
 $html.="</td></tr></table>\n";

@@ -52,6 +52,18 @@ function getInputValue($formName,$key)
 }
 
 
+function getSystemNameImageURL($system_name)
+{
+
+	$link_file = LINKS_IMG_DIR.'/'.$system_name.'.png';
+	if ((file_exists($link_file)) == false)
+		return SYSTEMS_IMG_URL.'/computer.png';
+	else {
+		return LINKS_IMG_URL.'/'.$system_name.'.png';
+	}
+}
+
+
 
 function startSession($sname)
 {

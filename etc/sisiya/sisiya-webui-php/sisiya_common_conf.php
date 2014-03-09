@@ -19,7 +19,7 @@
 */
 
 define("VERSION","__VERSION__",false);
-define("YEAR","__YERA__",false);
+define("YEAR","__YEAR__",false);
 define("SISIYA_URL","http://sisiya.example.org", false);
 
 # Setup wizard

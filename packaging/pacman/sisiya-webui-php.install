@@ -14,7 +14,7 @@ pre_remove()
 ## arg 1:  the new package version
 post_install() {
 	if test ! -h /usr/share/sisiya-webui-php/index.php ; then
-		ln -s /var/lib/sisiya-webui-php/sisiya_gui.php /usr/share/sisiya-webui-php/index.php
+		ln -s /usr/share/sisiya-webui-php/sisiya_gui.php /usr/share/sisiya-webui-php/index.php
 	fi
 	if test ! -h /usr/share/sisiya-webui-php/images/links ; then
 		mkdir -p /var/lib/sisiya-webui-php/links
