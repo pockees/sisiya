@@ -55,15 +55,16 @@ if (! -f $SisIYA_Config::external_progs{'lpstat'}) {
 my @a = `$SisIYA_Config::external_progs{'lpstat'} -p 2>/dev/null`;
 my @b;
 my $retcode = $? >>=8;
-my $device_name;
-my $device_status;
+my ($device_name, $device_status, $flag);
 
+$data_str = '<entries>';
 @a = grep(/^printer/, @a);
 foreach (@a) {
 	#print STDERR "$_";
 	chomp($_ = $_);
 	@b = split(/ /, $_);
 	$device_name = $b[1];
+	$flag = 1; #true
 	if (index($_, 'idle.') != -1) {
 		$ok_str .= "OK: $device_name is idle.";
 	}
@@ -75,10 +76,12 @@ foreach (@a) {
 			@b = split(/ /, $_);
 			$device_status = $b[2];
 			$error_str .= "ERROR: $device_name is $device_status. line=[$_]";
+			$flag = 0; #false
 		}
 	}
-
+	$data_str .= '<entry name="'.$device_name.'" type="boolean">'.$flag.'</entry>';
 }
+$data_str .= '</entries>';
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = $error_str;
