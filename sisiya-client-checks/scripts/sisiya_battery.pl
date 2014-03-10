@@ -87,15 +87,13 @@ sub use_acpi
 	#Battery 0: design capacity 8739 mAh, last full capacity 8485 mAh = 97%
 
 	########################################################################## 
-	my $status;
-	my $charged_percent;
-	my $warning_percent;
-	my $error_percent;
-	my $j;
+	my ($battery_name, $status, $charged_percent, $warning_percent, $error_percent, $j);
 	chomp(@a = @a);
+	$data_str = '<entries>';
 	for my $i (0..($n-1)) {
 		$j = 2 * $i;
 		$status = trim((split(/,/, (split(/:/, $a[$j]))[1]))[0]);
+		$battery_name = trim((split(/:/, $a[$j]))[0]);
 		#print STDERR "Processing battery $i... status=[$status]\n";
 		$warning_percent = $default_charged_percents{'warning'};
 		$error_percent = $default_charged_percents{'error'};
@@ -105,6 +103,7 @@ sub use_acpi
 		if (defined $charged_percents[$i]{'error'}) {
 			$error_percent = $charged_percents[$j]{'error'};
 		}
+		$charged_percent = 100;
 		if ($status eq 'Full') {
 			$ok_str .= " OK: $a[$j]. $a[$j + 1].";
 		}
@@ -127,7 +126,9 @@ sub use_acpi
 		else {
 			$warning_str .= " WARNING: $a[$j]! $a[$j + 1].";
 		}
+		$data_str .= '<entry name="'.$battery_name.'" type="percent">'.$charged_percent.'</entry>';
 	}
+	$data_str .= '</entries>';
 	@a = `$SisIYA_Config::external_progs{'acpi'} -a`;
 	$retcode = $? >>=8;
 	if ($retcode == 0) {
@@ -157,6 +158,7 @@ sub use_proc_dir
 	if (opendir(my $dh, $proc_acpi_battery_dir)) {
 		my @battery_dirs = grep{!/^\./} readdir($dh);
 		closedir($dh);
+		$data_str = '<entries>';
 		foreach my $d (@battery_dirs) {
 			$f = $proc_acpi_battery_dir.'/'.$d.'/info';
 			#print STDERR "$f\n";
@@ -216,9 +218,11 @@ sub use_proc_dir
 			else {
 				$error_str .= " ERROR: The charging state of the battery $d ($charged_percent\%) is $charging_state (!= charging)!";
 			}
+			$data_str .= '<entry name="'.$d.'" type="percent">'.$charged_percent.'</entry>';
 			chomp(@a_info = @a_info);
 			$info_str .= " INFO: $d battery details: @a_info"; 
 		}
+		$data_str .= '</entries>';
 	}
 	if (opendir(my $dh, $proc_acpi_ac_adapter_dir)) {
 		$f = $proc_acpi_ac_adapter_dir.'/state';
