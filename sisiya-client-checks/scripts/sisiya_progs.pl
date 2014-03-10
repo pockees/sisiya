@@ -98,19 +98,24 @@ elsif ($SisIYA_Config::osname eq 'Linux') {
 }
 
 chomp(@ps_list = `$SisIYA_Config::external_progs{'ps'} $ps_params`);
-my $s;
+my ($s, $flag);
+$data_str = '<entries>';
 for my $i (0..$#progs) {
 	$s = '';
+	$flag = 0; # false
 	if ($i > 0) {
 		$s =',';
 	}
 	if (is_running($progs[$i]{'command'})) {
 		$ok_str .= "$s $progs[$i]{'description'}";
+		$flag = 1; # true
 	}
 	else {
 		$error_str .= "$s $progs[$i]{'description'}";
 	}
+	$data_str .= '<entry name="'.$progs[$i]{'description'}.'" type="boolean">'.$flag.'</entry>';
 }
+$data_str .= '</entries>';
 
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
