@@ -76,6 +76,7 @@ else {
 	$statusid = $SisIYA_Config::statusids{'ok'};
 	$message_str = "OK: There are no mails in the queue.";
 }
+$data_str = '<entries><entry name="queue_mail_count" type="numeric">'.$queue_count.'</entry></entries>';
 ######################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ######################################################################################

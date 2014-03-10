@@ -1,5 +1,7 @@
 sisiya-client-checks (0.6.30.26~ppa1) precise; urgency=low
 
+  * added data entry #28 (https://github.com/erdalmutlu1/sisiya/issues/28) to
+    the sisiya_mailq.pl client check script
   * added data entry #34 (https://github.com/erdalmutlu1/sisiya/issues/34) to
     the sisiya_progs.pl client check script
   * add data entry to sisiya_dmesg.pl client check script
