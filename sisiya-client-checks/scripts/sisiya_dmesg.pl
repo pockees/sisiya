@@ -77,33 +77,35 @@ if ($retcode != 0) {
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 #print STDERR "@a";
-my @b;
+my (@b, $flag);
 $data_str = '<entries>';
-foreach (@error_strings) {
-	#$x = '';
-	#$x = (grep(/$_/i, @a))[0];
-	@b = grep(/\Q$_\E/i, @a);
-	if ($b) {
+foreach my $y (@error_strings) {
+	@b = grep(/\Q$y\E/i, @a);
+	$flag = 0; # false
+	if (@b) {
+		$flag = 1; # true
 		$x = $b[0];
-		$error_messages .= " ERROR: [$x] contains [$_]!";
+		$error_messages .= " ERROR: [$x] contains [$y]!";
 		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
 	} else {
-		$ok_messages .= "[$_]";
+		$ok_messages .= "[$y]";
 	}
+	$data_str .= '<entry name="'.$y.'" type="bolean">'.$flag.'</entry>';
 }
 
-foreach (@warning_strings) {
-	#$x = '';
-	#$x = (grep(/$_/i, @a))[0];
-	@b = grep(/\Q$_\E/i, @a);
-	if ($b) {
+foreach my $y (@warning_strings) {
+	@b = grep(/\Q$y\E/i, @a);
+	$flag = 0; # false
+	if (@b) {
+		$flag = 1; # true
 		$x = $b[0];
-		$warning_messages .= " WARNING: [$x] contains [$_]!";
+		$warning_messages .= " WARNING: [$x] contains [$y]!";
 		$data_str .= '<entry name="dmesg" type="alphanumeric">'.$x.'</entry>';
 	}
 	else {
-		$ok_messages .= "[$_]";
+		$ok_messages .= "[$y]";
 	}
+	$data_str .= '<entry name="'.$y.'" type="bolean">'.$flag.'</entry>';
 }
 $data_str .= '</entries>';
 if ($error_messages ne '') {
