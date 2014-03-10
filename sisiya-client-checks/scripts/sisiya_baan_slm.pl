@@ -73,6 +73,7 @@ if (! -f $SisIYA_Config::external_progs{'SlmCmd'}) {
 	$message_str = "ERROR: External program $SisIYA_Config::external_progs{'SlmCmd'} does not exist!";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
+$data_str = '<entries>';
 for my $i (0..$#slm_servers) {
 	#print STDERR "SLM server $slm_servers[$i]{'server'}...\n";
 	@a = `$SisIYA_Config::external_progs{'SlmCmd'} -montts $slm_servers[$i]{'server'}`;
@@ -80,6 +81,7 @@ for my $i (0..$#slm_servers) {
 	$retcode = $? >>=8;
 	if ($retcode != 0) {
 		$error_str .= " ERROR: Could not connect to SLM server: $slm_servers[$i]{'server'}!";
+		$data_str .= '<entry name="'.$host_str.'" type="boolean">0</entry>';
 	}
 	else {
 		chomp(@a = @a);
@@ -101,8 +103,10 @@ for my $i (0..$#slm_servers) {
 		$mode_str = $b[1];
 
 		$ok_str .= " OK: Host: $host_str Port: $port_str UDP Port: $udpport_str Mode: $mode_str";
+		$data_str .= '<entry name="'.$host_str.'" type="boolean">1</entry>';
 	}
 }
+$data_str .= '</entries>';
 
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};

@@ -1,6 +1,10 @@
 sisiya-client-checks (0.6.30.26~ppa1) precise; urgency=low
 
   * add data entry to sisiya_temperature.pl client check script
+  * add data entry to sisiya_baan_edi.pl client check script
+  * add data entry to sisiya_baan_jobs_status.pl client check script
+  * add data entry to sisiya_baan_slm.pl client check script
+  * add data entry to sisiya_baan_users.pl client check script
 
  -- Erdal Mutlu <erdal@sisiya.org>  Sun, 9 Mar 2014 12:29:28 +0200
 

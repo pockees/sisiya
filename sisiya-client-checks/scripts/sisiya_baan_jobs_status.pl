@@ -56,11 +56,11 @@ if (! -f $SisIYA_Config::external_progs{'baan_jobs_status_db'}) {
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 
-my @a = `$baan_jobs_status_db_prog`;
+my @a = `$SisIYA_Config::external_progs{'baan_jobs_status_db'}`;
 my $retcode = $? >>=8;
 if ($retcode != 0) {
 	$statusid = $SisIYA_Config::statusids{'error'};
-	$message_str = "ERROR: Error executing the $baan_jobs_status_db_prog command! retcode=$retcode";
+	$message_str = "ERROR: Error executing the $SisIYA_Config::external_progs{'baan_jobs_status_db'} command! retcode=$retcode";
 	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 }
 
@@ -77,6 +77,8 @@ foreach (@a) {
 	$last_time = (split(/\|/, $_))[4];
 	push @jobs, {'code' => $job_code, 'status' => $job_status, 'description' => $job_description, 'next_time' => $next_time, 'last_time' => $last_time};
 }
+$data_str = '<entries>';
+my $flag = 1; # true
 for my $i (0..$#jobs) {
 	#print STDERR "code=[$jobs[$i]{'code'}] status=[$jobs[$i]{'status'}] description=[$jobs[$i]{'description'}] last=[$jobs[$i]{'last_time'}] next=[$jobs[$i]{'next_time'}]\n";
 	$info_str = "$jobs[$i]{'description'} last execution time $jobs[$i]{'last_time'}, next execution time $jobs[$i]{'next_time'}";
@@ -91,20 +93,26 @@ for my $i (0..$#jobs) {
 	}
 	elsif ($jobs[$i]{'status'} == 4) {
 		$warning_str .= " WARNING: $jobs[$i]{'code'} ($info_str) is canceled!";
+		$flag = 0; # false
 	}
 	elsif ($jobs[$i]{'status'} == 5) {
 		$error_str .= " ERROR: $jobs[$i]{'code'} ($info_str) has got runtime error!";
+		$flag = 0; # false
 	}
 	elsif ($jobs[$i]{'status'} == 6) {
 		$ok_str .= " OK: $jobs[$i]{'code'} ($info_str) is in queue.";
 	}
 	elsif ($jobs[$i]{'status'} == 7) {
 		$error_str .= " ERROR: $jobs[$i]{'code'} ($info_str) is blocked!";
+		$flag = 0; # false
 	}
 	else {
 		$error_str .= " ERROR: $jobs[$i]{'code'} ($info_str) status is unknown ($jobs[$i]{'status'})!";
+		$flag = 0; # false
 	}
+	$data_str .= '<entry name="'.$jobs[$i]{'code'}.'" type="boolean">'.$flag.'</entry>';
 }
+$data_str .= '</entries>';
 
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};

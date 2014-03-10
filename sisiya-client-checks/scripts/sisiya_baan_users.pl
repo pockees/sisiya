@@ -72,6 +72,7 @@ if (! -f $SisIYA_Config::external_progs{'licmon'}) {
 		my $server_license_count = 0;
 		my $desktop_license_count = 0;
 		my ($concurrent_license_count, $named_license_count);
+
 		for my $i (0..$#slm_servers) {
 			@a = `$SisIYA_Config::external_progs{'SlmCmd'} -mondts $slm_servers[$i]`;
 			$retcode = $? >>=8;
@@ -95,6 +96,8 @@ if (! -f $SisIYA_Config::external_progs{'licmon'}) {
 			#print STDERR "concurrent license count = [$concurrent_license_count] named user license count = [$named_license_count] server license count = [$server_license_count] desktop license count = [$desktop_license_count]\n";
 		}
 		$total_users = $concurrent_license_count + $named_license_count;
+		$data_str = '<entries>';
+		$data_str .= '<entry name="baan_total_user_count" type="numeric">'.$total_users.'</entry>';
 		if ($total_users >= $users{'error'}) {
 			$error_str = "ERROR: Number of total users is $total_users (>=$users{'error'})!";
 		}
@@ -106,16 +109,21 @@ if (! -f $SisIYA_Config::external_progs{'licmon'}) {
 		}
 	       	if ($concurrent_license_count > 0) {
 			$info_str .= "INFO: Number of concurrent users is $concurrent_license_count.";
+			$data_str .= '<entry name="baan_concurrent_users_count" type="numeric">'.$concurrent_license_count.'</entry>';
 		}
 	       	if ($named_license_count > 0) {
 			$info_str .= "INFO: Number of named users is $named_license_count.";
+			$data_str .= '<entry name="baan_named_users_count" type="numeric">'.$named_license_count.'</entry>';
 		}
 	       	if ($desktop_license_count > 0) {
 			$info_str .= "INFO: Number of desktop licenses is $desktop_license_count.";
+			$data_str .= '<entry name="baan_desktop_license_count" type="numeric">'.$desktop_license_count.'</entry>';
 		}
 	       	if ($server_license_count > 0) {
 			$info_str .= "INFO: Number of server licenses is $server_license_count.";
+			$data_str .= '<entry name="baan_server_license_count" type="numeric">'.$server_license_count.'</entry>';
 		}
+		$data_str .= '</entries>';
 	}
 }
 else {
@@ -141,6 +149,9 @@ else {
 		else {
 			$ok_str .= " OK: Number of users is $licmon_count.";
 		}
+		$data_str = '<entries>';
+		$data_str .= '<entry name="baan_total_user_count" type="numeric">'.$licmon_count.'</entry>';
+		$data_str .= '</entries>';
 	}
 }
 

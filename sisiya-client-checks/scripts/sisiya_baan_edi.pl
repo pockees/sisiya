@@ -82,6 +82,7 @@ foreach (@a) {
 	$table_row_counts{$table_name} = $n;
 }
 
+$data_str = '<entries>';
 $table_name = 'ecedi750';
 $n = $table_row_counts{$table_name};
 if ($n > 0) {
@@ -90,6 +91,7 @@ if ($n > 0) {
 else {
 	$ok_str .= "OK: There are no error messages in the EDI table $table_name."; 
 }
+$data_str .= '<entry name="'.$table_name.'" type="numeric">'.$n.'</entry>';
 
 $table_name = 'ecedi751';
 $n = $table_row_counts{$table_name};
@@ -99,6 +101,7 @@ if ($n > 0) {
 else {
 	$ok_str .= " OK: There are no messages saved to be received in the EDI table $table_name."; 
 }
+$data_str .= '<entry name="'.$table_name.'" type="numeric">'.$n.'</entry>';
 
 $table_name = 'ecedi700';
 $n = $table_row_counts{$table_name};
@@ -108,6 +111,8 @@ if ($n > 0) {
 else {
 	$ok_str .= " OK: There are no messages to be generated in the EDI table $table_name."; 
 }
+$data_str .= '<entry name="'.$table_name.'" type="numeric">'.$n.'</entry>';
+$data_str .= '</entries>';
 
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};

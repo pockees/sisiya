@@ -17,7 +17,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 #
 #######################################################################################
-#BEGIN {push @INC, '..'}
+BEGIN {push @INC, '/etc/sisiya/sisiya-client-checks'}
 ## or run : perl -I..
 use strict;
 use warnings;
@@ -32,7 +32,6 @@ if (-f $SisIYA_Config::functions) {
 #######################################################################################
 #######################################################################################
 #### the default values
-our $sqlplus_prog = 'sqlplus';
 our $db_name = 'TIGER';
 our $db_user = 'system';
 our $db_password = 'manager';
@@ -59,7 +58,7 @@ sub exec_sql
 	my $sql_file = $SisIYA_Config::conf_d_dir.'/sisiya_baan_edi_oracle_'.$_[0].'.sql';
 	my $s = $_[0].',0';
 	if (-f $sql_file) {
-		my @a = `$sqlplus_prog -S $db_user/$db_password\@$db_name \@$sql_file`;
+		my @a = `$SisIYA_Config::external_progs{'sqlplus'} -S $db_user/$db_password\@$db_name \@$sql_file`;
 		$s = trim($a[0]);
 		$s = $_[0].",$s";
 		return $s;
