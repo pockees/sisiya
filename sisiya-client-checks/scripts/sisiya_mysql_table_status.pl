@@ -98,13 +98,15 @@ if ($#dbs > -1) {
 		$message_str = "ERROR: Error executing the mysql command! retcode=$retcode";
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
-
+	my $flag = 1; #true
+	$data_str = '<entries>';
 	for $i (0..$#dbs) {
 		#print STDERR "$dbs[$i]{'db_name'}...\n";
 		@a = `$SisIYA_Config::external_progs{'mysql'} -u$dba_user -p$dba_password -D $dbs[$i]{'db_name'} -NBt -e "show tables"`;
 		$retcode = $? >>=8;
 		if ($retcode != 0) {
 			$error_str .= " ERROR: Could not get table list for $dbs[$i]{'db_name'} $dbs[$i]{'description'}!";
+			$flag = 0; #false
 		}
 		else {
 			@a = grep(/^\|/, @a);
@@ -116,6 +118,7 @@ if ($#dbs > -1) {
 				$retcode = $? >>=8;
 				if ($retcode != 0) {
 					$error_str .= " ERROR: Could not check table $dbs[$i]{'db_name'}:$table_name!";
+					$flag = 0; #false
 				}
 				else {
 					foreach my $c (@b) {
@@ -130,6 +133,7 @@ if ($#dbs > -1) {
 								if ( (index($status_message, 'OK') != -1) && ( index($status_message, 'Table is already up to date') != -1 ) ) {
 									#print STDERR "error\n";
 									$error_str .= " ERROR: $dbs[$i]{'db_name'}:$table_name message: $status_message! "; 
+									$flag = 0; #false
 								}
 							}
 							else {
@@ -140,6 +144,7 @@ if ($#dbs > -1) {
 								}
 								else {
 									$error_str .= " ERROR: $dbs[$i]{'db_name'}:$table_name message: $status_message!"; 
+									$flag = 0; #false
 								}
 							}
 						}
@@ -147,7 +152,9 @@ if ($#dbs > -1) {
 				}
 			}
 		}
+		$data_str .= '<entry name="'.$dbs[$i]{'db_name'}.'" type="boolean">'.$flag.'</entry>';
 	}
+	$data_str .= '</entries>';
 }
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};

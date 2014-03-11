@@ -1,5 +1,6 @@
 sisiya-client-checks (0.6.30.26~ppa1) precise; urgency=low
 
+  * added data entry to sisiya_mysql_table_status.pl, closes #29
   * added data entry to sisiya_listening_socket.pl, closes #25
   * added data entry #27 (https://github.com/erdalmutlu1/sisiya/issues/27) to
     the sisiya_lpstat.pl client check script
