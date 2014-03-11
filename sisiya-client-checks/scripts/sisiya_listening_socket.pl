@@ -168,16 +168,19 @@ if ($#sockets > -1) {
 		#print STDERR "\n";
 	}
 
-	my $s;
+	my ($s, $flag);
+	$data_str = '<entries>';
 	for $i (0..$#sockets) {
 		#print STDERR "$sockets[$i]{'progname'}...\n";
 		$s = '';
 		if ($i > 0) {
 			$s =',';
 		}
+		$flag = 0; #false
 		if (is_listening_socket($i)) {
 			#print STDERR "$sockets[$i]{'progname'} is OK\n";
 			$ok_str .= "$s $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
+			$flag = 1; #true
 		}
 		else {
 			#print STDERR "$sockets[$i]{'progname'} is NOT OK\n";
@@ -188,7 +191,9 @@ if ($#sockets > -1) {
 				$error_str .= "$s $sockets[$i]{'description'} ($sockets[$i]{'interface'}:$sockets[$i]{'port'})";
 			}
 		}
+		$data_str .= '<entry name="'.$sockets[$i]{'description'}.'" type="boolean">'.$flag.'</entry>';
 	}
+	$data_str .= '</entries>';
 
 }
 #for $i (0..$#sockets) {
