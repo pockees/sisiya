@@ -71,6 +71,7 @@ if ($#disks > -1) {
 my $temp;
 my $s;
 my $i;
+$data_str = '<entries>';
 for $i (0..$#disks) {
 	#@a = `$SisIYA_Config::external_progs{'smartctl'} -a -d ata  $disks[$i]{'device'} 2>/dev/null`;
 	@a = `$SisIYA_Config::external_progs{'smartctl'} -a -d auto  $disks[$i]{'device'} 2>/dev/null`;
@@ -98,8 +99,10 @@ for $i (0..$#disks) {
 		if ($retcode != 0) {
 			$warning_str .= " WARNING: $disks[$i]{'device'} smartctl return code=$retcode (<> 0)!";
 		}
+		$data_str .= '<entry name="'.$disks[$i]{'device'}.'" type="numeric" unit="C">'.$temp.'</entry>';
 	}
 }
+$data_str .= '</entries>';
 
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
