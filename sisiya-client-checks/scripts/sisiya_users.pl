@@ -78,6 +78,11 @@ else {
 	$message_str .= " INFO: $user_list";
 	$message_str =~ s/\s+/ /g;
 }
+$data_str = '<entries>';
+foreach (@a) {
+	$data_str .= '<entry name="username" type="string">'.(split(/\s+/, $_))[0].'</entry>';
+}
+$data_str .= '</entries>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
