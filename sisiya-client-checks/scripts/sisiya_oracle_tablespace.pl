@@ -70,6 +70,7 @@ my $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_tablespace.sql';
 my @a = `$SisIYA_Config::external_progs{'sqlplus'} -S $db_user/$db_password\@$db_name \@$sql_file`;
 my @b;
 #print STDERR "@a\n";
+my %totals = ( 'free' => 0, 'percent' => 0, 'total' => 0, 'used' => 0 );
 foreach (@a) {
 	chomp($_);
 	@b = split(/[ \t]+/, $_);
@@ -78,6 +79,7 @@ foreach (@a) {
 	$tablespaces{$b[0]}{'free'} = $b[3]; 
 	$tablespaces{$b[0]}{'percent'} = $b[4]; 
 }
+$data_str = '<entries>';
 for my $k (keys %tablespaces) {
 	#print STDERR "-----> : key=[$k] total=[$tablespaces{$k}{'total'}] used=[$tablespaces{$k}{'used'}] free=[$tablespaces{$k}{'free'}] percent=[$tablespaces{$k}{'percent'}]\n";
 		if ($tablespaces{$k}{'percent'} >= $percents{'error'}) {
@@ -89,7 +91,23 @@ for my $k (keys %tablespaces) {
 		else {
 			$ok_str .= "OK: $k $tablespaces{$k}{'percent'}\% of ".get_size($tablespaces{$k}{'total'})." is full.";
 		}
+		$totals{'free'} += $tablespaces{$k}{'free'}; 
+		$totals{'used'} += $tablespaces{$k}{'used'}; 
+		$totals{'total'} += $tablespaces{$k}{'total'}; 
+
+		$data_str .= '<entry name="tablespace_total" volume="'.$k.'" type="numeric" unit="B">'.$tablespaces{$k}{'total'}.'</entry>';
+		$data_str .= '<entry name="tablespace_used" volume="'.$k.'" type="numeric" unit="B">'.$tablespaces{$k}{'used'}.'</entry>';
+		$data_str .= '<entry name="tablespace_free" volume="'.$k.'" type="numeric" unit="B">'.$tablespaces{$k}{'free'}.'</entry>';
+		$data_str .= '<entry name="tablespace_percent" volume="'.$k.'" type="percent" unit="B">'.$tablespaces{$k}{'percent'}.'</entry>';
 }
+if ($totals{'total'} > 0) {
+	$totals{'percent'} = 100 * $totals{'used'} / $totals{'total'};
+}
+$data_str .= '<entry name="tablespace_free" type="numeric" unit="B">'.$totals{'free'}.'</entry>';
+$data_str .= '<entry name="tablespace_total" type="numeric" unit="B">'.$totals{'total'}.'</entry>';
+$data_str .= '<entry name="tablespace_used" type="numeric" unit="B">'.$totals{'used'}.'</entry>';
+$data_str .= '<entry name="tablespace_usage_percent" type="numeric">'.$totals{'percent'}.'</entry>';
+$data_str .= '</entries>';
 
 
 if ($error_str ne '') {
