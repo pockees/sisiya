@@ -154,6 +154,9 @@ if ($info_prog ne '') {
 	chomp($x = `$info_prog`);
 	$message_str .= " Details: $x";
 }
+$data_str = '<entries>';
+$data_str .= '<entry name="uptime" type="numeric">'.$uptime_in_minutes.'</entry>';
+$data_str .= '</entries>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
