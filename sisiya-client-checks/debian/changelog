@@ -1,5 +1,6 @@
 sisiya-client-checks (0.6.30.26~ppa1) precise; urgency=low
 
+  * added data entry to sisiya_ssh-attack.pl, closes #38
   * added data entry to sisiya_system.pl, closes #39
   * added data entry to sisiya_users.pl, closes #40
   * added data entry to sisiya_oracle_hitratios.pl, closes #31

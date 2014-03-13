@@ -67,6 +67,7 @@ if (-f $log_file) {
 
 my $s;
 my @b;
+$data_str = '<entries>';
 foreach my $x (@strings) {
 	#print STDERR "Searching for [$x] in $log_file...\n";
 	@b = grep(/$x/, @a);
@@ -76,11 +77,14 @@ foreach my $x (@strings) {
 	#print STDERR "s=[$s]\n";
 	if ($s ne '') {
 		$error_messages .= " ERROR: $x ($s)!";
+		$data_str .= '<entry name="'.$x.'" type="boolean">1</entry>';
 	}
 	else {
 		$ok_messages .= "[$x]";
+		$data_str .= '<entry name="'.$x.'" type="boolean">0</entry>';
 	}
 }
+$data_str .= '</entries>';
 if ($error_messages ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
 	$message_str = $error_messages;
