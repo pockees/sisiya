@@ -74,6 +74,7 @@ if (! -f $SisIYA_Config::external_progs{'sqlplus'}) {
 ### bufer cache hit ratio
 my $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_buffercache.sql';
 my $x;
+$data_str = '<entries>';
 chomp($x= `$SisIYA_Config::external_progs{'sqlplus'} -S $db_user/$db_password\@$db_name \@$sql_file`);
 $x = trim($x); 
 #print STDERR "x=$x\n";
@@ -87,6 +88,7 @@ elsif ($x <= $hitratios{'buffer_cache'}{'warning'}) {
 else {
 	$ok_str = "OK: Buffer cache hit ratio is $s\%.";
 }
+$data_str .= '<entry name="buffer_cache_hit_ratio" type="numeric">'.$x.'</entry>';
 
 ### dictionary hit ratio
 $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_dictionary.sql';
@@ -103,6 +105,7 @@ elsif ($x <= $hitratios{'dictionary'}{'warning'}) {
 else {
 	$ok_str .= " OK: Dictionary cache hit ratio is $s\%.";
 }
+$data_str .= '<entry name="dictionary_cache_hit_ratio" type="numeric">'.$x.'</entry>';
 
 ### library cache hit ratio
 $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_library.sql';
@@ -119,6 +122,7 @@ elsif ($x <= $hitratios{'library'}{'warning'}) {
 else {
 	$ok_str .= " OK: Library cache hit ratio is $s\%.";
 }
+$data_str .= '<entry name="library_cache_hit_ratio" type="numeric">'.$x.'</entry>';
 
 ### nowait cache hit ratio
 $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_nowait.sql';
@@ -135,6 +139,7 @@ elsif ($x <= $hitratios{'nowait'}{'warning'}) {
 else {
 	$ok_str .= " OK: Nowait hit ratio is $s\%.";
 }
+$data_str .= '<entry name="nowait_hit_ratio" type="numeric">'.$x.'</entry>';
 
 ### sort cache hit ratio
 $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_sort.sql';
@@ -151,16 +156,19 @@ elsif ($x <= $hitratios{'sort'}{'warning'}) {
 else {
 	$ok_str .= " OK: Sort hit ratio is $s\%.";
 }
+$data_str .= '<entry name="sort_cache_hit_ratio" type="numeric">'.$x.'</entry>';
 
 ### total users
 $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_totalusers.sql';
 chomp($x= `$SisIYA_Config::external_progs{'sqlplus'} -S $db_user/$db_password\@$db_name \@$sql_file`);
 my $total_users = trim($x); 
+$data_str .= '<entry name="total_users" type="numeric">'.$total_users.'</entry>';
 
 ### SGA size
 $sql_file = $SisIYA_Config::misc_dir.'/sisiya_oracle_hitratios_sgasize.sql';
 chomp($x= `$SisIYA_Config::external_progs{'sqlplus'} -S $db_user/$db_password\@$db_name \@$sql_file`);
 my $sga_size = trim($x); 
+$data_str .= '<entry name="sga_size" type="numeric">'.$sga_size.'</entry>';
 $sga_size = get_size($sga_size);
 
 if ($error_str ne '') {
@@ -177,6 +185,7 @@ if ($ok_str ne '') {
 	$message_str .= " $ok_str";
 }
 $message_str .= " Number of active users is $total_users.  SGA size is $sga_size";
+$data_str .= '</entries>';
 ###################################################################################
 print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 ###################################################################################
