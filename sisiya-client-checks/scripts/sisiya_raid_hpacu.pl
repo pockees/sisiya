@@ -66,6 +66,7 @@ if ($retcode == 0) {
 	my @ctrls = grep(/Slot/, @a);
 	#print STDERR @ctrls;
 	my ($ctrlid, $total_logical_drives, $i);
+	$data_str = '<entries>';
 	foreach (@ctrls) {
 		$ctrlid = trim((split(/Slot/, $_))[1]);
 		#print STDERR "ctrl id = [$ctrlid]\n";
@@ -91,9 +92,11 @@ if ($retcode == 0) {
 			$ctrl_status = trim((split(/:/, (grep(/Controller Status/, @a))[0]))[1]);
 			if ($ctrl_status eq 'OK') {
 				$ok_str .= " OK: Controller status for the controller in slot $ctrlid is OK.";
+				$data_str .= '<entry name="controller_'.$ctrlid.'" type="boolean">1</entry>';
 			}
 			else {
 				$error_str .= " ERROR: Controller status for the controller in slot $ctrlid is $ctrl_status (!=OK)!";
+				$data_str .= '<entry name="controller_'.$ctrlid.'" type="boolean">0</entry>';
 			}
 			$cache_status = trim((split(/:/, (grep(/Cache Status/, @a))[0]))[1]);
 			if ($cache_status eq 'OK') {
@@ -163,6 +166,7 @@ if ($retcode == 0) {
 			}
 		}
 	}
+	$data_str .= '</entries>';
 }
 
 # check individual logical and physical drives
