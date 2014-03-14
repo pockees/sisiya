@@ -78,15 +78,9 @@ my $i = 0;
 foreach (@a) {
 	$raid_arrays[$i++] = (split(/\s+/, $_))[1];
 }
-my $state;
-my $raid_level;
-my $total_devs;
-my $raid_devs;
-my $working_devs;
-my $active_devs;
-my $failed_devs;
-my $spare_devs;
-my $rebuild_status;
+my $state, $raid_level, $total_devs, $raid_devs, $working_devs, $active_devs, $failed_devs, $spare_devs, $rebuild_status, $flag);
+$data_str = '<entries>';
+$flag = 0; # false
 for $i (0..$#raid_arrays) {
 	@a = `$SisIYA_Config::external_progs{'mdadm'} --detail $raid_arrays[$i]`;
 	$retcode = $? >>=8;
@@ -106,6 +100,7 @@ for $i (0..$#raid_arrays) {
 		#print STDERR "$state\n";
 
 		if ( ($state eq 'active') || ($state eq 'clean') ) {
+			$flag = 1; # true
 			$ok_str .= " OK: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, working=$working_devs, failed=$failed_devs, spare=$spare_devs).";
 		} elsif (($state eq 'active, checking') || ($state eq 'clean, resyncing (DELAYED)') || ($state eq 'clean, checking') || ( $state eq 'clean, degraded, resyncing (DELAYED)')
 			|| ($state eq 'active, resyncing (DELAYED)')) {
@@ -117,8 +112,10 @@ for $i (0..$#raid_arrays) {
 		} else {
 			$error_str .= " ERROR: $raid_arrays[$i] RAID level $raid_level is $state (RAID devices=$raid_devs, total=$total_devs, active=$active_devs, working=$working_devs, failed=$failed_devs, spare=$spare_devs)!";
 		}
+		$data_str .= '<entry name="'.$raid_arrays[$i].'" type="boolean">'.$flag.'</entry>';
 	}
 }
+$data_str .= '</entries>';
 
 if ($error_str ne '') {
 	$statusid = $SisIYA_Config::statusids{'error'};
