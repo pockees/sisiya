@@ -42,7 +42,7 @@ License: GPL-2.0+
 Vendor: Erdal Mutlu
 Group: System Environment/Tools
 Packager: Erdal Mutlu <erdal@sisiya.org>
-Requires: 
+#Requires: 
 %description 
 Image collection for SisIYA web GUI. These images are used for assigning to systems. These are mostly images of various hardware.
 
