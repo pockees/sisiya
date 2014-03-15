@@ -1,3 +1,9 @@
+sisiya-edbc-libs (0.6.30.27~ppa1) precise; urgency=low
+
+  * no change in this release
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Sat, 15 Mar 2014 10:30:00 +0200
+
 sisiya-edbc-libs (0.6.30.25~ppa1) precise; urgency=low
 
   * minor changes in packages

@@ -1,3 +1,9 @@
+sisiya-webui-images (0.6.30.27~ppa1) precise; urgency=low
+
+  * added some images
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Sat, 15 Mar 2014 10:30:00 +0200
+
 sisiya-webui-images (0.6.30.25~ppa1) precise; urgency=low
 
   * minor changes in packages

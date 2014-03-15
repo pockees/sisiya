@@ -1,3 +1,9 @@
+sisiya-webui-php (0.6.30.27~ppa1) precise; urgency=low
+
+  * minor changes in packages
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Sat, 6 Mar 2014 10:30:00 +0200
+
 sisiya-webui-php (0.6.30.25~ppa1) precise; urgency=low
 
   * minor changes in packages

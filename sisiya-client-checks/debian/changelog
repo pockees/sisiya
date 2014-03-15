@@ -1,4 +1,4 @@
-sisiya-client-checks (0.6.30.26~ppa1) precise; urgency=low
+sisiya-client-checks (0.6.30.27~ppa1) precise; urgency=low
 
   * added data entry to sisiya_softraid.pl, closes #37
   * added data entry to sisiya_raid_hpacu.pl, closes #35
