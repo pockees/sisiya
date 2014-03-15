@@ -1,3 +1,9 @@
+sisiya-client-checks (0.6.30.28~ppa1) precise; urgency=low
+
+  * forgotten parantheses in sisiya_softraid.pl
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Sat, 15 Mar 2014 12:10:00 +0200
+
 sisiya-client-checks (0.6.30.27~ppa1) precise; urgency=low
 
   * added data entry to sisiya_softraid.pl, closes #37

@@ -78,7 +78,7 @@ my $i = 0;
 foreach (@a) {
 	$raid_arrays[$i++] = (split(/\s+/, $_))[1];
 }
-my $state, $raid_level, $total_devs, $raid_devs, $working_devs, $active_devs, $failed_devs, $spare_devs, $rebuild_status, $flag);
+my ($state, $raid_level, $total_devs, $raid_devs, $working_devs, $active_devs, $failed_devs, $spare_devs, $rebuild_status, $flag);
 $data_str = '<entries>';
 $flag = 0; # false
 for $i (0..$#raid_arrays) {
