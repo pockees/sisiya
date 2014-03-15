@@ -75,9 +75,9 @@ make "DESTDIR=%{buildroot}" install
 	if test ! -h /usr/share/sisiya-webui-php/xmlconf ; then
 		ln -s /etc/sisiya/sisiya-remote-checks/conf.d /usr/share/sisiya-webui-php/xmlconf
 	fi
-	chown -R http /usr/share/sisiya-webui-php
-	chown -R http /var/lib/sisiya-webui-php
-	chown -R http /var/tmp/sisiya-webui-php
+	chown -R %{www_user}:%{www_group} /usr/share/sisiya-webui-php
+	chown -R %{www_user}:%{www_group} /var/lib/sisiya-webui-php
+	chown -R %{www_user}:%{www_group} /var/tmp/sisiya-webui-php
 
 %preun
 # initial installation is 1
