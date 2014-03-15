@@ -1,3 +1,12 @@
+sisiya-webui-php (0.6.30.28~ppa1) precise; urgency=low
+
+  * removed sisiya_php_ini.conf file and added comment to the INSTALL.txt
+    instead
+  * fixed sisiya_check_expired.php, removed dot in front of web_root_dir
+    variable 
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Sat, 6 Mar 2014 13:30:00 +0200
+
 sisiya-webui-php (0.6.30.27~ppa1) precise; urgency=low
 
   * minor changes in packages

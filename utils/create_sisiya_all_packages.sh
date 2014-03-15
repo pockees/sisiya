@@ -134,8 +134,6 @@ create_webui_php()
 	do
 		cp -a ${source_dir}/etc/cron.d/$f $package_dir/etc/cron.d/
 	done
-	mkdir -p $package_dir/etc/php/conf.d
-	cp ${source_dir}/etc/sisiya_php_ini.conf $package_dir/etc/php/conf.d
 	mkdir -p $package_dir/etc/sisiya
 	cp -a $source_dir/etc/sisiya/$package_str $package_dir/etc/sisiya
 	cp -a ${source_dir}/sisiya_ui/XMPPHP $package_dir/

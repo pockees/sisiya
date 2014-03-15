@@ -7,7 +7,6 @@ packages_dir=$(install_root)/var/lib/$(package_name)/packages
 dst_apache_conf=$(install_root)/etc/httpd/conf.d
 dst_etc=$(install_root)/etc
 cron_dir=$(etc_dir)/cron.d
-php_ini_dir=$(etc_dir)/php/conf.d
 #sisiya_remote_checks_dir=/etc/sisiya/sisiya-remote-checks/conf.d
 ###########################################################################
 .PHONY: install
@@ -17,8 +16,6 @@ install:
 	install -m 644 etc/cron.d/sisiya-archive 	$(cron_dir)
 	install -m 644 etc/cron.d/sisiya-check-expired 	$(cron_dir)
 	install -m 644 etc/cron.d/sisiya-rss		$(cron_dir)
-	install -d 					$(php_ini_dir)
-	install -m 644 etc/php/conf.d/*.conf		$(php_ini_dir)
 	install -m 755 -d 				$(web_dir)/style
 	install -m 644 style/*.css 			$(web_dir)/style
 	install -m 755 -d 				$(web_dir)/javascript

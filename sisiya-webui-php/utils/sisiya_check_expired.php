@@ -36,7 +36,7 @@ $send_message_prog = $argv[2];
 # status ID for noretport status
 $status_noreport = 16;
 
-include_once(.$web_root_dir.'/config.php');
+include_once($web_root_dir.'/config.php');
 include_once(CONF_DIR.'/sisiya_common_conf.php');
 include_once(CONF_DIR.'/sisiya_gui_conf.php');
 

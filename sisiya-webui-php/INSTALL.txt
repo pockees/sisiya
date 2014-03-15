@@ -15,7 +15,10 @@
 		Edit the Makefile and edit the DBTYPE according to your specific needs.
 	- Edit the db_DBTYPE.conf (where DBTYPE is your choice in the previous item) and edit it.
 	- Execute the make command. 
-
+2) PHP configuration:
+	- append the following line
+		/etc/sisiya/sisiya-webui-php:/usr/share/sisiya-webui-php:/var/lib/sisiya-webui-images:/var/tmp/sisiya-webui-php
+	 to the open_basedir variable in the php.ini
 2) Web server configuration:
 	- For Apache use the sisiya_apache.conf configuration file and put it where the Apache configuration files are located,
 		on CentOS it is the /etc/httpd/conf.d. After which edit it according to your specific needs.
