@@ -22,10 +22,11 @@
 ;======================================================
 ; Define your application name
 !define APP_NAME "SisIYA_client_checks"
-!define SISIYA_RELEASE 1
-!define SISIYA_VERSION "0.5"
-!define SISIYA_CLIENT_CHECKS_VERSION 1 
-!define APP_VERSION "${SISIYA_VERSION}.${SISIYA_CLIENT_CHECKS_VERSION}-${SISIYA_RELEASE}"
+;!define SISIYA_RELEASE 1
+!define SISIYA_VERSION "0.6.30.1"
+;!define SISIYA_CLIENT_CHECKS_VERSION 1 
+;!define APP_VERSION "${SISIYA_VERSION}.${SISIYA_CLIENT_CHECKS_VERSION}-${SISIYA_RELEASE}"
+!define APP_VERSION "${SISIYA_VERSION}"
 !define APP_NAME_AND_VERSION "${APP_NAME}-${APP_VERSION}"
 !define SOURCE_DIR "..\sisiya_client_checks"
 #!define JAVA_FILE "..\..\src\SisIYASendMessage.class"
@@ -217,8 +218,8 @@ SectionEnd
 Function .onInstSuccess
 	;# put create task into the scheduler
 	;# Exec "powershell -command $\"& {Set-ExecutionPolicy Unrestricted}$\""
-	ExecWait "powershell -command $\"& $INSTDIR\bin\sisiya_set_execution_policy.ps1$\""
-	ExecWait "powershell -command $\"& $INSTDIR\bin\sisiya_create_tasks.ps1$\""
+	ExecWait "powershell -ExecutionPolicy ByPass -command $\"& $INSTDIR\bin\sisiya_set_execution_policy.ps1$\""
+	ExecWait "powershell -ExecutionPolicy ByPass -command $\"& $INSTDIR\bin\sisiya_create_tasks.ps1$\""
 FunctionEnd
 
 ; eof
