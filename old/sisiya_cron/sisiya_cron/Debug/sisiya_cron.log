@@ -1,0 +1,19 @@
+﻿Build started 11.03.2013 14:39:06.
+Project "C:\Users\erdalmutlu\Desktop\sisiya_cron\sisiya_cron\sisiya_cron.vcxproj" on node 2 (build target(s)).
+InitializeBuildStatus:
+  Creating "Debug\sisiya_cron.unsuccessfulbuild" because "AlwaysCreate" was specified.
+ClCompile:
+  All outputs are up-to-date.
+CoreResGen:
+  All outputs are up-to-date.
+Link:
+  All outputs are up-to-date.
+  sisiya_cron.vcxproj -> C:\Users\erdalmutlu\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+FinalizeBuildStatus:
+  Deleting file "Debug\sisiya_cron.unsuccessfulbuild".
+  Touching "Debug\sisiya_cron.lastbuildstate".
+Done Building Project "C:\Users\erdalmutlu\Desktop\sisiya_cron\sisiya_cron\sisiya_cron.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.92

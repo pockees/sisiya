@@ -1,0 +1,210 @@
+  System.Configuration.Install.resources - Embedded, ContainedInManifestFile, 
+  System.Config.SettingsTab.bmp - Embedded, ContainedInManifestFile, 
+  System.Config.XmlSettingsStore.bmp - Embedded, ContainedInManifestFile, 
+ImageRuntimeVersion: v4.0.30319
+Assembly System.Configuration.Install, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Runtime.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Class System.Configuration.Install.Installer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.ComponentModel.Component
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Configuration.Install.InstallContext Context 'get set' : 
+    System.String HelpText 'get ' : 
+    System.Configuration.Install.InstallerCollection Installers 'get ' : 
+    System.Configuration.Install.Installer Parent 'get set' : 
+  Events:
+    System.Configuration.Install.InstallEventHandler Committed: 
+    System.Configuration.Install.InstallEventHandler AfterInstall: 
+    System.Configuration.Install.InstallEventHandler AfterRollback: 
+    System.Configuration.Install.InstallEventHandler AfterUninstall: 
+    System.Configuration.Install.InstallEventHandler Committing: 
+    System.Configuration.Install.InstallEventHandler BeforeInstall: 
+    System.Configuration.Install.InstallEventHandler BeforeRollback: 
+    System.Configuration.Install.InstallEventHandler BeforeUninstall: 
+  Methods:
+    get_Context(): PrivateScope, Public, HideBySig, SpecialName
+    set_Context(InstallContext): PrivateScope, Public, HideBySig, SpecialName
+    get_HelpText(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Installers(): PrivateScope, Public, HideBySig, SpecialName
+    get_Parent(): PrivateScope, Public, HideBySig, SpecialName
+    set_Parent(Installer): PrivateScope, Public, HideBySig, SpecialName
+    add_Committed(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_Committed(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_AfterInstall(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_AfterInstall(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_AfterRollback(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_AfterRollback(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_AfterUninstall(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_AfterUninstall(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_Committing(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_Committing(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_BeforeInstall(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_BeforeInstall(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_BeforeRollback(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_BeforeRollback(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_BeforeUninstall(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_BeforeUninstall(InstallEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    Commit(IDictionary): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Install(IDictionary): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Rollback(IDictionary): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Uninstall(IDictionary): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Configuration.Install.AssemblyInstaller: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Configuration.Install.Installer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String[]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Reflection.Assembly, System.String[]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Reflection.Assembly Assembly 'get set' : 
+    System.String[] CommandLine 'get set' : 
+    System.String HelpText 'get ' : 
+    System.String Path 'get set' : 
+    Boolean UseNewContext 'get set' : 
+  Methods:
+    get_Assembly(): PrivateScope, Public, HideBySig, SpecialName
+    set_Assembly(Assembly): PrivateScope, Public, HideBySig, SpecialName
+    get_CommandLine(): PrivateScope, Public, HideBySig, SpecialName
+    set_CommandLine(String[]): PrivateScope, Public, HideBySig, SpecialName
+    get_HelpText(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_Path(): PrivateScope, Public, HideBySig, SpecialName
+    set_Path(String): PrivateScope, Public, HideBySig, SpecialName
+    get_UseNewContext(): PrivateScope, Public, HideBySig, SpecialName
+    set_UseNewContext(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    CheckIfInstallable(String): PrivateScope, Public, Static, HideBySig
+    Commit(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Install(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Rollback(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Uninstall(IDictionary): PrivateScope, Public, Virtual, HideBySig
+Class System.Configuration.Install.ComponentInstaller: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+  :System.Configuration.Install.Installer
+  Methods:
+    CopyFromComponent(IComponent): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    IsEquivalentInstaller(ComponentInstaller): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Diagnostics.EventLogInstaller: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Configuration.Install.ComponentInstaller
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String CategoryResourceFile 'get set' : 
+    Int32 CategoryCount 'get set' : 
+    System.String Log 'get set' : 
+    System.String MessageResourceFile 'get set' : 
+    System.String ParameterResourceFile 'get set' : 
+    System.String Source 'get set' : 
+    System.Configuration.Install.UninstallAction UninstallAction 'get set' : 
+  Methods:
+    get_CategoryResourceFile(): PrivateScope, Public, HideBySig, SpecialName
+    set_CategoryResourceFile(String): PrivateScope, Public, HideBySig, SpecialName
+    get_CategoryCount(): PrivateScope, Public, HideBySig, SpecialName
+    set_CategoryCount(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_Log(): PrivateScope, Public, HideBySig, SpecialName
+    set_Log(String): PrivateScope, Public, HideBySig, SpecialName
+    get_MessageResourceFile(): PrivateScope, Public, HideBySig, SpecialName
+    set_MessageResourceFile(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ParameterResourceFile(): PrivateScope, Public, HideBySig, SpecialName
+    set_ParameterResourceFile(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Source(): PrivateScope, Public, HideBySig, SpecialName
+    set_Source(String): PrivateScope, Public, HideBySig, SpecialName
+    get_UninstallAction(): PrivateScope, Public, HideBySig, SpecialName
+    set_UninstallAction(UninstallAction): PrivateScope, Public, HideBySig, SpecialName
+    CopyFromComponent(IComponent): PrivateScope, Public, Virtual, HideBySig
+    Install(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    IsEquivalentInstaller(ComponentInstaller): PrivateScope, Public, Virtual, HideBySig
+    Rollback(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Uninstall(IDictionary): PrivateScope, Public, Virtual, HideBySig
+Interface System.Configuration.Install.IManagedInstaller: AutoLayout, AnsiClass, Class, Public, ClassSemanticsMask, Abstract, Import
+  Methods:
+    ManagedInstall(String(In, HasFieldMarshal), Int32(In, HasFieldMarshal)): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+Class System.Configuration.Install.InstallContext: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String[]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Collections.Specialized.StringDictionary Parameters 'get ' : 
+  Methods:
+    get_Parameters(): PrivateScope, Public, HideBySig, SpecialName
+    IsParameterTrue(String): PrivateScope, Public, HideBySig
+    LogMessage(String): PrivateScope, Public, HideBySig
+Class System.Configuration.Install.InstallerCollection: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.CollectionBase
+  Properties:
+    System.Configuration.Install.Installer Item [Int32] 'get set' : 
+  Methods:
+    get_Item(Int32): PrivateScope, Public, HideBySig, SpecialName
+    set_Item(Int32, Installer): PrivateScope, Public, HideBySig, SpecialName
+    Add(Installer): PrivateScope, Public, HideBySig
+    AddRange(InstallerCollection): PrivateScope, Public, HideBySig
+    AddRange(Installer[]): PrivateScope, Public, HideBySig
+    Contains(Installer): PrivateScope, Public, HideBySig
+    CopyTo(Installer[], Int32): PrivateScope, Public, HideBySig
+    IndexOf(Installer): PrivateScope, Public, HideBySig
+    Insert(Int32, Installer): PrivateScope, Public, HideBySig
+    Remove(Installer): PrivateScope, Public, HideBySig
+Class System.Configuration.Install.InstallEventArgs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.EventArgs
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Collections.IDictionary): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Collections.IDictionary SavedState 'get ' : 
+  Methods:
+    get_SavedState(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Configuration.Install.InstallEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, InstallEventArgs): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    BeginInvoke(Object, InstallEventArgs, AsyncCallback, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Configuration.Install.InstallException: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+  :System.SystemException
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class System.Configuration.Install.ManagedInstallerClass: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.Configuration.Install.IManagedInstaller
+  Methods:
+    InstallHelper(String[]): PrivateScope, Public, Static, HideBySig
+Class System.Diagnostics.PerformanceCounterInstaller: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Configuration.Install.ComponentInstaller
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String CategoryName 'get set' : 
+    System.String CategoryHelp 'get set' : 
+    System.Diagnostics.PerformanceCounterCategoryType CategoryType 'get set' : 
+    System.Diagnostics.CounterCreationDataCollection Counters 'get ' : 
+    System.Configuration.Install.UninstallAction UninstallAction 'get set' : 
+  Methods:
+    get_CategoryName(): PrivateScope, Public, HideBySig, SpecialName
+    set_CategoryName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_CategoryHelp(): PrivateScope, Public, HideBySig, SpecialName
+    set_CategoryHelp(String): PrivateScope, Public, HideBySig, SpecialName
+    get_CategoryType(): PrivateScope, Public, HideBySig, SpecialName
+    set_CategoryType(PerformanceCounterCategoryType): PrivateScope, Public, HideBySig, SpecialName
+    get_Counters(): PrivateScope, Public, HideBySig, SpecialName
+    get_UninstallAction(): PrivateScope, Public, HideBySig, SpecialName
+    set_UninstallAction(UninstallAction): PrivateScope, Public, HideBySig, SpecialName
+    CopyFromComponent(IComponent): PrivateScope, Public, Virtual, HideBySig
+    Install(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Rollback(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Uninstall(IDictionary): PrivateScope, Public, Virtual, HideBySig
+Class System.Configuration.Install.TransactedInstaller: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Configuration.Install.Installer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Install(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Uninstall(IDictionary): PrivateScope, Public, Virtual, HideBySig
+Struct System.Configuration.Install.UninstallAction: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Configuration.Install.UninstallAction Remove = 0 : Public, Static, Literal, HasDefault
+    System.Configuration.Install.UninstallAction NoAction = 1 : Public, Static, Literal, HasDefault

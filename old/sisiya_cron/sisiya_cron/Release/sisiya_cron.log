@@ -1,0 +1,41 @@
+﻿Build started 11.03.2013 09:12:38.
+Project "C:\Documents and Settings\TEMP\Desktop\sisiya_cron\sisiya_cron\sisiya_cron.vcxproj" on node 2 (build target(s)).
+C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(299,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+InitializeBuildStatus:
+  Creating "Release\sisiya_cron.unsuccessfulbuild" because "AlwaysCreate" was specified.
+ClCompile:
+  c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /AI"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr:oldSyntax /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /EHa /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /TP /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\mscorlib.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Configuration.Install.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Management.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.ServiceProcess.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /analyze- /errorReport:prompt "AssemblyInfo.cpp" EventLog.cpp "ProjectInstaller.cpp" "SisIYA_cron.cpp" stdafx.cpp trim.cpp /clr:nostdlib 
+cl : Command line warning D9035: option 'clr:oldsyntax' has been deprecated and will be removed in a future release
+  AssemblyInfo.cpp
+  EventLog.cpp
+  ProjectInstaller.cpp
+  SisIYA_cron.cpp
+SisIYA_cron.cpp(118): warning C4947: 'System::AppDomain::ExecuteAssembly' : marked as obsolete
+          Message: 'Methods which use evidence to sandbox are obsolete and will be removed in a future release of the .NET Framework. Please use an overload of ExecuteAssembly which does not take an Evidence parameter. See http://go.microsoft.com/fwlink/?LinkID=155570 for more information.'
+SisIYA_cron.cpp(118): warning C4947: 'System::AppDomain::ExecuteAssembly' : marked as obsolete
+          Message: 'Methods which use evidence to sandbox are obsolete and will be removed in a future release of the .NET Framework. Please use an overload of ExecuteAssembly which does not take an Evidence parameter. See http://go.microsoft.com/fwlink/?LinkID=155570 for more information.'
+  stdafx.cpp
+  trim.cpp
+CoreResGen:
+  "C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\NETFX 4.0 Tools\resgen.exe" /useSourcePath /r:"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\mscorlib.dll" /r:"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Configuration.Install.dll" /r:"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /r:"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /r:"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /r:"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Management.dll" /r:"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.ServiceProcess.dll" /r:"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /compile "ProjectInstaller.resX","Release\sisiya_cron.ProjectInstaller.resources"
+  Processing resource file "ProjectInstaller.resX" into "Release\sisiya_cron.ProjectInstaller.resources".
+Link:
+  c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"..\Release\sisiya_cron.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /ASSEMBLYRESOURCE:"Release\sisiya_cron.ProjectInstaller.resources" /MANIFEST /ManifestFile:"Release\sisiya_cron.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Release\sisiya_cron.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 "Release\AssemblyInfo.obj"
+  Release\EventLog.obj
+  "Release\ProjectInstaller.obj"
+  "Release\SisIYA_cron.obj"
+  Release\stdafx.obj
+  Release\trim.obj
+  Generating code
+  Finished generating code
+  sisiya_cron.vcxproj -> C:\Documents and Settings\TEMP\Desktop\sisiya_cron\sisiya_cron\..\Release\sisiya_cron.exe
+Manifest:
+  C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"..\Release\sisiya_cron.exe;#1" /manifest Release\sisiya_cron.exe.intermediate.manifest
+FinalizeBuildStatus:
+  Deleting file "Release\sisiya_cron.unsuccessfulbuild".
+  Touching "Release\sisiya_cron.lastbuildstate".
+Done Building Project "C:\Documents and Settings\TEMP\Desktop\sisiya_cron\sisiya_cron\sisiya_cron.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:14.09

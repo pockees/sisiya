@@ -1,0 +1,314 @@
+  System.ServiceProcess.resources - Embedded, ContainedInManifestFile, 
+  System.ServiceProcess.ServiceController.bmp - Embedded, ContainedInManifestFile, 
+  System.ServiceProcess.Design.ServiceInstallerDialog.resources - Embedded, ContainedInManifestFile, 
+ImageRuntimeVersion: v4.0.30319
+Assembly System.ServiceProcess, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Configuration.Install, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Struct System.ServiceProcess.PowerBroadcastStatus: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.ServiceProcess.PowerBroadcastStatus BatteryLow = 9 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.PowerBroadcastStatus OemEvent = 11 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.PowerBroadcastStatus PowerStatusChange = 10 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.PowerBroadcastStatus QuerySuspend = 0 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.PowerBroadcastStatus QuerySuspendFailed = 2 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.PowerBroadcastStatus ResumeAutomatic = 18 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.PowerBroadcastStatus ResumeCritical = 6 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.PowerBroadcastStatus ResumeSuspend = 7 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.PowerBroadcastStatus Suspend = 4 : Public, Static, Literal, HasDefault
+Struct System.ServiceProcess.ServiceAccount: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.ServiceProcess.ServiceAccount LocalService = 0 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceAccount NetworkService = 1 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceAccount LocalSystem = 2 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceAccount User = 3 : Public, Static, Literal, HasDefault
+Class System.ServiceProcess.ServiceBase: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.ComponentModel.Component
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Int32 MaxNameLength = 80 : Public, Static, Literal, HasDefault
+  Properties:
+    Boolean AutoLog 'get set' : 
+    Int32 ExitCode 'get set' : 
+    Boolean CanHandlePowerEvent 'get set' : 
+    Boolean CanHandleSessionChangeEvent 'get set' : 
+    Boolean CanPauseAndContinue 'get set' : 
+    Boolean CanShutdown 'get set' : 
+    Boolean CanStop 'get set' : 
+    System.Diagnostics.EventLog EventLog 'get ' : 
+    System.String ServiceName 'get set' : 
+  Methods:
+    RequestAdditionalTime(Int32): PrivateScope, Public, HideBySig
+    get_AutoLog(): PrivateScope, Public, HideBySig, SpecialName
+    set_AutoLog(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_ExitCode(): PrivateScope, Public, HideBySig, SpecialName
+    set_ExitCode(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_CanHandlePowerEvent(): PrivateScope, Public, HideBySig, SpecialName
+    set_CanHandlePowerEvent(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_CanHandleSessionChangeEvent(): PrivateScope, Public, HideBySig, SpecialName
+    set_CanHandleSessionChangeEvent(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_CanPauseAndContinue(): PrivateScope, Public, HideBySig, SpecialName
+    set_CanPauseAndContinue(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_CanShutdown(): PrivateScope, Public, HideBySig, SpecialName
+    set_CanShutdown(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_CanStop(): PrivateScope, Public, HideBySig, SpecialName
+    set_CanStop(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_EventLog(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_ServiceName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServiceName(String): PrivateScope, Public, HideBySig, SpecialName
+    Run(ServiceBase[]): PrivateScope, Public, Static, HideBySig
+    Run(ServiceBase): PrivateScope, Public, Static, HideBySig
+    Stop(): PrivateScope, Public, HideBySig
+    ServiceMainCallback(Int32, IntPtr): PrivateScope, Public, HideBySig
+Class System.ServiceProcess.ServiceController: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.ComponentModel.Component
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean CanPauseAndContinue 'get ' : 
+    Boolean CanShutdown 'get ' : 
+    Boolean CanStop 'get ' : 
+    System.String DisplayName 'get set' : 
+    System.ServiceProcess.ServiceController[] DependentServices 'get ' : 
+    System.String MachineName 'get set' : 
+    System.String ServiceName 'get set' : 
+    System.ServiceProcess.ServiceController[] ServicesDependedOn 'get ' : 
+    System.Runtime.InteropServices.SafeHandle ServiceHandle 'get ' : 
+    System.ServiceProcess.ServiceControllerStatus Status 'get ' : 
+    System.ServiceProcess.ServiceType ServiceType 'get ' : 
+  Methods:
+    get_CanPauseAndContinue(): PrivateScope, Public, HideBySig, SpecialName
+    get_CanShutdown(): PrivateScope, Public, HideBySig, SpecialName
+    get_CanStop(): PrivateScope, Public, HideBySig, SpecialName
+    get_DisplayName(): PrivateScope, Public, HideBySig, SpecialName
+    set_DisplayName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_DependentServices(): PrivateScope, Public, HideBySig, SpecialName
+    get_MachineName(): PrivateScope, Public, HideBySig, SpecialName
+    set_MachineName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServiceName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ServicesDependedOn(): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceHandle(): PrivateScope, Public, HideBySig, SpecialName
+    get_Status(): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceType(): PrivateScope, Public, HideBySig, SpecialName
+    Close(): PrivateScope, Public, HideBySig
+    GetDevices(): PrivateScope, Public, Static, HideBySig
+    GetDevices(String): PrivateScope, Public, Static, HideBySig
+    GetServices(): PrivateScope, Public, Static, HideBySig
+    GetServices(String): PrivateScope, Public, Static, HideBySig
+    Pause(): PrivateScope, Public, HideBySig
+    Continue(): PrivateScope, Public, HideBySig
+    ExecuteCommand(Int32): PrivateScope, Public, HideBySig
+    Refresh(): PrivateScope, Public, HideBySig
+    Start(): PrivateScope, Public, HideBySig
+    Start(String[]): PrivateScope, Public, HideBySig
+    Stop(): PrivateScope, Public, HideBySig
+    WaitForStatus(ServiceControllerStatus): PrivateScope, Public, HideBySig
+    WaitForStatus(ServiceControllerStatus, TimeSpan): PrivateScope, Public, HideBySig
+Class System.ServiceProcess.ServiceControllerPermission: AutoLayout, AnsiClass, Class, Public, Sealed, Serializable, BeforeFieldInit
+  :System.Security.Permissions.ResourcePermissionBase
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Security.Permissions.PermissionState): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.ServiceProcess.ServiceControllerPermissionAccess, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.ServiceProcess.ServiceControllerPermissionEntry[]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.ServiceProcess.ServiceControllerPermissionEntryCollection PermissionEntries 'get ' : 
+  Methods:
+    get_PermissionEntries(): PrivateScope, Public, HideBySig, SpecialName
+Struct System.ServiceProcess.ServiceControllerPermissionAccess: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.ServiceProcess.ServiceControllerPermissionAccess None = 0 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceControllerPermissionAccess Browse = 2 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceControllerPermissionAccess Control = 6 : Public, Static, Literal, HasDefault
+Class System.ServiceProcess.ServiceControllerPermissionAttribute: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+  :System.Security.Permissions.CodeAccessSecurityAttribute
+    Void .ctor(System.Security.Permissions.SecurityAction): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String MachineName 'get set' : 
+    System.ServiceProcess.ServiceControllerPermissionAccess PermissionAccess 'get set' : 
+    System.String ServiceName 'get set' : 
+  Methods:
+    get_MachineName(): PrivateScope, Public, HideBySig, SpecialName
+    set_MachineName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_PermissionAccess(): PrivateScope, Public, HideBySig, SpecialName
+    set_PermissionAccess(ServiceControllerPermissionAccess): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServiceName(String): PrivateScope, Public, HideBySig, SpecialName
+    CreatePermission(): PrivateScope, Public, Virtual, HideBySig
+Class System.ServiceProcess.ServiceControllerPermissionEntry: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.ServiceProcess.ServiceControllerPermissionAccess, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String MachineName 'get ' : 
+    System.ServiceProcess.ServiceControllerPermissionAccess PermissionAccess 'get ' : 
+    System.String ServiceName 'get ' : 
+  Methods:
+    get_MachineName(): PrivateScope, Public, HideBySig, SpecialName
+    get_PermissionAccess(): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceName(): PrivateScope, Public, HideBySig, SpecialName
+Class System.ServiceProcess.ServiceControllerPermissionEntryCollection: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+  :System.Collections.CollectionBase
+  Properties:
+    System.ServiceProcess.ServiceControllerPermissionEntry Item [Int32] 'get set' : 
+  Methods:
+    get_Item(Int32): PrivateScope, Public, HideBySig, SpecialName
+    set_Item(Int32, ServiceControllerPermissionEntry): PrivateScope, Public, HideBySig, SpecialName
+    Add(ServiceControllerPermissionEntry): PrivateScope, Public, HideBySig
+    AddRange(ServiceControllerPermissionEntry[]): PrivateScope, Public, HideBySig
+    AddRange(ServiceControllerPermissionEntryCollection): PrivateScope, Public, HideBySig
+    Contains(ServiceControllerPermissionEntry): PrivateScope, Public, HideBySig
+    CopyTo(ServiceControllerPermissionEntry[], Int32): PrivateScope, Public, HideBySig
+    IndexOf(ServiceControllerPermissionEntry): PrivateScope, Public, HideBySig
+    Insert(Int32, ServiceControllerPermissionEntry): PrivateScope, Public, HideBySig
+    Remove(ServiceControllerPermissionEntry): PrivateScope, Public, HideBySig
+Struct System.ServiceProcess.ServiceControllerStatus: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.ServiceProcess.ServiceControllerStatus ContinuePending = 5 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceControllerStatus Paused = 7 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceControllerStatus PausePending = 6 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceControllerStatus Running = 4 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceControllerStatus StartPending = 2 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceControllerStatus Stopped = 1 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceControllerStatus StopPending = 3 : Public, Static, Literal, HasDefault
+Class System.ServiceProcess.ServiceInstaller: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Configuration.Install.ComponentInstaller
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String DisplayName 'get set' : 
+    System.String Description 'get set' : 
+    System.String[] ServicesDependedOn 'get set' : 
+    System.String ServiceName 'get set' : 
+    System.ServiceProcess.ServiceStartMode StartType 'get set' : 
+    Boolean DelayedAutoStart 'get set' : 
+  Methods:
+    get_DisplayName(): PrivateScope, Public, HideBySig, SpecialName
+    set_DisplayName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, HideBySig, SpecialName
+    set_Description(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ServicesDependedOn(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServicesDependedOn(String[]): PrivateScope, Public, HideBySig, SpecialName
+    get_ServiceName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServiceName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_StartType(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartType(ServiceStartMode): PrivateScope, Public, HideBySig, SpecialName
+    get_DelayedAutoStart(): PrivateScope, Public, HideBySig, SpecialName
+    set_DelayedAutoStart(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    CopyFromComponent(IComponent): PrivateScope, Public, Virtual, HideBySig
+    Install(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    IsEquivalentInstaller(ComponentInstaller): PrivateScope, Public, Virtual, HideBySig
+    Rollback(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Uninstall(IDictionary): PrivateScope, Public, Virtual, HideBySig
+Class System.ServiceProcess.ServiceProcessDescriptionAttribute: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.ComponentModel.DescriptionAttribute
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String Description 'get ' : 
+  Methods:
+    get_Description(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+Class System.ServiceProcess.ServiceProcessInstaller: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Configuration.Install.ComponentInstaller
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String HelpText 'get ' : 
+    System.String Password 'get set' : 
+    System.ServiceProcess.ServiceAccount Account 'get set' : 
+    System.String Username 'get set' : 
+  Methods:
+    get_HelpText(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_Password(): PrivateScope, Public, HideBySig, SpecialName
+    set_Password(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Account(): PrivateScope, Public, HideBySig, SpecialName
+    set_Account(ServiceAccount): PrivateScope, Public, HideBySig, SpecialName
+    get_Username(): PrivateScope, Public, HideBySig, SpecialName
+    set_Username(String): PrivateScope, Public, HideBySig, SpecialName
+    CopyFromComponent(IComponent): PrivateScope, Public, Virtual, HideBySig
+    Install(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Rollback(IDictionary): PrivateScope, Public, Virtual, HideBySig
+Struct System.ServiceProcess.ServiceStartMode: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.ServiceProcess.ServiceStartMode Manual = 3 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceStartMode Automatic = 2 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceStartMode Disabled = 4 : Public, Static, Literal, HasDefault
+Struct System.ServiceProcess.ServiceType: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.ServiceProcess.ServiceType Adapter = 4 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceType FileSystemDriver = 2 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceType InteractiveProcess = 256 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceType KernelDriver = 1 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceType RecognizerDriver = 8 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceType Win32OwnProcess = 16 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.ServiceType Win32ShareProcess = 32 : Public, Static, Literal, HasDefault
+Struct System.ServiceProcess.SessionChangeReason: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.ServiceProcess.SessionChangeReason ConsoleConnect = 1 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.SessionChangeReason ConsoleDisconnect = 2 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.SessionChangeReason RemoteConnect = 3 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.SessionChangeReason RemoteDisconnect = 4 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.SessionChangeReason SessionLogon = 5 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.SessionChangeReason SessionLogoff = 6 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.SessionChangeReason SessionLock = 7 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.SessionChangeReason SessionUnlock = 8 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.SessionChangeReason SessionRemoteControl = 9 : Public, Static, Literal, HasDefault
+Struct System.ServiceProcess.SessionChangeDescription: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+  Properties:
+    System.ServiceProcess.SessionChangeReason Reason 'get ' : 
+    Int32 SessionId 'get ' : 
+  Methods:
+    get_Reason(): PrivateScope, Public, HideBySig, SpecialName
+    get_SessionId(): PrivateScope, Public, HideBySig, SpecialName
+    Equals(Object): PrivateScope, Public, Virtual, HideBySig
+    GetHashCode(): PrivateScope, Public, Virtual, HideBySig
+    Equals(SessionChangeDescription): PrivateScope, Public, HideBySig
+    op_Equality(SessionChangeDescription, SessionChangeDescription): PrivateScope, Public, Static, HideBySig, SpecialName
+    op_Inequality(SessionChangeDescription, SessionChangeDescription): PrivateScope, Public, Static, HideBySig, SpecialName
+Class System.ServiceProcess.TimeoutException: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+  :System.SystemException
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Struct System.ServiceProcess.Design.ServiceInstallerDialogResult: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.ServiceProcess.Design.ServiceInstallerDialogResult OK = 0 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.Design.ServiceInstallerDialogResult UseSystem = 1 : Public, Static, Literal, HasDefault
+    System.ServiceProcess.Design.ServiceInstallerDialogResult Canceled = 2 : Public, Static, Literal, HasDefault
+Class System.ServiceProcess.Design.ServiceInstallerDialog: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String Password 'get set' : 
+    System.ServiceProcess.Design.ServiceInstallerDialogResult Result 'get ' : 
+    System.String Username 'get set' : 
+  Methods:
+    get_Password(): PrivateScope, Public, HideBySig, SpecialName
+    set_Password(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Result(): PrivateScope, Public, HideBySig, SpecialName
+    get_Username(): PrivateScope, Public, HideBySig, SpecialName
+    set_Username(String): PrivateScope, Public, HideBySig, SpecialName
+    Main(): PrivateScope, Public, Static, HideBySig

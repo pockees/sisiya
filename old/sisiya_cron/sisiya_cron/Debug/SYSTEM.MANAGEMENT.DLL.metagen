@@ -1,0 +1,1113 @@
+  System.Management.resources - Embedded, ContainedInManifestFile, 
+ImageRuntimeVersion: v4.0.30319
+Assembly System.Management, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=SHA1, flags=PublicKey
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Configuration.Install, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly Microsoft.JScript, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Struct System.Management.TextFormat: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.TextFormat Mof = 0 : Public, Static, Literal, HasDefault
+    System.Management.TextFormat CimDtd20 = 1 : Public, Static, Literal, HasDefault
+    System.Management.TextFormat WmiDtd20 = 2 : Public, Static, Literal, HasDefault
+Struct System.Management.CimType: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.CimType None = 0 : Public, Static, Literal, HasDefault
+    System.Management.CimType SInt8 = 16 : Public, Static, Literal, HasDefault
+    System.Management.CimType UInt8 = 17 : Public, Static, Literal, HasDefault
+    System.Management.CimType SInt16 = 2 : Public, Static, Literal, HasDefault
+    System.Management.CimType UInt16 = 18 : Public, Static, Literal, HasDefault
+    System.Management.CimType SInt32 = 3 : Public, Static, Literal, HasDefault
+    System.Management.CimType UInt32 = 19 : Public, Static, Literal, HasDefault
+    System.Management.CimType SInt64 = 20 : Public, Static, Literal, HasDefault
+    System.Management.CimType UInt64 = 21 : Public, Static, Literal, HasDefault
+    System.Management.CimType Real32 = 4 : Public, Static, Literal, HasDefault
+    System.Management.CimType Real64 = 5 : Public, Static, Literal, HasDefault
+    System.Management.CimType Boolean = 11 : Public, Static, Literal, HasDefault
+    System.Management.CimType String = 8 : Public, Static, Literal, HasDefault
+    System.Management.CimType DateTime = 101 : Public, Static, Literal, HasDefault
+    System.Management.CimType Reference = 102 : Public, Static, Literal, HasDefault
+    System.Management.CimType Char16 = 103 : Public, Static, Literal, HasDefault
+    System.Management.CimType Object = 13 : Public, Static, Literal, HasDefault
+Struct System.Management.ComparisonSettings: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.ComparisonSettings IncludeAll = 0 : Public, Static, Literal, HasDefault
+    System.Management.ComparisonSettings IgnoreQualifiers = 1 : Public, Static, Literal, HasDefault
+    System.Management.ComparisonSettings IgnoreObjectSource = 2 : Public, Static, Literal, HasDefault
+    System.Management.ComparisonSettings IgnoreDefaultValues = 4 : Public, Static, Literal, HasDefault
+    System.Management.ComparisonSettings IgnoreClass = 8 : Public, Static, Literal, HasDefault
+    System.Management.ComparisonSettings IgnoreCase = 16 : Public, Static, Literal, HasDefault
+    System.Management.ComparisonSettings IgnoreFlavor = 32 : Public, Static, Literal, HasDefault
+Class System.Management.ManagementBaseObject: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+  :System.ComponentModel.Component
+  Interfaces:
+    System.ICloneable
+    System.Runtime.Serialization.ISerializable
+  Properties:
+    System.Management.PropertyDataCollection Properties 'get ' : 
+    System.Management.PropertyDataCollection SystemProperties 'get ' : 
+    System.Management.QualifierDataCollection Qualifiers 'get ' : 
+    System.Management.ManagementPath ClassPath 'get ' : 
+    System.Object Item [System.String] 'get set' : 
+  Methods:
+    Dispose(): PrivateScope, Public, HideBySig
+    op_Explicit(ManagementBaseObject): PrivateScope, Public, Static, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    get_Properties(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_SystemProperties(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Qualifiers(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_ClassPath(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Item(String): PrivateScope, Public, HideBySig, SpecialName
+    set_Item(String, Object): PrivateScope, Public, HideBySig, SpecialName
+    GetPropertyValue(String): PrivateScope, Public, HideBySig
+    GetQualifierValue(String): PrivateScope, Public, HideBySig
+    SetQualifierValue(String, Object): PrivateScope, Public, HideBySig
+    GetPropertyQualifierValue(String, String): PrivateScope, Public, HideBySig
+    SetPropertyQualifierValue(String, String, Object): PrivateScope, Public, HideBySig
+    GetText(TextFormat): PrivateScope, Public, HideBySig
+    Equals(Object): PrivateScope, Public, Virtual, HideBySig
+    GetHashCode(): PrivateScope, Public, Virtual, HideBySig
+    CompareTo(ManagementBaseObject, ComparisonSettings): PrivateScope, Public, HideBySig
+    SetPropertyValue(String, Object): PrivateScope, Public, HideBySig
+Class System.Management.ManagementObject: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+  :System.Management.ManagementBaseObject
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementPath): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementPath, System.Management.ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.Management.ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementScope, System.Management.ManagementPath, System.Management.ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.Management.ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Management.ManagementScope Scope 'get set' : 
+    System.Management.ManagementPath Path 'get set' : 
+    System.Management.ObjectGetOptions Options 'get set' : 
+    System.Management.ManagementPath ClassPath 'get ' : 
+  Methods:
+    Dispose(): PrivateScope, Public, HideBySig
+    get_Scope(): PrivateScope, Public, HideBySig, SpecialName
+    set_Scope(ManagementScope): PrivateScope, Public, HideBySig, SpecialName
+    get_Path(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_Path(ManagementPath): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Options(): PrivateScope, Public, HideBySig, SpecialName
+    set_Options(ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName
+    get_ClassPath(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Get(): PrivateScope, Public, HideBySig
+    Get(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    GetRelated(): PrivateScope, Public, HideBySig
+    GetRelated(String): PrivateScope, Public, HideBySig
+    GetRelated(String, String, String, String, String, String, Boolean, EnumerationOptions): PrivateScope, Public, HideBySig
+    GetRelated(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    GetRelated(ManagementOperationObserver, String): PrivateScope, Public, HideBySig
+    GetRelated(ManagementOperationObserver, String, String, String, String, String, String, Boolean, EnumerationOptions): PrivateScope, Public, HideBySig
+    GetRelationships(): PrivateScope, Public, HideBySig
+    GetRelationships(String): PrivateScope, Public, HideBySig
+    GetRelationships(String, String, String, Boolean, EnumerationOptions): PrivateScope, Public, HideBySig
+    GetRelationships(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    GetRelationships(ManagementOperationObserver, String): PrivateScope, Public, HideBySig
+    GetRelationships(ManagementOperationObserver, String, String, String, Boolean, EnumerationOptions): PrivateScope, Public, HideBySig
+    Put(): PrivateScope, Public, HideBySig
+    Put(PutOptions): PrivateScope, Public, HideBySig
+    Put(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    Put(ManagementOperationObserver, PutOptions): PrivateScope, Public, HideBySig
+    CopyTo(ManagementPath): PrivateScope, Public, HideBySig
+    CopyTo(String): PrivateScope, Public, HideBySig
+    CopyTo(String, PutOptions): PrivateScope, Public, HideBySig
+    CopyTo(ManagementPath, PutOptions): PrivateScope, Public, HideBySig
+    CopyTo(ManagementOperationObserver, ManagementPath): PrivateScope, Public, HideBySig
+    CopyTo(ManagementOperationObserver, String): PrivateScope, Public, HideBySig
+    CopyTo(ManagementOperationObserver, String, PutOptions): PrivateScope, Public, HideBySig
+    CopyTo(ManagementOperationObserver, ManagementPath, PutOptions): PrivateScope, Public, HideBySig
+    Delete(): PrivateScope, Public, HideBySig
+    Delete(DeleteOptions): PrivateScope, Public, HideBySig
+    Delete(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    Delete(ManagementOperationObserver, DeleteOptions): PrivateScope, Public, HideBySig
+    InvokeMethod(String, Object[]): PrivateScope, Public, HideBySig
+    InvokeMethod(ManagementOperationObserver, String, Object[]): PrivateScope, Public, HideBySig
+    InvokeMethod(String, ManagementBaseObject, InvokeMethodOptions): PrivateScope, Public, HideBySig
+    InvokeMethod(ManagementOperationObserver, String, ManagementBaseObject, InvokeMethodOptions): PrivateScope, Public, HideBySig
+    GetMethodParameters(String): PrivateScope, Public, HideBySig
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.ManagementClass: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+  :System.Management.ManagementObject
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementPath): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementPath, System.Management.ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.Management.ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementScope, System.Management.ManagementPath, System.Management.ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.Management.ObjectGetOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Management.ManagementPath Path 'get set' : 
+    System.Collections.Specialized.StringCollection Derivation 'get ' : 
+    System.Management.MethodDataCollection Methods 'get ' : 
+  Methods:
+    get_Path(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_Path(ManagementPath): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_Derivation(): PrivateScope, Public, HideBySig, SpecialName
+    get_Methods(): PrivateScope, Public, HideBySig, SpecialName
+    GetInstances(): PrivateScope, Public, HideBySig
+    GetInstances(EnumerationOptions): PrivateScope, Public, HideBySig
+    GetInstances(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    GetInstances(ManagementOperationObserver, EnumerationOptions): PrivateScope, Public, HideBySig
+    GetSubclasses(): PrivateScope, Public, HideBySig
+    GetSubclasses(EnumerationOptions): PrivateScope, Public, HideBySig
+    GetSubclasses(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    GetSubclasses(ManagementOperationObserver, EnumerationOptions): PrivateScope, Public, HideBySig
+    Derive(String): PrivateScope, Public, HideBySig
+    CreateInstance(): PrivateScope, Public, HideBySig
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+    GetRelatedClasses(): PrivateScope, Public, HideBySig
+    GetRelatedClasses(String): PrivateScope, Public, HideBySig
+    GetRelatedClasses(String, String, String, String, String, String, EnumerationOptions): PrivateScope, Public, HideBySig
+    GetRelatedClasses(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    GetRelatedClasses(ManagementOperationObserver, String): PrivateScope, Public, HideBySig
+    GetRelatedClasses(ManagementOperationObserver, String, String, String, String, String, String, EnumerationOptions): PrivateScope, Public, HideBySig
+    GetRelationshipClasses(): PrivateScope, Public, HideBySig
+    GetRelationshipClasses(String): PrivateScope, Public, HideBySig
+    GetRelationshipClasses(String, String, String, EnumerationOptions): PrivateScope, Public, HideBySig
+    GetRelationshipClasses(ManagementOperationObserver): PrivateScope, Public, HideBySig
+    GetRelationshipClasses(ManagementOperationObserver, String): PrivateScope, Public, HideBySig
+    GetRelationshipClasses(ManagementOperationObserver, String, String, String, EnumerationOptions): PrivateScope, Public, HideBySig
+    GetStronglyTypedClassCode(Boolean, Boolean): PrivateScope, Public, HideBySig
+    GetStronglyTypedClassCode(CodeLanguage, String, String): PrivateScope, Public, HideBySig
+Class System.Management.ManagementDateTimeConverter: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  Methods:
+    ToDateTime(String): PrivateScope, Public, Static, HideBySig
+    ToDmtfDateTime(DateTime): PrivateScope, Public, Static, HideBySig
+    ToTimeSpan(String): PrivateScope, Public, Static, HideBySig
+    ToDmtfTimeInterval(TimeSpan): PrivateScope, Public, Static, HideBySig
+Class System.Management.ManagementEventArgs: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+  :System.EventArgs
+  Properties:
+    System.Object Context 'get ' : 
+  Methods:
+    get_Context(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.ObjectReadyEventArgs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementEventArgs
+  Properties:
+    System.Management.ManagementBaseObject NewObject 'get ' : 
+  Methods:
+    get_NewObject(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.CompletedEventArgs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementEventArgs
+  Properties:
+    System.Management.ManagementBaseObject StatusObject 'get ' : 
+    System.Management.ManagementStatus Status 'get ' : 
+  Methods:
+    get_StatusObject(): PrivateScope, Public, HideBySig, SpecialName
+    get_Status(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.ObjectPutEventArgs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementEventArgs
+  Properties:
+    System.Management.ManagementPath Path 'get ' : 
+  Methods:
+    get_Path(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.ProgressEventArgs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementEventArgs
+  Properties:
+    Int32 UpperBound 'get ' : 
+    Int32 Current 'get ' : 
+    System.String Message 'get ' : 
+  Methods:
+    get_UpperBound(): PrivateScope, Public, HideBySig, SpecialName
+    get_Current(): PrivateScope, Public, HideBySig, SpecialName
+    get_Message(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.EventArrivedEventArgs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementEventArgs
+  Properties:
+    System.Management.ManagementBaseObject NewEvent 'get ' : 
+  Methods:
+    get_NewEvent(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.StoppedEventArgs: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementEventArgs
+  Properties:
+    System.Management.ManagementStatus Status 'get ' : 
+  Methods:
+    get_Status(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.EventArrivedEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, EventArrivedEventArgs): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    BeginInvoke(Object, EventArrivedEventArgs, AsyncCallback, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.StoppedEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, StoppedEventArgs): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    BeginInvoke(Object, StoppedEventArgs, AsyncCallback, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.ManagementEventWatcher: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.ComponentModel.Component
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.EventQuery): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementScope, System.Management.EventQuery): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.Management.EventWatcherOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementScope, System.Management.EventQuery, System.Management.EventWatcherOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Management.ManagementScope Scope 'get set' : 
+    System.Management.EventQuery Query 'get set' : 
+    System.Management.EventWatcherOptions Options 'get set' : 
+  Events:
+    System.Management.EventArrivedEventHandler EventArrived: 
+    System.Management.StoppedEventHandler Stopped: 
+  Methods:
+    add_EventArrived(EventArrivedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_EventArrived(EventArrivedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_Stopped(StoppedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_Stopped(StoppedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    get_Scope(): PrivateScope, Public, HideBySig, SpecialName
+    set_Scope(ManagementScope): PrivateScope, Public, HideBySig, SpecialName
+    get_Query(): PrivateScope, Public, HideBySig, SpecialName
+    set_Query(EventQuery): PrivateScope, Public, HideBySig, SpecialName
+    get_Options(): PrivateScope, Public, HideBySig, SpecialName
+    set_Options(EventWatcherOptions): PrivateScope, Public, HideBySig, SpecialName
+    WaitForNextEvent(): PrivateScope, Public, HideBySig
+    Start(): PrivateScope, Public, HideBySig
+    Stop(): PrivateScope, Public, HideBySig
+Struct System.Management.ManagementStatus: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.ManagementStatus NoError = 0 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus False = 1 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ResetToDefault = 262146 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus Different = 262147 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus Timedout = 262148 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus NoMoreData = 262149 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus OperationCanceled = 262150 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus Pending = 262151 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus DuplicateObjects = 262152 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus PartialResults = 262160 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus Failed = -2147217407 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus NotFound = -2147217406 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus AccessDenied = -2147217405 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ProviderFailure = -2147217404 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus TypeMismatch = -2147217403 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus OutOfMemory = -2147217402 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidContext = -2147217401 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidParameter = -2147217400 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus NotAvailable = -2147217399 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus CriticalError = -2147217398 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidStream = -2147217397 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus NotSupported = -2147217396 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidSuperclass = -2147217395 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidNamespace = -2147217394 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidObject = -2147217393 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidClass = -2147217392 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ProviderNotFound = -2147217391 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidProviderRegistration = -2147217390 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ProviderLoadFailure = -2147217389 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InitializationFailure = -2147217388 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus TransportFailure = -2147217387 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidOperation = -2147217386 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidQuery = -2147217385 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidQueryType = -2147217384 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus AlreadyExists = -2147217383 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus OverrideNotAllowed = -2147217382 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus PropagatedQualifier = -2147217381 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus PropagatedProperty = -2147217380 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus Unexpected = -2147217379 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus IllegalOperation = -2147217378 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus CannotBeKey = -2147217377 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus IncompleteClass = -2147217376 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidSyntax = -2147217375 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus NondecoratedObject = -2147217374 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ReadOnly = -2147217373 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ProviderNotCapable = -2147217372 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ClassHasChildren = -2147217371 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ClassHasInstances = -2147217370 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus QueryNotImplemented = -2147217369 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus IllegalNull = -2147217368 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidQualifierType = -2147217367 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidPropertyType = -2147217366 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ValueOutOfRange = -2147217365 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus CannotBeSingleton = -2147217364 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidCimType = -2147217363 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidMethod = -2147217362 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidMethodParameters = -2147217361 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus SystemProperty = -2147217360 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidProperty = -2147217359 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus CallCanceled = -2147217358 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ShuttingDown = -2147217357 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus PropagatedMethod = -2147217356 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UnsupportedParameter = -2147217355 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus MissingParameterID = -2147217354 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidParameterID = -2147217353 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus NonconsecutiveParameterIDs = -2147217352 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ParameterIDOnRetval = -2147217351 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidObjectPath = -2147217350 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus OutOfDiskSpace = -2147217349 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus BufferTooSmall = -2147217348 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UnsupportedPutExtension = -2147217347 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UnknownObjectType = -2147217346 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UnknownPacketType = -2147217345 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus MarshalVersionMismatch = -2147217344 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus MarshalInvalidSignature = -2147217343 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidQualifier = -2147217342 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidDuplicateParameter = -2147217341 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus TooMuchData = -2147217340 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ServerTooBusy = -2147217339 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidFlavor = -2147217338 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus CircularReference = -2147217337 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UnsupportedClassUpdate = -2147217336 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus CannotChangeKeyInheritance = -2147217335 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus CannotChangeIndexInheritance = -2147217328 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus TooManyProperties = -2147217327 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UpdateTypeMismatch = -2147217326 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UpdateOverrideNotAllowed = -2147217325 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UpdatePropagatedMethod = -2147217324 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus MethodNotImplemented = -2147217323 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus MethodDisabled = -2147217322 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus RefresherBusy = -2147217321 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UnparsableQuery = -2147217320 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus NotEventClass = -2147217319 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus MissingGroupWithin = -2147217318 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus MissingAggregationList = -2147217317 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus PropertyNotAnObject = -2147217316 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus AggregatingByObject = -2147217315 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus UninterpretableProviderQuery = -2147217313 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus BackupRestoreWinmgmtRunning = -2147217312 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus QueueOverflow = -2147217311 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus PrivilegeNotHeld = -2147217310 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus InvalidOperator = -2147217309 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus LocalCredentials = -2147217308 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus CannotBeAbstract = -2147217307 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus AmendedObject = -2147217306 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus ClientTooSlow = -2147217305 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus RegistrationTooBroad = -2147213311 : Public, Static, Literal, HasDefault
+    System.Management.ManagementStatus RegistrationTooPrecise = -2147213310 : Public, Static, Literal, HasDefault
+Class System.Management.ManagementException: AutoLayout, AnsiClass, Class, Public, Serializable, BeforeFieldInit
+  :System.SystemException
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Management.ManagementBaseObject ErrorInformation 'get ' : 
+    System.Management.ManagementStatus ErrorCode 'get ' : 
+  Methods:
+    GetObjectData(SerializationInfo, StreamingContext): PrivateScope, Public, Virtual, HideBySig, HasSecurity
+    get_ErrorInformation(): PrivateScope, Public, HideBySig, SpecialName
+    get_ErrorCode(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.ManagementNamedValueCollection: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Specialized.NameObjectCollectionBase
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Object Item [System.String] 'get ' : 
+  Methods:
+    Add(String, Object): PrivateScope, Public, HideBySig
+    Remove(String): PrivateScope, Public, HideBySig
+    RemoveAll(): PrivateScope, Public, HideBySig
+    Clone(): PrivateScope, Public, HideBySig
+    get_Item(String): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.ManagementObjectCollection: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Interfaces:
+    System.Collections.ICollection
+    System.Collections.IEnumerable
+    System.IDisposable
+  Properties:
+    Int32 Count 'get ' : 
+    Boolean IsSynchronized 'get ' : 
+    System.Object SyncRoot 'get ' : 
+  Methods:
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    get_Count(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_IsSynchronized(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_SyncRoot(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    CopyTo(Array, Int32): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    CopyTo(ManagementBaseObject[], Int32): PrivateScope, Public, HideBySig
+    GetEnumerator(): PrivateScope, Public, HideBySig
+Class System.Management.ManagementObjectCollection+ManagementObjectEnumerator: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+  Interfaces:
+    System.Collections.IEnumerator
+    System.IDisposable
+  Properties:
+    System.Management.ManagementBaseObject Current 'get ' : 
+  Methods:
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    get_Current(): PrivateScope, Public, HideBySig, SpecialName
+    MoveNext(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    Reset(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.ManagementObjectSearcher: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.ComponentModel.Component
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ObjectQuery): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementScope, System.Management.ObjectQuery): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.Management.EnumerationOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementScope, System.Management.ObjectQuery, System.Management.EnumerationOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Management.ManagementScope Scope 'get set' : 
+    System.Management.ObjectQuery Query 'get set' : 
+    System.Management.EnumerationOptions Options 'get set' : 
+  Methods:
+    get_Scope(): PrivateScope, Public, HideBySig, SpecialName
+    set_Scope(ManagementScope): PrivateScope, Public, HideBySig, SpecialName
+    get_Query(): PrivateScope, Public, HideBySig, SpecialName
+    set_Query(ObjectQuery): PrivateScope, Public, HideBySig, SpecialName
+    get_Options(): PrivateScope, Public, HideBySig, SpecialName
+    set_Options(EnumerationOptions): PrivateScope, Public, HideBySig, SpecialName
+    Get(): PrivateScope, Public, HideBySig
+    Get(ManagementOperationObserver): PrivateScope, Public, HideBySig
+Class System.Management.ObjectReadyEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, ObjectReadyEventArgs): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    BeginInvoke(Object, ObjectReadyEventArgs, AsyncCallback, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.CompletedEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, CompletedEventArgs): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    BeginInvoke(Object, CompletedEventArgs, AsyncCallback, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.ProgressEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, ProgressEventArgs): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    BeginInvoke(Object, ProgressEventArgs, AsyncCallback, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.ObjectPutEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, ObjectPutEventArgs): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    BeginInvoke(Object, ObjectPutEventArgs, AsyncCallback, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.ManagementOperationObserver: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Events:
+    System.Management.ObjectReadyEventHandler ObjectReady: 
+    System.Management.CompletedEventHandler Completed: 
+    System.Management.ProgressEventHandler Progress: 
+    System.Management.ObjectPutEventHandler ObjectPut: 
+  Methods:
+    add_ObjectReady(ObjectReadyEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_ObjectReady(ObjectReadyEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_Completed(CompletedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_Completed(CompletedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_Progress(ProgressEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_Progress(ProgressEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    add_ObjectPut(ObjectPutEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_ObjectPut(ObjectPutEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    Cancel(): PrivateScope, Public, HideBySig
+Struct System.Management.AuthenticationLevel: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.AuthenticationLevel Default = 0 : Public, Static, Literal, HasDefault
+    System.Management.AuthenticationLevel None = 1 : Public, Static, Literal, HasDefault
+    System.Management.AuthenticationLevel Connect = 2 : Public, Static, Literal, HasDefault
+    System.Management.AuthenticationLevel Call = 3 : Public, Static, Literal, HasDefault
+    System.Management.AuthenticationLevel Packet = 4 : Public, Static, Literal, HasDefault
+    System.Management.AuthenticationLevel PacketIntegrity = 5 : Public, Static, Literal, HasDefault
+    System.Management.AuthenticationLevel PacketPrivacy = 6 : Public, Static, Literal, HasDefault
+    System.Management.AuthenticationLevel Unchanged = -1 : Public, Static, Literal, HasDefault
+Struct System.Management.ImpersonationLevel: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.ImpersonationLevel Default = 0 : Public, Static, Literal, HasDefault
+    System.Management.ImpersonationLevel Anonymous = 1 : Public, Static, Literal, HasDefault
+    System.Management.ImpersonationLevel Identify = 2 : Public, Static, Literal, HasDefault
+    System.Management.ImpersonationLevel Impersonate = 3 : Public, Static, Literal, HasDefault
+    System.Management.ImpersonationLevel Delegate = 4 : Public, Static, Literal, HasDefault
+Struct System.Management.PutType: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.PutType None = 0 : Public, Static, Literal, HasDefault
+    System.Management.PutType UpdateOnly = 1 : Public, Static, Literal, HasDefault
+    System.Management.PutType CreateOnly = 2 : Public, Static, Literal, HasDefault
+    System.Management.PutType UpdateOrCreate = 3 : Public, Static, Literal, HasDefault
+Class System.Management.ManagementOptions: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+  Interfaces:
+    System.ICloneable
+  Fields:
+    System.TimeSpan InfiniteTimeout : Public, Static, InitOnly
+  Properties:
+    System.Management.ManagementNamedValueCollection Context 'get set' : 
+    System.TimeSpan Timeout 'get set' : 
+  Methods:
+    get_Context(): PrivateScope, Public, HideBySig, SpecialName
+    set_Context(ManagementNamedValueCollection): PrivateScope, Public, HideBySig, SpecialName
+    get_Timeout(): PrivateScope, Public, HideBySig, SpecialName
+    set_Timeout(TimeSpan): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+Class System.Management.EnumerationOptions: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementOptions
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementNamedValueCollection, System.TimeSpan, Int32, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean ReturnImmediately 'get set' : 
+    Int32 BlockSize 'get set' : 
+    Boolean Rewindable 'get set' : 
+    Boolean UseAmendedQualifiers 'get set' : 
+    Boolean EnsureLocatable 'get set' : 
+    Boolean PrototypeOnly 'get set' : 
+    Boolean DirectRead 'get set' : 
+    Boolean EnumerateDeep 'get set' : 
+  Methods:
+    get_ReturnImmediately(): PrivateScope, Public, HideBySig, SpecialName
+    set_ReturnImmediately(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_BlockSize(): PrivateScope, Public, HideBySig, SpecialName
+    set_BlockSize(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_Rewindable(): PrivateScope, Public, HideBySig, SpecialName
+    set_Rewindable(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_UseAmendedQualifiers(): PrivateScope, Public, HideBySig, SpecialName
+    set_UseAmendedQualifiers(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_EnsureLocatable(): PrivateScope, Public, HideBySig, SpecialName
+    set_EnsureLocatable(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_PrototypeOnly(): PrivateScope, Public, HideBySig, SpecialName
+    set_PrototypeOnly(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_DirectRead(): PrivateScope, Public, HideBySig, SpecialName
+    set_DirectRead(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_EnumerateDeep(): PrivateScope, Public, HideBySig, SpecialName
+    set_EnumerateDeep(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.EventWatcherOptions: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementOptions
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementNamedValueCollection, System.TimeSpan, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Int32 BlockSize 'get set' : 
+  Methods:
+    get_BlockSize(): PrivateScope, Public, HideBySig, SpecialName
+    set_BlockSize(Int32): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.ObjectGetOptions: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementOptions
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementNamedValueCollection): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementNamedValueCollection, System.TimeSpan, Boolean): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean UseAmendedQualifiers 'get set' : 
+  Methods:
+    get_UseAmendedQualifiers(): PrivateScope, Public, HideBySig, SpecialName
+    set_UseAmendedQualifiers(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.PutOptions: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementOptions
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementNamedValueCollection): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementNamedValueCollection, System.TimeSpan, Boolean, System.Management.PutType): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean UseAmendedQualifiers 'get set' : 
+    System.Management.PutType Type 'get set' : 
+  Methods:
+    get_UseAmendedQualifiers(): PrivateScope, Public, HideBySig, SpecialName
+    set_UseAmendedQualifiers(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_Type(): PrivateScope, Public, HideBySig, SpecialName
+    set_Type(PutType): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.DeleteOptions: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementOptions
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementNamedValueCollection, System.TimeSpan): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.InvokeMethodOptions: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementOptions
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementNamedValueCollection, System.TimeSpan): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.ConnectionOptions: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementOptions
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.String, System.String, System.Management.ImpersonationLevel, System.Management.AuthenticationLevel, Boolean, System.Management.ManagementNamedValueCollection, System.TimeSpan): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.Security.SecureString, System.String, System.Management.ImpersonationLevel, System.Management.AuthenticationLevel, Boolean, System.Management.ManagementNamedValueCollection, System.TimeSpan): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String Locale 'get set' : 
+    System.String Username 'get set' : 
+    System.String Password 'set' : 
+    System.Security.SecureString SecurePassword 'set' : 
+    System.String Authority 'get set' : 
+    System.Management.ImpersonationLevel Impersonation 'get set' : 
+    System.Management.AuthenticationLevel Authentication 'get set' : 
+    Boolean EnablePrivileges 'get set' : 
+  Methods:
+    get_Locale(): PrivateScope, Public, HideBySig, SpecialName
+    set_Locale(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Username(): PrivateScope, Public, HideBySig, SpecialName
+    set_Username(String): PrivateScope, Public, HideBySig, SpecialName
+    set_Password(String): PrivateScope, Public, HideBySig, SpecialName
+    set_SecurePassword(SecureString): PrivateScope, Public, HideBySig, SpecialName
+    get_Authority(): PrivateScope, Public, HideBySig, SpecialName
+    set_Authority(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Impersonation(): PrivateScope, Public, HideBySig, SpecialName
+    set_Impersonation(ImpersonationLevel): PrivateScope, Public, HideBySig, SpecialName
+    get_Authentication(): PrivateScope, Public, HideBySig, SpecialName
+    set_Authentication(AuthenticationLevel): PrivateScope, Public, HideBySig, SpecialName
+    get_EnablePrivileges(): PrivateScope, Public, HideBySig, SpecialName
+    set_EnablePrivileges(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.ManagementPath: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.ICloneable
+  Properties:
+    System.Management.ManagementPath DefaultPath 'get set' : 
+    System.String Path 'get set' : 
+    System.String RelativePath 'get set' : 
+    System.String Server 'get set' : 
+    System.String NamespacePath 'get set' : 
+    System.String ClassName 'get set' : 
+    Boolean IsClass 'get ' : 
+    Boolean IsInstance 'get ' : 
+    Boolean IsSingleton 'get ' : 
+  Methods:
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+    Clone(): PrivateScope, Public, HideBySig
+    get_DefaultPath(): PrivateScope, Public, Static, HideBySig, SpecialName
+    set_DefaultPath(ManagementPath): PrivateScope, Public, Static, HideBySig, SpecialName
+    SetAsClass(): PrivateScope, Public, HideBySig
+    SetAsSingleton(): PrivateScope, Public, HideBySig
+    get_Path(): PrivateScope, Public, HideBySig, SpecialName
+    set_Path(String): PrivateScope, Public, HideBySig, SpecialName
+    get_RelativePath(): PrivateScope, Public, HideBySig, SpecialName
+    set_RelativePath(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Server(): PrivateScope, Public, HideBySig, SpecialName
+    set_Server(String): PrivateScope, Public, HideBySig, SpecialName
+    get_NamespacePath(): PrivateScope, Public, HideBySig, SpecialName
+    set_NamespacePath(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ClassName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ClassName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_IsClass(): PrivateScope, Public, HideBySig, SpecialName
+    get_IsInstance(): PrivateScope, Public, HideBySig, SpecialName
+    get_IsSingleton(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.ManagementQuery: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+  Interfaces:
+    System.ICloneable
+  Properties:
+    System.String QueryString 'get set' : 
+    System.String QueryLanguage 'get set' : 
+  Methods:
+    get_QueryString(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_QueryString(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_QueryLanguage(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_QueryLanguage(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+Class System.Management.ObjectQuery: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementQuery
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.EventQuery: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ManagementQuery
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.WqlObjectQuery: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.ObjectQuery
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String QueryLanguage 'get ' : 
+  Methods:
+    get_QueryLanguage(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.SelectQuery: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.WqlObjectQuery
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.String[]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(Boolean, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String QueryString 'get set' : 
+    Boolean IsSchemaQuery 'get set' : 
+    System.String ClassName 'get set' : 
+    System.String Condition 'get set' : 
+    System.Collections.Specialized.StringCollection SelectedProperties 'get set' : 
+  Methods:
+    get_QueryString(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_QueryString(String): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_IsSchemaQuery(): PrivateScope, Public, HideBySig, SpecialName
+    set_IsSchemaQuery(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_ClassName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ClassName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Condition(): PrivateScope, Public, HideBySig, SpecialName
+    set_Condition(String): PrivateScope, Public, HideBySig, SpecialName
+    get_SelectedProperties(): PrivateScope, Public, HideBySig, SpecialName
+    set_SelectedProperties(StringCollection): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.RelatedObjectQuery: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.WqlObjectQuery
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.String, System.String, System.String, System.String, System.String, Boolean): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(Boolean, System.String, System.String, System.String, System.String, System.String, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean IsSchemaQuery 'get set' : 
+    System.String SourceObject 'get set' : 
+    System.String RelatedClass 'get set' : 
+    System.String RelationshipClass 'get set' : 
+    System.String RelatedQualifier 'get set' : 
+    System.String RelationshipQualifier 'get set' : 
+    System.String RelatedRole 'get set' : 
+    System.String ThisRole 'get set' : 
+    Boolean ClassDefinitionsOnly 'get set' : 
+  Methods:
+    get_IsSchemaQuery(): PrivateScope, Public, HideBySig, SpecialName
+    set_IsSchemaQuery(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_SourceObject(): PrivateScope, Public, HideBySig, SpecialName
+    set_SourceObject(String): PrivateScope, Public, HideBySig, SpecialName
+    get_RelatedClass(): PrivateScope, Public, HideBySig, SpecialName
+    set_RelatedClass(String): PrivateScope, Public, HideBySig, SpecialName
+    get_RelationshipClass(): PrivateScope, Public, HideBySig, SpecialName
+    set_RelationshipClass(String): PrivateScope, Public, HideBySig, SpecialName
+    get_RelatedQualifier(): PrivateScope, Public, HideBySig, SpecialName
+    set_RelatedQualifier(String): PrivateScope, Public, HideBySig, SpecialName
+    get_RelationshipQualifier(): PrivateScope, Public, HideBySig, SpecialName
+    set_RelationshipQualifier(String): PrivateScope, Public, HideBySig, SpecialName
+    get_RelatedRole(): PrivateScope, Public, HideBySig, SpecialName
+    set_RelatedRole(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ThisRole(): PrivateScope, Public, HideBySig, SpecialName
+    set_ThisRole(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ClassDefinitionsOnly(): PrivateScope, Public, HideBySig, SpecialName
+    set_ClassDefinitionsOnly(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.RelationshipQuery: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.WqlObjectQuery
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.String, System.String, Boolean): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(Boolean, System.String, System.String, System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean IsSchemaQuery 'get set' : 
+    System.String SourceObject 'get set' : 
+    System.String RelationshipClass 'get set' : 
+    System.String RelationshipQualifier 'get set' : 
+    System.String ThisRole 'get set' : 
+    Boolean ClassDefinitionsOnly 'get set' : 
+  Methods:
+    get_IsSchemaQuery(): PrivateScope, Public, HideBySig, SpecialName
+    set_IsSchemaQuery(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_SourceObject(): PrivateScope, Public, HideBySig, SpecialName
+    set_SourceObject(String): PrivateScope, Public, HideBySig, SpecialName
+    get_RelationshipClass(): PrivateScope, Public, HideBySig, SpecialName
+    set_RelationshipClass(String): PrivateScope, Public, HideBySig, SpecialName
+    get_RelationshipQualifier(): PrivateScope, Public, HideBySig, SpecialName
+    set_RelationshipQualifier(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ThisRole(): PrivateScope, Public, HideBySig, SpecialName
+    set_ThisRole(String): PrivateScope, Public, HideBySig, SpecialName
+    get_ClassDefinitionsOnly(): PrivateScope, Public, HideBySig, SpecialName
+    set_ClassDefinitionsOnly(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.WqlEventQuery: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Management.EventQuery
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.TimeSpan): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.TimeSpan, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.TimeSpan): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, System.TimeSpan, System.String[]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.TimeSpan, System.String, System.TimeSpan, System.String[], System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String QueryLanguage 'get ' : 
+    System.String QueryString 'get set' : 
+    System.String EventClassName 'get set' : 
+    System.String Condition 'get set' : 
+    System.TimeSpan WithinInterval 'get set' : 
+    System.TimeSpan GroupWithinInterval 'get set' : 
+    System.Collections.Specialized.StringCollection GroupByPropertyList 'get set' : 
+    System.String HavingCondition 'get set' : 
+  Methods:
+    get_QueryLanguage(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_QueryString(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    set_QueryString(String): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    get_EventClassName(): PrivateScope, Public, HideBySig, SpecialName
+    set_EventClassName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Condition(): PrivateScope, Public, HideBySig, SpecialName
+    set_Condition(String): PrivateScope, Public, HideBySig, SpecialName
+    get_WithinInterval(): PrivateScope, Public, HideBySig, SpecialName
+    set_WithinInterval(TimeSpan): PrivateScope, Public, HideBySig, SpecialName
+    get_GroupWithinInterval(): PrivateScope, Public, HideBySig, SpecialName
+    set_GroupWithinInterval(TimeSpan): PrivateScope, Public, HideBySig, SpecialName
+    get_GroupByPropertyList(): PrivateScope, Public, HideBySig, SpecialName
+    set_GroupByPropertyList(StringCollection): PrivateScope, Public, HideBySig, SpecialName
+    get_HavingCondition(): PrivateScope, Public, HideBySig, SpecialName
+    set_HavingCondition(String): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.ManagementScope: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementPath): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.Management.ConnectionOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.ManagementPath, System.Management.ConnectionOptions): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.ICloneable
+  Properties:
+    Boolean IsConnected 'get ' : 
+    System.Management.ConnectionOptions Options 'get set' : 
+    System.Management.ManagementPath Path 'get set' : 
+  Methods:
+    get_IsConnected(): PrivateScope, Public, HideBySig, SpecialName
+    get_Options(): PrivateScope, Public, HideBySig, SpecialName
+    set_Options(ConnectionOptions): PrivateScope, Public, HideBySig, SpecialName
+    get_Path(): PrivateScope, Public, HideBySig, SpecialName
+    set_Path(ManagementPath): PrivateScope, Public, HideBySig, SpecialName
+    Clone(): PrivateScope, Public, HideBySig
+    Connect(): PrivateScope, Public, HideBySig
+Class System.Management.PropertyData: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Properties:
+    System.String Name 'get ' : 
+    System.Object Value 'get set' : 
+    System.Management.CimType Type 'get ' : 
+    Boolean IsLocal 'get ' : 
+    Boolean IsArray 'get ' : 
+    System.String Origin 'get ' : 
+    System.Management.QualifierDataCollection Qualifiers 'get ' : 
+  Methods:
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+    get_Value(): PrivateScope, Public, HideBySig, SpecialName
+    set_Value(Object): PrivateScope, Public, HideBySig, SpecialName
+    get_Type(): PrivateScope, Public, HideBySig, SpecialName
+    get_IsLocal(): PrivateScope, Public, HideBySig, SpecialName
+    get_IsArray(): PrivateScope, Public, HideBySig, SpecialName
+    get_Origin(): PrivateScope, Public, HideBySig, SpecialName
+    get_Qualifiers(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.PropertyDataCollection: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Interfaces:
+    System.Collections.ICollection
+    System.Collections.IEnumerable
+  Properties:
+    Int32 Count 'get ' : 
+    Boolean IsSynchronized 'get ' : 
+    System.Object SyncRoot 'get ' : 
+    System.Management.PropertyData Item [System.String] 'get ' : 
+  Methods:
+    get_Count(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_IsSynchronized(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_SyncRoot(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    CopyTo(Array, Int32): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    CopyTo(PropertyData[], Int32): PrivateScope, Public, HideBySig
+    GetEnumerator(): PrivateScope, Public, HideBySig
+    get_Item(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    Remove(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Add(String, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Add(String, Object, CimType): PrivateScope, Public, HideBySig
+    Add(String, CimType, Boolean): PrivateScope, Public, HideBySig
+Class System.Management.PropertyDataCollection+PropertyDataEnumerator: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+  Interfaces:
+    System.Collections.IEnumerator
+  Properties:
+    System.Management.PropertyData Current 'get ' : 
+  Methods:
+    get_Current(): PrivateScope, Public, HideBySig, SpecialName
+    MoveNext(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    Reset(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.QualifierData: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Properties:
+    System.String Name 'get ' : 
+    System.Object Value 'get set' : 
+    Boolean IsAmended 'get set' : 
+    Boolean IsLocal 'get ' : 
+    Boolean PropagatesToInstance 'get set' : 
+    Boolean PropagatesToSubclass 'get set' : 
+    Boolean IsOverridable 'get set' : 
+  Methods:
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+    get_Value(): PrivateScope, Public, HideBySig, SpecialName
+    set_Value(Object): PrivateScope, Public, HideBySig, SpecialName
+    get_IsAmended(): PrivateScope, Public, HideBySig, SpecialName
+    set_IsAmended(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_IsLocal(): PrivateScope, Public, HideBySig, SpecialName
+    get_PropagatesToInstance(): PrivateScope, Public, HideBySig, SpecialName
+    set_PropagatesToInstance(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_PropagatesToSubclass(): PrivateScope, Public, HideBySig, SpecialName
+    set_PropagatesToSubclass(Boolean): PrivateScope, Public, HideBySig, SpecialName
+    get_IsOverridable(): PrivateScope, Public, HideBySig, SpecialName
+    set_IsOverridable(Boolean): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.QualifierDataCollection: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Interfaces:
+    System.Collections.ICollection
+    System.Collections.IEnumerable
+  Properties:
+    Int32 Count 'get ' : 
+    Boolean IsSynchronized 'get ' : 
+    System.Object SyncRoot 'get ' : 
+    System.Management.QualifierData Item [System.String] 'get ' : 
+  Methods:
+    get_Count(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_IsSynchronized(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_SyncRoot(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    CopyTo(Array, Int32): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    CopyTo(QualifierData[], Int32): PrivateScope, Public, HideBySig
+    GetEnumerator(): PrivateScope, Public, HideBySig
+    get_Item(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    Remove(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Add(String, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Add(String, Object, Boolean, Boolean, Boolean, Boolean): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.QualifierDataCollection+QualifierDataEnumerator: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+  Interfaces:
+    System.Collections.IEnumerator
+  Properties:
+    System.Management.QualifierData Current 'get ' : 
+  Methods:
+    get_Current(): PrivateScope, Public, HideBySig, SpecialName
+    MoveNext(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    Reset(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.MethodData: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Properties:
+    System.String Name 'get ' : 
+    System.Management.ManagementBaseObject InParameters 'get ' : 
+    System.Management.ManagementBaseObject OutParameters 'get ' : 
+    System.String Origin 'get ' : 
+    System.Management.QualifierDataCollection Qualifiers 'get ' : 
+  Methods:
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+    get_InParameters(): PrivateScope, Public, HideBySig, SpecialName
+    get_OutParameters(): PrivateScope, Public, HideBySig, SpecialName
+    get_Origin(): PrivateScope, Public, HideBySig, SpecialName
+    get_Qualifiers(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.MethodDataCollection: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Interfaces:
+    System.Collections.ICollection
+    System.Collections.IEnumerable
+  Properties:
+    Int32 Count 'get ' : 
+    Boolean IsSynchronized 'get ' : 
+    System.Object SyncRoot 'get ' : 
+    System.Management.MethodData Item [System.String] 'get ' : 
+  Methods:
+    get_Count(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_IsSynchronized(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_SyncRoot(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    CopyTo(Array, Int32): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    CopyTo(MethodData[], Int32): PrivateScope, Public, HideBySig
+    GetEnumerator(): PrivateScope, Public, HideBySig
+    get_Item(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    Remove(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Add(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Add(String, ManagementBaseObject, ManagementBaseObject): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+Class System.Management.MethodDataCollection+MethodDataEnumerator: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+  Interfaces:
+    System.Collections.IEnumerator
+  Properties:
+    System.Management.MethodData Current 'get ' : 
+  Methods:
+    get_Current(): PrivateScope, Public, HideBySig, SpecialName
+    MoveNext(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+    Reset(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Struct System.Management.CodeLanguage: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.CodeLanguage CSharp = 0 : Public, Static, Literal, HasDefault
+    System.Management.CodeLanguage JScript = 1 : Public, Static, Literal, HasDefault
+    System.Management.CodeLanguage VB = 2 : Public, Static, Literal, HasDefault
+    System.Management.CodeLanguage VJSharp = 3 : Public, Static, Literal, HasDefault
+    System.Management.CodeLanguage Mcpp = 4 : Public, Static, Literal, HasDefault
+Class System.Management.Instrumentation.InstrumentedAttribute: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Attribute
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String NamespaceName 'get ' : 
+    System.String SecurityDescriptor 'get ' : 
+  Methods:
+    get_NamespaceName(): PrivateScope, Public, HideBySig, SpecialName
+    get_SecurityDescriptor(): PrivateScope, Public, HideBySig, SpecialName
+Struct System.Management.Instrumentation.InstrumentationType: AutoLayout, AnsiClass, Class, Public, Sealed
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    System.Management.Instrumentation.InstrumentationType Instance = 0 : Public, Static, Literal, HasDefault
+    System.Management.Instrumentation.InstrumentationType Event = 1 : Public, Static, Literal, HasDefault
+    System.Management.Instrumentation.InstrumentationType Abstract = 2 : Public, Static, Literal, HasDefault
+Class System.Management.Instrumentation.InstrumentationClassAttribute: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Attribute
+    Void .ctor(System.Management.Instrumentation.InstrumentationType): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Management.Instrumentation.InstrumentationType, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Management.Instrumentation.InstrumentationType InstrumentationType 'get ' : 
+    System.String ManagedBaseClassName 'get ' : 
+  Methods:
+    get_InstrumentationType(): PrivateScope, Public, HideBySig, SpecialName
+    get_ManagedBaseClassName(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.Instrumentation.ManagedNameAttribute: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Attribute
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String Name 'get ' : 
+  Methods:
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+Class System.Management.Instrumentation.IgnoreMemberAttribute: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Attribute
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class System.Management.Instrumentation.Instrumentation: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    RegisterAssembly(Assembly): PrivateScope, Public, Static, HideBySig
+    IsAssemblyRegistered(Assembly): PrivateScope, Public, Static, HideBySig
+    Fire(Object): PrivateScope, Public, Static, HideBySig
+    Publish(Object): PrivateScope, Public, Static, HideBySig
+    Revoke(Object): PrivateScope, Public, Static, HideBySig
+    SetBatchSize(Type, Int32): PrivateScope, Public, Static, HideBySig
+Interface System.Management.Instrumentation.IEvent: AutoLayout, AnsiClass, Class, Public, ClassSemanticsMask, Abstract
+  Methods:
+    Fire(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+Class System.Management.Instrumentation.BaseEvent: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+  Interfaces:
+    System.Management.Instrumentation.IEvent
+  Methods:
+    Fire(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask
+Interface System.Management.Instrumentation.IInstance: AutoLayout, AnsiClass, Class, Public, ClassSemanticsMask, Abstract
+  Properties:
+    Boolean Published 'get set' : 
+  Methods:
+    get_Published(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    set_Published(Boolean): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+Class System.Management.Instrumentation.Instance: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+  Interfaces:
+    System.Management.Instrumentation.IInstance
+  Properties:
+    Boolean Published 'get set' : 
+  Methods:
+    get_Published(): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_Published(Boolean): PrivateScope, Public, Final, Virtual, HideBySig, VtableLayoutMask, SpecialName
+Class System.Management.Instrumentation.ManagementInstaller: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Configuration.Install.Installer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String HelpText 'get ' : 
+  Methods:
+    get_HelpText(): PrivateScope, Public, Virtual, HideBySig, SpecialName
+    Install(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Commit(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Rollback(IDictionary): PrivateScope, Public, Virtual, HideBySig
+    Uninstall(IDictionary): PrivateScope, Public, Virtual, HideBySig
+Class System.Management.Instrumentation.DefaultManagementProjectInstaller: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Configuration.Install.Installer
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

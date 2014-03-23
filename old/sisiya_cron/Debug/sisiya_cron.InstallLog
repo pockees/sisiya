@@ -1,0 +1,188 @@
+﻿Installing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+No public installers with the RunInstallerAttribute.Yes attribute could be found in the C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe assembly.
+Committing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+No public installers with the RunInstallerAttribute.Yes attribute could be found in the C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe assembly.
+Remove InstallState file because there are no installers.
+Installing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Service SisIYA_cron has been successfully installed.
+Creating EventLog source SisIYA_cron in log Application...
+Committing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Creating EventLog source SisIYA_cron in log Application...
+Rolling back assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Restoring event log to previous state for source SisIYA_cron.
+Uninstalling assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Removing EventLog source SisIYA_cron.
+Service SisIYA_cron is being removed from the system...
+Service SisIYA_cron was successfully removed from the system.
+Installing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Service SisIYA_cron has been successfully installed.
+Creating EventLog source SisIYA_cron in log Application...
+Committing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Uninstalling assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Removing EventLog source SisIYA_cron.
+Service SisIYA_cron is being removed from the system...
+Service SisIYA_cron was successfully removed from the system.
+Installing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Service SisIYA_cron has been successfully installed.
+Creating EventLog source SisIYA_cron in log Application...
+Committing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Uninstalling assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Removing EventLog source SisIYA_cron.
+Service SisIYA_cron is being removed from the system...
+Service SisIYA_cron was successfully removed from the system.
+Installing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Service SisIYA_cron has been successfully installed.
+Creating EventLog source SisIYA_cron in log Application...
+Committing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Uninstalling assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Removing EventLog source SisIYA_cron.
+Service SisIYA_cron is being removed from the system...
+Service SisIYA_cron was successfully removed from the system.
+Installing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Service SisIYA_cron has been successfully installed.
+Creating EventLog source SisIYA_cron in log Application...
+Committing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Creating EventLog source SisIYA_cron in log Application...
+Rolling back assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Restoring event log to previous state for source SisIYA_cron.
+Uninstalling assembly 'C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\fatihgenc\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Removing EventLog source SisIYA_cron.
+Service SisIYA_cron is being removed from the system...
+Service SisIYA_cron was successfully removed from the system.
+Attempt to stop service SisIYA_cron.
+Installing assembly 'C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Service SisIYA_cron has been successfully installed.
+Creating EventLog source SisIYA_cron in log Application...
+Committing assembly 'C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Uninstalling assembly 'C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Removing EventLog source SisIYA_cron.
+Service SisIYA_cron is being removed from the system...
+Service SisIYA_cron was successfully removed from the system.
+Installing assembly 'C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Installing service SisIYA_cron...
+Service SisIYA_cron has been successfully installed.
+Creating EventLog source SisIYA_cron in log Application...
+Committing assembly 'C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Uninstalling assembly 'C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.InstallLog
+   assemblypath = C:\Documents and Settings\TEMP\Desktop\sisiya_cron\Debug\sisiya_cron.exe
+Removing EventLog source SisIYA_cron.
+Service SisIYA_cron is being removed from the system...
+Service SisIYA_cron was successfully removed from the system.
+Attempt to stop service SisIYA_cron.
