@@ -1,0 +1,47 @@
+### service id
+$serviceid=$serviceid_msexchange_servicehealth
+if(! $serviceid_msexchange_servicehealth) {
+	Write-Output "Error : serviceid_msexchange_servicehealth is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+	exit
+}
+############################################################################################################
+### the default values
+### end of the default values
+############################################################################################################
+### If there is a module conf file then override these default values
+if([System.IO.File]::Exists($module_conf_file) -eq $True) {
+#if(test-path $module_conf_file -eq $True) {
+	. $module_conf_file
+}
+###############################################################################################################################################
+### add MS Exchange snappin
+addMSExcangeSupport
+
+$message_str=""
+$error_message_str=""
+$warning_message_str=""
+$ok_message_str=""
+$info_message_str=""
+
+### Test-ServiceHealth
+$services=Test-ServiceHealth
+foreach($s in $services) {
+	if($s.RequiredServicesRunning -eq $True) {
+		$ok_message_str=$ok_message_str + " OK: All required services (" + $s.ServicesRunning + ") for the " + $s.Role + " are running."
+	}
+	else {
+		$error_message_str=$error_message_str + " ERROR: Not running services for the " + $s.Role + " are : " + $s.ServicesNotRunning + "!"
+	}
+}
+$statusid=$status_ok
+if($error_message_str.Length -gt 0) {
+	$statusid=$status_error
+}
+elseif($warning_message_str.Length -gt 0) {
+	$statusid=$status_warning
+}
+$error_message_str=$error_message_str.Trim()
+$warning_message_str=$warning_message_str.Trim()
+$ok_message_str=$ok_message_str.Trim()
+$info_message_str=$info_message_str.Trim()
+$message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str

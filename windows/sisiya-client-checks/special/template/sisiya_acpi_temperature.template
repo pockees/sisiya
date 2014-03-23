@@ -1,0 +1,61 @@
+############################################################################################################
+### service id
+$serviceid=$serviceid_temperature
+if(! $serviceid_temperature) {
+	Write-Output "Error : serviceid_temperature is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+	exit
+}
+############################################################################################################
+### the default values
+### end of the default values
+############################################################################################################
+### If there is a module conf file then override these default values
+if([System.IO.File]::Exists($module_conf_file) -eq $True) {
+#if(test-path $module_conf_file -eq $True) {
+	. $module_conf_file
+}
+###############################################################################################################################################
+$statusid=$status_ok
+$message_str=""
+
+$info_message_str=""
+$ok_message_str=""
+$warning_message_str=""
+$error_message_str=""
+
+
+### get temperature information
+$sensors=Get-WmiObject -NameSpace "root\WMI" -Class "MSAcpi_ThermalZoneTemperature" 2> $null
+if($sensors) {
+	foreach($sensor in $sensors) {
+		$current_temperature=($sensor.CurrentTemperature -2732)/10
+		$critical_temperature=($sensor.CriticalTripPoint -2732)/10
+		$sensor_name=$sensor.__relpath.Split("\")[4].Split("`"")[0]
+		if($sensor.CurrentTemperature -ge $sensor.CriticalTripPoint) {
+			#MSAcpi_ThermalZoneTemperature.InstanceName="ACPI\\ThermalZone\\TZ5__0"
+			$error_message_str=$error_message_str + " ERROR: The temperature of the " + $sensore_name + " has reached the critical value (" + $current_temperature + ">=" + $critical_temperature +" degree celsius)!"
+		}
+		else { 
+			$ok_message_str=$ok_message_str + " OK: The temperature of the sensor " + $sensor_name + " is " + $current_temperature +" degree celsius." 
+		}	
+	}
+}
+else {
+	### do nothing, this system does not support ACPI temperature
+	exit
+
+	$error_message_str="ERROR: Could not get temperature software information!"
+}
+
+$statusid=$status_ok
+if($error_message_str.Length -gt 0) {
+	$statusid=$status_error
+}
+elseif($warning_message_str.Length -gt 0) {
+	$statusid=$status_warning
+}
+$error_message_str=$error_message_str.Trim()
+$warning_message_str=$warning_message_str.Trim()
+$ok_message_str=$ok_message_str.Trim()
+$info_message_str=$info_message_str.Trim()
+$message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str

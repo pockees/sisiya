@@ -1,0 +1,84 @@
+### service id
+$serviceid=$serviceid_mswindows_eventlog
+if(! $serviceid_mswindows_eventlog) {
+	Write-Output "Error : serviceid_mswindows_eventlog is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+	exit
+}
+############################################################################################################
+### The warning_time and error_time values are used for interpreting eventlogs as follows:
+### error_time=3 -> Eventlog error entries withing 1 day are treated as errors. If there are
+### error eventlog entries older than 1 day are not counted as errors.
+### warning_time=3 -> Eventlog warning entries withing 3 days are treated as warnings. If there are
+### warning eventlog entries older than 3 days are not counted as warnings.
+### The format of error and warning times is
+### 1) If the value is a number, then it is the number of days.
+### 2) If the value is of the form d:hh:mm, then it is d days hh hours mm minutes.
+############################################################################################################
+### the default values
+$error_time="1:00"
+$warning_time="1:00"
+### end of the default values
+############################################################################################################
+### If there is a module conf file then override these default values
+if([System.IO.File]::Exists($module_conf_file) -eq $True) {
+#if(test-path $module_conf_file -eq $True) {
+	. $module_conf_file
+}
+###############################################################################################################################################
+$statusid=$status_ok
+$message_str=""
+
+$ok_message_str=""
+$warning_message_str=""
+$error_message_str=""
+
+$error_in_minutes=getTimeInMinutes($error_time)
+$warning_in_minutes=getTimeInMinutes($warning_time)
+
+### get calculate error and warning dates
+$error_date=[DateTime]::Now.AddMinutes(-1 * $error_in_minutes)
+$warning_date=[DateTime]::Now.AddMinutes(-1 * $warning_in_minutes)
+#Write-Host "error_date=" $error_date "warning_date=" $warning_date
+
+$now_date=Get-Date
+$error_diff_date=New-TimeSpan -Start $error_date -End $now_date
+$error_date_str=formatDateTime $error_diff_date.Days $error_diff_date.Hours $error_diff_date.Minutes
+$warning_diff_date=New-TimeSpan -Start $warning_date -End $now_date
+$warning_date_str=formatDateTime $warning_diff_date.Days $warning_diff_date.Hours $warning_diff_date.Minutes
+
+### get event logs
+$eventlogs=Get-EventLog -List
+$i=0
+while($i -lt $eventlogs.Length) {
+	$current_statusid=$status_ok
+	$error_events=Get-EventLog   -LogName $eventlogs[$i].Log | where {$error_date -le $_.TimeWritten -and $_.EntryType -match "Error"}
+	$warning_events=Get-EventLog -LogName $eventlogs[$i].Log | where {$warning_date -le $_.TimeWritten -and $_.EntryType -match "Warning"}
+
+	if($error_events.Count -gt 0) {
+		$current_statusid=$status_error
+		$error_message_str=$error_message_str + " ERROR: There are " + $error_events.Count + " errors in the event log for " + $eventlogs[$i].Log + " within " + $error_date_str + "!"
+	}
+	if($warning_events.Count -gt 0) {
+		if($current_statusid -lt $status_warning) {
+			$current_statusid=$status_warning
+		}
+		$warning_message_str=$message_str + " WARNING: There are " + $warning_events.Count + " warnings in the event log for " + $eventlogs[$i].Log + " within " + $warning_date_str + "!" 
+	}
+	if($current_statusid -eq $status_ok) {
+		$ok_message_str=$ok_message_str + " OK: No errors " +  " within " + $error_date_str + " or warnings within " + $warning_date_str + " in the event log for " + $eventlogs[$i].Log + "."
+	}
+	$i=$i+1
+}
+
+$statusid=$status_ok
+if($error_message_str.Length -gt 0) {
+	$statusid=$status_error
+}
+elseif($warning_message_str.Length -gt 0) {
+	$statusid=$status_warning
+}
+$error_message_str=$error_message_str.Trim()
+$warning_message_str=$warning_message_str.Trim()
+$ok_message_str=$ok_message_str.Trim()
+$info_message_str=$info_message_str.Trim()
+$message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
