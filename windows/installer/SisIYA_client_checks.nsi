@@ -1,10 +1,10 @@
 ;#
 ;# This file is NSISI install script forr SisIYA for MS Windows.
 ;#
-;#    Copyright (C) 2003 - 2010  Erdal Mutlu
+;#    Copyright (C) 2003 - 2014  Erdal Mutlu
 ;#
 ;#    This program is free software; you can redistribute it and/or modify
-;#    it under the terms of the GNU General Public License as published by
+;#    it under the terms of th GNU General Public License as published by
 ;#    the Free Software Foundation; either version 2 of the License, or
 ;#    (at your option) any later version.
 ;#
@@ -20,6 +20,8 @@
 ;#
 ;#################################################################################
 ;======================================================
+!include "x64.nsh"
+!include LogicLib.nsh
 ; Define your application name
 !define APP_NAME "SisIYA_client_checks"
 ;!define SISIYA_RELEASE 1
@@ -35,7 +37,7 @@
 ; Installer Information
 
 ;Name "${APP_NAME_AND_VERSION}"
-InstallDir "$PROGRAMFILES\${APP_NAME}"
+#InstallDir "$PROGRAMFILES\${APP_NAME}"
 InstallDirRegKey HKLM "Software\${APP_NAME}" ""
 OutFile "${APP_NAME_AND_VERSION}_general.exe"
 
@@ -62,6 +64,16 @@ Function skipIfSilent
 FunctionEnd
 	
 Function .onInit
+	${If} $INSTDIR == "" ; Don't override setup.exe /D=c:\custom\dir
+		${If} ${RunningX64}
+			# set registry view to 64 bit
+			SetRegView 64
+	
+			StrCpy $INSTDIR "$ProgramFiles64\${APP_NAME}"
+		${Else}
+			StrCpy $INSTDIR "$ProgramFiles32\${APP_NAME}"
+		${EndIf}
+	${EndIf}
         # the plugins dir is automatically deleted when the installer exits
         InitPluginsDir
 		
@@ -185,7 +197,7 @@ Section Uninstall
 	;Delete "$SMPROGRAMS\SisIYA\Uninstall.lnk"
 
 	; delete tasks from the scheduler
-	Exec "powershell -command $\"& $INSTDIR\bin\sisiya_remove_tasks.ps1$\""
+	Exec "powershell -ExecutionPolicy ByPass -command $\"& $INSTDIR\bin\sisiya_remove_tasks.ps1$\""
 	
 	; Clean up SisIYA
 	;Delete "$INSTDIR\sisiya_client_conf.ps1"
