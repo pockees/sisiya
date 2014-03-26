@@ -59,13 +59,15 @@ $module_conf_file = $sisiya_host_conf_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceid_isuptodate
-if(! $serviceid_isuptodate) {
-	Write-Output "Error : serviceid_isuptodate is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+$serviceid=$serviceid_filesystem
+if(! $serviceid_filesystem) {
+	Write-Output "Error : serviceid_filesystem is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
 	exit
 }
 ############################################################################################################
 ### the default values
+$warning_percent=85
+$error_percent=90
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
@@ -74,33 +76,88 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
-$updateSession=New-Object -com "Microsoft.Update.Session"
-$updates=$updateSession.CreateupdateSearcher().Search("IsInstalled=0 and Type='Software' and IsAssigned=1 and isHidden=0").Updates
-if($updates.Count -gt 0) {
-	$statusid=$status_error
-	$str="are"
-	$s="s"
-	if($updates.Count -eq 1) {
-		$str="is"
-		$s=""
-	}	
-	$message_str="ERROR: There " + $str + " " + $updates.Count + " available high priority update" + $s + "!"
-}
-else { 
-	$statusid=$status_ok
-	$message_str="OK: The system is uptodate."
-}	
+function getFormatedSize
+{
+	Param([double]$size, [double]$d, [string]$size_name)
+	$result=$size / $d
+	$rest=$size % $d
+	Write-Output "result=" $result " rest=" $rest $size_name
+	
 
-$updateSystemInfo=New-Object -com "Microsoft.Update.SystemInfo"
-if($updateSystemInfo.RebootRequired -eq $True) {
-	if($statusid -eq $status_ok) {
-		$statusid=$status_error
-		$message_str="ERROR: The system needs restart!"
+}
+
+function getSizeGB
+{
+	Param ([double]$size)
+
+	[string]$result_str=""
+	if($size -eq 0) {
+		$result_str="0"
+	}
+	elseif($size -lt 1024) {
+		$result_str=$size + "GB"
+	}
+	elseif($size -lt 1048576) {
+		$result_str=getFormatedSize $size 1024 "TB"
+	}
+	elseif($size -lt 1073741824) {
+		$result_str=getFormatedSize $size 1048576 "PB"
 	}
 	else {
-		$message_str=$message_str + " ERROR: The system needs restart!"
+		$result_str=getFormatedSize $size 1073741824 "EB"
 	}
+	Write-Output $result_str
 }
+
+$statusid=$status_ok
+$message_str=""
+
+$info_message_str=""
+$ok_message_str=""
+$warning_message_str=""
+$error_message_str=""
+
+### get all local disk drives
+$drives=Get-WmiObject Win32_LogicalDisk | Where-Object {$_.DriveType -eq 3}
+foreach($drive in $drives) { 
+	$device_id=$drive.DeviceID 
+	$fs_type=$drive.FileSystem
+	$is_dirty=$drive.VolumeDirty
+	$size=$drive.Size / 1GB  
+	$free=$drive.FreeSpace / 1GB 
+	$a=100 * ($size - $free) / $size 
+	### format the size
+	$size="{0:N2}" -f $size 
+	[int]$used_percent=[int]$a 
+	if($is_dirty) {
+		$error_message_str=$error_message_str + " ERROR: " + $device_id + " is dirty!"
+	}
+	if($used_percent -ge $error_percent) {
+		$error_message_str=$error_message_str + " ERROR: " + $device_id + "(" + $fs_type + ") " + $used_percent + "% (>=" + $error_percent + ") of " + $size + "GB is full!"  
+	}
+	elseif($used_percent -ge $warning_percent) {
+		$warning_message_str=$warning_message_str + " WARNING: " + $device_id + "(" + $fs_type + ") " + $used_percent + "% (>=" + $warning_percent + ") of " + $size + "GB is full!"  
+
+	}
+	else {
+		$ok_message_str=$ok_message_str + " OK: " + $device_id + "(" + $fs_type + ") " + $used_percent + "% of " + $size + "GB is used."  
+	}
+	### 1GB=1073741824
+	#$a=[double]($drive.Size / 1073741824)
+	#$size_str=getSizeGB $a
+}
+$statusid=$status_ok
+if($error_message_str.Length -gt 0) {
+	$statusid=$status_error
+}
+elseif($warning_message_str.Length -gt 0) {
+	$statusid=$status_warning
+}
+$error_message_str=$error_message_str.Trim()
+$warning_message_str=$warning_message_str.Trim()
+$ok_message_str=$ok_message_str.Trim()
+$info_message_str=$info_message_str.Trim()
+$message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
 ###############################################################################################################################################
 #Write-Host "sisiya_hostname=$sisiya_hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
 if($output_file.Length -eq 0) {

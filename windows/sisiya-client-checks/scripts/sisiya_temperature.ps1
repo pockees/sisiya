@@ -1,6 +1,6 @@
 ############################################################################################################
 #
-#    Copyright (C) 2003 - 2010  Erdal Mutlu
+#    Copyright (C) 2003 - 2014  Erdal Mutlu
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,36 +18,35 @@
 #
 #
 ############################################################################################################
-$prog_name=$MyInvocation.MyCommand.Name
+$prog_name = $MyInvocation.MyCommand.Name
 if($Args.Length -lt 2) {
-	Write-Host "Usage: " $prog_name " sisiya_client_conf.ps1 expire" 
-	Write-Host "Usage: " $prog_name " sisiya_client_conf.ps1 expire output_file" 
+	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire" 
+	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire output_file" 
 	Write-Host "The expire parameter must be given in minutes."
 	exit
 } 
 
-$client_conf_file=$Args[0]
-$expire=$Args[1]
-if([System.IO.File]::Exists($client_conf_file) -eq $False) {
-#if(test-path $client_conf_file -eq $False) {
+$client_conf_file = $Args[0]
+$expire = $Args[1]
+if ([System.IO.File]::Exists($client_conf_file) -eq $False) {
 	Write-Host $prog_name ": SisIYA configuration file " $client_conf_file " does not exist!"
 	exit
 }
-[string]$output_file=""
-if($Args.Length -eq 3) {
-	$output_file=$Args[2]
+[string]$output_file = ""
+if ($Args.Length -eq 3) {
+	$output_file = $Args[2]
 }
 ### get configuration file included
 . $client_conf_file 
 
-if([System.IO.File]::Exists($sisiya_common_conf) -eq $False) {
+if([System.IO.File]::Exists($local_conf) -eq $False) {
 	Write-Output "SisIYA common configurations file " $sisiya_common_conf " does not exist!" | eventlog_error
 	exit
 }
-### get SisIYA common configurations file included
-. $sisiya_common_conf 
+### get SisIYA local configurations file included
+. $local_conf 
 
-if([System.IO.File]::Exists($sisiya_functions) -eq $False) {
+if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 #if(test-path $client_conf_file -eq $False) {
 	Write-Output "SisIYA functions file " $sisiya_functions " does not exist!" | eventlog_error
 	exit
@@ -56,19 +55,18 @@ if([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 . $sisiya_functions
 ### Module configuration file name. It has the same name as the script, because of powershell's include system, but 
 ### it is located under the $sisiya_base_dir\systems\hostname\conf directory.
-$module_conf_file=$sisiya_host_conf_dir + "\" + $prog_name
-$data_message_str=''
+$module_conf_file = $sisiya_host_conf_dir + "\" + $prog_name
+$data_message_str = ''
+############################################################################################################
 ############################################################################################################
 ### service id
-$serviceid=$serviceid_filesystem
-if(! $serviceid_filesystem) {
-	Write-Output "Error : serviceid_filesystem is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+$serviceid=$serviceid_temperature
+if(! $serviceid_temperature) {
+	Write-Output "Error : serviceid_temperature is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
 	exit
 }
 ############################################################################################################
 ### the default values
-$warning_percent=85
-$error_percent=90
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
@@ -77,39 +75,6 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
-function getFormatedSize
-{
-	Param([double]$size, [double]$d, [string]$size_name)
-	$result=$size / $d
-	$rest=$size % $d
-	Write-Output "result=" $result " rest=" $rest $size_name
-	
-
-}
-
-function getSizeGB
-{
-	Param ([double]$size)
-
-	[string]$result_str=""
-	if($size -eq 0) {
-		$result_str="0"
-	}
-	elseif($size -lt 1024) {
-		$result_str=$size + "GB"
-	}
-	elseif($size -lt 1048576) {
-		$result_str=getFormatedSize $size 1024 "TB"
-	}
-	elseif($size -lt 1073741824) {
-		$result_str=getFormatedSize $size 1048576 "PB"
-	}
-	else {
-		$result_str=getFormatedSize $size 1073741824 "EB"
-	}
-	Write-Output $result_str
-}
-
 $statusid=$status_ok
 $message_str=""
 
@@ -118,35 +83,30 @@ $ok_message_str=""
 $warning_message_str=""
 $error_message_str=""
 
-### get all local disk drives
-$drives=Get-WmiObject Win32_LogicalDisk | Where-Object {$_.DriveType -eq 3}
-foreach($drive in $drives) { 
-	$device_id=$drive.DeviceID 
-	$fs_type=$drive.FileSystem
-	$is_dirty=$drive.VolumeDirty
-	$size=$drive.Size / 1GB  
-	$free=$drive.FreeSpace / 1GB 
-	$a=100 * ($size - $free) / $size 
-	### format the size
-	$size="{0:N2}" -f $size 
-	[int]$used_percent=[int]$a 
-	if($is_dirty) {
-		$error_message_str=$error_message_str + " ERROR: " + $device_id + " is dirty!"
-	}
-	if($used_percent -ge $error_percent) {
-		$error_message_str=$error_message_str + " ERROR: " + $device_id + "(" + $fs_type + ") " + $used_percent + "% (>=" + $error_percent + ") of " + $size + "GB is full!"  
-	}
-	elseif($used_percent -ge $warning_percent) {
-		$warning_message_str=$warning_message_str + " WARNING: " + $device_id + "(" + $fs_type + ") " + $used_percent + "% (>=" + $warning_percent + ") of " + $size + "GB is full!"  
 
+### get temperature information
+$sensors=Get-WmiObject -NameSpace "root\WMI" -Class "MSAcpi_ThermalZoneTemperature" 2> $null
+if($sensors) {
+	foreach($sensor in $sensors) {
+		$current_temperature=($sensor.CurrentTemperature -2732)/10
+		$critical_temperature=($sensor.CriticalTripPoint -2732)/10
+		$sensor_name=$sensor.__relpath.Split("\")[4].Split("`"")[0]
+		if($sensor.CurrentTemperature -ge $sensor.CriticalTripPoint) {
+			#MSAcpi_ThermalZoneTemperature.InstanceName="ACPI\\ThermalZone\\TZ5__0"
+			$error_message_str=$error_message_str + " ERROR: The temperature of the " + $sensore_name + " has reached the critical value (" + $current_temperature + ">=" + $critical_temperature +" degree celsius)!"
+		}
+		else { 
+			$ok_message_str=$ok_message_str + " OK: The temperature of the sensor " + $sensor_name + " is " + $current_temperature +" degree celsius." 
+		}	
 	}
-	else {
-		$ok_message_str=$ok_message_str + " OK: " + $device_id + "(" + $fs_type + ") " + $used_percent + "% of " + $size + "GB is used."  
-	}
-	### 1GB=1073741824
-	#$a=[double]($drive.Size / 1073741824)
-	#$size_str=getSizeGB $a
 }
+else {
+	### do nothing, this system does not support ACPI temperature
+	exit
+
+	$error_message_str="ERROR: Could not get temperature software information!"
+}
+
 $statusid=$status_ok
 if($error_message_str.Length -gt 0) {
 	$statusid=$status_error

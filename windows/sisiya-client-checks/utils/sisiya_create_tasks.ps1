@@ -1,6 +1,6 @@
 # This script creates SisIYA tasks.
 #
-#    Copyright (C) 2009  Erdal Mutlu
+#    Copyright (C) 2003 - 2014  Erdal Mutlu
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -38,13 +38,13 @@ function deleteScheduledTask
 	)
 
 	# query the task schedler
-	$ret=$command_str = "schtasks /Query | findstr " + $task_name 
-	Write-Host $command_str
-	Invoke-Expression $command_str
-	if($ret -and $ret.length) {
-		$ret=$command_str = "schtasks /Delete /TN " + $task_name + " /F"
-		Write-Host $command_str
-		Invoke-Expression $command_str
+	$command_str = "schtasks /Query | findstr " + $task_name 
+	#Write-Host $command_str
+	$ret = Invoke-Expression $command_str
+	if($?) {
+		$command_str = "schtasks /Delete /TN " + $task_name + " /F"
+		#Write-Host $command_str
+		Invoke-Expression $command_str > $null
 	}
 }
 
@@ -61,7 +61,7 @@ $os_version=$QueryString.Version.Substring(0,3)
 $minute_str = "MINUTE"
 if($os_version -ne 6.1)	{
 	if($language_code -eq 1055)	{
-		$minute_str = "DAK¿KA"
+		$minute_str = "DAKÝKA"
 	}
 }
 ### get installation path
@@ -69,7 +69,7 @@ $path_str=getPathFromRegistry
 ################################################################################################################
 
 ################################################################################################################
-$prog_str=$path_str + "\bin\run_sisiya_all.vbs"
+$prog_str=$path_str + "\utils\run_sisiya_all.vbs"
 $task_name="SisIYA_client_checks"
 $interval=5
 #$user_and_password="/RU sisiya /RP password"
@@ -79,13 +79,13 @@ deleteScheduledTask $task_name
 
 $command_str = "schtasks /Create " + $user_and_password + " /SC " + [CHAR]34 + $minute_str + [CHAR]34 + " /MO " + $interval + " /TN " + [CHAR]34 + $task_name + [CHAR]34 + " /ST 00:00:00 /SD 01/01/2007" + " /TR "+ "'C:\WINDOWS\System32\wscript.exe` `"`"`"" + $prog_str + "`"`"'" 
 #$command_str = "schtasks /Create /S `"" + $computer_name + "`" " + "/RU `"" + $local_credential.UserName + "`" /RP `"" + $local_credential.Password + "`" /SC " + [CHAR]34 + $minute_str + [CHAR]34 + " /MO " + $interval + " /TN " + [CHAR]34 + $task_name + [CHAR]34 + " /ST 00:00:00 /SD 01/01/2007" + " /TR "+ "'C:\WINDOWS\System32\wscript.exe` `"`"`"" + $prog_str + "`"`"'" 
-Write-Host $command_str
+#Write-Host $command_str
 
-Invoke-Expression $command_str
+Invoke-Expression $command_str > $null
 ################################################################################################################
 
 ################################################################################################################
-$prog_str=$path_str + "\bin\run_eventlog_isuptodate.vbs"
+$prog_str=$path_str + "\utils\run_eventlog_isuptodate.vbs"
 $task_name="SisIYA_eventlog_isuptodate"
 $interval=30
 
@@ -93,33 +93,35 @@ deleteScheduledTask $task_name
 
 $command_str = "schtasks /Create " + $user_and_password + " /SC " + [CHAR]34 + $minute_str + [CHAR]34 + " /MO " + $interval + " /TN " + [CHAR]34 + $task_name + [CHAR]34 + " /ST 00:00:00 /SD 01/01/2007" + " /TR "+ "'C:\WINDOWS\System32\wscript.exe` `"`"`"" + $prog_str + "`"`"'" 
 #$command_str = "schtasks /Create /S `"" + $computer_name + "`" " + "/RU `"" + $local_credential.UserName + "`" /RP `"" + $local_credential.Password + "`" /SC " + [CHAR]34 + $minute_str + [CHAR]34 + " /MO " + $interval + " /TN " + [CHAR]34 + $task_name + [CHAR]34 + " /ST 00:00:00 /SD 01/01/2007" + " /TR "+ "'C:\WINDOWS\System32\wscript.exe` `"`"`"" + $prog_str + "`"`"'" 
-Write-Host $command_str
+#Write-Host $command_str
 
-Invoke-Expression $command_str
+Invoke-Expression $command_str > $null
 ################################################################################################################
 
 ################################################################################################################
-$prog_str=$path_str + "\bin\run_sisiya_client_update.vbs"
+$prog_str=$path_str + "\utils\run_sisiya_client_update.vbs"
 $task_name="SisIYA_client_update"
 $interval=60
 
-deleteScheduledTask $task_name
+deleteScheduledTask $task_name > $null
 
 $command_str = "schtasks /Create " + $user_and_password + " /SC " + [CHAR]34 + $minute_str + [CHAR]34 + " /MO " + $interval + " /TN " + [CHAR]34 + $task_name + [CHAR]34 + " /ST 00:00:00 /SD 01/01/2007" + " /TR "+ "'C:\WINDOWS\System32\wscript.exe` `"`"`"" + $prog_str + "`"`"'" 
 #$command_str = "schtasks /Create /S `"" + $computer_name + "`" " + "/RU `"" + $local_credential.UserName + "`" /RP `"" + $local_credential.Password + "`" /SC " + [CHAR]34 + $minute_str + [CHAR]34 + " /MO " + $interval + " /TN " + [CHAR]34 + $task_name + [CHAR]34 + " /ST 00:00:00 /SD 01/01/2007" + " /TR "+ "'C:\WINDOWS\System32\wscript.exe` `"`"`"" + $prog_str + "`"`"'" 
-Write-Host $command_str
+#Write-Host $command_str
 
-Invoke-Expression $command_str
+Invoke-Expression $command_str > $null
 ################################################################################################################
 
 ################################################################################################################
-$prog_str=$path_str + "\bin\run_windows_update.vbs"
+$prog_str=$path_str + "\utils\run_windows_update.vbs"
 $task_name="windows_update"
 $interval=60
 
+deleteScheduledTask $task_name > $null
+
 $command_str = "schtasks /Create " + $user_and_password + " /SC " + [CHAR]34 + $minute_str + [CHAR]34 + " /MO " + $interval + " /TN " + [CHAR]34 + $task_name + [CHAR]34 + " /ST 00:00:00 /SD 01/01/2007" + " /TR "+ "'C:\WINDOWS\System32\wscript.exe` `"`"`"" + $prog_str + "`"`"'" 
 #$command_str = "schtasks /Create /S `"" + $computer_name + "`" " + "/RU `"" + $local_credential.UserName + "`" /RP `"" + $local_credential.Password + "`" /SC " + [CHAR]34 + $minute_str + [CHAR]34 + " /MO " + $interval + " /TN " + [CHAR]34 + $task_name + [CHAR]34 + " /ST 00:00:00 /SD 01/01/2007" + " /TR "+ "'C:\WINDOWS\System32\wscript.exe` `"`"`"" + $prog_str + "`"`"'" 
-Write-Host $command_str
+#Write-Host $command_str
 
-Invoke-Expression $command_str
+Invoke-Expression $command_str > $null
 ################################################################################################################

@@ -1,6 +1,6 @@
 ############################################################################################################
 #
-#    Copyright (C) 2010  Erdal Mutlu
+#    Copyright (C) 2003 - 2014  Erdal Mutlu
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by

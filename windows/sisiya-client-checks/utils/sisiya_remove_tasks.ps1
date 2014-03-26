@@ -2,7 +2,7 @@
 #
 # This script is used to remove the tasks for SisIYA client checks.
 #
-#    Copyright (C) 2003 - 2010  Erdal Mutlu
+#    Copyright (C) 2003 - 2014  Erdal Mutlu
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -27,15 +27,16 @@ function deleteScheduledTask
 	)
 
 	# query the task schedler
-	$ret=$command_str = "schtasks /Query | findstr " + $task_name 
-	Write-Host $command_str
-	Invoke-Expression $command_str
-	if($ret -and $ret.length) {
-		$ret=$command_str = "schtasks /Delete /TN " + $task_name + " /F"
-		Write-Host $command_str
-		Invoke-Expression $command_str
+	$command_str = "schtasks /Query | findstr " + $task_name 
+	#Write-Host $command_str
+	$ret = Invoke-Expression $command_str
+	if($?) {
+		$command_str = "schtasks /Delete /TN " + $task_name + " /F"
+		#Write-Host $command_str
+		Invoke-Expression $command_str > $null
 	}
 }
+
 #######################################################################################
 deleteScheduledTask "SisIYA_client_checks"
 deleteScheduledTask "SisIYA_client_update"

@@ -1,6 +1,6 @@
 ############################################################################################################
 #
-#    Copyright (C) 2003 - 2010  Erdal Mutlu
+#    Copyright (C) 2003 - 2014  Erdal Mutlu
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,36 +18,35 @@
 #
 #
 ############################################################################################################
-$prog_name=$MyInvocation.MyCommand.Name
+$prog_name = $MyInvocation.MyCommand.Name
 if($Args.Length -lt 2) {
-	Write-Host "Usage: " $prog_name " sisiya_client_conf.ps1 expire" 
-	Write-Host "Usage: " $prog_name " sisiya_client_conf.ps1 expire output_file" 
+	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire" 
+	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire output_file" 
 	Write-Host "The expire parameter must be given in minutes."
 	exit
 } 
 
-$client_conf_file=$Args[0]
-$expire=$Args[1]
-if([System.IO.File]::Exists($client_conf_file) -eq $False) {
-#if(test-path $client_conf_file -eq $False) {
+$client_conf_file = $Args[0]
+$expire = $Args[1]
+if ([System.IO.File]::Exists($client_conf_file) -eq $False) {
 	Write-Host $prog_name ": SisIYA configuration file " $client_conf_file " does not exist!"
 	exit
 }
-[string]$output_file=""
-if($Args.Length -eq 3) {
-	$output_file=$Args[2]
+[string]$output_file = ""
+if ($Args.Length -eq 3) {
+	$output_file = $Args[2]
 }
 ### get configuration file included
 . $client_conf_file 
 
-if([System.IO.File]::Exists($sisiya_common_conf) -eq $False) {
+if([System.IO.File]::Exists($local_conf) -eq $False) {
 	Write-Output "SisIYA common configurations file " $sisiya_common_conf " does not exist!" | eventlog_error
 	exit
 }
-### get SisIYA common configurations file included
-. $sisiya_common_conf 
+### get SisIYA local configurations file included
+. $local_conf 
 
-if([System.IO.File]::Exists($sisiya_functions) -eq $False) {
+if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 #if(test-path $client_conf_file -eq $False) {
 	Write-Output "SisIYA functions file " $sisiya_functions " does not exist!" | eventlog_error
 	exit
@@ -56,8 +55,8 @@ if([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 . $sisiya_functions
 ### Module configuration file name. It has the same name as the script, because of powershell's include system, but 
 ### it is located under the $sisiya_base_dir\systems\hostname\conf directory.
-$module_conf_file=$sisiya_host_conf_dir + "\" + $prog_name
-$data_message_str=''
+$module_conf_file = $sisiya_host_conf_dir + "\" + $prog_name
+$data_message_str = ''
 ############################################################################################################
 ### service id
 $serviceid=$serviceid_mailq

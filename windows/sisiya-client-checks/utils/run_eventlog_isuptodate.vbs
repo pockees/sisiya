@@ -3,7 +3,7 @@
 ' This VB script is used to launch sisiya_eventlog.ps1 and sisiya_isuptodate.ps1, so that its window does not show up.
 ' Run this script with the following command: wscript run_sisiya_all_ps1.vbs
 '
-'    Copyright (C) 2009  Erdal Mutlu
+'    Copyright (C) 2003 - 2014  Erdal Mutlu
 '
 '    This program is free software; you can redistribute it and/or modify
 '    it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
 Dim objShell
 Dim objFso
 
-Set objShell=CreateObject("Wscript.Shell")
-Set objFso=CreateObject("Scripting.FileSystemObject")
+Set objShell = CreateObject("Wscript.Shell")
+Set objFso = CreateObject("Scripting.FileSystemObject")
 const HKEY_LOCAL_MACHINE = &H80000002 
 strComputer = "." 
 Set oReg=GetObject("winmgmts:{impersonationLevel=impersonate}!\\" & strComputer & "\root\default:StdRegProv") 
@@ -33,7 +33,7 @@ strKeyPath = "SOFTWARE\SisIYA_client_checks"
 path_strName = "Path"
 ' read the SisIYA installation PATH from the registry
 oReg.GetStringValue HKEY_LOCAL_MACHINE,strKeyPath,path_strName,path_str 
-client_conf=path_str & "\conf\sisiya_client_conf.ps1"
+client_conf = path_str & "\conf\SisIYA_Config.ps1"
 
 'check for 64 bit systems and use 32 bit version of powershell
 'powershell_prog="powershell.exe"
@@ -42,10 +42,10 @@ client_conf=path_str & "\conf\sisiya_client_conf.ps1"
 'if (objFso.FileExists(powershell64_prog)) Then
 '	powershell_prog=powershell64_prog
 'end if
-powershell_prog="c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass"
+powershell_prog = "c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass"
 ' run sisiya_eventlog.ps1
-prog_str=path_str & "\special\sisiya_eventlog.ps1"
-strCmd=powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' 45" & chr(34)
+prog_str = path_str & "\sscripts\sisiya_eventlog.ps1"
+strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' 45" & chr(34)
 ' uncomment the next line for debugging
 'WScript.Echo strCmd
 
@@ -53,8 +53,8 @@ strCmd=powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf 
 objShell.Run strCmd,0
 
 'run sisiya_isuptodate.ps1
-prog_str=path_str & "\special\sisiya_isuptodate.ps1"
-strCmd=powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' 45" & chr(34)
+prog_str = path_str & "\scripts\sisiya_isuptodate.ps1"
+strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' 45" & chr(34)
 ' uncomment the next line for debugging
 'WScript.Echo strCmd
 ' use 0 to hide the window

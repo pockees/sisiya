@@ -3,7 +3,7 @@
 ' This VB script is used to launch sisiya_all.ps1, so that its window does not show up.
 ' Run this script with the following command: wscript run_sisiya_all_ps1.vbs
 '
-'    Copyright (C) 2003 - 2010  Erdal Mutlu
+'    Copyright (C) 2003 - 2014  Erdal Mutlu
 '
 '    This program is free software; you can redistribute it and/or modify
 '    it under the terms of the GNU General Public License as published by
@@ -33,8 +33,8 @@ Set oReg=GetObject("winmgmts:{impersonationLevel=impersonate}!\\" & strComputer 
 strKeyPath = "SOFTWARE\SisIYA_client_checks"
 strValueName = "Path"
 ' read the SisIYA installation PATH from the registry
-oReg.GetStringValue HKEY_LOCAL_MACHINE,strKeyPath,strValueName,path_str 
-prog_str=path_str & "\bin\sisiya_all.ps1"
+oReg.GetStringValue HKEY_LOCAL_MACHINE, strKeyPath, strValueName, path_str 
+prog_str=path_str & "\utils\sisiya_all.ps1"
 
 ' chr(34) is " (double quote)
 
