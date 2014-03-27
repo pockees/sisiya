@@ -124,7 +124,8 @@ $osname			= "Windows"
 $base_dir		= getPathFromRegistry "HKLM:\SOFTWARE\SisIYA_client_checks"
 $conf_dir		= $base_dir + "\conf"
 $conf_d_dir		= $conf_dir + "\conf.d"
-$local_conf		= $conf_dir + "\SisIYA_Config_local.ps1"
+$local_conf_file	= $conf_dir + "\SisIYA_Config_local.ps1"
+$scripts_dir		= $base_dir + "\scripts"
 $tmp_dir		= $base_dir + "\tmp"
 $utils_dir		= $base_dir + "\utils"
 $functions 		= $utils_dir + "\functions.ps1"
@@ -135,23 +136,23 @@ $send_message2_prog 	= $utils_dir + "\send_message2_xml.ps1"
 ### checks
 $checks = @{
 	'antivirus'			= @{ 'auto' = 1; 'script' = 'sisiya_antivirus.ps1' },
-	'battery'			= @{ 'auto' = 0; 'script' = 'sisiya_battery.ps1' }
-	'brightstore_devices'		= @{ 'auto' = 0; 'script' = 'sisiya_brightstore_devices.ps1' }
+	'battery'			= @{ 'auto' = 0; 'script' = 'sisiya_battery.ps1' },
+	'brightstore_devices'		= @{ 'auto' = 0; 'script' = 'sisiya_brightstore_devices.ps1' },
         'brightstore_jobs'		= @{ 'auto' = 0; 'script' = 'sisiya_brightstore_jobs.ps1' },
-	'brightstore_scratch'		= @{ 'auto' = 0; 'script' = 'sisiya_brightstore_scratch.ps1' }
-	'eventlog'			= @{ 'auto' = 0; 'script' = 'sisiya_eventlog.ps1' }
-	'isuptodate.ps1'		= @{ 'auto' = 0; 'script' = 'sisiya_isuptodate.ps1' }
-	'load'				= @{ 'auto' = 1; 'script' = 'sisiya_load.ps1' }
-	'msexchange_mailqueue'		= @{ 'auto' = 0; 'script' = 'sisiya_msexchange_mailqueue.ps1' }
-	'msexchange_mapiconnectivity'	= @{ 'auto' = 0; 'script' = 'sisiya_msexchange_mapiconnectivity.ps1' }
-	'mssexchange_mailflow'		= @{ 'auto' = 0; 'script' = 'sisiya_msexchange_mailflow.ps1' }
-	'msexchange_servicehealth'	= @{ 'auto' = 0; 'script' = 'sisiya_msexchange_servicehealth.ps1' }
-	'ntpstat'			= @{ 'auto' = 0; 'script' = 'sisiya_ntpstat.ps1' }
-	'progs'				= @{ 'auto' = 0; 'script' = 'sisiya_progs.ps1' }
-	'raid_hpacu'			= @{ 'auto' = 0; 'script' = 'sisiya_raid_hpacu.ps1' }
-	'services'			= @{ 'auto' = 1; 'script' = 'sisiya_services.ps1' }
-	'temperature'			= @{ 'auto' = 0; 'script' = 'sisiya_temperature.ps1' }
-	'swap'				= @{ 'auto' = 1; 'script' = 'sisiya_swap.ps1' }
+	'brightstore_scratch'		= @{ 'auto' = 0; 'script' = 'sisiya_brightstore_scratch.ps1' },
+	'eventlog'			= @{ 'auto' = 0; 'script' = 'sisiya_eventlog.ps1' },
+	'isuptodate.ps1'		= @{ 'auto' = 0; 'script' = 'sisiya_isuptodate.ps1' },
+	'load'				= @{ 'auto' = 1; 'script' = 'sisiya_load.ps1' },
+	'msexchange_mailqueue'		= @{ 'auto' = 0; 'script' = 'sisiya_msexchange_mailqueue.ps1' },
+	'msexchange_mapiconnectivity'	= @{ 'auto' = 0; 'script' = 'sisiya_msexchange_mapiconnectivity.ps1' },
+	'mssexchange_mailflow'		= @{ 'auto' = 0; 'script' = 'sisiya_msexchange_mailflow.ps1' },
+	'msexchange_servicehealth'	= @{ 'auto' = 0; 'script' = 'sisiya_msexchange_servicehealth.ps1' },
+	'ntpstat'			= @{ 'auto' = 0; 'script' = 'sisiya_ntpstat.ps1' },
+	'progs'				= @{ 'auto' = 0; 'script' = 'sisiya_progs.ps1' },
+	'raid_hpacu'			= @{ 'auto' = 0; 'script' = 'sisiya_raid_hpacu.ps1' },
+	'services'			= @{ 'auto' = 1; 'script' = 'sisiya_services.ps1' },
+	'temperature'			= @{ 'auto' = 0; 'script' = 'sisiya_temperature.ps1' },
+	'swap'				= @{ 'auto' = 1; 'script' = 'sisiya_swap.ps1' },
 	'system'			= @{ 'auto' = 1; 'script' = 'sisiya_system.ps1' }
 }
 #################################################################################

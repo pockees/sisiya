@@ -24,17 +24,17 @@
 Dim objShell
 Dim objFso
 
-Set objShell=CreateObject("Wscript.Shell")
-Set objFso=CreateObject("Scripting.FileSystemObject")
+Set objShell = CreateObject("Wscript.Shell")
+Set objFso = CreateObject("Scripting.FileSystemObject")
 
 const HKEY_LOCAL_MACHINE = &H80000002 
 strComputer = "." 
-Set oReg=GetObject("winmgmts:{impersonationLevel=impersonate}!\\" & strComputer & "\root\default:StdRegProv") 
+Set oReg = GetObject("winmgmts:{impersonationLevel=impersonate}!\\" & strComputer & "\root\default:StdRegProv") 
 strKeyPath = "SOFTWARE\SisIYA_client_checks"
 strValueName = "Path"
 ' read the SisIYA installation PATH from the registry
 oReg.GetStringValue HKEY_LOCAL_MACHINE, strKeyPath, strValueName, path_str 
-prog_str=path_str & "\utils\sisiya_all.ps1"
+prog_str = path_str & "\utils\sisiya_all.ps1"
 
 ' chr(34) is " (double quote)
 
@@ -46,10 +46,10 @@ prog_str=path_str & "\utils\sisiya_all.ps1"
 '	powershell_prog=powershell64_prog
 'end if
 
-powershell_prog="c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass"
-strCmd=powershell_prog & " " & chr(34) & "& '" & prog_str & "' 10" & chr(34)
+powershell_prog = "c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass"
+strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' 10" & chr(34)
 ' uncomment the next line for debugging
 'WScript.Echo strCmd
 
 ' use 0 to hide the window
-objShell.Run strCmd,0
+objShell.Run strCmd, 0

@@ -25,11 +25,11 @@ if($Args.Length -ne 1) {
 	exit
 } 
 
-$expire=$Args[0]
+$expire = $Args[0]
 
 function getPathFromRegistry
 {
-	[string]$sisiya_registry_key="HKLM:\SOFTWARE\SisIYA_client_checks"
+	[string]$sisiya_registry_key = "HKLM:\SOFTWARE\SisIYA_client_checks"
 	$a=Get-ItemProperty $sisiya_registry_key
 	if($a) {
 		return $a.Path
@@ -50,16 +50,20 @@ function getPathFromRegistry
 #	exit
 #}
 
-$path_str=getPathFromRegistry 
-$sisiya_conf_file=$path_str + "\conf\sisiya_client_conf.ps1"
+$path_str = getPathFromRegistry 
+$conf_file = $path_str + "\conf\SisIYA_Config.ps1"
 if([System.IO.File]::Exists($sisiya_conf_file) -eq $False) {
 	Write-Host $prog_name ":ERROR: SisIYA configuration file $sisiya_conf_file does not exist!"
 	exit
 }
 ### get SisIYA client configurations file included
-. $sisiya_conf_file 
+. $conf_file
+if([System.IO.File]::Exists($local_conf_file) -eq $Ture) {
+	### get SisIYA client local configurations file included
+	. $local_conf_file 
+}
 
-if([System.IO.File]::Exists($sisiya_common_conf) -eq $False) {
+if([System.IO.File]::Exists($mon_conf) -eq $False) {
 	Write-Output "SisIYA common configurations file " $sisiya_common_conf " does not exist!" | eventlog_error
 	exit
 }
@@ -81,17 +85,17 @@ if([System.IO.File]::Exists($send_message2_prog) -eq $False) {
 }
 
 ### check base directories
-foreach($d in $sisiya_base_dir,$sisiya_common_dir,$sisiya_special_dir,$sisiya_tmp_dir) {
+foreach($d in $sisiya_base_dir, $sisiya_common_dir, $sisiya_special_dir, $sisiya_tmp_dir) {
 	if([System.IO.Directory]::Exists($d) -eq $False) {
 		Write-Host $prog_name ": Directory " $d " does not exist!"
 		exit
 	}
 }
 ###
-$output_file=makeTempFile
+$output_file = makeTempFile
 ### execute common scripts
 cd $sisiya_common_dir
-$files=Get-ChildItem sisiya_*.ps1
+$files = Get-ChildItem sisiya_*.ps1
 foreach($f in $files) {
 	if(! $f) {
 		continue
