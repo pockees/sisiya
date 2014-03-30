@@ -29,8 +29,8 @@ if ( ($#ARGV < 0) || ($#ARGV > 1) ) {
 	print "Usage : $0 expire\n";
 	print "Usage : $0 check_script expire\n";
 	print "The expire parameter must be given in minutes.\n";
-	print "When run without check_scripts parameter all checks in the common directory and";
-	print "the checks defined in the systems/hostname directory are excecuted.";
+	print "When run without check_script parameter all checks which are";
+	print "set auto mode in the SisIYA_Config are excecuted.";
 	exit 1;
 }
 
@@ -85,8 +85,7 @@ my $xml_s_str = '';
 if ($#ARGV == 1) {
 	$expire = $ARGV[1];
 	$xml_s_str = run_script($ARGV[0], $expire);
-}
-else {
+} else {
 	$expire = $ARGV[0];
 	$xml_s_str = process_checks($expire);
 }
