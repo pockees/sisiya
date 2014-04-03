@@ -59,11 +59,11 @@ $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceids.Item("msexchange_mailflow
-if(! $serviceids.Item("msexchange_mailflow) {
-	Write-Output "Error : serviceids.Item("msexchange_mailflow is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if (! $serviceids.Item("msexchange_mailflow")) {
+	Write-Output "Error : msexchange_mailflow serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("msexchange_mailflow")
 ############################################################################################################
 ### the default values
 ### latency in ms

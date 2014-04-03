@@ -59,11 +59,11 @@ $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceids.Item("brightstore_devices
-if(! $serviceids.Item("brightstore_devices) {
-	Write-Output "Error : serviceids.Item("brightstore_devices is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if (! $serviceids.Item("brightstore_devices")) {
+	Write-Output "Error : brightstore_devices serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("brightstore_devices")
 ############################################################################################################
 ### the default values
 $ca_devmgr_prog="C:\Program Files\CA\ARCserve Backup\ca_devmgr.exe"

@@ -59,11 +59,11 @@ $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceids.Item("brightstore_jobs
-if(! $serviceids.Item("brightstore_jobs) {
-	Write-Output "Error : serviceids.Item("brightstore_jobs is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if (! $serviceids.Item("brightstore_jobs")) {
+	Write-Output "Error : brightstore_jobs serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("brightstore_jobs")
 ############################################################################################################
 ### the default values
 #ca_dvmgr -deviceinfo -> Status:

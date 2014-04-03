@@ -60,11 +60,11 @@ $data_message_str = ''
 ############################################################################################################
 ############################################################################################################
 ### service id
-$serviceid=$serviceids.Item("raid
-if(! $serviceids.Item("raid) {
-	Write-Output "Error : serviceids.Item("raid is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if (! $serviceids.Item("raid")) {
+	Write-Output "Error : raid serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("raid")
 ############################################################################################################
 ### HP Array Configuration Utility Software
 ### the default values

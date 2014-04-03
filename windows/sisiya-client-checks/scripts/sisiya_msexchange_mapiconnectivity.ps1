@@ -59,11 +59,11 @@ $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceids.Item("msexchange_mapiconnectivity
-if(! $serviceids.Item("msexchange_mapiconnectivity) {
-	Write-Output "Error : serviceids.Item("msexchange_mapiconnectivity is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if (! $serviceids.Item("msexchange_mapiconnectivity")) {
+	Write-Output "Error : msexchange_mapiconnectivity serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("msexchange_mapiconnectivity")
 ############################################################################################################
 ### the default values
 ### latency in ms

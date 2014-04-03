@@ -59,11 +59,11 @@ $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceids.Item("mailq
-if(! $serviceids.Item("mailq) {
-	Write-Output "Error : serviceids.Item("mailq is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if (! $serviceids.Item("mailq")) {
+	Write-Output "Error : mailq serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("mailq")
 ############################################################################################################
 ### the default values
 $warning_mailq=3

@@ -59,11 +59,11 @@ $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceids.Item("msexchange_servicehealth
-if(! $serviceids.Item("msexchange_servicehealth) {
-	Write-Output "Error : serviceids.Item("msexchange_servicehealth is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if (! $serviceids.Item("msexchange_servicehealth")) {
+	Write-Output "Error : msexchange_servicehealth serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("msexchange_servicehealth")
 ############################################################################################################
 ### the default values
 ### end of the default values
