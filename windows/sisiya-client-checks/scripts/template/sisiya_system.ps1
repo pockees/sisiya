@@ -19,17 +19,17 @@
 #
 ############################################################################################################
 $prog_name = $MyInvocation.MyCommand.Name
-if($Args.Length -lt 2) {
+if ($Args.Length -lt 2) {
 	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire" 
 	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire output_file" 
 	Write-Host "The expire parameter must be given in minutes."
 	exit
 } 
 
-$client_conf_file = $Args[0]
+$conf_file = $Args[0]
 $expire = $Args[1]
-if ([System.IO.File]::Exists($client_conf_file) -eq $False) {
-	Write-Host $prog_name ": SisIYA configuration file " $client_conf_file " does not exist!"
+if ([System.IO.File]::Exists($conf_file) -eq $False) {
+	Write-Host $prog_name ": SisIYA configuration file " $conf_file " does not exist!"
 	exit
 }
 [string]$output_file = ""
@@ -37,32 +37,32 @@ if ($Args.Length -eq 3) {
 	$output_file = $Args[2]
 }
 ### get configuration file included
-. $client_conf_file 
+. $conf_file 
 
-if([System.IO.File]::Exists($local_conf) -eq $False) {
-	Write-Output "SisIYA common configurations file " $sisiya_common_conf " does not exist!" | eventlog_error
+if([System.IO.File]::Exists($local_conf_file) -eq $False) {
+	Write-Output "SisIYA local configurations file " $local_conf_file " does not exist!" | eventlog_error
 	exit
 }
 ### get SisIYA local configurations file included
-. $local_conf 
+. $local_conf_file 
 
 if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
-#if(test-path $client_conf_file -eq $False) {
+#if(test-path $conf_file -eq $False) {
 	Write-Output "SisIYA functions file " $sisiya_functions " does not exist!" | eventlog_error
 	exit
 }
 ### get common functions
 . $sisiya_functions
 ### Module configuration file name. It has the same name as the script, because of powershell's include system, but 
-### it is located under the $sisiya_base_dir\systems\hostname\conf directory.
-$module_conf_file = $sisiya_host_conf_dir + "\" + $prog_name
+### it is located under the $conf_d_dir directory.
+$module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceid_system
-### because serviceid_system=0 if(! $serviceid_system) is always true
-#if(! $serviceid_system) {
-#	Write-Host $prog_name " Error : serviceid_system is not defined in the SisIYA client configuration file " $client_conf_file "!"
+$serviceid = $serviceids.Item("system")
+### because serviceids.Item("system") = 0 if(! $serviceids.Item("system")) is always true
+#if (! $serviceids.Item("system")) {
+#	Write-Host $prog_name " Error : serviceids.Item("system is not defined in the SisIYA client configuration file " $client_conf_file "!"
 #	exit
 #}
 ############################################################################################################
@@ -72,52 +72,51 @@ $serviceid=$serviceid_system
 ### 3) warning_uptime must be greater than error_uptime
 ############################################################################################################
 ### the default values
-$error_uptime="1"
-$warning_uptime="3"
+$error_uptime = "1"
+$warning_uptime = "3"
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
-if([System.IO.File]::Exists($module_conf_file) -eq $True) {
-#if(test-path $module_conf_file -eq $True) {
+if ([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
 ### get a wmi object
-$wmi=Get-WmiObject -Class Win32_OperatingSystem
+$wmi = Get-WmiObject -Class Win32_OperatingSystem
 ### get uptime
-$uptime=$wmi.ConvertToDateTime($wmi.LocalDateTime) - $wmi.ConvertToDateTime($wmi.LastBootUpTime)
+$uptime = $wmi.ConvertToDateTime($wmi.LocalDateTime) - $wmi.ConvertToDateTime($wmi.LastBootUpTime)
 
-$error_in_minutes=getTimeInMinutes($error_uptime)
-$warning_in_minutes=getTimeInMinutes($warning_uptime)
+$error_in_minutes = getTimeInMinutes($error_uptime)
+$warning_in_minutes = getTimeInMinutes($warning_uptime)
 
-$uptime_str=formatDateTime $uptime.Days $uptime.Hours $uptime.Minutes
-if($uptime.TotalMinutes -le $error_in_minutes) {
-	$statusid=$status_error
-	$error_uptime_str=formatDateTime2 $error_uptime
-	$message_str="ERROR: The system was restarted $uptime_str (<= $error_uptime_str) ago!" 
+$uptime_str = formatDateTime $uptime.Days $uptime.Hours $uptime.Minutes
+if ($uptime.TotalMinutes -le $error_in_minutes) {
+	$statusid = $statusids.Item("error")
+	$error_uptime_str = formatDateTime2 $error_uptime
+	$message_str = "ERROR: The system was restarted $uptime_str (<= $error_uptime_str) ago!" 
 }
-elseif($uptime.TotalMinutes -le $warning_in_minutes) {
-	$statusid=$status_warning
-	$warning_uptime_str=formatDateTime2 $warning_uptime
-	$message_str="WARNING: The system was restarted  $uptime_str (<=  $warning_uptime_str) ago!"
+elseif ($uptime.TotalMinutes -le $warning_in_minutes) {
+	$statusid = $statusids.Item("warning")
+	$warning_uptime_str = formatDateTime2 $warning_uptime
+	$message_str = "WARNING: The system was restarted  $uptime_str (<=  $warning_uptime_str) ago!"
 }
 else {
-	$statusid=$status_ok
-	$message_str="OK: The system is up since $uptime_str."
+	$statusid = $statusids.Item("ok")
+	$message_str = "OK: The system is up since $uptime_str."
 }
 
 ### get system info
-$sys_info=getSystemInfo
-$sisiya_client_version=getInstalledVersion
-$ip_info = getIpInfo($sisiya_hostname)
-$message_str="$message_str INFO: $sys_info IP: $ip_info SisIYA: $sisiya_client_version"
+$sys_info = getSystemInfo
+$sisiya_client_version = getInstalledVersion
+$ip_info = getIPInfo($hostname)
+$message_str = "$message_str INFO: $sys_info IP: $ip_info SisIYA: $sisiya_client_version"
 ###############################################################################################################################################
-#Write-Host "sisiya_hostname=$sisiya_hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
+#Write-Host "hostname=$hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
 if($output_file.Length -eq 0) {
-	. $send_message_prog $client_conf_file $sisiya_hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	. $send_message_prog $conf_file $hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 }
 else {
-	$str="$sisiya_hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	$str="$hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 	Out-String -inputobject $str | Out-File -filepath $output_file -append
 }
 ###############################################################################################################################################

@@ -1,9 +1,9 @@
 ### service id
-$serviceid=$serviceid_swap
-if(! $serviceid_swap) {
-	Write-Output "Error : serviceid_swap is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("swap")) {
+	Write-Output "Error : swap serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("swap")
 ############################################################################################################
 ### the default values
 $warning_percent=30
@@ -46,15 +46,15 @@ $used_percent=100 * $used_swap / $total_swap
 $info_str="SWAP: total="+$total_swap + "MB used=" + $used_swap + "MB free=" + $free_swap + "MB. " + $ram_str
 
 if($used_percent -ge $error_percent) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 	$message_str="ERROR: Swap usage is " + $used_percent + "% (>=" + $error_percent + ")!"  
 }
 elseif($used_percent -ge $warning_percent) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 	$message_str="WARNING: Swap usage is " + $used_percent + "% (>=" + $warning_percent + ")!"  
 }
 else {
-	$statusid=$status_ok
+	$statusid=$statusids.Item("ok")
 	$message_str="OK: Swap usage is " + $used_percent + "%."  
 }
 $message_str=$message_str + " " + $info_str

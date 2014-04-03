@@ -155,7 +155,7 @@ function getSystemInfo
 	Write-Output "OS:"$b.Caption", Service Pack:"  $b.CSDVersion ", Model: " $a.Model ", Manufacturer:" $a.Manufacturer ", System Type:" $a.SystemType ",BIOS: " $c.SMBIOSBIOSVersion " " $c.Version
 }
 
-function getIpInfo()
+function getIPInfo()
 {
 	Param ([string]$Computer)
 
@@ -200,7 +200,7 @@ function getIpInfo()
 ### Outputs the installed SisIYA client version
 function getInstalledVersion()
 {
-	$version_file=$sisiya_tmp_dir + "\version.txt"
+	$version_file = $tmp_dir + "\version.txt"
 	if([System.IO.File]::Exists($version_file) -eq $False) {
 		Write-Output ""
 	}
@@ -324,22 +324,22 @@ function sendSisIYAMessage
 
 	#	Write-Host $my_prog "sendSisIYAMessage: msg_str=" $msg_str
 	### get a TCP/IP socket
-	$socket=New-Object System.Net.Sockets.TcpClient($sisiya_server,$sisiya_port)
-	if($socekt.Connected -eq $False) {
+	$socket = New-Object System.Net.Sockets.TcpClient($sisiya_server, $sisiya_port)
+	if ($socekt.Connected -eq $False) {
 		Write-Host "Error connecting to SisIYA server " $sisiya_server " at port " $sisiya_port "!"
 		Write-Host "Could not connect TCP/IP socket!"
 		return $false
 	}
 	### get stream
-	$stream=$socket.GetStream()
-	if(! $stream) {
+	$stream = $socket.GetStream()
+	if (! $stream) {
 		Write-Host "Error connecting to SisIYA server " $sisiya_server " at port " $sisiya_port "!"
 		Write-Host "Could not create stream from the TCP/IP socket!"
 		return $false
 	}
 	### get a writer stream
-	$writer=new-object System.IO.StreamWriter($stream)
-	if(! $writer) {
+	$writer = new-object System.IO.StreamWriter($stream)
+	if (! $writer) {
 		Write-Host "Error connecting to SisIYA server " $sisiya_server " at port " $sisiya_port "!"
 		Write-Host "Could not create writer from stream writer!"
 		return $false
@@ -348,18 +348,14 @@ function sendSisIYAMessage
 	#	Write-Host $my_prog "sendSisIYAMessage: msg_str=[" $msg_str "]"
 	### change the default 'r'n (\r\n) to 'n (\n)
 	$writer.NewLine=[char]10
-	if([System.IO.File]::Exists($msg_str) -eq $True) {
+	if ([System.IO.File]::Exists($msg_str) -eq $True) {
 		$lines=Get-Content $msg_str 
-		for($i=0;$i -lt $lines.Length;$i++) {
+		for ($i=0; $i -lt $lines.Length; $i++) {
 			### skip empty lines
-			if($lines[$i].Length -eq 0) {
+			if ($lines[$i].Length -eq 0) {
 				continue
 			}
-			#$writer.NewLine=[char]10
-			### write the message
-			#$str=$lines[$i] + [char]10
 			$str=$lines[$i]
-			#	write-host "sendSisIYAMessage: sending str=$str"
 			$writer.Write($str)
 		}
 	}

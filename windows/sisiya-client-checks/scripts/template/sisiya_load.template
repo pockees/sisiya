@@ -1,9 +1,9 @@
 ### service id
-$serviceid=$serviceid_load
-if(! $serviceid_load) {
-	Write-Output "Error : serviceid_load is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("load")) {
+	Write-Output "Error : load serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("load")
 ############################################################################################################
 ### the default values
 $warning_percent=85
@@ -16,7 +16,7 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 $message_str=""
 
 $info_message_str=""
@@ -52,12 +52,12 @@ foreach($p in $processors) {
 		$error_message_str=$error_message_str + " ERROR: The status of " + $name_str + $cores_str + " is " + $p.Status + " != OK!"
 	}
 }
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 if($error_message_str.Length -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 }
 elseif($warning_message_str.Length -gt 0) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 }
 $error_message_str=$error_message_str.Trim()
 $warning_message_str=$warning_message_str.Trim()

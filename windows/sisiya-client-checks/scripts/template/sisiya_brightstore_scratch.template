@@ -1,7 +1,7 @@
 ### service id
-$serviceid=$serviceid_brightstore_scratch
-if(! $serviceid_brightstore_scratch) {
-	Write-Output "Error : serviceid_brightstore_scratch is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+$serviceid=$serviceids.Item("brightstore_scratch
+if(! $serviceids.Item("brightstore_scratch) {
+	Write-Output "Error : serviceids.Item("brightstore_scratch is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
 	exit
 }
 ############################################################################################################
@@ -124,12 +124,12 @@ else {
 		$error_message_str="ERROR: No media pool information!"
 	}
 }	
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 if($error_message_str.Length -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 }
 elseif($warning_message_str.Length -gt 0) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 }
 $error_message_str=$error_message_str.Trim()
 $warning_message_str=$warning_message_str.Trim()

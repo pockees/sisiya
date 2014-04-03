@@ -21,8 +21,8 @@
 #
 #
 #################################################################################
-$prog_name=$MyInvocation.MyCommand.Name
-if ($Args.Length -le 1 -or $Args.Length -gt 2) {
+$prog_name = $MyInvocation.MyCommand.Name
+if ($Args.Length -lt 1 -or $Args.Length -gt 2) {
 	Write-Host "Usage: " $prog_name " expire" 
 	Write-Host "Usage: " $prog_name " check_script expire" 
 	Write-Host "The expire parameter must be given in minutes."
@@ -30,7 +30,6 @@ if ($Args.Length -le 1 -or $Args.Length -gt 2) {
 	Write-Host "set auto mode in the SisIYA_Config are excecuted.";
 	exit
 } 
-
 
 function getPathFromRegistry
 {
@@ -52,6 +51,28 @@ function run_script
 		[string]$script_name,
 		[int]$expire
 	)
+	Write-Host "run_script: script_name=" $script_name "expire=" $expire
+	#$checks.Keys
+	Write-Host "run_script: auto =" $checks.Item($script_name).Item("auto") "script =" $checks.Item($script_name).Item("script")
+	$script_file = $scripts_dir + "\" + $checks.Item($script_name).Item("script")
+	Write-Host "run_script: Executing $script_file ..."
+	. $script_file $conf_file $expire
+	
+}
+
+function process_checks
+{
+	param ( [int]$expire )
+
+	Write-Host "process_checks: expire=" $expire
+	foreach($script_name in $checks.Keys) {
+		if ($checks.Item($script_name).Item("auto") -eq 1) {
+			Write-Host "process_checks: Executing $script_name ..."
+			run_script $script_name $expire
+		} else {
+			Write-Host "process_checks: Skiping $script_name ..."
+		}
+	}
 }
 
 ### get the installation path from registry
@@ -67,13 +88,13 @@ function run_script
 
 $path_str = getPathFromRegistry 
 $conf_file = $path_str + "\conf\SisIYA_Config.ps1"
-if ([System.IO.File]::Exists($sisiya_conf_file) -eq $False) {
-	Write-Host $prog_name ":ERROR: SisIYA configuration file $sisiya_conf_file does not exist!"
+if ([System.IO.File]::Exists($conf_file) -eq $False) {
+	Write-Host $prog_name ":ERROR: SisIYA configuration file $conf_file does not exist!"
 	exit
 }
 ### get SisIYA client configurations file included
 . $conf_file
-if ([System.IO.File]::Exists($local_conf_file) -eq $Ture) {
+if ([System.IO.File]::Exists($local_conf_file) -eq $True) {
 	### get SisIYA client local configurations file included
 	. $local_conf_file 
 }
@@ -101,11 +122,13 @@ foreach($d in $base_dir, $conf_dir, $conf_d_dir, $scripts_dir, $tmp_dir) {
 
 if ($Args.Length -eq 2) {
 	$expire = $Args[1]
-	run_script($Args[0], $expire)
+	run_script $Args[0] $expire
 } else {
 	$expire = $Args[0]
-	process_checks($expire)
+	process_checks $expire
 }
+Write-Host "exiting"
+exit 1
 
 ###
 $output_file = makeTempFile

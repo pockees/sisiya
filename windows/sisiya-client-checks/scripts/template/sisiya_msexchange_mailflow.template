@@ -1,7 +1,7 @@
 ### service id
-$serviceid=$serviceid_msexchange_mailflow
-if(! $serviceid_msexchange_mailflow) {
-	Write-Output "Error : serviceid_msexchange_mailflow is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+$serviceid=$serviceids.Item("msexchange_mailflow
+if(! $serviceids.Item("msexchange_mailflow) {
+	Write-Output "Error : serviceids.Item("msexchange_mailflow is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
 	exit
 }
 ############################################################################################################
@@ -44,12 +44,12 @@ foreach($s in $list) {
 		$error_message_str=$error_message_str + " ERROR: Mailflow is " + $s.TestMailflowResult + "!= Success!"
 	}
 }
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 if($error_message_str.Length -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 }
 elseif($warning_message_str.Length -gt 0) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 }
 $error_message_str=$error_message_str.Trim()
 $warning_message_str=$warning_message_str.Trim()

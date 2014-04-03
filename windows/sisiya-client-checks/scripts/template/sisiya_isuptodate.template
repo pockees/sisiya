@@ -1,9 +1,9 @@
 ### service id
-$serviceid=$serviceid_isuptodate
-if(! $serviceid_isuptodate) {
-	Write-Output "Error : serviceid_isuptodate is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if (! $serviceids.Item("isuptodate")) {
+	Write-Output "Error : isuptodate iserviceid not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("isuptodate")
 ############################################################################################################
 ### the default values
 ### end of the default values
@@ -17,7 +17,7 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 $updateSession=New-Object -com "Microsoft.Update.Session"
 $updates=$updateSession.CreateupdateSearcher().Search("IsInstalled=0 and Type='Software' and IsAssigned=1 and isHidden=0").Updates
 if($updates.Count -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 	$str="are"
 	$s="s"
 	if($updates.Count -eq 1) {
@@ -27,14 +27,14 @@ if($updates.Count -gt 0) {
 	$message_str="ERROR: There " + $str + " " + $updates.Count + " available high priority update" + $s + "!"
 }
 else { 
-	$statusid=$status_ok
+	$statusid=$statusids.Item("ok")
 	$message_str="OK: The system is uptodate."
 }	
 
 $updateSystemInfo=New-Object -com "Microsoft.Update.SystemInfo"
 if($updateSystemInfo.RebootRequired -eq $True) {
-	if($statusid -eq $status_ok) {
-		$statusid=$status_error
+	if($statusid -eq $statusids.Item("ok")) {
+		$statusid=$statusids.Item("error")
 		$message_str="ERROR: The system needs restart!"
 	}
 	else {

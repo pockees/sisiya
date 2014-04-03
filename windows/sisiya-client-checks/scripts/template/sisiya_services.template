@@ -1,9 +1,9 @@
 ### service id
-$serviceid=$serviceid_services
-if(! $serviceid_services) {
-	Write-Output "Error : serviceid_services is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("services")) {
+	Write-Output "Error : services serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("services")
 ############################################################################################################
 ### the default values
 #$exceptions = @("clr_optimization_v4.0.30319_32", "SkypeUpdate")
@@ -57,7 +57,7 @@ foreach($service in $services) {
 	}
 }
 if($n -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 	if($n -eq 1) {
 		$message_str="ERROR: The following service: " + $error_services_str + " is set to auto start, but is not started!"
 	}
@@ -66,7 +66,7 @@ if($n -gt 0) {
 	}
 }
 else {
-	$statusid=$status_ok
+	$statusid=$statusids.Item("ok")
 	$message_str="OK: All services set to be auto started are started."
 }
 if($info_services_str -ne "") {

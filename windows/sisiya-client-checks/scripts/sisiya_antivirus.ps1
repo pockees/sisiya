@@ -19,17 +19,17 @@
 #
 ############################################################################################################
 $prog_name = $MyInvocation.MyCommand.Name
-if($Args.Length -lt 2) {
+if ($Args.Length -lt 2) {
 	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire" 
 	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire output_file" 
 	Write-Host "The expire parameter must be given in minutes."
 	exit
 } 
 
-$client_conf_file = $Args[0]
+$conf_file = $Args[0]
 $expire = $Args[1]
-if ([System.IO.File]::Exists($client_conf_file) -eq $False) {
-	Write-Host $prog_name ": SisIYA configuration file " $client_conf_file " does not exist!"
+if ([System.IO.File]::Exists($conf_file) -eq $False) {
+	Write-Host $prog_name ": SisIYA configuration file " $conf_file " does not exist!"
 	exit
 }
 [string]$output_file = ""
@@ -37,25 +37,25 @@ if ($Args.Length -eq 3) {
 	$output_file = $Args[2]
 }
 ### get configuration file included
-. $client_conf_file 
+. $conf_file 
 
-if([System.IO.File]::Exists($local_conf) -eq $False) {
-	Write-Output "SisIYA common configurations file " $sisiya_common_conf " does not exist!" | eventlog_error
+if([System.IO.File]::Exists($local_conf_file) -eq $False) {
+	Write-Output "SisIYA local configurations file " $local_conf_file " does not exist!" | eventlog_error
 	exit
 }
 ### get SisIYA local configurations file included
-. $local_conf 
+. $local_conf_file 
 
 if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
-#if(test-path $client_conf_file -eq $False) {
+#if(test-path $conf_file -eq $False) {
 	Write-Output "SisIYA functions file " $sisiya_functions " does not exist!" | eventlog_error
 	exit
 }
 ### get common functions
 . $sisiya_functions
 ### Module configuration file name. It has the same name as the script, because of powershell's include system, but 
-### it is located under the $sisiya_base_dir\systems\hostname\conf directory.
-$module_conf_file = $sisiya_host_conf_dir + "\" + $prog_name
+### it is located under the $conf_d_dir directory.
+$module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ############################################################################################################
@@ -157,13 +157,12 @@ function getAntivirusInfoForAvira()
 	
 }
 ############################################################################################################
-
 ### service id
-$serviceid=$serviceid_antivirus
-if(! $serviceid_antivirus) {
-	Write-Output "Error : serviceid_antivirus is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("antivirus")) {
+	Write-Output "Error : antivirus serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("antivirus")
 ############################################################################################################
 ### the default values
 ### end of the default values
@@ -183,11 +182,11 @@ if($a) {
 
 	$info_str=$a.DisplayName + ", version=" + $a.VersionNumber + ", on access scanning enabled=" + $a.onAccessScanningEnabled + "."
 	if($a.productUptoDate -eq $False) {
-		$statusid=$status_error
+		$statusid=$statusids.Item("error")
 		$message_str="ERROR: The antivirus software is not uptodate!"
 	}
 	else { 
-		$statusid=$status_ok
+		$statusid=$statusids.Item("ok")
 		$message_str="OK: The antivirus software is uptodate."
 	}	
 	$message_str = $message_str + " " + $info_str
@@ -195,7 +194,7 @@ if($a) {
 else {
 	$a=Get-WmiObject -NameSpace "root\SecurityCenter2" -Class AntivirusProduct 2> $null
 		
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 	$message_str = "ERROR:"
 	$str1 = "not uptodate!"
 	$str2 = "disabled!"
@@ -213,7 +212,7 @@ else {
 		$realtime_protection_status = $True 
 	}
 	if($up2date_status -eq $True -and $realtime_protection_status -eq $True) {
-		$statusid=$status_ok
+		$statusid=$statusids.Item("ok")
 		$message_str = "OK:"
 	}
 	$message_str +=" " + $a.displayName + " is " + $str1 + " The realtime protection is " + $str2
@@ -223,12 +222,12 @@ if($info_str -ne "") {
 	$message_str += " " + $info_str
 }
 ###############################################################################################################################################
-#Write-Host "sisiya_hostname=$sisiya_hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
+#Write-Host "hostname=$hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
 if($output_file.Length -eq 0) {
-	. $send_message_prog $client_conf_file $sisiya_hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	. $send_message_prog $conf_file $hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 }
 else {
-	$str="$sisiya_hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	$str="$hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 	Out-String -inputobject $str | Out-File -filepath $output_file -append
 }
 ###############################################################################################################################################

@@ -19,17 +19,17 @@
 #
 ############################################################################################################
 $prog_name = $MyInvocation.MyCommand.Name
-if($Args.Length -lt 2) {
+if ($Args.Length -lt 2) {
 	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire" 
 	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire output_file" 
 	Write-Host "The expire parameter must be given in minutes."
 	exit
 } 
 
-$client_conf_file = $Args[0]
+$conf_file = $Args[0]
 $expire = $Args[1]
-if ([System.IO.File]::Exists($client_conf_file) -eq $False) {
-	Write-Host $prog_name ": SisIYA configuration file " $client_conf_file " does not exist!"
+if ([System.IO.File]::Exists($conf_file) -eq $False) {
+	Write-Host $prog_name ": SisIYA configuration file " $conf_file " does not exist!"
 	exit
 }
 [string]$output_file = ""
@@ -37,33 +37,33 @@ if ($Args.Length -eq 3) {
 	$output_file = $Args[2]
 }
 ### get configuration file included
-. $client_conf_file 
+. $conf_file 
 
-if([System.IO.File]::Exists($local_conf) -eq $False) {
-	Write-Output "SisIYA common configurations file " $sisiya_common_conf " does not exist!" | eventlog_error
+if([System.IO.File]::Exists($local_conf_file) -eq $False) {
+	Write-Output "SisIYA local configurations file " $local_conf_file " does not exist!" | eventlog_error
 	exit
 }
 ### get SisIYA local configurations file included
-. $local_conf 
+. $local_conf_file 
 
 if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
-#if(test-path $client_conf_file -eq $False) {
+#if(test-path $conf_file -eq $False) {
 	Write-Output "SisIYA functions file " $sisiya_functions " does not exist!" | eventlog_error
 	exit
 }
 ### get common functions
 . $sisiya_functions
 ### Module configuration file name. It has the same name as the script, because of powershell's include system, but 
-### it is located under the $sisiya_base_dir\systems\hostname\conf directory.
-$module_conf_file = $sisiya_host_conf_dir + "\" + $prog_name
+### it is located under the $conf_d_dir directory.
+$module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceid_services
-if(! $serviceid_services) {
-	Write-Output "Error : serviceid_services is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("services")) {
+	Write-Output "Error : services serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("services")
 ############################################################################################################
 ### the default values
 #$exceptions = @("clr_optimization_v4.0.30319_32", "SkypeUpdate")
@@ -117,7 +117,7 @@ foreach($service in $services) {
 	}
 }
 if($n -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 	if($n -eq 1) {
 		$message_str="ERROR: The following service: " + $error_services_str + " is set to auto start, but is not started!"
 	}
@@ -126,19 +126,19 @@ if($n -gt 0) {
 	}
 }
 else {
-	$statusid=$status_ok
+	$statusid=$statusids.Item("ok")
 	$message_str="OK: All services set to be auto started are started."
 }
 if($info_services_str -ne "") {
 	$message_str = $message_str + " INFO: The following service(s): " + $info_services_str + " is/are set to auto start, but is/are not started!"
 }
 ###############################################################################################################################################
-#Write-Host "sisiya_hostname=$sisiya_hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
+#Write-Host "hostname=$hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
 if($output_file.Length -eq 0) {
-	. $send_message_prog $client_conf_file $sisiya_hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	. $send_message_prog $conf_file $hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 }
 else {
-	$str="$sisiya_hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	$str="$hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 	Out-String -inputobject $str | Out-File -filepath $output_file -append
 }
 ###############################################################################################################################################

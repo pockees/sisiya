@@ -1,8 +1,8 @@
 ############################################################################################################
 ### service id
-$serviceid=$serviceid_raid
-if(! $serviceid_raid) {
-	Write-Output "Error : serviceid_raid is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+$serviceid=$serviceids.Item("raid
+if(! $serviceids.Item("raid) {
+	Write-Output "Error : serviceids.Item("raid is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
 	exit
 }
 ############################################################################################################
@@ -30,7 +30,7 @@ $info_message_str=""
 
 $str=& $cli_prog ctrl all show status
 if(! $str) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 	$message_str="WARNING: Program " + $cli_prog + " returned nothing!"
 	if($output_file.Length -eq 0) {
 		. $send_message_prog $client_conf_file $sisiya_hostname $serviceid $statusid $expire $message_str
@@ -178,12 +178,12 @@ else {
 	$ok_message_str=$ok_message_str + " OK: All " + $total_physical_drives + " physical drives are OK."	
 }
 
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 if($error_message_str.Length -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 }
 elseif($warning_message_str.Length -gt 0) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 }
 $error_message_str=$error_message_str.Trim()
 $warning_message_str=$warning_message_str.Trim()

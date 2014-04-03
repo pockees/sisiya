@@ -19,17 +19,17 @@
 #
 ############################################################################################################
 $prog_name = $MyInvocation.MyCommand.Name
-if($Args.Length -lt 2) {
+if ($Args.Length -lt 2) {
 	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire" 
 	Write-Host "Usage: " $prog_name " SisIYA_Config.ps1 expire output_file" 
 	Write-Host "The expire parameter must be given in minutes."
 	exit
 } 
 
-$client_conf_file = $Args[0]
+$conf_file = $Args[0]
 $expire = $Args[1]
-if ([System.IO.File]::Exists($client_conf_file) -eq $False) {
-	Write-Host $prog_name ": SisIYA configuration file " $client_conf_file " does not exist!"
+if ([System.IO.File]::Exists($conf_file) -eq $False) {
+	Write-Host $prog_name ": SisIYA configuration file " $conf_file " does not exist!"
 	exit
 }
 [string]$output_file = ""
@@ -37,31 +37,31 @@ if ($Args.Length -eq 3) {
 	$output_file = $Args[2]
 }
 ### get configuration file included
-. $client_conf_file 
+. $conf_file 
 
-if([System.IO.File]::Exists($local_conf) -eq $False) {
-	Write-Output "SisIYA common configurations file " $sisiya_common_conf " does not exist!" | eventlog_error
+if([System.IO.File]::Exists($local_conf_file) -eq $False) {
+	Write-Output "SisIYA local configurations file " $local_conf_file " does not exist!" | eventlog_error
 	exit
 }
 ### get SisIYA local configurations file included
-. $local_conf 
+. $local_conf_file 
 
 if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
-#if(test-path $client_conf_file -eq $False) {
+#if(test-path $conf_file -eq $False) {
 	Write-Output "SisIYA functions file " $sisiya_functions " does not exist!" | eventlog_error
 	exit
 }
 ### get common functions
 . $sisiya_functions
 ### Module configuration file name. It has the same name as the script, because of powershell's include system, but 
-### it is located under the $sisiya_base_dir\systems\hostname\conf directory.
-$module_conf_file = $sisiya_host_conf_dir + "\" + $prog_name
+### it is located under the $conf_d_dir directory.
+$module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ### service id
-$serviceid=$serviceid_msexchange_mailflow
-if(! $serviceid_msexchange_mailflow) {
-	Write-Output "Error : serviceid_msexchange_mailflow is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+$serviceid=$serviceids.Item("msexchange_mailflow
+if(! $serviceids.Item("msexchange_mailflow) {
+	Write-Output "Error : serviceids.Item("msexchange_mailflow is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
 	exit
 }
 ############################################################################################################
@@ -104,12 +104,12 @@ foreach($s in $list) {
 		$error_message_str=$error_message_str + " ERROR: Mailflow is " + $s.TestMailflowResult + "!= Success!"
 	}
 }
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 if($error_message_str.Length -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 }
 elseif($warning_message_str.Length -gt 0) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 }
 $error_message_str=$error_message_str.Trim()
 $warning_message_str=$warning_message_str.Trim()
@@ -117,12 +117,12 @@ $ok_message_str=$ok_message_str.Trim()
 $info_message_str=$info_message_str.Trim()
 $message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
 ###############################################################################################################################################
-#Write-Host "sisiya_hostname=$sisiya_hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
+#Write-Host "hostname=$hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
 if($output_file.Length -eq 0) {
-	. $send_message_prog $client_conf_file $sisiya_hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	. $send_message_prog $conf_file $hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 }
 else {
-	$str="$sisiya_hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
+	$str="$hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
 	Out-String -inputobject $str | Out-File -filepath $output_file -append
 }
 ###############################################################################################################################################

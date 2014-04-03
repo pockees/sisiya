@@ -97,13 +97,12 @@ function getAntivirusInfoForAvira()
 	
 }
 ############################################################################################################
-
 ### service id
-$serviceid=$serviceid_antivirus
-if(! $serviceid_antivirus) {
-	Write-Output "Error : serviceid_antivirus is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("antivirus")) {
+	Write-Output "Error : antivirus serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("antivirus")
 ############################################################################################################
 ### the default values
 ### end of the default values
@@ -123,11 +122,11 @@ if($a) {
 
 	$info_str=$a.DisplayName + ", version=" + $a.VersionNumber + ", on access scanning enabled=" + $a.onAccessScanningEnabled + "."
 	if($a.productUptoDate -eq $False) {
-		$statusid=$status_error
+		$statusid=$statusids.Item("error")
 		$message_str="ERROR: The antivirus software is not uptodate!"
 	}
 	else { 
-		$statusid=$status_ok
+		$statusid=$statusids.Item("ok")
 		$message_str="OK: The antivirus software is uptodate."
 	}	
 	$message_str = $message_str + " " + $info_str
@@ -135,7 +134,7 @@ if($a) {
 else {
 	$a=Get-WmiObject -NameSpace "root\SecurityCenter2" -Class AntivirusProduct 2> $null
 		
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 	$message_str = "ERROR:"
 	$str1 = "not uptodate!"
 	$str2 = "disabled!"
@@ -153,7 +152,7 @@ else {
 		$realtime_protection_status = $True 
 	}
 	if($up2date_status -eq $True -and $realtime_protection_status -eq $True) {
-		$statusid=$status_ok
+		$statusid=$statusids.Item("ok")
 		$message_str = "OK:"
 	}
 	$message_str +=" " + $a.displayName + " is " + $str1 + " The realtime protection is " + $str2

@@ -1,9 +1,9 @@
 ### service id
-$serviceid=$serviceid_progs
-if(! $serviceid_progs) {
-	Write-Output " Error : serviceid_progs is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("progs")) {
+	Write-Output " Error : progs serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("progs")
 ############################################################################################################
 ### the default values
 $prog_list=@("System","svchost")
@@ -26,7 +26,7 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 $message_str=""
 $error_message_str=""
 $ok_message_str=""
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 
 ### get processes
 $processes=Get-Process
@@ -52,7 +52,7 @@ foreach($p in $prog_list) {
 }
 
 if($error_message_str.Length -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 	$error_message_str="ERROR: "+ $error_message_str + "!"
 }
 if($ok_message_str.Length -gt 0) {

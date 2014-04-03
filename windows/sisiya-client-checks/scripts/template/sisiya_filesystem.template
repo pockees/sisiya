@@ -1,13 +1,13 @@
 ### service id
-$serviceid=$serviceid_filesystem
-if(! $serviceid_filesystem) {
-	Write-Output "Error : serviceid_filesystem is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("filesystem")) {
+	Write-Output "Error : filesystem serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("filesystem")
 ############################################################################################################
 ### the default values
-$warning_percent=85
-$error_percent=90
+$warning_percent = 85
+$error_percent = 90
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
@@ -49,7 +49,7 @@ function getSizeGB
 	Write-Output $result_str
 }
 
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 $message_str=""
 
 $info_message_str=""
@@ -86,12 +86,12 @@ foreach($drive in $drives) {
 	#$a=[double]($drive.Size / 1073741824)
 	#$size_str=getSizeGB $a
 }
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 if($error_message_str.Length -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 }
 elseif($warning_message_str.Length -gt 0) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 }
 $error_message_str=$error_message_str.Trim()
 $warning_message_str=$warning_message_str.Trim()

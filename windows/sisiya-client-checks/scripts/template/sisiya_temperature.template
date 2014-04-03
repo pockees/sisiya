@@ -1,10 +1,10 @@
 ############################################################################################################
 ### service id
-$serviceid=$serviceid_temperature
-if(! $serviceid_temperature) {
-	Write-Output "Error : serviceid_temperature is not defined in the SisIYA client configuration file " $client_conf_file "!" | eventlog_error
+if(! $serviceids.Item("temperature")) {
+	Write-Output "Error : temperature serviceid is not defined!" | eventlog_error
 	exit
 }
+$serviceid = $serviceids.Item("temperature")
 ############################################################################################################
 ### the default values
 ### end of the default values
@@ -15,7 +15,7 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 $message_str=""
 
 $info_message_str=""
@@ -47,12 +47,12 @@ else {
 	$error_message_str="ERROR: Could not get temperature software information!"
 }
 
-$statusid=$status_ok
+$statusid=$statusids.Item("ok")
 if($error_message_str.Length -gt 0) {
-	$statusid=$status_error
+	$statusid=$statusids.Item("error")
 }
 elseif($warning_message_str.Length -gt 0) {
-	$statusid=$status_warning
+	$statusid=$statusids.Item("warning")
 }
 $error_message_str=$error_message_str.Trim()
 $warning_message_str=$warning_message_str.Trim()
