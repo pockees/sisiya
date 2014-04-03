@@ -71,7 +71,7 @@ $path_str=getPathFromRegistry
 ################################################################################################################
 $prog_str=$path_str + "\utils\run_sisiya_all.vbs"
 $task_name="SisIYA_client_checks"
-$interval=5
+$interval=10
 #$user_and_password="/RU sisiya /RP password"
 $user_and_password=""
 
@@ -115,7 +115,7 @@ Invoke-Expression $command_str > $null
 ################################################################################################################
 $prog_str=$path_str + "\utils\run_windows_update.vbs"
 $task_name="windows_update"
-$interval=60
+$interval=120
 
 deleteScheduledTask $task_name > $null
 

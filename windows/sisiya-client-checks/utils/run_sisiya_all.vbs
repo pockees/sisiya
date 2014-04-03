@@ -47,7 +47,7 @@ prog_str = path_str & "\utils\sisiya_all.ps1"
 'end if
 
 powershell_prog = "c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass"
-strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' 10" & chr(34)
+strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' 15" & chr(34)
 ' uncomment the next line for debugging
 'WScript.Echo strCmd
 

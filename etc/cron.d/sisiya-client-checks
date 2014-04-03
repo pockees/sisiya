@@ -1,2 +1,2 @@
 ### SisIYA : Client checks.
-0-59/5 * * * * root /usr/bin/perl -I/etc/sisiya/sisiya-client-checks /usr/share/sisiya-client-checks/utils/sisiya_check.pl 10
+*/10 * * * * root /usr/bin/perl -I/etc/sisiya/sisiya-client-checks /usr/share/sisiya-client-checks/utils/sisiya_check.pl 15
