@@ -22,9 +22,9 @@
 #
 #################################################################################
 $prog_name = $MyInvocation.MyCommand.Name
-if ($Args.Length -lt 1 -or $Args.Length -gt 2) {
-	Write-Host "Usage: " $prog_name " expire" 
-	Write-Host "Usage: " $prog_name " check_script expire" 
+if ($Args.Length -lt 2 -or $Args.Length -gt 3) {
+	Write-Host "Usage  : " $prog_name " client_conf expire" 
+	Write-Host "Example: " $prog_name " c:\Program Files\conf\SisIYA_Client.ps1 check_script 15" 
 	Write-Host "The expire parameter must be given in minutes."
 	Write-Host "When run without check_script parameter all checks which are";
 	Write-Host "set auto mode in the SisIYA_Config are excecuted.";
@@ -86,16 +86,18 @@ function process_checks
 #	exit
 #}
 
-$path_str = getPathFromRegistry 
-$conf_file = $path_str + "\conf\SisIYA_Config.ps1"
+#$path_str = getPathFromRegistry 
+#$conf_file = $path_str + "\conf\SisIYA_Config.ps1"
+
+$conf_file = $Args[0]
 if ([System.IO.File]::Exists($conf_file) -eq $False) {
 	Write-Host $prog_name ":ERROR: SisIYA configuration file $conf_file does not exist!"
 	exit
 }
-### get SisIYA client configurations file included
+### include the SisIYA client configurations file
 . $conf_file
 if ([System.IO.File]::Exists($local_conf_file) -eq $True) {
-	### get SisIYA client local configurations file included
+	### include the SisIYA client local configurations file
 	. $local_conf_file 
 }
 
@@ -120,11 +122,11 @@ foreach($d in $base_dir, $conf_dir, $conf_d_dir, $scripts_dir, $tmp_dir) {
 	}
 }
 
-if ($Args.Length -eq 2) {
-	$expire = $Args[1]
-	run_script $Args[0] $expire
+if ($Args.Length -eq 3) {
+	$expire = $Args[2]
+	run_script $Args[1] $expire
 } else {
-	$expire = $Args[0]
+	$expire = $Args[1]
 	process_checks $expire
 }
 Write-Host "exiting"

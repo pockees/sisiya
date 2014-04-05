@@ -19,26 +19,25 @@
 #
 ############################################################################################################
 ############################################################################################################
-$prog_name=$MyInvocation.MyCommand.Name
-if($Args.Length -lt 1) {
-	Write-Host "Usage: " $prog_name " sisiya_client_conf.ps1" 
+$prog_name = $MyInvocation.MyCommand.Name
+if ($Args.Length -lt 1) {
+	Write-Host "Usage  : " $prog_name " client_conf" 
+	Write-Host "Example: " $prog_name " c:\Program Files\conf\SisIYA_Client.ps1" 
 	exit
 } 
 
-$client_conf_file=$Args[0]
-if([System.IO.File]::Exists($client_conf_file) -eq $False) {
+$client_conf_file = $Args[0]
+if ([System.IO.File]::Exists($client_conf_file) -eq $False) {
 	Write-Host $prog_name ": SisIYA client configurations file " $client_conf_file " does not exist!"
 	exit
 }
-### get SisIYA client configurations file included
-. $client_conf_file 
 
-if([System.IO.File]::Exists($sisiya_common_conf) -eq $False) {
-	Write-Output "SisIYA common configurations file " $sisiya_common_conf " does not exist!" | eventlog_error
-	exit
+### include the SisIYA client configurations file
+. $conf_file
+if ([System.IO.File]::Exists($local_conf_file) -eq $True) {
+	### include the SisIYA client local configurations file
+	. $local_conf_file 
 }
-### get SisIYA common configurations file included
-. $sisiya_common_conf 
 
 if([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 #if(test-path $client_conf_file -eq $False) {

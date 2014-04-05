@@ -44,7 +44,7 @@ function deleteScheduledTask
 	if($?) {
 		$command_str = "schtasks /Delete /TN " + $task_name + " /F"
 		#Write-Host $command_str
-		Invoke-Expression $command_str > $null
+		Invoke-Expression $command_str 2> $null
 	}
 }
 

@@ -35,7 +35,7 @@ strValueName = "Path"
 ' read the SisIYA installation PATH from the registry
 oReg.GetStringValue HKEY_LOCAL_MACHINE,strKeyPath,strValueName,path_str 
 client_conf_str=path_str & "\conf\sisiya_client_conf.ps1"
-prog_str=path_str & "\bin\sisiya_client_update.ps1"
+prog_str=path_str & "\utils\sisiya_client_update.ps1"
 
 ' chr(34) is " (double quote)
 

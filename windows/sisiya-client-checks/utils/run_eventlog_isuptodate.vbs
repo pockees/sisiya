@@ -42,20 +42,25 @@ client_conf = path_str & "\conf\SisIYA_Config.ps1"
 'if (objFso.FileExists(powershell64_prog)) Then
 '	powershell_prog=powershell64_prog
 'end if
+
 powershell_prog = "c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass"
-' run sisiya_eventlog.ps1
-prog_str = path_str & "\sscripts\sisiya_eventlog.ps1"
-strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' 45" & chr(34)
+prog_str = path_str & "\utils\sisiya_check.ps1"
+
+' run eventlog
+strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' eventlog 45" & chr(34)
 ' uncomment the next line for debugging
 'WScript.Echo strCmd
 
 ' use 0 to hide the window
 objShell.Run strCmd,0
 
-'run sisiya_isuptodate.ps1
-prog_str = path_str & "\scripts\sisiya_isuptodate.ps1"
-strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' 45" & chr(34)
-' uncomment the next line for debugging
-'WScript.Echo strCmd
-' use 0 to hide the window
-objShell.Run strCmd,0
+Dim scripts
+scripts = Array("eventlog", "isuptodate")
+
+For i = 0 To 1
+	strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' " & scripts(i) & " 45" & chr(34)
+	' uncomment the next line for debugging
+	'WScript.Echo strCmd
+	' use 0 to hide the window
+	objShell.Run strCmd,0
+Next

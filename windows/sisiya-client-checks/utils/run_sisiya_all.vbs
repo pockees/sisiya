@@ -34,7 +34,8 @@ strKeyPath = "SOFTWARE\SisIYA_client_checks"
 strValueName = "Path"
 ' read the SisIYA installation PATH from the registry
 oReg.GetStringValue HKEY_LOCAL_MACHINE, strKeyPath, strValueName, path_str 
-prog_str = path_str & "\utils\sisiya_all.ps1"
+prog_str = path_str & "\utils\sisiya_check.ps1"
+client_conf = path_str & "\conf\SisIYA_Config.ps1"
 
 ' chr(34) is " (double quote)
 
@@ -47,7 +48,7 @@ prog_str = path_str & "\utils\sisiya_all.ps1"
 'end if
 
 powershell_prog = "c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass"
-strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' 15" & chr(34)
+strCmd = powershell_prog & " " & chr(34) & "& '" & prog_str & "' '" & client_conf & "' 15" & chr(34)
 ' uncomment the next line for debugging
 'WScript.Echo strCmd
 
