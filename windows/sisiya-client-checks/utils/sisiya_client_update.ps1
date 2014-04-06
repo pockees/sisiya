@@ -98,7 +98,7 @@ foreach ($p in $nodes) {
 	$package_name = $p.name
 	#write-host "package_name" $package_name 
 	if($package_name -eq $SISIYA_PACKAGE_NAME) {
-		$installed_version=getInstalledVersion
+		$installed_version = getInstalledVersion
 		#write-host "BULDUM: package_name" $package_name 
 		$package_version = $p.version
 		$package_file = $p.file
@@ -107,10 +107,10 @@ foreach ($p in $nodes) {
 			Write-Output "Installed version: [${installed_version}] is the same as package version: [${package_version}]." | eventlog_info
 			break
 		}
-		$url_str="http://" + $SISIYA_UPDATE_SERVER + $SISIYA_PACKAGES_DIR + "/" + $package_file
-		$installer_prog=$sisiya_tmp_dir + "/install.exe"
+		$url_str = "http://" + $SISIYA_UPDATE_SERVER + $SISIYA_PACKAGES_DIR + "/" + $package_file
+		$installer_prog = $sisiya_tmp_dir + "/install.exe"
 		$x=downloadFile $url_str $installer_prog
-		if($x -eq $False) {
+		if ($x -eq $False) {
 			Write-Output "Could not download $url_str" | eventlog_error
 			exit
 		}
@@ -119,7 +119,7 @@ foreach ($p in $nodes) {
 
 		#& $installer_prog /S
 		sisiya_Try {
-			$p=[Diagnostics.Process]::Start($installer_prog,'/S')
+			$p = [Diagnostics.Process]::Start($installer_prog,'/S')
 			$p.WaitForExit()
 		} -Catch { 
 			Write-Host "Could not install the software!" 
@@ -127,7 +127,7 @@ foreach ($p in $nodes) {
 
 		#Write-Host "Executing : " $installer_prog "...OK"
 		Write-Output "Updated $SISIYA_PACKAGE_NAME to version $package_version" | eventlog_info
-		$version_file=$sisiya_tmp_dir + "\version.txt"
+		$version_file = $sisiya_tmp_dir + "\version.txt"
 		Write-Output "$package_version" > $version_file
 		exit
 	}

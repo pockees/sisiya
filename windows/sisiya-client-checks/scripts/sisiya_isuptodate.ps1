@@ -75,30 +75,43 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 }
 ###############################################################################################################################################
 $updateSession=New-Object -com "Microsoft.Update.Session"
-$updates=$updateSession.CreateupdateSearcher().Search("IsInstalled=0 and Type='Software' and IsAssigned=1 and isHidden=0").Updates
-if($updates.Count -gt 0) {
-	$statusid=$statusids.Item("error")
-	$str="are"
-	$s="s"
-	if($updates.Count -eq 1) {
-		$str="is"
-		$s=""
-	}	
-	$message_str="ERROR: There " + $str + " " + $updates.Count + " available high priority update" + $s + "!"
-}
-else { 
-	$statusid=$statusids.Item("ok")
-	$message_str="OK: The system is uptodate."
-}	
+#$searchResult	= $updateSession.CreateupdateSearcher().Search("IsInstalled=0 and Type='Software' and IsAssigned=1 and isHidden=0").Updates
+#$searchResult	= $updateSession.CreateupdateSearcher().Search("IsInstalled=0 and Type='Software' and IsAssigned=1 and isHidden=0")
+$searchResult	= $updateSession.CreateUpdateSearcher().Search("IsInstalled=0 and Type='Software'")
+$updatesCritical	= $searchResult.Updates | where { $_.MsrcSeverity -eq "Critical" }
+$updatesImportant	= $searchResult.Updates | where { $_.MsrcSeverity -eq "Important" }
+$updatesOther		= $searchResult.Updates | where { $_.MsrcSeverity -eq $null }
 
-$updateSystemInfo=New-Object -com "Microsoft.Update.SystemInfo"
-if($updateSystemInfo.RebootRequired -eq $True) {
-	if($statusid -eq $statusids.Item("ok")) {
-		$statusid=$statusids.Item("error")
-		$message_str="ERROR: The system needs restart!"
+#Write Results
+Write-Host "total=$($searchResult.updates.count)"
+Write-Host "critical=$($updatesCritical.count)"
+Write-Host "important=$($updatesImportant.count)"
+Write-Host "other=$($updatesOther.count)"
+$updates = $searchResult.Updates
+if ($updatesCritical.Count -gt 0) {
+	$statusid = $statusids.Item("error")
+	$message_str = "ERROR: The system is out of date!"
+	$message_str = $message_str + "Available updates : critical=" + $updatesCritical.Count + ", important=" + $updatesImportant.Count + ", other=" + $updatesOther.Count
+} elseif ($updatesImportant.Count -gt 0) {
+	$statusid = $statusids.Item("warning")
+	$message_str = "WARNING: The system is out of date!"
+	$message_str = $message_str + "Available updates : critical=" + $updatesCritical.Count + ", important=" + $updatesImportant.Count + ", other=" + $updatesOther.Count
+} else {
+	$statusid = $statusids.Item("ok")
+	$message_str = "OK: The system is uptodate."
+	if ($updatesOther.Count -gt 0) {
+		$message_str = $message_str + "INFO: Available updates : other=" + $updatesOther.Count
+	}
+}
+
+$updateSystemInfo = New-Object -com "Microsoft.Update.SystemInfo"
+if ($updateSystemInfo.RebootRequired -eq $True) {
+	if ($statusid -eq $statusids.Item("ok")) {
+		$statusid = $statusids.Item("warning")
+		$message_str = "WARNING: The system needs restart!"
 	}
 	else {
-		$message_str=$message_str + " ERROR: The system needs restart!"
+		$message_str = $message_str + " WARNING: The system needs restart!"
 	}
 }
 ###############################################################################################################################################

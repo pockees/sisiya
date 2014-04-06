@@ -204,7 +204,7 @@ function getInstalledVersion()
 	if([System.IO.File]::Exists($version_file) -eq $False) {
 		Write-Output ""
 	}
-	$str=get-content $version_file
+	$str = get-content $version_file
 	Write-Output $str
 }
 
