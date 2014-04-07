@@ -141,7 +141,7 @@ Section "SisIYA" Section1
 	SetOverwrite off
 	; files for conf\conf.d directory
 	SetOutPath "$INSTDIR\conf\conf.d\"
-	File "${SOURCE_DIR}\conf\*.ps1"
+	File "${SOURCE_DIR}\conf\conf.d\*.ps1"
 
 	SetOverwrite on
 	; files for scripts directory
