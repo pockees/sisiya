@@ -37,6 +37,18 @@ $SISIYA_PACKAGE_NAME	= "SisIYA_client_checks_MSWindows"
 ### Versions XML file
 $SISIYA_VERSIONS_XML_FILE = "versions.xml"
 #################################################################################
+# The following scripts are run automaticaly,
+# uncomment to disable the corresponding client check
+#$checks.Item('antivirus').Item('auto) = 0
+#$checks.Item('filesystem').Item('auto) = 0
+#$checks.Item('isuptodate').Item('auto) = 0
+#$checks.Item('load').Item('auto) = 0
+#$checks.Item('swap').Item('auto) = 0
+#$checks.Item('system').Item('auto) = 0
+#$checks.Item('').Item('auto) = 0
+#
+#################################################################################
+# The following checks are disabled,
 # uncomment to enable the corresponding client check
 #$checks.Item('battery').Item('auto) = 1
 #$checks.Item('brightstore_devices').Item('auto) = 1
@@ -50,3 +62,8 @@ $SISIYA_VERSIONS_XML_FILE = "versions.xml"
 #$checks.Item('raid_hpacu').Item('auto) = 1
 #$checks.Item('temperature').Item('auto) = 1
 #################################################################################
+# default values for external programs
+#$external_progs.Item('ca_devmgr')	= 'C:\Program Files\CA\ARCserve Backup\ca_devmgr.exe'
+#$external_progs.Item('ca_qmgr')	= 'C:\Program Files\CA\ARCserve Backup\ca_qmgr.exe'
+#$external_progs.Item('ca_dbmgr')	= 'C:\Program Files\CA\ARCserve Backup\ca_dbmgr.exe'
+#$external_progs.Item('hpacucli')	= 'C:\Program Files\Compaq\Hpacucli\Bin\hpacucli.exe'

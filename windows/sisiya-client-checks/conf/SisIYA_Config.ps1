@@ -133,6 +133,14 @@ $latest_results 	= $tmp_dir + "\latest_results.txt"
 $send_message_prog 	= $utils_dir + "\sisiya_send_message_xml.ps1"
 $send_message2_prog 	= $utils_dir + "\sisiya_send_message2_xml.ps1"
 #################################################################################
+### external programs
+$external_progs = @{
+	'ca_devmgr'		= 'C:\Program Files\CA\ARCserve Backup\ca_devmgr.exe';
+	'ca_qmgr'		= 'C:\Program Files\CA\ARCserve Backup\ca_qmgr.exe';
+	'ca_dbmgr'		= 'C:\Program Files\CA\ARCserve Backup\ca_dbmgr.exe';
+	'hpacucli'		= 'C:\Program Files\Compaq\Hpacucli\Bin\hpacucli.exe';
+}
+#################################################################################
 ### checks
 $checks = @{
 	'antivirus'			= @{ 'auto' = 1; 'script' = 'sisiya_antivirus.ps1' };
