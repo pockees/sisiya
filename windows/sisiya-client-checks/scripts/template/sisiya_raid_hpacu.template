@@ -6,9 +6,7 @@ if (! $serviceids.Item("raid")) {
 }
 $serviceid = $serviceids.Item("raid")
 ############################################################################################################
-### HP Array Configuration Utility Software
 ### the default values
-$cli_prog="C:\Program Files\Compaq\Hpacucli\Bin\hpacucli.exe"
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
@@ -17,6 +15,8 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
+### HP Array Configuration Utility Software
+$cli_prog = $external_progs.Item('hpacucli')
 if([System.IO.File]::Exists($cli_prog) -eq $False) {
 	Write-Output $prog_name ":Errror: The HP Array configuration utility " $cli_prog "does not exist!" | eventlog_error
 	exit

@@ -6,10 +6,6 @@ if (! $serviceids.Item("brightstore_jobs")) {
 $serviceid = $serviceids.Item("brightstore_jobs")
 ############################################################################################################
 ### the default values
-#ca_dvmgr -deviceinfo -> Status:
-#ca_qmgr -list -entiredomain
-#ca_dbmgr -show jobs
-$ca_qmgr_prog="C:\Program Files\CA\ARCserve Backup\ca_qmgr.exe"
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
@@ -18,6 +14,10 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
+#ca_dvmgr -deviceinfo -> Status:
+#ca_qmgr -list -entiredomain
+#ca_dbmgr -show jobs
+$ca_qmgr_prog = $external_progs.Item('ca_qmgr')
 if([System.IO.File]::Exists($ca_qmgr_prog) -eq $False) {
 	Write-Output $prog_name ":Errror: The CA queue manager command line utility " $ca_qmgr_prog "does not exist!" | eventlog_error
 	exit

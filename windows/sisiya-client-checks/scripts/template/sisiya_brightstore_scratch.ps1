@@ -66,7 +66,6 @@ if (! $serviceids.Item("brightstore_scratch")) {
 $serviceid = $serviceids.Item("brightstore_scratch")
 ############################################################################################################
 ### the default values
-$ca_dbmgr_prog="C:\Program Files\CA\ARCserve Backup\ca_dbmgr.exe"
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
@@ -75,6 +74,7 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
+$ca_dbmgr_prog = $external_progs.Item('ca_dbmgr')
 if([System.IO.File]::Exists($ca_dbmgr_prog) -eq $False) {
 	Write-Output $prog_name ":Error: The CA DB manager command line utility " $ca_dbmgr_prog "does not exist!" | eventlog_error
 	exit

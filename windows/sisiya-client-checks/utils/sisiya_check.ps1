@@ -51,11 +51,11 @@ function run_script
 		[string]$script_name,
 		[int]$expire
 	)
-	Write-Host "run_script: script_name=" $script_name "expire=" $expire
+	#Write-Host "run_script: script_name=" $script_name "expire=" $expire
 	#$checks.Keys
-	Write-Host "run_script: auto =" $checks.Item($script_name).Item("auto") "script =" $checks.Item($script_name).Item("script")
+	#Write-Host "run_script: auto =" $checks.Item($script_name).Item("auto") "script =" $checks.Item($script_name).Item("script")
 	$script_file = $scripts_dir + "\" + $checks.Item($script_name).Item("script")
-	Write-Host "run_script: Executing $script_file ..."
+	#Write-Host "run_script: Executing $script_file ..."
 	. $script_file $conf_file $expire
 	
 }
@@ -65,13 +65,13 @@ function process_checks
 	param ( [int]$expire )
 
 	Write-Host "process_checks: expire=" $expire
-	foreach($script_name in $checks.Keys) {
+	foreach ($script_name in $checks.Keys) {
 		if ($checks.Item($script_name).Item("auto") -eq 1) {
-			Write-Host "process_checks: Executing $script_name ..."
+			#Write-Host "process_checks: Executing $script_name ..."
 			run_script $script_name $expire
-		} else {
-			Write-Host "process_checks: Skiping $script_name ..."
-		}
+		} #else {
+			#Write-Host "process_checks: Skiping $script_name ..."
+		#}
 	}
 }
 

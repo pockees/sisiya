@@ -66,7 +66,6 @@ if (! $serviceids.Item("brightstore_devices")) {
 $serviceid = $serviceids.Item("brightstore_devices")
 ############################################################################################################
 ### the default values
-$ca_devmgr_prog="C:\Program Files\CA\ARCserve Backup\ca_devmgr.exe"
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
@@ -75,6 +74,7 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
+$ca_devmgr_prog = $external_progs.Item('ca_devmgr')
 if([System.IO.File]::Exists($ca_devmgr_prog) -eq $False) {
 	Write-Output $prog_name ":Errror: The CA queue manager command line utility " $ca_devmgr_prog "does not exist!" | eventlog_error
 	exit

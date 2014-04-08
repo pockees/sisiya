@@ -174,48 +174,53 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 }
 ###############################################################################################################################################
 ### get antivirus information
-$a=Get-WmiObject -NameSpace root\SecurityCenter -Class AntivirusProduct 2> $null
-if($a) {
+$a = Get-WmiObject -NameSpace root\SecurityCenter -Class AntivirusProduct 2> $null
+if ($a) {
 	#$name_str=$a.DisplayName
 	#$version_str=$a.VersionNumber
 	#$on_access_scanning_enabled=$a.onAccessScanningEnabled
 
-	$info_str=$a.DisplayName + ", version=" + $a.VersionNumber + ", on access scanning enabled=" + $a.onAccessScanningEnabled + "."
+	$info_str = $a.DisplayName + ", version=" + $a.VersionNumber + ", on access scanning enabled=" + $a.onAccessScanningEnabled + "."
 	if($a.productUptoDate -eq $False) {
-		$statusid=$statusids.Item("error")
-		$message_str="ERROR: The antivirus software is not uptodate!"
+		$statusid = $statusids.Item("error")
+		$message_str = "ERROR: The antivirus software is not uptodate!"
 	}
 	else { 
-		$statusid=$statusids.Item("ok")
-		$message_str="OK: The antivirus software is uptodate."
+		$statusid = $statusids.Item("ok")
+		$message_str = "OK: The antivirus software is uptodate."
 	}	
 	$message_str = $message_str + " " + $info_str
-}
-else {
-	$a=Get-WmiObject -NameSpace "root\SecurityCenter2" -Class AntivirusProduct 2> $null
+} else {
+	$a = Get-WmiObject -NameSpace "root\SecurityCenter2" -Class AntivirusProduct 2> $null
+
+	if($a) {
+		$statusid = $statusids.Item("error")
+		$message_str = "ERROR:"
+		$str1 = "not uptodate!"
+		$str2 = "disabled!"
+		$up2date_status = $False
+		$realtime_protection_status = $False
 		
-	$statusid=$statusids.Item("error")
-	$message_str = "ERROR:"
-	$str1 = "not uptodate!"
-	$str2 = "disabled!"
-	$up2date_status = $False
-	$realtime_protection_status = $False
-		
-	$up2date_array = @("262144", "266240", "393216", "397312")
-	$realtime_protectionarray = @("397312", "266240", "266256", "397328" )
-	if($up2date_array -contains $a.productState) { 
-		$str1 = "uptodate."
-		$up2date_status = $True		
+		$up2date_array = @("262144", "266240", "393216", "397312")
+		$realtime_protectionarray = @("397312", "266240", "266256", "397328" )
+		if($up2date_array -contains $a.productState) { 
+			$str1 = "uptodate."
+			$up2date_status = $True		
+		}
+		if($realtime_protectionarray -contains $a.productState) {
+			$str2 = "enabled."
+			$realtime_protection_status = $True 
+		}
+		if($up2date_status -eq $True -and $realtime_protection_status -eq $True) {
+			$statusid = $statusids.Item("ok")
+			$message_str = "OK:"
+		}
+		$message_str +=" " + $a.displayName + " is " + $str1 + " The realtime protection is " + $str2
+
+	} else {
+		$statusid = $statusids.Item("info")
+		$message_str = "INFO: This is not a supported antivirus program."
 	}
-	if($realtime_protectionarray -contains $a.productState) {
-		$str2 = "enabled."
-		$realtime_protection_status = $True 
-	}
-	if($up2date_status -eq $True -and $realtime_protection_status -eq $True) {
-		$statusid=$statusids.Item("ok")
-		$message_str = "OK:"
-	}
-	$message_str +=" " + $a.displayName + " is " + $str1 + " The realtime protection is " + $str2
 }
 $info_str=getAdditionalInfo
 if($info_str -ne "") {
