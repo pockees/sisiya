@@ -39,28 +39,28 @@ $SISIYA_VERSIONS_XML_FILE = "versions.xml"
 #################################################################################
 # The following scripts are run automaticaly,
 # uncomment to disable the corresponding client check
-#$checks.Item('antivirus').Item('auto) = 0
-#$checks.Item('filesystem').Item('auto) = 0
-#$checks.Item('isuptodate').Item('auto) = 0
-#$checks.Item('load').Item('auto) = 0
-#$checks.Item('swap').Item('auto) = 0
-#$checks.Item('system').Item('auto) = 0
-#$checks.Item('').Item('auto) = 0
+#$checks.Item('antivirus').Item('auto') = 0
+#$checks.Item('filesystem').Item('auto') = 0
+#$checks.Item('isuptodate').Item('auto') = 0
+#$checks.Item('load').Item('auto') = 0
+#$checks.Item('swap').Item('auto') = 0
+#$checks.Item('system').Item('auto') = 0
+#$checks.Item('').Item('auto') = 0
 #
 #################################################################################
 # The following checks are disabled,
 # uncomment to enable the corresponding client check
-#$checks.Item('battery').Item('auto) = 1
-#$checks.Item('brightstore_devices').Item('auto) = 1
-#$checks.Item('brightstore_jobs').Item('auto) = 1
-#$checks.Item('brightstore_scratch').Item('auto) = 1
-#$checks.Item('msexchange_mailqueue').Item('auto) = 1
-#$checks.Item('msexchange_mapiconnectivity').Item('auto) = 1
-#$checks.Item('mssexchange_mailflow').Item('auto) = 1
-#$checks.Item('msexchange_servicehealth').Item('auto) = 1
-#$checks.Item('progs').Item('auto) = 1
-#$checks.Item('raid_hpacu').Item('auto) = 1
-#$checks.Item('temperature').Item('auto) = 1
+#$checks.Item('battery').Item('auto') = 1
+#$checks.Item('brightstore_devices').Item('auto') = 1
+#$checks.Item('brightstore_jobs').Item('auto') = 1
+#$checks.Item('brightstore_scratch').Item('auto') = 1
+#$checks.Item('msexchange_mailqueue').Item('auto') = 1
+#$checks.Item('msexchange_mapiconnectivity').Item('auto') = 1
+#$checks.Item('mssexchange_mailflow').Item('auto') = 1
+#$checks.Item('msexchange_servicehealth').Item('auto') = 1
+#$checks.Item('progs').Item('auto') = 1
+#$checks.Item('raid_hpacu').Item('auto') = 1
+#$checks.Item('temperature').Item('auto') = 1
 #################################################################################
 # default values for external programs
 #$external_progs.Item('ca_devmgr')	= 'C:\Program Files\CA\ARCserve Backup\ca_devmgr.exe'

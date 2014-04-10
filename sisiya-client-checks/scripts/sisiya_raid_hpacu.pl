@@ -183,7 +183,7 @@ if ($retcode == 0) {
 	$faulty_logical_drive_count = $#b + 1;
 
 	if ($faulty_logical_drive_count != 0) {
-		$error_str .= " ERROR: $faulty_logical_drive_count out of $total_logical_drives are not OK!";
+		$error_str .= " ERROR: $faulty_logical_drive_count out of $total_logical_drives logical drives are not OK!";
 	}
 	else {
 		$ok_str .= " OK: All $total_logical_drives logical drives are OK.";
@@ -196,11 +196,11 @@ if ($retcode == 0) {
 	$faulty_physical_drive_count = $#b + 1;
 
 	if ($faulty_physical_drive_count != 0) {
-		$error_str .= " ERROR: $faulty_physical_drive_count out of $total_physical_drives are not OK!";
+		$error_str .= " ERROR: $faulty_physical_drive_count out of $total_physical_drives physical drives are not OK!";
 		# find out which physical drives have problems and their location (bay number)
 		my ($drive_bay, $drive_status);
 		foreach (@b) {
-			print STDERR "faulty physical drive ...\n";
+			#print STDERR "faulty physical drive ...\n";
 			$drive_bay = (split(/\s+/, (split(/:/, (split(/,/, $_))[0]))[4]))[1];
 			$drive_status = trim((split(/:/, (split(/,/, $_))[3]))[0]);
 			if ($drive_status eq 'Rebuilding') {

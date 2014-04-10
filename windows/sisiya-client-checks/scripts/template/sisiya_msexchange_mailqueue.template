@@ -17,7 +17,10 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 }
 ###############################################################################################################################################
 ### add MS Exchange snappin
+# for MS Exchange 2007
 addMSExcangeSupport
+# for MS Exchange2010
+#Add-PSSnapIn Microsoft.Exchange.Management.PowerShell.E2010
 
 $message_str=""
 $error_message_str=""

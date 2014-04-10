@@ -50,6 +50,124 @@ my $message_str;
 my $data_str = '';
 my $statusid = $SisIYA_Config::statusids{'ok'};
 
+sub get_os_info
+{
+	my ($file, $x, $s);
+
+	if ($SisIYA_Config::osname eq 'HP-UX') {
+		chomp($x = `/bin/uname -srm`);
+	}
+	else {
+		chomp($x = `/bin/uname -srmp`);
+	}
+	$s = $x;
+	# add OS version
+	if ($SisIYA_Config::osname eq 'Linux') {
+		if (open($file, '<', '/etc/issue.net')) {
+			$x = <$file>;
+			chomp($x);
+			close($file);
+			$s .= " OS: $x";
+		}
+	}
+	return $s;
+}
+
+sub get_system_info
+{
+	if (! -f $SisIYA_Config::external_progs{'dmidecode'}) {
+		return '';
+	}
+	my ($retcode, $s, $x);
+
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s bios-vendor`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s = 'BIOS: '.$x;
+	}
+
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s bios-version`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' version='.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s bios-release-date`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' release date='.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s system-product-name`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' Product: '.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s system-serial-number`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' SN: '.$x;
+	}
+
+	return $s;
+}
+
+# get IP information
+sub get_ip
+{
+	my $s = '';
+	my @a = `$SisIYA_Config::external_progs{'ip'} -4 a`;
+	my $retcode = $? >>=8;
+	if ($retcode == 0) {
+		@a = grep(/inet/, @a);
+		foreach (@a) {
+			$_ = (split(/\s+/, $_))[2];
+		}
+		#print STDERR "@a\n";
+		#chomp(@a = @a);
+		$s = "@a";
+	}
+	return $s;
+}
+
+# get information via an external info
+sub get_additional_info
+{
+	my $s = '';
+
+	if ($info_prog ne '') {
+		chomp($s = `$info_prog`);
+	}
+	return $s;
+}
+
+sub get_SisIYA_version
+{
+	my $s = '';
+
+	if (open(my $file, '<', $version_file)) {
+		$s = <$file>;
+		chomp($s);
+		close($file);
+	}
+	return $s;
+}
+
+sub get_info()
+{
+	my $s;
+
+	$s  = 'Info: '.get_os_info();
+	$s .= ' System: '.get_system_info();
+	$s .= ' SisIYA: '.get_SisIYA_version();
+	$s .= ' IP: '.get_ip();
+	$s .= ' Details: '.get_additional_info();
+	return $s;
+}
+
 sub get_uptime_in_minutes
 {
 	my $x;
@@ -108,52 +226,11 @@ elsif ($uptime_in_minutes < $uptimes{'warning'}) {
 else {
 	$message_str = 'OK:The system is up for '.minutes2string($uptime_in_minutes);
 }
-my $x;
-if ($SisIYA_Config::osname eq 'HP-UX') {
-	chomp($x = `/bin/uname -srm`);
-}
-else {
-	chomp($x = `/bin/uname -srmp`);
-}
-my $file;
-$message_str .= " Info: $x";
-# add OS version
-if ($SisIYA_Config::osname eq 'Linux') {
-	if (open($file, '<', '/etc/issue.net')) {
-		$x = <$file>;
-		chomp($x);
-		close($file);
-		$message_str .= " OS: $x";
-	}
-}
-# add SisIYA version
-if ($version_file ne '') {
-	if (open($file, '<', $version_file)) {
-		$x = <$file>;
-		chomp($x);
-		close($file);
-		$message_str .= " SisIYA: $x";
-	}
-}
-# add IP information
-my @a = `$SisIYA_Config::external_progs{'ip'} -4 a`;
-my $retcode = $? >>=8;
-if ($retcode == 0) {
-	@a = grep(/inet/, @a);
-	foreach (@a) {
-		$_ = (split(/\s+/, $_))[2];
-	}
-	#print STDERR "@a\n";
-	#chomp(@a = @a);
-	$x = "@a";
-	$message_str .= " IP: $x";
-}
 
-# add other information via an external info
-if ($info_prog ne '') {
-	chomp($x = `$info_prog`);
-	$message_str .= " Details: $x";
-}
+
+# add  info
+$message_str .= get_info();
+
 $data_str = '<entries>';
 $data_str .= '<entry name="uptime" type="numeric">'.$uptime_in_minutes.'</entry>';
 $data_str .= '</entries>';
