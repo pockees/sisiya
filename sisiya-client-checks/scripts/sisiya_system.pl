@@ -52,7 +52,7 @@ my $statusid = $SisIYA_Config::statusids{'ok'};
 
 sub get_os_info
 {
-	my ($file, $x, $s);
+	my ($file, $s, $x);
 
 	if ($SisIYA_Config::osname eq 'HP-UX') {
 		chomp($x = `/bin/uname -srm`);
@@ -75,7 +75,7 @@ sub get_os_info
 
 sub get_system_info
 {
-	if (! -f $SisIYA_Config::external_progs{'dmidecode'}) {
+	if ($SisIYA_Config::external_progs{'dmidecode'} && ! -f $SisIYA_Config::external_progs{'dmidecode'}) {
 		return '';
 	}
 	my ($retcode, $s, $x);
@@ -91,25 +91,39 @@ sub get_system_info
 	$retcode = $? >>=8;
 	if ($retcode == 0) {
 		chomp($x = $x);
-		$s .= ' version='.$x;
+		$s .= ' version: '.$x;
 	}
 	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s bios-release-date`;
 	$retcode = $? >>=8;
 	if ($retcode == 0) {
 		chomp($x = $x);
-		$s .= ' release date='.$x;
+		$s .= ' release date: '.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s chassis-type`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' Product: '.$x;
 	}
 	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s system-product-name`;
 	$retcode = $? >>=8;
 	if ($retcode == 0) {
 		chomp($x = $x);
-		$s .= ' Product: '.$x;
+		$s .= ' '.$x;
 	}
 	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s system-serial-number`;
 	$retcode = $? >>=8;
 	if ($retcode == 0) {
 		chomp($x = $x);
 		$s .= ' SN: '.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s chassis-asset-tag`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		if ($x ne 'Not Specified') {
+			$s .= ' Asset Tag: '.$x;
+		}
 	}
 
 	return $s;
@@ -158,13 +172,29 @@ sub get_SisIYA_version
 
 sub get_info()
 {
-	my $s;
+	my ($s, $x);
 
-	$s  = 'Info: '.get_os_info();
-	$s .= ' System: '.get_system_info();
-	$s .= ' SisIYA: '.get_SisIYA_version();
-	$s .= ' IP: '.get_ip();
-	$s .= ' Details: '.get_additional_info();
+	$s = '';
+	$x = get_os_info();
+	if ($x ne '') {
+		$s .= 'Info: '.$x;
+	}
+	$x = get_system_info();
+	if ($x ne '') {
+		$s .= ' System: '.$x;
+	}
+	$x = get_SisIYA_version();
+	if ($x ne '') {
+		$s .= ' SisIYA: '.$x;
+	}
+	$x = get_ip();
+	if ($x ne '') {
+		$s .= ' IP: '.$x;
+	}
+	$x = get_additional_info();
+	if ($x ne '') {
+		$s .= ' Details: '.$x;
+	}
 	return $s;
 }
 
@@ -229,7 +259,7 @@ else {
 
 
 # add  info
-$message_str .= get_info();
+$message_str .= ' '.get_info();
 
 $data_str = '<entries>';
 $data_str .= '<entry name="uptime" type="numeric">'.$uptime_in_minutes.'</entry>';
