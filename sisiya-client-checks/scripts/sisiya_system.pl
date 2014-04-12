@@ -75,7 +75,7 @@ sub get_os_info
 
 sub get_system_info
 {
-	if ($SisIYA_Config::external_progs{'dmidecode'} && ! -f $SisIYA_Config::external_progs{'dmidecode'}) {
+	if (! -f $SisIYA_Config::external_progs{'dmidecode'}) {
 		return '';
 	}
 	my ($retcode, $s, $x);
