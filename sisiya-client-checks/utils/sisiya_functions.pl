@@ -79,9 +79,10 @@ sub get_serviceid
 
 sub get_timestamp
 {
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
 	
 	$year = 1900 + $year;
+	$mon += 1;
 	#	print "$sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst\n";
 	my $str = $year.sprintf("%.2d%.2d%.2d%.2d%.2d", $mon, $mday, $hour, $min, $sec);
 	return $str;

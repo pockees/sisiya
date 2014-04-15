@@ -52,7 +52,8 @@ if(-f $SisIYA_Remote_Config::functions) {
 
 ###########################################################################################################
 # default values
-our %uptimes = ('error' => 1440, 'warning' => 4320);
+# in minutes
+our %uptimes = ('error' => 10, 'warning' => 15);
 our %mibs = (
 	'device_status' 	=> 'iso.3.6.1.2.1.25.3.2.1.5.1',	# HOST-RESOURCES-MIB::hrDeviceStatus 
 	'printer_status'	=> 'iso.3.6.1.2.1.25.3.5.1.1.1',	# HOST-RESOURCES-MIB::hrPrinterStatus 
