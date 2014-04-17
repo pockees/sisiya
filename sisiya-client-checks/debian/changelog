@@ -2,7 +2,7 @@ sisiya-client-checks (0.6.30.31~ppa1) precise; urgency=low
 
   * changed default location for the dmidecode command in the SisIYA_Config.pm
 
- -- Erdal Mutlu <erdal@sisiya.org>  Fri, 17 Apr 2014 14:06:00 +0200
+ -- Erdal Mutlu <erdal@sisiya.org>  Thu, 17 Apr 2014 14:06:00 +0200
 
 sisiya-client-checks (0.6.30.30~ppa1) precise; urgency=low
 
