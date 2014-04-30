@@ -68,9 +68,8 @@ if ($#disks > -1) {
 		print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
 	}
 }
-my $temp;
-my $s;
-my $i;
+my ($i, $s, $temp);
+my @b;
 $data_str = '<entries>';
 for $i (0..$#disks) {
 	#@a = `$SisIYA_Config::external_progs{'smartctl'} -a -d ata  $disks[$i]{'device'} 2>/dev/null`;
@@ -80,26 +79,29 @@ for $i (0..$#disks) {
 		$error_str .= " ERROR: Could not get info about $disks[$i]{'device'}! retcode=$retcode";
 	}
 	else {
-		chomp(@a = @a);
-		$temp = (split(/\s+/, (grep(/Temperature_Celsius/, @a))[0]))[9];
-		$s = (grep(/^Device Model:/, @a))[0];
-		$s .= ' '.(grep(/^Serial Number:/, @a))[0];
-		$s .= ' '.(grep(/^Firmware Version:/, @a))[0];
-		$s .= ' '.(grep(/^User Capacity:/, @a))[0];
-		#print STDERR "model=[$s]\n";
-		if ($temp >= $disks[$i]{'error'}) {
-			$error_str .= " ERROR: $temp C (>= $disks[$i]{'error'}) on $disks[$i]{'device'} $s!";
-		}	
-		elsif ($temp >= $disks[$i]{'warning'}) {
-			$warning_str .= " WARNING: $temp C (>= $disks[$i]{'warning'}) on $disks[$i]{'device'} $s!";
+		@b = grep(/\QTemperature_Celsius\E/, @a);
+		if (@b) {
+			chomp(@a = @a);
+			$temp = (split(/\s+/, (grep(/Temperature_Celsius/, @a))[0]))[9];
+			$s = (grep(/^Device Model:/, @a))[0];
+			$s .= ' '.(grep(/^Serial Number:/, @a))[0];
+			$s .= ' '.(grep(/^Firmware Version:/, @a))[0];
+			$s .= ' '.(grep(/^User Capacity:/, @a))[0];
+			#print STDERR "model=[$s]\n";
+			if ($temp >= $disks[$i]{'error'}) {
+				$error_str .= " ERROR: $temp C (>= $disks[$i]{'error'}) on $disks[$i]{'device'} $s!";
+			}	
+			elsif ($temp >= $disks[$i]{'warning'}) {
+				$warning_str .= " WARNING: $temp C (>= $disks[$i]{'warning'}) on $disks[$i]{'device'} $s!";
+			}
+			else {
+				$ok_str .= " OK: $temp C on $disks[$i]{'device'} $s.";
+			}
+			if ($retcode != 0) {
+				$warning_str .= " WARNING: $disks[$i]{'device'} smartctl return code=$retcode (<> 0)!";
+			}
+			$data_str .= '<entry name="'.$disks[$i]{'device'}.'" type="numeric" unit="C">'.$temp.'</entry>';
 		}
-		else {
-			$ok_str .= " OK: $temp C on $disks[$i]{'device'} $s.";
-		}
-		if ($retcode != 0) {
-			$warning_str .= " WARNING: $disks[$i]{'device'} smartctl return code=$retcode (<> 0)!";
-		}
-		$data_str .= '<entry name="'.$disks[$i]{'device'}.'" type="numeric" unit="C">'.$temp.'</entry>';
 	}
 }
 $data_str .= '</entries>';
