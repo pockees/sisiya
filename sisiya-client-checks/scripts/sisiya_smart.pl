@@ -79,29 +79,44 @@ for $i (0..$#disks) {
 		$error_str .= " ERROR: Could not get info about $disks[$i]{'device'}! retcode=$retcode";
 	}
 	else {
+		chomp(@a = @a);
 		@b = grep(/\QTemperature_Celsius\E/, @a);
+		$temp = 999;
 		if (@b) {
-			chomp(@a = @a);
 			$temp = (split(/\s+/, (grep(/Temperature_Celsius/, @a))[0]))[9];
-			$s = (grep(/^Device Model:/, @a))[0];
-			$s .= ' '.(grep(/^Serial Number:/, @a))[0];
-			$s .= ' '.(grep(/^Firmware Version:/, @a))[0];
-			$s .= ' '.(grep(/^User Capacity:/, @a))[0];
-			#print STDERR "model=[$s]\n";
-			if ($temp >= $disks[$i]{'error'}) {
-				$error_str .= " ERROR: $temp C (>= $disks[$i]{'error'}) on $disks[$i]{'device'} $s!";
-			}	
-			elsif ($temp >= $disks[$i]{'warning'}) {
-				$warning_str .= " WARNING: $temp C (>= $disks[$i]{'warning'}) on $disks[$i]{'device'} $s!";
+		} else {
+			@b = grep(/\QCurrent Drive Temperature\E/, @a);
+			if (@b) {
+				$temp = (split(/\s+/, (grep(/Current Drive Temperature/, @a))[0]))[3];
 			}
-			else {
-				$ok_str .= " OK: $temp C on $disks[$i]{'device'} $s.";
-			}
-			if ($retcode != 0) {
-				$warning_str .= " WARNING: $disks[$i]{'device'} smartctl return code=$retcode (<> 0)!";
-			}
-			$data_str .= '<entry name="'.$disks[$i]{'device'}.'" type="numeric" unit="C">'.$temp.'</entry>';
 		}
+		$s = '';
+		if (grep(/^Device Model:/, @a) {
+			$s .= (grep(/^Device Model:/, @a))[0];
+		}
+		if (grep(/^Serial Number:/, @a)) {
+			$s .= ' '.(grep(/^Serial Number:/, @a))[0];
+		}
+		if (grep(/^Firmware Version:/, @a)) {
+			$s .= ' '.(grep(/^Firmware Version:/, @a))[0];
+		}
+		if (grep(/^User Capacity:/, @a)) {
+			$s .= ' '.(grep(/^User Capacity:/, @a))[0];
+		}
+		#print STDERR "model=[$s]\n";
+		if ($temp >= $disks[$i]{'error'}) {
+			$error_str .= " ERROR: $temp C (>= $disks[$i]{'error'}) on $disks[$i]{'device'} $s!";
+		}	
+		elsif ($temp >= $disks[$i]{'warning'}) {
+			$warning_str .= " WARNING: $temp C (>= $disks[$i]{'warning'}) on $disks[$i]{'device'} $s!";
+		}
+		else {
+			$ok_str .= " OK: $temp C on $disks[$i]{'device'} $s.";
+		}
+		if ($retcode != 0) {
+			$warning_str .= " WARNING: $disks[$i]{'device'} smartctl return code=$retcode (<> 0)!";
+		}
+		$data_str .= '<entry name="'.$disks[$i]{'device'}.'" type="numeric" unit="C">'.$temp.'</entry>';
 	}
 }
 $data_str .= '</entries>';
