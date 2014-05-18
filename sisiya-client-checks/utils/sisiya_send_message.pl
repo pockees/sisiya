@@ -47,7 +47,7 @@ if (-f $SisIYA_Config::functions) {
 
 my $date_str = get_timestamp();
 my $statusid = $SisIYA_Config::statusids{$statusid_str};
-my $serviceid = get_serviceid($serviceid_str);
+my $serviceid = $SisIYA_Config::serviceids{$serviceid_str};
 
 my $xml_str = '<?xml version="1.0" encoding="utf-8"?>';
 $xml_str .= '<sisiya_messages><timestamp>'.$date_str.'</timestamp>';

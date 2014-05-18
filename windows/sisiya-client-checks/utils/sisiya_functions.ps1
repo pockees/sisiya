@@ -18,6 +18,15 @@
 #
 #
 #################################################################################
+function get_serviceid
+{
+	param([string]$s)
+
+	$a = $s.split($FS)
+	$service_name = $a[0]
+	return $serviceids[$service_name]
+}
+
 function sisiya_Try
 {
     param
@@ -63,10 +72,10 @@ function extractDaysHoursMinutes
 {
 	Param ([string]$d_str)
 
-	$s=$d_str.Split(":")
-	$time_days=0
-	$time_hours=0
-	$time_minutes=0
+	$s = $d_str.Split(":")
+	$time_days = 0
+	$time_hours = 0
+	$time_minutes = 0
 
 	if($s.Length -eq 1) {
 		$time_days=$s[0]
@@ -92,14 +101,14 @@ function formatDateTime
 		[int]$h, 
 		[int]$m
 	)
-	[string]$str=""
+	[string]$str = ""
 	if($d -ne 0) {
-		$str=$d.toString() + " day"
-		if($d -gt 1) {
+		$str = $d.toString() + " day"
+		if ($d -gt 1) {
 			$str=$str + "s"
 		}
 	}
-	if($h -ne 0) {
+	if ($h -ne 0) {
 		if($str.Length -eq 0) {
 			$str=$h.toString() + " hour"
 		}
@@ -140,16 +149,16 @@ function getTimeInMinutes
 {
 	Param ([string]$d_str)
 
-	$times=extractDaysHoursMinutes $d_str	
-	$time_in_minutes=[int]$times[0] * 1440 + [int]$times[1] * 60 + [int]$times[2]
+	$times = extractDaysHoursMinutes $d_str	
+	$time_in_minutes = [int]$times[0] * 1440 + [int]$times[1] * 60 + [int]$times[2]
 	Write-Output $time_in_minutes
 }
 
 ### Outputs system information.
 function getSystemInfo
 {
-	$a=Get-WmiObject -query "select * from Win32_ComputerSystem"
-	$b=Get-WmiObject -query "select * from Win32_OperatingSystem"
+	$ai = Get-WmiObject -query "select * from Win32_ComputerSystem"
+	$b = Get-WmiObject -query "select * from Win32_OperatingSystem"
 	$c = Get-WMIObject "Win32_BIOS"
 	
 	Write-Output "OS:"$b.Caption", Service Pack:"  $b.CSDVersion ", Model: " $a.Model ", Manufacturer:" $a.Manufacturer ", System Type:" $a.SystemType ",BIOS: " $c.SMBIOSBIOSVersion " " $c.Version
@@ -220,9 +229,9 @@ function downloadFile()
 
 	$client = new-object System.Net.WebClient
 	$policy = new-object System.Net.Cache.RequestCachePolicy("BypassCache")
-	$client.CachePolicy=$policy
+	$client.CachePolicy = $policy
 	sisiya_Try {
-		$client.DownloadFile($url,$path)
+		$client.DownloadFile($url, $path)
 	} -Catch {
 		Write-Output "downloadFile: Error occured during download of " $url_str " Error:" $_ | eventlog_error
 		return $False
@@ -234,6 +243,22 @@ function downloadFile()
 #		return $false 
 #	}
 #	return $true
+}
+
+# Parameters:
+# 1: field seperator
+# 2: service name
+# 3: statusid
+# 4: message string
+# 5: data string
+function print_and_exit
+{
+	param ( [string]$field_seperator, [string]$service_name, [int]$status_id, [string]$msg_str, [string]$data_str )
+
+	Write-Output "$service_name$field_seperator<msg>$msg_str</msg><datamsg>$data_str</datamsg>"
+	#$host.SetShouldExit($status_id)
+	#exit
+	exit $status_id
 }
 
 function sisiya_Try
@@ -307,14 +332,14 @@ function getSisIYA_Timestamp
 
 function makeTempFile
 {
-	$random_file_name=[System.IO.Path]::GetRandomFileName()
-	$file_name=$sisiya_tmp_dir + "\" + $random_file_name
+	$random_file_name = [System.IO.Path]::GetRandomFileName()
+	$file_name = $tmp_dir + "\" + $random_file_name
 	set-content -Path ($file_name) -Value ($null)
 	Write-Output $file_name
 }
 
 ### send SisIYA messages from a file to the SisIYA server
-function sendSisIYAMessage
+function sendSisIYAMessageFromFile
 {
 	Param (
 		[string]$sisiya_server,	# the SisIYA server name or IP
@@ -322,7 +347,64 @@ function sendSisIYAMessage
 		[string]$msg_str	# formated SisIYA message
 	)
 
-	#	Write-Host $my_prog "sendSisIYAMessage: msg_str=" $msg_str
+	#	Write-Host $my_prog "sendSisIYAMessageFromFile: msg_str=" $msg_str
+	### get a TCP/IP socket
+	$socket = New-Object System.Net.Sockets.TcpClient($sisiya_server, $sisiya_port)
+	if ($socekt.Connected -eq $False) {
+		Write-Host "Error connecting to SisIYA server " $sisiya_server " at port " $sisiya_port "!"
+		Write-Host "Could not connect TCP/IP socket!"
+		return $false
+	}
+	### get stream
+	$stream = $socket.GetStream()
+	if (! $stream) {
+		Write-Host "Error connecting to SisIYA server " $sisiya_server " at port " $sisiya_port "!"
+		Write-Host "Could not create stream from the TCP/IP socket!"
+		return $false
+	}
+	### get a writer stream
+	$writer = new-object System.IO.StreamWriter($stream)
+	if (! $writer) {
+		Write-Host "Error connecting to SisIYA server " $sisiya_server " at port " $sisiya_port "!"
+		Write-Host "Could not create writer from stream writer!"
+		return $false
+	}
+	#	$msg_str=$msg_str + [char]10
+	#	Write-Host $my_prog "sendSisIYAMessageFromFile: msg_str=[" $msg_str "]"
+	### change the default 'r'n (\r\n) to 'n (\n)
+	$writer.NewLine = [char]10
+	if ([System.IO.File]::Exists($msg_str) -eq $True) {
+		$lines = Get-Content $msg_str 
+		for ($i = 0; $i -lt $lines.Length; $i++) {
+			### skip empty lines
+			if ($lines[$i].Length -eq 0) {
+				continue
+			}
+			$str = $lines[$i]
+			$writer.Write($str)
+		}
+	}
+	else {
+		### write the message
+		$writer.Write($msg_str)
+	}	
+	$writer.Flush()
+	$writer.Close()
+	$stream.Close()
+	$socket.Close()
+	return $true
+}
+
+### send SisIYA messages to the SisIYA server
+function sendSisIYAMessage
+{
+	Param (
+		[string]$sisiya_server,	# the SisIYA server name or IP
+		[int]$sisiya_port,	# the SisIYA server's port
+		[string]$msg_str	# XML SisIYA message
+	)
+
+	#Write-Host $my_prog "sendSisIYAMessage: msg_str=" $msg_str
 	### get a TCP/IP socket
 	$socket = New-Object System.Net.Sockets.TcpClient($sisiya_server, $sisiya_port)
 	if ($socekt.Connected -eq $False) {
@@ -347,28 +429,17 @@ function sendSisIYAMessage
 	#	$msg_str=$msg_str + [char]10
 	#	Write-Host $my_prog "sendSisIYAMessage: msg_str=[" $msg_str "]"
 	### change the default 'r'n (\r\n) to 'n (\n)
-	$writer.NewLine=[char]10
-	if ([System.IO.File]::Exists($msg_str) -eq $True) {
-		$lines=Get-Content $msg_str 
-		for ($i=0; $i -lt $lines.Length; $i++) {
-			### skip empty lines
-			if ($lines[$i].Length -eq 0) {
-				continue
-			}
-			$str=$lines[$i]
-			$writer.Write($str)
-		}
-	}
-	else {
-		### write the message
-		$writer.Write($msg_str)
-	}	
+	$writer.NewLine = [char]10
+	### write the message
+	$writer.Write($msg_str)
+
 	$writer.Flush()
 	$writer.Close()
 	$stream.Close()
 	$socket.Close()
 	return $true
 }
+
 
 ### checks and adds MS Exchange management shell capabilities
 function addMSExcangeSupport

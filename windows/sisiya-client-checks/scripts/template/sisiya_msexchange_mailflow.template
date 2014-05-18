@@ -1,9 +1,5 @@
-### service id
-if (! $serviceids.Item("msexchange_mailflow")) {
-	Write-Output "Error : msexchange_mailflow serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("msexchange_mailflow")
+############################################################################################################
+$service_name = "msexchange_mailflow"
 ############################################################################################################
 ### the default values
 ### latency in ms

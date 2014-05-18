@@ -58,8 +58,9 @@ if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
-### service id
-$serviceid = $serviceids.Item("system")
+############################################################################################################
+$service_name = "system"
+############################################################################################################
 ### because serviceids.Item("system") = 0 if(! $serviceids.Item("system")) is always true
 #if (! $serviceids.Item("system")) {
 #	Write-Host $prog_name " Error : serviceids.Item("system is not defined in the SisIYA client configuration file " $client_conf_file "!"
@@ -111,12 +112,5 @@ $sisiya_client_version = getInstalledVersion
 $ip_info = getIPInfo($hostname)
 $message_str = "$message_str INFO: $sys_info IP: $ip_info SisIYA: $sisiya_client_version"
 ###############################################################################################################################################
-#Write-Host "hostname=$hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
-if($output_file.Length -eq 0) {
-	. $send_message_prog $conf_file $hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
-}
-else {
-	$str="$hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
-	Out-String -inputobject $str | Out-File -filepath $output_file -append
-}
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
 ###############################################################################################################################################

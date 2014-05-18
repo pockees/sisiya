@@ -1,9 +1,5 @@
-### service id
-if (! $serviceids.Item("msexchange_servicehealth")) {
-	Write-Output "Error : msexchange_servicehealth serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("msexchange_servicehealth")
+############################################################################################################
+$service_name = "msexchange_servicehealth"
 ############################################################################################################
 ### the default values
 ### end of the default values

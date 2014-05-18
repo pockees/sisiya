@@ -59,12 +59,7 @@ $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
 ############################################################################################################
-### service id
-if(! $serviceids.Item("temperature")) {
-	Write-Output "Error : temperature serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("temperature")
+$service_name = "temperature"
 ############################################################################################################
 ### the default values
 ### end of the default values
@@ -120,12 +115,5 @@ $ok_message_str=$ok_message_str.Trim()
 $info_message_str=$info_message_str.Trim()
 $message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
 ###############################################################################################################################################
-#Write-Host "hostname=$hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
-if($output_file.Length -eq 0) {
-	. $send_message_prog $conf_file $hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
-}
-else {
-	$str="$hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
-	Out-String -inputobject $str | Out-File -filepath $output_file -append
-}
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
 ###############################################################################################################################################

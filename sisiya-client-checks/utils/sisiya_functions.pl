@@ -30,6 +30,11 @@ sub get_formated_size
 	return "$x1$_[2]";
 }
 
+sub get_serviceid
+{
+	return $SisIYA_Config::serviceids{$_[0]};
+}
+
 sub minutes2string
 {
 	my ($days, $hours, $minutes);
@@ -71,12 +76,6 @@ sub minutes2string
 	return "$str";
 }
 
-sub get_serviceid
-{
-	return $SisIYA_Config::serviceids{ (split(/$SisIYA_Config::FS/, $_[0]))[0] };
-}
-
-
 sub get_timestamp
 {
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
@@ -91,55 +90,45 @@ sub get_timestamp
 sub get_size
 {
 	my $x;
+
 	if ($_[0] == 0) {
 		return '0';
-	}
-	elsif ($_[0] < 1024) {
+	} elsif ($_[0] < 1024) {
 		$x = $_[0].'B';
 		return $x;
-	}
-	elsif ($_[0] < 1048576) {
+	} elsif ($_[0] < 1048576) {
 		return get_formated_size($_[0], 1024, 'KB');
-	}
-	elsif ($_[0] < 1073741824) {
+	} elsif ($_[0] < 1073741824) {
 		return get_formated_size($_[0], 1048576, 'MB');
-	}
-	elsif ($_[0] < 1099511627776) {
+	} elsif ($_[0] < 1099511627776) {
 		return get_formated_size($_[0], 1073741824, 'GB');
-	}
-	elsif ($_[0] < 1125899906842624) {
+	} elsif ($_[0] < 1125899906842624) {
 		return get_formated_size($_[0], 1099511627776, 'TB');
+	} elsif ($_[0] < 1152921504606846976) {
+		return get_formated_size($_[0], 1125899906842624, 'PB');
 	}
-	elsif ($_[0] < 1152921504606846976) {
-		return get_formated_size($_[0], 1125899906842624, 'EB');
-	}
-	return get_formated_size($_[0], 1125899906842624, 'EB');
+       	return get_formated_size($_[0], 1125899906842624, 'EB');
 }
 
 
 sub get_size_k
 {
 	my $x;
+
 	if ($_[0] == 0) {
 		return '0';
-	}
-	elsif ($_[0] < 1024) {
+	} elsif ($_[0] < 1024) {
 		$x = $_[0].'KB';
 		return $x;
-	}
-	elsif ($_[0] < 1048576) {
+	} elsif ($_[0] < 1048576) {
 		return get_formated_size($_[0], 1024, 'MB');
-	}
-	elsif ($_[0] < 1073741824) {
+	} elsif ($_[0] < 1073741824) {
 		return get_formated_size($_[0], 1048576, 'GB');
-	}
-	elsif ($_[0] < 1099511627776) {
+	} elsif ($_[0] < 1099511627776) {
 		return get_formated_size($_[0], 1073741824, 'TB');
-	}
-	elsif ($_[0] < 1125899906842624) {
+	} elsif ($_[0] < 1125899906842624) {
 		return get_formated_size($_[0], 1099511627776, 'PB');
-	}
-	elsif ($_[0] < 1152921504606846976) {
+	} elsif ($_[0] < 1152921504606846976) {
 		return get_formated_size($_[0], 1125899906842624, 'EB');
 	}
 	return get_formated_size($_[0], 1125899906842624, 'EB');

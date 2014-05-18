@@ -1,9 +1,5 @@
-### service id
-if(! $serviceids.Item("filesystem")) {
-	Write-Output "Error : filesystem serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("filesystem")
+############################################################################################################
+$service_name = "filesystem"
 ############################################################################################################
 ### the default values
 $warning_percent = 85

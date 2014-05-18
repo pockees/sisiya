@@ -97,12 +97,7 @@ function getAntivirusInfoForAvira()
 	
 }
 ############################################################################################################
-### service id
-if(! $serviceids.Item("antivirus")) {
-	Write-Output "Error : antivirus serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("antivirus")
+$service_name = "antivirus"
 ############################################################################################################
 ### the default values
 ### end of the default values

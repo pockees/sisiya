@@ -83,7 +83,7 @@ $data_str = '<entries>';
 for my $k (keys %tablespaces) {
 	#print STDERR "-----> : key=[$k] total=[$tablespaces{$k}{'total'}] used=[$tablespaces{$k}{'used'}] free=[$tablespaces{$k}{'free'}] percent=[$tablespaces{$k}{'percent'}]\n";
 		if ($tablespaces{$k}{'percent'} >= $percents{'error'}) {
-			$error_str .= "ERROR: $k $tablespaces{$k}{'percent'}\% (>= $percents{'error'}) of ".get_size_k($tablespaces{$k}{'total'})." is full!";
+			$error_str .= "ERROR: $k $tablespaces{$k}{'percent'}\% (>= $percents{'error'}) of ".get_size($tablespaces{$k}{'total'})." is full!";
 		}
 		elsif ($tablespaces{$k}{'percent'} >= $percents{'warning'}) {
 			$warning_str .= "WARNING: $k $tablespaces{$k}{'percent'}\% (>= $percents{'warning'}) of ".get_size($tablespaces{$k}{'total'})." is full!";

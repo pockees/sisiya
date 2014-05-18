@@ -132,6 +132,10 @@ $sisiya_functions	= $utils_dir + "\sisiya_functions.ps1"
 $latest_results 	= $tmp_dir + "\latest_results.txt"
 $send_message_prog 	= $utils_dir + "\sisiya_send_message_xml.ps1"
 $send_message2_prog 	= $utils_dir + "\sisiya_send_message2_xml.ps1"
+# field seperator
+$FS = '~';
+$send_to_server		= 1	# true
+$export_to_xml		= 0	# false
 #################################################################################
 ### external programs
 $external_progs = @{

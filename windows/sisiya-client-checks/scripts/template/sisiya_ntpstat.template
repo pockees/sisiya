@@ -1,9 +1,5 @@
-### service id
-if(! $serviceids.Item("ntpstat")) {
-	Write-Output "Error : ntpstat serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("ntpstat")
+############################################################################################################
+$service_name = "ntpstat"
 ############################################################################################################
 ### the default values
 ### end of the default values

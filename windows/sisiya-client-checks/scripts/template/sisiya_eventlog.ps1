@@ -58,12 +58,8 @@ if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
-### service id
-if(! $serviceids.Item("mswindows_eventlog")) {
-	Write-Output "Error : mswindows_eventlog serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("mswindows_eventlog")
+############################################################################################################
+$service_name = "mswindows_eventlog"
 ############################################################################################################
 ### The warning_time and error_time values are used for interpreting eventlogs as follows:
 ### error_time=3 -> Eventlog error entries withing 1 day are treated as errors. If there are
@@ -144,12 +140,5 @@ $ok_message_str=$ok_message_str.Trim()
 $info_message_str=$info_message_str.Trim()
 $message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
 ###############################################################################################################################################
-#Write-Host "hostname=$hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
-if($output_file.Length -eq 0) {
-	. $send_message_prog $conf_file $hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
-}
-else {
-	$str="$hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
-	Out-String -inputobject $str | Out-File -filepath $output_file -append
-}
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
 ###############################################################################################################################################

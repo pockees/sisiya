@@ -1,9 +1,5 @@
-### service id
-if (! $serviceids.Item("mailq")) {
-	Write-Output "Error : mailq serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("mailq")
+############################################################################################################
+$service_name = "mailq"
 ############################################################################################################
 ### the default values
 $warning_mailq=3

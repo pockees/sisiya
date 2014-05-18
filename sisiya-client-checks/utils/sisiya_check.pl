@@ -41,20 +41,20 @@ if (-f $SisIYA_Config::functions) {
 	require $SisIYA_Config::functions;
 }
 
-# Parameter	: script name
+# Parameter	: script name, expire
 # Return	: xml message string
 sub run_script
 {
 	my ($script_file, $expire) = @_;
-	my ($status_id, $service_id, $s);
 
 	#print STDERR "[$_[0]] ...\n";
-	chomp($s = `/usr/bin/perl -I$SisIYA_Config::conf_dir $script_file`);
-	$status_id = $? >> 8;
-	$service_id = get_serviceid($s);	
+	chomp(my $s = `/usr/bin/perl -I$SisIYA_Config::conf_dir $script_file`);
+	my $status_id = $? >> 8;
+	my @a = split(/$SisIYA_Config::FS/, $s);
+	my $service_id = $SisIYA_Config::serviceids{$a[0]};
 	# replace ' with \', because it is a problem in the SQL statemnet
+	$s = $a[1];
 	$s =~ s/'/\\\'/g;
-	$s = (split(/$SisIYA_Config::FS/, $s))[1];
 	$s = '<message><serviceid>'.$service_id.'</serviceid><statusid>'.$status_id.'</statusid><expire>'.$expire.'</expire><data>'.$s.'</data></message>';
 	#print STDERR "statusid = $status_id serviceid = $service_id message=$s\n";
 	return $s;	
@@ -84,7 +84,8 @@ my $xml_s_str = '';
 
 if ($#ARGV == 1) {
 	$expire = $ARGV[1];
-	$xml_s_str = run_script($ARGV[0], $expire);
+	####$xml_s_str = run_script($ARGV[0], $expire);
+	$xml_s_str = run_script("$SisIYA_Config::scripts_dir/$SisIYA_Config::checks{$ARGV[0]}{'script'}", $expire);
 } else {
 	$expire = $ARGV[0];
 	$xml_s_str = process_checks($expire);

@@ -1,5 +1,6 @@
-### service id
-$serviceid = $serviceids.Item("system")
+############################################################################################################
+$service_name = "system"
+############################################################################################################
 ### because serviceids.Item("system") = 0 if(! $serviceids.Item("system")) is always true
 #if (! $serviceids.Item("system")) {
 #	Write-Host $prog_name " Error : serviceids.Item("system is not defined in the SisIYA client configuration file " $client_conf_file "!"

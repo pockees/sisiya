@@ -1,9 +1,5 @@
-### service id
-if(! $serviceids.Item("mswindows_eventlog")) {
-	Write-Output "Error : mswindows_eventlog serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("mswindows_eventlog")
+############################################################################################################
+$service_name = "mswindows_eventlog"
 ############################################################################################################
 ### The warning_time and error_time values are used for interpreting eventlogs as follows:
 ### error_time=3 -> Eventlog error entries withing 1 day are treated as errors. If there are

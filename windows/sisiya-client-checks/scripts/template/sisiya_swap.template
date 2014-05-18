@@ -1,9 +1,5 @@
-### service id
-if(! $serviceids.Item("swap")) {
-	Write-Output "Error : swap serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("swap")
+############################################################################################################
+$service_name = "swap"
 ############################################################################################################
 ### the default values
 $warning_percent=30

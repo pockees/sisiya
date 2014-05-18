@@ -91,7 +91,7 @@ for $i (0..$#disks) {
 			}
 		}
 		$s = '';
-		if (grep(/^Device Model:/, @a) {
+		if (grep(/^Device Model:/, @a)) {
 			$s .= (grep(/^Device Model:/, @a))[0];
 		}
 		if (grep(/^Serial Number:/, @a)) {

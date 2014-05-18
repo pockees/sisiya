@@ -1,9 +1,5 @@
-### service id
-if(! $serviceids.Item("progs")) {
-	Write-Output " Error : progs serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("progs")
+############################################################################################################
+$service_name = "progs"
 ############################################################################################################
 ### the default values
 $prog_list=@("System","svchost")

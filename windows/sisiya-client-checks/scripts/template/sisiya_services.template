@@ -1,9 +1,5 @@
-### service id
-if(! $serviceids.Item("services")) {
-	Write-Output "Error : services serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("services")
+############################################################################################################
+$service_name = "services"
 ############################################################################################################
 ### the default values
 #$exceptions = @("clr_optimization_v4.0.30319_32", "SkypeUpdate")

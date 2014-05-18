@@ -44,6 +44,8 @@ function getPathFromRegistry
 	}
 }
 
+# Parameter	: script name, expire
+# Return	: xml message string
 function run_script
 {
 	param
@@ -56,23 +58,35 @@ function run_script
 	#Write-Host "run_script: auto =" $checks.Item($script_name).Item("auto") "script =" $checks.Item($script_name).Item("script")
 	$script_file = $scripts_dir + "\" + $checks.Item($script_name).Item("script")
 	#Write-Host "run_script: Executing $script_file ..."
-	. $script_file $conf_file $expire
-	
+	[string]$s = . $script_file $conf_file $expire
+	#$status_id = $?
+	$status_id = $LastExitCode
+	#$service_id = get_serviceid $s
+	$a = $s.split($FS)
+	$service_name = $a[0]
+	$service_id = $serviceids[$service_name]
+	$s = $a[1]
+	# replace ' with \', because it is a problem in the SQL statemnet
+	$s = '<message><serviceid>' + $service_id + '</serviceid><statusid>' + $status_id + '</statusid><expire>' + $expire + '</expire><data>' + $s + '</data></message>'
+
+	return $s
 }
 
 function process_checks
 {
 	param ( [int]$expire )
 
-	Write-Host "process_checks: expire=" $expire
+	[string]$s = ''
+	#Write-Host "process_checks: expire=" $expire
 	foreach ($script_name in $checks.Keys) {
 		if ($checks.Item($script_name).Item("auto") -eq 1) {
 			#Write-Host "process_checks: Executing $script_name ..."
-			run_script $script_name $expire
+			$s += run_script $script_name $expire
 		} #else {
 			#Write-Host "process_checks: Skiping $script_name ..."
 		#}
 	}
+	return $s
 }
 
 ### get the installation path from registry
@@ -101,7 +115,7 @@ if ([System.IO.File]::Exists($local_conf_file) -eq $True) {
 	. $local_conf_file 
 }
 
-if([System.IO.File]::Exists($sisiya_functions) -eq $False) {
+if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 	Write-Output "SisIYA functions file " $sisiya_functions " does not exist!" | eventlog_error
 	exit
 }
@@ -109,10 +123,10 @@ if([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 . $sisiya_functions
 
 ### check the send message prog
-if([System.IO.File]::Exists($send_message2_prog) -eq $False) {
-	Write-Output "SisIYA send message program " $send_message2_prog " does not exist!" | eventlog_error
-	exit
-}
+#if ([System.IO.File]::Exists($send_message2_prog) -eq $False) {
+#	Write-Output "SisIYA send message program " $send_message2_prog " does not exist!" | eventlog_error
+#	exit
+#}
 
 ### check directories
 foreach($d in $base_dir, $conf_dir, $conf_d_dir, $scripts_dir, $tmp_dir) {
@@ -124,59 +138,28 @@ foreach($d in $base_dir, $conf_dir, $conf_d_dir, $scripts_dir, $tmp_dir) {
 
 if ($Args.Length -eq 3) {
 	$expire = $Args[2]
-	run_script $Args[1] $expire
+	$xml_s_str = run_script $Args[1] $expire
 } else {
 	$expire = $Args[1]
-	process_checks $expire
-}
-Write-Host "exiting"
-exit 1
-
-###
-$output_file = makeTempFile
-### execute common scripts
-cd $sisiya_common_dir
-$files = Get-ChildItem sisiya_*.ps1
-foreach($f in $files) {
-	if(! $f) {
-		continue
-	}
-	#Write-Host "common file=" $f " fullname=" $f.FullName
-	#Write-Host $f $sisiya_conf_file $expire
-	#Write-Output "running " $f | eventlog_info
-	. $f $sisiya_conf_file $expire $output_file
-	#Write-Output "finished " $f | eventlog_info
+	$xml_s_str = process_checks $expire
 }
 
-### execute special scripts
-if([System.IO.Directory]::Exists($sisiya_host_dir) -eq $True) {
-	cd $sisiya_host_dir
-	### for scripts
-	$files=Get-ChildItem sisiya_*.ps1
-	foreach($f in $files) {
-		if(! $f) {
-			continue
-		}
-		#Write-Output "running " $f | eventlog_info
-		. $f $sisiya_conf_file $expire $output_file
-		#Write-Output "finished " $f | eventlog_info
-	}
-	### for linked scripts
-	$wsh_shell=New-Object -ComObject WScript.Shell
-	$files=Get-ChildItem *.lnk
-	foreach($link_file in $files) {
-		if(! $link_file) {
-			continue
-		}
-		#Write-Output "running " $link_file $x | eventlog_info
-		$link=$wsh_shell.CreateShortcut($link_file)
-		. $link.TargetPath $sisiya_conf_file $expire $output_file
-		#Write-Output "finished " $link_file $x | eventlog_info
-	}
+### get current timestamp
+$timestamp_str = getSisIYA_Timestamp
+
+$xml_str = '<?xml version="1.0" encoding="utf-8"?>'
+$xml_str += '<sisiya_messages><timestamp>' + $timestamp_str + '</timestamp>'
+$xml_str += '<system><name>' + $hostname + '</name>'
+$xml_str += $xml_s_str
+$xml_str += '</system></sisiya_messages>'
+
+if ($export_to_xml -eq 1) {
+	$output_file = makeTempFile
+	Write-Output $xml_str > $output_file
+	### remove the tmp file
+	Remove-Item $output_file
 }
-### send all messages
-. $send_message2_prog $sisiya_conf_file $output_file
-### remove the tmp file
-Remove-Item $output_file
-###
-cd $sisiya_base_dir
+if ($send_to_server -eq 1) {
+	$retcode = sendSisIYAMessage $SISIYA_SERVER $SISIYA_PORT $xml_str
+}
+#write-host $xml_str

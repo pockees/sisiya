@@ -64,6 +64,10 @@ if($os_version -ne 6.1)	{
 		$minute_str = "DAKÝKA"
 	}
 }
+if($os_version -eq 6.2)	{
+	$minute_str = "MINUTE"
+}
+
 ### get installation path
 $path_str=getPathFromRegistry 
 ################################################################################################################

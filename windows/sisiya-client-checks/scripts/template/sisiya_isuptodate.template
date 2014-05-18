@@ -1,9 +1,5 @@
-### service id
-if (! $serviceids.Item("isuptodate")) {
-	Write-Output "Error : isuptodate iserviceid not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("isuptodate")
+############################################################################################################
+$service_name = "isuptodate"
 ############################################################################################################
 ### the default values
 ### end of the default values

@@ -1,9 +1,5 @@
-### service id
-if (! $serviceids.Item("brightstore_devices")) {
-	Write-Output "Error : brightstore_devices serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("brightstore_devices")
+############################################################################################################
+service_name = "brightstore_devices"
 ############################################################################################################
 ### the default values
 ### end of the default values

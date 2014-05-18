@@ -58,12 +58,8 @@ if ([System.IO.File]::Exists($sisiya_functions) -eq $False) {
 $module_conf_file = $conf_d_dir + "\" + $prog_name
 $data_message_str = ''
 ############################################################################################################
-### service id
-if(! $serviceids.Item("services")) {
-	Write-Output "Error : services serviceid is not defined!" | eventlog_error
-	exit
-}
-$serviceid = $serviceids.Item("services")
+############################################################################################################
+$service_name = "services"
 ############################################################################################################
 ### the default values
 #$exceptions = @("clr_optimization_v4.0.30319_32", "SkypeUpdate")
@@ -133,12 +129,5 @@ if($info_services_str -ne "") {
 	$message_str = $message_str + " INFO: The following service(s): " + $info_services_str + " is/are set to auto start, but is/are not started!"
 }
 ###############################################################################################################################################
-#Write-Host "hostname=$hostname serviceid=$serviceid statusid=$statusid expire=$expire message=$message_str data_message_str=$data_message_str"
-if($output_file.Length -eq 0) {
-	. $send_message_prog $conf_file $hostname $serviceid $statusid $expire "<msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
-}
-else {
-	$str="$hostname $serviceid $statusid $expire <msg>$message_str</msg><datamsg>$data_message_str</datamsg>"
-	Out-String -inputobject $str | Out-File -filepath $output_file -append
-}
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
 ###############################################################################################################################################

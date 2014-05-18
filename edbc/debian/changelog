@@ -1,3 +1,9 @@
+sisiya-edbc-libs (0.6.30.32~0ubuntu1~__DISTRO_NAME__ppa1) __DISTRO_NAME__; urgency=low
+
+  * changed version numbering to support different Ubuntu distros
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Fri, 18 Apr 2014 15:30:00 +0200
+
 sisiya-edbc-libs (0.6.30.29~ppa1) precise; urgency=low
 
   * no change in this release
