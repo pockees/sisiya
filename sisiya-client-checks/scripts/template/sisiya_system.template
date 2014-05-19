@@ -1,0 +1,234 @@
+## the default values
+# uptimes are given in minutes
+our %uptimes = ('error' => 1440, 'warning' => 4320);
+### to get information about the server
+our $info_prog = '';
+##our $info_prog="$SisIYA_Config::base_dir/special/system_info_hpasm.sh"
+our $version_file = "/usr/share/doc/sisiya-client-checks/version.txt";
+#### end of the default values
+################################################################################
+my $service_name = 'system';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
+if (-f $module_conf_file) {
+	require $module_conf_file;
+}
+################################################################################
+my $message_str;
+my $data_str = '';
+my $statusid = $SisIYA_Config::statusids{'ok'};
+
+sub get_os_info
+{
+	my ($file, $s, $x);
+
+	if ($SisIYA_Config::osname eq 'HP-UX') {
+		chomp($x = `/bin/uname -srm`);
+	}
+	else {
+		chomp($x = `/bin/uname -srmp`);
+	}
+	$s = $x;
+	# add OS version
+	if ($SisIYA_Config::osname eq 'Linux') {
+		if (open($file, '<', '/etc/issue.net')) {
+			$x = <$file>;
+			chomp($x);
+			close($file);
+			$s .= " OS: $x";
+		}
+	}
+	return $s;
+}
+
+sub get_system_info
+{
+	if (! -f $SisIYA_Config::external_progs{'dmidecode'}) {
+		return '';
+	}
+	my ($retcode, $s, $x);
+
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s bios-vendor`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s = 'BIOS: '.$x;
+	}
+
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s bios-version`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' version: '.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s bios-release-date`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' release date: '.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s chassis-type`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' Product: '.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s system-product-name`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' '.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s system-serial-number`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		$s .= ' SN: '.$x;
+	}
+	$x = `$SisIYA_Config::external_progs{'dmidecode'} -s chassis-asset-tag`;
+	$retcode = $? >>=8;
+	if ($retcode == 0) {
+		chomp($x = $x);
+		if ($x ne 'Not Specified') {
+			$s .= ' Asset Tag: '.$x;
+		}
+	}
+
+	return $s;
+}
+
+# get IP information
+sub get_ip
+{
+	my $s = '';
+	my @a = `$SisIYA_Config::external_progs{'ip'} -4 a`;
+	my $retcode = $? >>=8;
+	if ($retcode == 0) {
+		@a = grep(/inet/, @a);
+		foreach (@a) {
+			$_ = (split(/\s+/, $_))[2];
+		}
+		#print STDERR "@a\n";
+		#chomp(@a = @a);
+		$s = "@a";
+	}
+	return $s;
+}
+
+# get information via an external info
+sub get_additional_info
+{
+	my $s = '';
+
+	if ($info_prog ne '') {
+		chomp($s = `$info_prog`);
+	}
+	return $s;
+}
+
+sub get_SisIYA_version
+{
+	my $s = '';
+
+	if (open(my $file, '<', $version_file)) {
+		$s = <$file>;
+		chomp($s);
+		close($file);
+	}
+	return $s;
+}
+
+sub get_info()
+{
+	my ($s, $x);
+
+	$s = '';
+	$x = get_os_info();
+	if ($x ne '') {
+		$s .= 'Info: '.$x;
+	}
+	$x = get_system_info();
+	if ($x ne '') {
+		$s .= ' System: '.$x;
+	}
+	$x = get_SisIYA_version();
+	if ($x ne '') {
+		$s .= ' SisIYA: '.$x;
+	}
+	$x = get_ip();
+	if ($x ne '') {
+		$s .= ' IP: '.$x;
+	}
+	$x = get_additional_info();
+	if ($x ne '') {
+		$s .= ' Details: '.$x;
+	}
+	return $s;
+}
+
+sub get_uptime_in_minutes
+{
+	my $x;
+	my $uptime_in_minutes = 0;
+
+	if ($SisIYA_Config::osname eq 'Linux') {
+		my $file;
+		open($file, '<', '/proc/uptime') || die "$0: Could not open file /proc/uptime! $!";
+		$x = <$file>;
+		close $file;
+		#chomp($x);
+			#my @a = split(/\./, $x); 
+			#$uptime_in_minutes = int($a[0] / 60);
+		$uptime_in_minutes = int( (split(/\./, $x))[0] / 60 ); 
+	}
+	if ($SisIYA_Config::osname eq 'SunOS') {
+		#uptime   
+		# 11:52am  up  1 user,  load average: 0.04, 0.02, 0.04
+		if (! -f $SisIYA_Config::external_progs{'uptime'}) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$message_str = "ERROR: External program $SisIYA_Config::external_progs{'uptime'} does not exist!";
+			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+		}
+		my @a = `$SisIYA_Config::external_progs{'uptime'}`;
+		my $retcode = $? >>=8;
+		if ($retcode != 0) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$message_str = "ERROR: Error executing the uptime command $SisIYA_Config::external_progs{'uptime'}! retcode=$retcode";
+			print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+		}
+		else {
+			$x = (split(/m/, $a[0]))[0];
+			my $days = 0;
+			my $s = (split(/\s+/, $x))[1];
+			$s = (split(/[a,p]/, $s))[0];
+			$uptime_in_minutes = 24 * (split(/:/, $s))[0] + (split(/:/, $s))[1];
+			print STDERR "x=[$x] s=[$s]\n";
+			$x = 0;
+		}
+
+	}
+	return $uptime_in_minutes;
+}
+
+###############################################################################
+my $uptime_in_minutes = get_uptime_in_minutes;
+
+if ($uptime_in_minutes < $uptimes{'error'}) {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = 'ERROR:The system was restarted '.minutes2string($uptime_in_minutes).' (< '.minutes2string($uptimes{'error'}).') ago!';
+}
+elsif ($uptime_in_minutes < $uptimes{'warning'}) {
+	$statusid = $SisIYA_Config::statusids{'warning'};
+	$message_str = 'WARNING:The system was restarted '.minutes2string($uptime_in_minutes).' (< '.minutes2string($uptimes{'warning'}).') ago!';
+}
+else {
+	$message_str = 'OK:The system is up for '.minutes2string($uptime_in_minutes);
+}
+
+
+# add  info
+$message_str .= ' '.get_info();
+
+$data_str = '<entries>';
+$data_str .= '<entry name="uptime" type="numeric">'.$uptime_in_minutes.'</entry>';
+$data_str .= '</entries>';

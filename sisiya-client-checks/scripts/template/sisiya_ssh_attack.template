@@ -1,0 +1,67 @@
+#### the default values
+our $log_file = '/var/log/secure';
+our @strings = ('bad username', 'illegal', 'Invalid user', 'failed password for', 'POSSIBLE BREAKIN ATTEMPT');
+#### end of the default values
+#######################################################################################
+my $service_name = 'ssh_attack';
+## override defaults if there is a corresponding conf file
+my $module_conf_file = "$SisIYA_Config::conf_d_dir/sisiya_$service_name.conf";
+if (-f $module_conf_file) {
+	require $module_conf_file;
+}
+#######################################################################################
+my $message_str = '';
+my $data_str = '';
+my $statusid = $SisIYA_Config::statusids{'ok'};
+my $error_messages = '';
+my $warning_messages = '';
+my $ok_messages = '';
+my @a;
+
+if (-f $log_file) {
+	my $file;
+	open($file, '<', $log_file) || die "$0: Could not open file $log_file! $!";
+	@a = <$file>;
+	close $file;
+
+} elsif ( -f $SisIYA_Config::external_progs{'journalctl'}) {
+	@a = `$SisIYA_Config::external_progs{'journalctl'} _COMM=sshd`;
+} else {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = "ERROR: Neither $log_file nor $SisIYA_Config::external_progs{'journalctl'} is available!";
+	print_and_exit($SisIYA_Config::FS, $service_name, $statusid, $message_str, $data_str);
+}
+
+my $s;
+my @b;
+$data_str = '<entries>';
+foreach my $x (@strings) {
+	#print STDERR "Searching for [$x] in $log_file...\n";
+	@b = grep(/$x/, @a);
+	#print STDERR @b;
+	chomp(@b = @b);
+	$s = "@b";
+	#print STDERR "s=[$s]\n";
+	if ($s ne '') {
+		$error_messages .= " ERROR: $x ($s)!";
+		$data_str .= '<entry name="'.$x.'" type="boolean">1</entry>';
+	}
+	else {
+		$ok_messages .= "[$x]";
+		$data_str .= '<entry name="'.$x.'" type="boolean">0</entry>';
+	}
+}
+$data_str .= '</entries>';
+if ($error_messages ne '') {
+	$statusid = $SisIYA_Config::statusids{'error'};
+	$message_str = $error_messages;
+}
+if ($warning_messages ne '') {
+	if ($statusid < $SisIYA_Config::statusids{'warning'}) {
+		$statusid = $SisIYA_Config::statusids{'warning'};
+	}
+	$message_str .= $warning_messages;
+}
+if ($ok_messages ne '') {
+	$message_str .= " OK: $log_file does not contain any of $ok_messages";
+}
