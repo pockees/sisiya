@@ -25,7 +25,7 @@
 ; Define your application name
 !define APP_NAME "SisIYA_client_checks"
 ;!define SISIYA_RELEASE 1
-!define SISIYA_VERSION "0.6.30.5"
+!define SISIYA_VERSION "0.6.30.6"
 ;!define SISIYA_CLIENT_CHECKS_VERSION 1 
 ;!define APP_VERSION "${SISIYA_VERSION}.${SISIYA_CLIENT_CHECKS_VERSION}-${SISIYA_RELEASE}"
 !define APP_VERSION "${SISIYA_VERSION}"
