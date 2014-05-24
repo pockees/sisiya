@@ -117,5 +117,5 @@ if($ok_message_str.Length -gt 0) {
 $message_str=$error_message_str + " " + $ok_message_str
 $message_str=$message_str.Trim()
 ###############################################################################################################################################
-print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_str"
 ###############################################################################################################################################

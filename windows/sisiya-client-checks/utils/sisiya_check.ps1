@@ -162,4 +162,4 @@ if ($export_to_xml -eq 1) {
 if ($send_to_server -eq 1) {
 	$retcode = sendSisIYAMessage $SISIYA_SERVER $SISIYA_PORT $xml_str
 }
-#write-host $xml_str
+write-host $xml_str

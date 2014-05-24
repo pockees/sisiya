@@ -117,5 +117,5 @@ $ok_message_str=$ok_message_str.Trim()
 $info_message_str=$info_message_str.Trim()
 $message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
 ###############################################################################################################################################
-print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_str"
 ###############################################################################################################################################

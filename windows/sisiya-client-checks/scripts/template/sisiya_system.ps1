@@ -112,5 +112,5 @@ $sisiya_client_version = getInstalledVersion
 $ip_info = getIPInfo($hostname)
 $message_str = "$message_str INFO: $sys_info IP: $ip_info SisIYA: $sisiya_client_version"
 ###############################################################################################################################################
-print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_str"
 ###############################################################################################################################################

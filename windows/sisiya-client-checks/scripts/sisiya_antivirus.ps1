@@ -221,6 +221,14 @@ $info_str=getAdditionalInfo
 if($info_str -ne "") {
 	$message_str += " " + $info_str
 }
+$data_str = '<entries>'
+if ($statusid -gt $statusids.Item("ok")) {
+	$data_str += '<entry name="protected" type="boolean">0</entry>'
+} else {
+	$data_str += '<entry name="is_uptodate" type="boolean">1</entry>'
+}
+$data_str += '</entries>'
+
 ###############################################################################################################################################
-print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_str"
 ###############################################################################################################################################

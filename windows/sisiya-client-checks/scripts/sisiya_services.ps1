@@ -129,5 +129,5 @@ if($info_services_str -ne "") {
 	$message_str = $message_str + " INFO: The following service(s): " + $info_services_str + " is/are set to auto start, but is/are not started!"
 }
 ###############################################################################################################################################
-print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_message_str"
+print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_str"
 ###############################################################################################################################################
