@@ -65,18 +65,65 @@ $service_name = "battery"
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
-if([System.IO.File]::Exists($module_conf_file) -eq $True) {
+if ([System.IO.File]::Exists($module_conf_file) -eq $True) {
 #if(test-path $module_conf_file -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
 $statusid = $statusids.Item("ok")
-$message_str=""
+$message_str = ''
 
-$info_message_str=""
-$ok_message_str=""
-$warning_message_str=""
-$error_message_str=""
+$info_message_str = ''
+$ok_message_str = ''
+$warning_message_str = ''
+$error_message_str = ''
+
+### get temperature information
+$batteries=Get-WmiObject -NameSpace "root\WMI" -Class "BatteryStatus" 2> $null
+if($batteries) {
+	$data_str = ''
+	foreach ($battery in $batteries) {
+		### RemainingCapacity > 0 is a real battery. I could not find another info to distinguish between real battery.
+		if($battery.RemainingCapacity -gt 0 -and $battery.Active -eq $True) {
+			### find a to distinguish
+			$battery_full = Get-WmiObject -NameSpace "root\WMI" -Class "BatteryFullChargedCapacity" | where-object {$_.InstanceName -match $battery.InstanceName.Replace("\","\\")} 2> $null
+			[int]$charged_percent = 100 * $battery.RemainingCapacity / $battery_full.FullChargedCapacity
+			if ($battery.Critical -eq $True) {
+				$error_message_str += " ERROR: The battery " + $battery.InstanceName + " (" + $charged_percent + "%)" + " is in critical state!"
+			}
+			else {
+				if ($battery.Discharging -eq $True) {
+					$ok_message_str += " OK: Battery " + $battery.InstanceName + ": Discharging, " + $charged_percent + "%. Running on battery." 
+				}
+				else {
+					$ok_message_str += " OK: Battery " + $battery.InstanceName + ": Charged " + $charged_percent + "%" + ". Running on AC power." 
+				}
+			}
+			$data_str += '<entry name="' + $battery.InstanceName + '" type="percent">' + $charged_percent + '</entry>'
+		}
+	}
+	if ($data_str -ne '') {
+		$data_str = '<entries>' + $data_str + '</entries>'
+	}
+}
+else {
+	### do nothing, this system does not support ACPI batteries
+	exit
+	#$error_message_str = "ERROR: Could not get battery software information!"
+}
+
+$statusid = $statusids.Item("ok")
+if ($error_message_str.Length -gt 0) {
+	$statusid = $statusids.Item("error")
+}
+elseif ($warning_message_str.Length -gt 0) {
+	$statusid = $statusids.Item("warning")
+}
+$error_message_str = $error_message_str.Trim()
+$warning_message_str = $warning_message_str.Trim()
+$ok_message_str = $ok_message_str.Trim()
+$info_message_str = $info_message_str.Trim()
+$message_str = $error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
 
 #######################################################################################
 #Get-WmiObject -NameSpace "root\WMI" -Class "BatteryStatus"
@@ -142,48 +189,7 @@ $error_message_str=""
 #Timestamp_Sys100NS  :
 #######################################################################################
 
-### get temperature information
-$batteries=Get-WmiObject -NameSpace "root\WMI" -Class "BatteryStatus" 2> $null
-if($batteries) {
-	foreach($battery in $batteries) {
-		### RemainingCapacity > 0 is a real battery. I could not find another info to distinguish between real battery.
-		if($battery.RemainingCapacity -gt 0 -and $battery.Active -eq $True) {
-			### find a to distinguish
-			$battery_full=Get-WmiObject -NameSpace "root\WMI" -Class "BatteryFullChargedCapacity" | where-object {$_.InstanceName -match $battery.InstanceName.Replace("\","\\")} 2> $null
-			[int]$charged_percent=100 * $battery.RemainingCapacity / $battery_full.FullChargedCapacity
-			if($battery.Critical -eq $True) {
-				$error_message_str=$error_message_str + " ERROR: The battery " + $battery.InstanceName + " (" + $charged_percent + "%)" + " is in critical state!"
-			}
-			else {
-				if($battery.Discharging -eq $True) {
-					$ok_message_str=$ok_message_str + " OK: The battery " + $battery.InstanceName + " (" + $charged_percent + "%)" +  " is Ok. Running on battery." 
-				}
-				else {
-					$ok_message_str=$ok_message_str + " OK: The battery " + $battery.InstanceName + " (" + $charged_percent + "%)" + " is Ok. Running on AC power." 
-				}
-			}
-		}
-	}
-}
-else {
-	### do nothing, this system does not support ACPI batteries
-	exit
 
-	$error_message_str="ERROR: Could not get battery software information!"
-}
-
-$statusid = $statusids.Item("ok")
-if($error_message_str.Length -gt 0) {
-	$statusid = $statusids.Item("error")
-}
-elseif($warning_message_str.Length -gt 0) {
-	$statusid=$statusids.Item("warning")
-}
-$error_message_str=$error_message_str.Trim()
-$warning_message_str=$warning_message_str.Trim()
-$ok_message_str=$ok_message_str.Trim()
-$info_message_str=$info_message_str.Trim()
-$message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
 ###############################################################################################################################################
 print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_str"
 ###############################################################################################################################################
