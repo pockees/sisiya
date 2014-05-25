@@ -67,43 +67,47 @@ $error_percent = 90
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
-if([System.IO.File]::Exists($module_conf_file) -eq $True) {
+if ([System.IO.File]::Exists($module_conf_file) -eq $True) {
 #if(test-path $module_conf_file -eq $True) {
 	. $module_conf_file
 }
 ###############################################################################################################################################
-$message_str = ""
+$message_str = ''
 
-$info_message_str = ""
-$ok_message_str = ""
-$warning_message_str = ""
-$error_message_str = ""
+$info_message_str = ''
+$ok_message_str = ''
+$warning_message_str = ''
+$error_message_str = ''
 
 ### get processor
+$n = 0
+$i = 0
 $processors = Get-WmiObject -Class Win32_Processor
 foreach ($p in $processors) {
+	$i += 1
+	$n += $p.LoadPercentage
 	$name_str = $p.Name.Trim()
-	$cores_str = ""
+	$cores_str = ''
 	if($p.NumberOfCores) {
 		$cores_str = " (CPU cores=" + $p.NumberOfCores + ") "
 	}
 	### check for load
 	if($p.LoadPercentage -ge $error_percent) {
-		$error_message_str = $error_message_str + " ERROR: The load is " + $p.LoadPercentage + "% (>=" + $error_percent +")!"
+		$error_message_str += " ERROR: The load is " + $p.LoadPercentage + "% (>=" + $error_percent +")!"
 	}
-	elseif($p.LoadPercentage -ge $warning_percent) {
-		$warning_message_str = $warning_message_str + " WARNING: The load is " + $p.LoadPercentage + "% (>=" + $warning_percent +")!"
+	elseif ($p.LoadPercentage -ge $warning_percent) {
+		$warning_message_str += " WARNING: The load is " + $p.LoadPercentage + "% (>=" + $warning_percent +")!"
 	}
 	else {
-		$ok_message_str = $ok_message_str + " OK: The load is " + $p.LoadPercentage + "%."
+		$ok_message_str += " OK: The load is " + $p.LoadPercentage + "%."
 	}
 
 	### check for status
 	if ($p.Status -eq "OK") {
 ### check $p.NumberOfCores : it is not defined for single core CPUs
-		$ok_message_str = $ok_message_str + " OK: The status of " + $name_str + $cores_str + " is " + $p.Status + "."
+		$ok_message_str += " OK: The status of " + $name_str + $cores_str + " is " + $p.Status + "."
 	} else {
-		$error_message_str = $error_message_str + " ERROR: The status of " + $name_str + $cores_str + " is " + $p.Status + " != OK!"
+		$error_message_str += " ERROR: The status of " + $name_str + $cores_str + " is " + $p.Status + " != OK!"
 	}
 }
 $statusid = $statusids.Item("ok")
@@ -113,6 +117,8 @@ if ($error_message_str.Length -gt 0) {
 elseif ($warning_message_str.Length -gt 0) {
 	$statusid = $statusids.Item("warning")
 }
+$n = [int] $n / $i
+$data_str = '<entries><entry name="load_average" type="numeric">' + $n + '</entry></entries>';
 $error_message_str = $error_message_str.Trim()
 $warning_message_str = $warning_message_str.Trim()
 $ok_message_str = $ok_message_str.Trim()
