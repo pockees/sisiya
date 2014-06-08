@@ -157,7 +157,7 @@ function getTimeInMinutes
 ### Outputs system information.
 function getSystemInfo
 {
-	$ai = Get-WmiObject -query "select * from Win32_ComputerSystem"
+	$a = Get-WmiObject -query "select * from Win32_ComputerSystem"
 	$b = Get-WmiObject -query "select * from Win32_OperatingSystem"
 	$c = Get-WMIObject "Win32_BIOS"
 	

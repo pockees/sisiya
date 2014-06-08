@@ -65,7 +65,7 @@ if($os_version -ne 6.1)	{
 	}
 }
 # MS Windows 8 and above do not have language dependent parameters to the schtasks command
-if($os_version -gt 6.2)	{
+if($os_version -ge 6.2)	{
 	$minute_str = "MINUTE"
 }
 
