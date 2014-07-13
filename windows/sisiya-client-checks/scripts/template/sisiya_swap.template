@@ -32,8 +32,9 @@ $ram_free = (Get-Counter -Counter "\Memory\Available MBytes" ).CounterSamples[0]
 $ram_used = $ram_total - $ram_free
 #$ram_used = "{0:N0}" -f $ram_used
 
-$ram_percent = ( 100 * $ram_used ) / $ram_total 
-$ram_percent = "{0:N0}" -f $ram_percent
+$ram_percent = round (( 100 * $ram_used ) / $ram_total)
+#$ram_percent = "{0:N0}" -f $ram_percent
+
 
 $ram_str = "RAM usage is " + $ram_percent + " %, total=" + $ram_total + " MB, used=" + $ram_used + " MB, free=" + $ram_free 
 
@@ -52,10 +53,9 @@ $ram_str = "RAM usage is " + $ram_percent + " %, total=" + $ram_total + " MB, us
 $swap_total = $pf.AllocatedBaseSize
 $swap_used = $pf.CurrentUsage
 $swap_free = $swap_total - $swap_used
-$swap_free = "{0:N0}" -f $swap_free
-$swap_percent = ( 100 * $swap_used ) / $swap_total 
+#$swap_free = "{0:N0}" -f $swap_free
+$swap_percent = round (( 100 * $swap_used ) / $swap_total)
 #$swap_percent = "{0:N0}" -f $swap_percent
-$swap_percent = round $swap_percent
 $info_str = "SWAP: total=" + $swap_total + " MB used=" + $swap_used + " MB free=" + $swap_free + " MB. " + $ram_str
 
 $data_str = '<entries>';
