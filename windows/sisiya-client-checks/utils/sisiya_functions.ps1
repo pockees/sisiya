@@ -395,6 +395,11 @@ function sendSisIYAMessageFromFile
 	return $true
 }
 
+function round( $value, [MidpointRounding]$mode = 'AwayFromZero' ) 
+{
+	[Math]::Round( $value, $mode )
+}
+
 ### send SisIYA messages to the SisIYA server
 function sendSisIYAMessage
 {

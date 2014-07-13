@@ -19,30 +19,44 @@ $pf = Get-WmiObject -Class Win32_PageFileUsage
 
 ### get RAM
 $a = Get-WmiObject -Class Win32_ComputerSystem
-$ram_total = $a.TotalPhysicalMemory / 1MB
-$ram_total = "{0:N0}" -f $ram_total
-$rams = Get-WmiObject -Class Win32_PhysicalMemory | where{$_.MemoryType -eq 0}
-$ram_str = "RAM: total=" + $ram_total + "MB"
-$i = 1
-foreach ($ram in $rams) {
-	#$ram_str=$ram_str + "capacity=" + $ram.Capacity / 1MB + " speed=" + $ram.Speed + " status=" + $ram.Status + " model=" + $ram.Model + " type=" + $ram.MemoryType + " bank label=" + $ram.BankLabel + " name=" + $ram.Name
-	if($i -gt 1) {
-		$ram_str = $ram_str + ","
-	}
-	$ram_capacity = $ram.Capacity / 1MB
-	$ram_capacity = "{0:N0}" -f $ram_capacity
-	$ram_str + = " " + $i + ": capacity=" + $ram_capacity + "MB speed=" + $ram.Speed 
-	$i += 1
-}
-# for now
-$ram_used = $ram_total
-$ram_free = 0
+# convert to GB
+$ram_total = round ($a.TotalPhysicalMemory / 1MB)
+#$ram_total = "{0:N0}" -f $ram_total
+
+#$rams = Get-WmiObject -Class Win32_PhysicalMemory | where{$_.MemoryType -eq 0}
+#$ram_free = Get-WmiObject -Class Win32_OperatingSystem  | Foreach {"{0:N0}" -f ((($_.TotalVisibleMemorySize - $_.FreePhysicalMemory)*100) / $_.TotalVisibleMemorySize)} 
+
+$ram_free = (Get-Counter -Counter "\Memory\Available MBytes" ).CounterSamples[0].CookedValue
+#$ram_free = "{0:N0}" -f $ram_free
+
+$ram_used = $ram_total - $ram_free
+#$ram_used = "{0:N0}" -f $ram_used
+
+$ram_percent = ( 100 * $ram_used ) / $ram_total 
+$ram_percent = "{0:N0}" -f $ram_percent
+
+$ram_str = "RAM usage is " + $ram_percent + " %, total=" + $ram_total + " MB, used=" + $ram_used + " MB, free=" + $ram_free 
+
+#$i = 1
+#foreach ($ram in $rams) {
+#	#$ram_str=$ram_str + "capacity=" + $ram.Capacity / 1MB + " speed=" + $ram.Speed + " status=" + $ram.Status + " model=" + $ram.Model + " type=" + $ram.MemoryType + " bank label=" + $ram.BankLabel + " name=" + $ram.Name
+#	if($i -gt 1) {
+#		$ram_str = $ram_str + ","
+#	}
+#	$ram_capacity = $ram.Capacity / 1MB
+#	$ram_capacity = "{0:N0}" -f $ram_capacity
+#	$ram_str + = " " + $i + ": capacity=" + $ram_capacity + "MB speed=" + $ram.Speed 
+#	$i += 1
+#}
 
 $swap_total = $pf.AllocatedBaseSize
 $swap_used = $pf.CurrentUsage
 $swap_free = $swap_total - $swap_used
-$swap_percent = 100 * $swap_used / $swap_total 
-$info_str = "SWAP: total=" +$swap_total + "MB used=" + $swap_used + "MB free=" + $swap_free + "MB. " + $ram_str
+$swap_free = "{0:N0}" -f $swap_free
+$swap_percent = ( 100 * $swap_used ) / $swap_total 
+#$swap_percent = "{0:N0}" -f $swap_percent
+$swap_percent = round $swap_percent
+$info_str = "SWAP: total=" + $swap_total + " MB used=" + $swap_used + " MB free=" + $swap_free + " MB. " + $ram_str
 
 $data_str = '<entries>';
 $data_str += '<entry name="swap_total" type="numeric">'+ $swap_total + '</entry>';
@@ -55,16 +69,14 @@ $data_str += '<entry name="ram_used" type="numeric">' + $ram_used + '</entry>';
 $data_str += '<entry name="ram_usage_percent" type="numeric">' + $ram_percent + '</entry>';
 $data_str += '</entries>';
 
-if ($used_percent -ge $error_percent) {
+if ($swap_percent -ge $error_percent) {
 	$statusid = $statusids.Item("error")
-	$message_str = "ERROR: Swap usage is " + $used_percent + "% (>=" + $error_percent + ")!"  
-}
-elseif ($used_percent -ge $warning_percent) {
+	$message_str = "ERROR: Swap usage is " + $swap_percent + " % (>=" + $error_percent + "%)!"  
+} elseif ($swap_percent -ge $warning_percent) {
 	$statusid = $statusids.Item("warning")
-	$message_str = "WARNING: Swap usage is " + $used_percent + "% (>=" + $warning_percent + ")!"  
-}
-else {
+	$message_str = "WARNING: Swap usage is " + $swap_percent + " % (>=" + $warning_percent + "%)!"  
+} else {
 	$statusid = $statusids.Item("ok")
-	$message_str = "OK: Swap usage is " + $used_percent + "%."  
+	$message_str = "OK: Swap usage is " + $swap_percent + " %."  
 }
 $message_str += " " + $info_str
