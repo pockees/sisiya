@@ -26,17 +26,18 @@ if ([System.IO.File]::Exists($module_conf_file) -eq $True) {
 $wmi = Get-WmiObject -Class Win32_OperatingSystem
 ### get uptime
 $uptime = $wmi.ConvertToDateTime($wmi.LocalDateTime) - $wmi.ConvertToDateTime($wmi.LastBootUpTime)
+$total_minutes = round($uptime.TotalMinutes)
 
 $error_in_minutes = getTimeInMinutes($error_uptime)
 $warning_in_minutes = getTimeInMinutes($warning_uptime)
 
 $uptime_str = formatDateTime $uptime.Days $uptime.Hours $uptime.Minutes
-if ($uptime.TotalMinutes -le $error_in_minutes) {
+if ($total_minutes -le $error_in_minutes) {
 	$statusid = $statusids.Item("error")
 	$error_uptime_str = formatDateTime2 $error_uptime
 	$message_str = "ERROR: The system was restarted $uptime_str (<= $error_uptime_str) ago!" 
 }
-elseif ($uptime.TotalMinutes -le $warning_in_minutes) {
+elseif ($total_minutes -le $warning_in_minutes) {
 	$statusid = $statusids.Item("warning")
 	$warning_uptime_str = formatDateTime2 $warning_uptime
 	$message_str = "WARNING: The system was restarted  $uptime_str (<=  $warning_uptime_str) ago!"
@@ -45,6 +46,10 @@ else {
 	$statusid = $statusids.Item("ok")
 	$message_str = "OK: The system is up since $uptime_str."
 }
+
+$data_str = '<entries>'
+$data_str += '<entry name="uptime" type="numeric">' + $total_minutes + '</entry>'
+$data_str += '</entries>'
 
 ### get system info
 $sys_info = getSystemInfo
