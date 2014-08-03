@@ -43,9 +43,9 @@ $SISIYA_VERSIONS_XML_FILE = "versions.xml"
 #$checks.Item('filesystem').Item('auto') = 0
 #$checks.Item('isuptodate').Item('auto') = 0
 #$checks.Item('load').Item('auto') = 0
+#$checks.Item('services').Item('auto') = 0
 #$checks.Item('swap').Item('auto') = 0
 #$checks.Item('system').Item('auto') = 0
-#$checks.Item('').Item('auto') = 0
 #
 #################################################################################
 # The following checks are disabled,
@@ -54,10 +54,12 @@ $SISIYA_VERSIONS_XML_FILE = "versions.xml"
 #$checks.Item('brightstore_devices').Item('auto') = 1
 #$checks.Item('brightstore_jobs').Item('auto') = 1
 #$checks.Item('brightstore_scratch').Item('auto') = 1
+#$checks.Item('eventlog').Item('auto') = 1
 #$checks.Item('msexchange_mailqueue').Item('auto') = 1
 #$checks.Item('msexchange_mapiconnectivity').Item('auto') = 1
 #$checks.Item('mssexchange_mailflow').Item('auto') = 1
 #$checks.Item('msexchange_servicehealth').Item('auto') = 1
+#$checks.Item('ntpstat').Item('auto') = 1
 #$checks.Item('progs').Item('auto') = 1
 #$checks.Item('raid_hpacu').Item('auto') = 1
 #$checks.Item('temperature').Item('auto') = 1
