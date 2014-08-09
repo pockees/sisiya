@@ -181,7 +181,7 @@ function getAllConfs()
 			2  => array('value' => 'dbs',			'option' => 'dbs'),
 			3  => array('value' => 'dns',			'option' => 'dns'),
 			4  => array('value' => 'ftp',			'option' => 'ftp'),
-			5  => array('value' => 'hpilo2',		'option' => 'hpilo2'),
+			5  => array('value' => 'hpilo',			'option' => 'hpilo'),
 			6  => array('value' => 'https',			'option' => 'https'),
 			7  => array('value' => 'http',			'option' => 'http'),
 			8  => array('value' => 'imap',			'option' => 'imap'),

@@ -1,3 +1,10 @@
+sisiya-webui-php (0.6.30.33~0ubuntu1~ppa1) __DISTRO_NAME__; urgency=low
+
+  * changed hpilo2 remote check name to hpilo and added version entry
+
+ -- Erdal Mutlu <erdal@sisiya.org>  Fri, 9 Aug 2014 21:20:00 +0200
+
+
 sisiya-webui-php (0.6.30.32~0ubuntu1~ppa1) __DISTRO_NAME__; urgency=low
 
   * changed version numbering to support different Ubuntu distros
