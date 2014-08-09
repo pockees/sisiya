@@ -1,0 +1,45 @@
+<!--         RIBCL Sample Script for HP Lights-Out Products          -->
+<!--Copyright (c) 2014 Hewlett-Packard Development Company, L.P.     -->
+
+<!-- Description:  This is a sample XML script to retrieve health    -->
+<!--               information of the server.                        -->
+
+<!-- NOTE:  You will need to replace the USER_LOGIN and PASSWORD     -->
+<!--        values with values that are appropriate for your         -->
+<!--        environment.                                             -->
+
+<!--        You might need to tailor this script for the firmware    -->
+<!--        running on your Lights-Out device according to the       -->
+<!--        information in "Firmware support infomation" comment(s). -->
+
+<!--        Use HPQLOCFG.EXE ver 1.00 or greater with this script.   -->
+
+<!--        See "HP Integrated Lights-Out Management Processor       -->
+<!--        Scripting and Command Line Resource Guide" for more      -->
+<!--        information on scripting and the syntax of the RIBCL     -->
+<!--        XML.                                                     -->
+
+<!--        Firmware support infomation for this script:             -->
+<!--            iLO 4 - 1.30 or later.                               -->
+<!--            iLO 3 - 1.60 or later.                               -->
+<!--            iLO 2 - None.                                        -->
+
+<RIBCL VERSION="2.22">
+  <LOGIN USER_LOGIN="__USERNAME___" PASSWORD="__PASSWORD__">
+    <SERVER_INFO MODE="read">
+      <GET_EMBEDDED_HEALTH>
+        <GET_ALL_FANS/>
+        <GET_ALL_TEMPERATURES/>
+        <GET_ALL_POWER_SUPPLIES/>
+        <GET_ALL_VRM/>
+        <GET_ALL_PROCESSORS/>
+        <GET_ALL_MEMORY/>
+        <GET_ALL_NICS/>
+        <GET_ALL_STORAGE/>        
+        <GET_ALL_HEALTH_STATUS/>
+          <!--            iLO 4 only - 1.30 or later.                -->
+        <GET_ALL_FIRMWARE_VERSIONS/>
+      </GET_EMBEDDED_HEALTH>
+    </SERVER_INFO>
+  </LOGIN>
+</RIBCL>

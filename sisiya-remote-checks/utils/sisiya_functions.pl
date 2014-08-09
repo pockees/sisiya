@@ -38,6 +38,14 @@ sub get_snmp_value
 	return "$str";
 }
 
+## generate a temporary file name in the $SisIYA_Remote_Config::tmp_dir directory
+#sub get_temp_file_name 
+#{
+#	my $fh = File::Temp->new(TEMPLATE => 'tempXXXXX', DIR => $SisIYA_Remote_Config::tmp_dir, SUFFIX => '.tmp');
+#
+#	return $fh->filename;
+#}
+
 sub check_uptime
 {
 	my ($statusid_ref, $up_in_minutes, $uptime_warning, $uptime_error) = @_;
