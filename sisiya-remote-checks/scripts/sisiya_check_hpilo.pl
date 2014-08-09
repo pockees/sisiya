@@ -33,7 +33,7 @@ require File::Temp;
 use File::Temp();
 #use Data::Dumper;
 
-my $check_name = 'hpilo2';
+my $check_name = 'hpilo';
 
 if ( $#ARGV != 1 ) {
 	print "Usage : $0 ".$check_name."_systems.xml expire\n";
@@ -56,7 +56,36 @@ if (-f $SisIYA_Remote_Config::functions) {
 	require $SisIYA_Remote_Config::functions;
 }
 
-sub check_hpilo_fans
+sub check_hpilo2_fans
+{
+	my ($expire, @a) = @_;
+	my $serviceid = get_serviceid('fanspeed');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $ok_str = '';
+	my $error_str = '';
+	my $s = '';
+	
+	my $status_str = trim((split(/"/, (grep(/FANS STATUS/, @a))[0]))[1]);
+	if ($status_str eq 'Ok') {
+		$ok_str = " OK: Fans status is $status_str.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str = " ERROR: Fans status is $status_str (!= Ok)!";
+	}
+	$status_str = trim((split(/"/, (grep(/FANS REDUNDANCY/, @a))[0]))[1]);
+	if ($status_str eq 'Fully Redundant') {
+		$ok_str .= " OK: Fans redundancy is $status_str.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= " ERROR: Fans redundancy is $status_str (!= Fully Redundant)!";
+	}
+	$s = $error_str.$ok_str;
+
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
+}
+
+
+sub check_hpilo4_fans
 {
 	my ($expire, @a) = @_;
 	my $serviceid = get_serviceid('fanspeed');
@@ -84,7 +113,36 @@ sub check_hpilo_fans
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
-sub check_hpilo_powersupply
+sub check_hpilo2_powersupply
+{
+	my ($expire, @a) = @_;
+	my $serviceid = get_serviceid('powersupply');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $ok_str = '';
+	my $error_str = '';
+	my $s = '';
+	
+	my $status_str = trim((split(/"/, (grep(/POWER_SUPPLIES STATUS/, @a))[0]))[1]);
+	if ($status_str eq 'Ok') {
+		$ok_str = " OK: Power supply status is $status_str.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str = " ERROR: Power supply status is $status_str (!= Ok)!";
+	}
+	$status_str = trim((split(/"/, (grep(/POWER_SUPPLIES REDUNDANCY/, @a))[0]))[1]);
+	if ($status_str eq 'Fully Redundant') {
+		$ok_str .= " OK: Power supply redundancy is $status_str.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= " ERROR: Power supply redundancy is $status_str (!= Fully Redundant)!";
+	}
+	$s = $error_str.$ok_str;
+
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
+}
+
+
+sub check_hpilo4_powersupply
 {
 	my ($expire, @a) = @_;
 	my $serviceid = get_serviceid('powersupply');
@@ -112,7 +170,7 @@ sub check_hpilo_powersupply
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
-sub check_hpilo_ram
+sub check_hpilo4_ram
 {
 	my ($expire, @a) = @_;
 	my $serviceid = get_serviceid('ram');
@@ -131,7 +189,7 @@ sub check_hpilo_ram
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
-sub check_hpilo_cpu
+sub check_hpilo4_cpu
 {
 	my ($expire, @a) = @_;
 	my $serviceid = get_serviceid('cpu');
@@ -150,7 +208,27 @@ sub check_hpilo_cpu
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
-sub check_hpilo_temperature
+sub check_hpilo2_temperature
+{
+	my ($expire, @a) = @_;
+	my $serviceid = get_serviceid('temperature');
+	my $statusid;
+	my $s = '';
+
+	my $status_str = trim((split(/"/, (grep(/TEMPERATURE STATUS/, @a))[0]))[1]);
+	if ($status_str eq 'Ok') {
+		$statusid = $SisIYA_Config::statusids{'ok'};
+		$s = " OK: Temperature status is $status_str.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$s = " ERROR: Temperature status is $status_str (!= Ok)!";
+	}
+
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
+}
+
+
+sub check_hpilo4_temperature
 {
 	my ($expire, @a) = @_;
 	my $serviceid = get_serviceid('temperature');
@@ -170,7 +248,7 @@ sub check_hpilo_temperature
 }
 
 
-sub check_hpilo_raid
+sub check_hpilo4_raid
 {
 	my ($expire, @a) = @_;
 	my $serviceid = get_serviceid('raid');
@@ -190,7 +268,7 @@ sub check_hpilo_raid
 }
 
 
-sub check_hpilo_system
+sub check_hpilo4_system
 {
 	my ($expire, @a) = @_;
 	my $serviceid = get_serviceid('system');
@@ -221,7 +299,7 @@ sub check_hpilo_system
 
 sub check_hpilo
 {
-	my ($isactive, $serviceid, $expire, $system_name, $hostname, $username, $password) = @_;
+	my ($isactive, $serviceid, $expire, $system_name, $hostname, $username, $password, $version) = @_;
 
 	if ($isactive eq 'f' ) {
 		return '';
@@ -232,8 +310,12 @@ sub check_hpilo
 
 	# read the template
 	my $hp_xml_file = $SisIYA_Remote_Config::misc_dir.'/hp_locfg_get_embedded_health.xml';
-	#my $hp_xml_str = '';
-	my $hp_xml_str = '<RIBCL VERSION="2.22"><LOGIN USER_LOGIN="__USERNAME__" PASSWORD="__PASSWORD__"><SERVER_INFO MODE="read"><GET_EMBEDDED_HEALTH><GET_ALL_FANS/><GET_ALL_TEMPERATURES/><GET_ALL_POWER_SUPPLIES/><GET_ALL_VRM/><GET_ALL_PROCESSORS/><GET_ALL_MEMORY/><GET_ALL_NICS/><GET_ALL_STORAGE/><GET_ALL_HEALTH_STATUS/><GET_ALL_FIRMWARE_VERSIONS/></GET_EMBEDDED_HEALTH></SERVER_INFO></LOGIN></RIBCL>'; 
+	my $hp_xml_str = '';
+	if ($version >= 3) {
+		$hp_xml_str = '<RIBCL VERSION="2.22"><LOGIN USER_LOGIN="__USERNAME__" PASSWORD="__PASSWORD__"><SERVER_INFO MODE="read"><GET_EMBEDDED_HEALTH><GET_ALL_FANS/><GET_ALL_TEMPERATURES/><GET_ALL_POWER_SUPPLIES/><GET_ALL_VRM/><GET_ALL_PROCESSORS/><GET_ALL_MEMORY/><GET_ALL_NICS/><GET_ALL_STORAGE/><GET_ALL_HEALTH_STATUS/><GET_ALL_FIRMWARE_VERSIONS/></GET_EMBEDDED_HEALTH></SERVER_INFO></LOGIN></RIBCL>'; 
+	} else {
+		$hp_xml_str = '<RIBCL VERSION="2.21"><LOGIN USER_LOGIN="__USERNAME__" PASSWORD="__PASSWORD__"><SERVER_INFO MODE="read"><GET_EMBEDDED_HEALTH /></SERVER_INFO></LOGIN></RIBCL>'; 
+	}
 
 	#if (open(my $file, '<', $hp_xml_file)) {
 	#		$hp_xml_str = <$file>;
@@ -258,14 +340,20 @@ sub check_hpilo
 
 	chomp(my @result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`);
 	print STDERR "Result: ".@result_str."\n";
-
-	my $s = check_hpilo_system($expire, @result_str);
-	$s .= check_hpilo_raid($expire, @result_str);
-	$s .= check_hpilo_powersupply($expire, @result_str);
-	$s .= check_hpilo_fans($expire, @result_str);
-	$s .= check_hpilo_temperature($expire, @result_str);
-	$s .= check_hpilo_ram($expire, @result_str);
-	$s .= check_hpilo_cpu($expire, @result_str);
+	my $s;
+	if ($version >= 3) {
+		$s = check_hpilo4_system($expire, @result_str);
+		$s .= check_hpilo4_raid($expire, @result_str);
+		$s .= check_hpilo4_powersupply($expire, @result_str);
+		$s .= check_hpilo4_fans($expire, @result_str);
+		$s .= check_hpilo4_temperature($expire, @result_str);
+		$s .= check_hpilo4_ram($expire, @result_str);
+		$s .= check_hpilo4_cpu($expire, @result_str);
+	} else {
+		$s .= check_hpilo2_powersupply($expire, @result_str);
+		$s .= check_hpilo2_fans($expire, @result_str);
+		$s .= check_hpilo2_temperature($expire, @result_str);
+	}
 	return "<system><name>$system_name</name>$s</system>";
 }
 
@@ -281,12 +369,12 @@ my $xml_str = '';
 
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_hpilo($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'username'}, $h->{'password'});
+		$xml_str .= check_hpilo($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'username'}, $h->{'password'}, $h->{'version'});
 	}
 }
 else {
 	$xml_str = check_hpilo($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
-				$data->{'record'}->{'hostname'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'});
+				$data->{'record'}->{'hostname'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}, $data->{'record'}->{'version'});
 }
 
 unlock_check($check_name);

@@ -63,7 +63,7 @@ our %checks = (
 		'dbs' 		=> { 'auto' => 1, 'conf' => 'dbs_systems.xml', 		'script' => 'sisiya_check_dbs.pl' 		},
 		'dns' 		=> { 'auto' => 1, 'conf' => 'dns_systems.xml', 		'script' => 'sisiya_check_dns.pl' 		},
 		'ftp'		=> { 'auto' => 1, 'conf' => 'ftp_systems.xml', 		'script' => 'sisiya_check_ftp.pl' 		},
-		'hpilo2'	=> { 'auto' => 1, 'conf' => 'hpilo2_systems.xml',	'script' => 'sisiya_check_hpilo2.pl' 		},
+		'hpilo'		=> { 'auto' => 1, 'conf' => 'hpilo_systems.xml',	'script' => 'sisiya_check_hpilo.pl' 		},
 		'http'		=> { 'auto' => 1, 'conf' => 'http_systems.xml',		'script' => 'sisiya_check_http.pl' 		},
 		'https'		=> { 'auto' => 1, 'conf' => 'https_systems.xml',	'script' => 'sisiya_check_https.pl' 		},
 		'imap'		=> { 'auto' => 1, 'conf' => 'imap_systems.xml',		'script' => 'sisiya_check_imap.pl' 		},
