@@ -252,18 +252,67 @@ sub check_hpilo4_raid
 {
 	my ($expire, @a) = @_;
 	my $serviceid = get_serviceid('raid');
-	my $statusid;
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $ok_str = '';
+	my $error_str = '';
+	my $info_str = '';
 	my $s = '';
 
 	my $status_str = trim((split(/"/, (grep(/STORAGE STATUS/, @a))[0]))[1]);
 	if ($status_str eq 'OK') {
-		$statusid = $SisIYA_Config::statusids{'ok'};
-		$s = " OK: RAID status is $status_str.";
+		$ok_str = " OK: RAID status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = " ERROR: RAID status is $status_str (!= OK)!";
+		$error_str = " ERROR: RAID status is $status_str (!= OK)!";
+	}
+	#print STDERR "\na: ".join(' ', @a)."\n";
+	my $b = (split('GET_EMBEDDED_HEALTH_DATA', join(' ', @a)))[1];
+	$b =~ s/\r|\n//g;
+	$b = '<?xml version="1.0"?><GET_EMBEDDED_HEALTH_DATA'.$b."GET_EMBEDDED_HEALTH_DATA>";
+	#print STDERR "\nB:$b\n";
+	my $x = new XML::Simple;
+	##my $r = $x->XMLin(join(' ',@a));
+	my $r = $x->XMLin($b);
+
+	# check controller status
+	$status_str = $r->{'STORAGE'}->{'CONTROLLER'}->{'CONTROLLER_STATUS'}{'VALUE'};
+	if ($status_str eq 'OK') {
+		$ok_str .= " OK: Controller status is OK.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= " ERROR: Controller status is $status_str (!=OK)!";
+	}
+	my $controller_str = "Name: $r->{'STORAGE'}->{'CONTROLLER'}->{'LABEL'}{'VALUE'}";
+	$controller_str .= ", Serial No: $r->{'STORAGE'}->{'CONTROLLER'}->{'SERIAL_NUMBER'}{'VALUE'}";
+	$controller_str .= ", Model: $r->{'STORAGE'}->{'CONTROLLER'}->{'MODEL'}{'VALUE'}";
+	$controller_str .= ", Firmware Version: $r->{'STORAGE'}->{'CONTROLLER'}->{'FW_VERSION'}{'VALUE'}";
+
+	$info_str = "INFO: $controller_str";
+
+	# check cache module status
+	$status_str = $r->{'STORAGE'}->{'CONTROLLER'}->{'CACHE_MODULE_STATUS'}{'VALUE'};
+	if ($status_str eq 'OK') {
+		$ok_str .= " OK: Cache module status is OK.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= " ERROR: Cache module status is $status_str (!=OK)!";
+	}
+	$info_str .= ", Cache memory: $r->{'STORAGE'}->{'CONTROLLER'}->{'CACHE_MODULE_MEMORY'}{'VALUE'}";
+
+	# check logical drive status
+	$status_str = $r->{'STORAGE'}->{'CONTROLLER'}->{'LOGICAL_DRIVE'}->{'STATUS'}{'VALUE'};
+	my $drive_str .= "$r->{'STORAGE'}->{'CONTROLLER'}->{'LOGICAL_DRIVE'}->{'LABEL'}{'VALUE'}";
+	$drive_str .= " (capacity: $r->{'STORAGE'}->{'CONTROLLER'}->{'LOGICAL_DRIVE'}->{'CAPACITY'}{'VALUE'}";
+	$drive_str .= ", fault tolerance: $r->{'STORAGE'}->{'CONTROLLER'}->{'LOGICAL_DRIVE'}->{'FAULT_TOLERANCE'}{'VALUE'})";
+	if ($status_str eq 'OK') {
+		$ok_str .= " OK: Logical drive of $drive_str status is OK.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= " ERROR: Logical drive tatus of $drive_str is $status_str (!=OK)!";
 	}
 
+
+	$s = "$error_str $ok_str $info_str";
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
@@ -331,15 +380,14 @@ sub check_hpilo
 	print { $hp_input_file } $hp_xml_str;
 	$hp_input_file->close;
 
-	if (open(my $file, '<', $hp_input_file)) {
-		while (<$file>) { print STDERR $_; }
-		close($file);
-	}	
-	print STDERR "Temp file :".$hp_input_file->filename ."\n"; 	# or just $hp_input_file 
-	print STDERR "xml string : ".$hp_xml_str."\n\n";	
+	#if (open(my $file, '<', $hp_input_file)) {
+	#	while (<$file>) { print STDERR $_; }
+	#	close($file);
+	#}	
+	#print STDERR "Temp file :".$hp_input_file->filename ."\n"; 	# or just $hp_input_file 
+	#print STDERR "xml string : ".$hp_xml_str."\n\n";	
 
 	chomp(my @result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`);
-	print STDERR "Result: ".@result_str."\n";
 	my $s;
 	if ($version >= 3) {
 		$s = check_hpilo4_system($expire, @result_str);
