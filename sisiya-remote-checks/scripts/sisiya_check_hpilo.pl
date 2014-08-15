@@ -305,12 +305,31 @@ sub check_hpilo4_raid
 	$drive_str .= " (capacity: $r->{'STORAGE'}->{'CONTROLLER'}->{'LOGICAL_DRIVE'}->{'CAPACITY'}{'VALUE'}";
 	$drive_str .= ", fault tolerance: $r->{'STORAGE'}->{'CONTROLLER'}->{'LOGICAL_DRIVE'}->{'FAULT_TOLERANCE'}{'VALUE'})";
 	if ($status_str eq 'OK') {
-		$ok_str .= " OK: Logical drive of $drive_str status is OK.";
+		$ok_str .= " OK: Logical drive $drive_str status is OK.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$error_str .= " ERROR: Logical drive tatus of $drive_str is $status_str (!=OK)!";
+		$error_str .= " ERROR: Logical drive $drive_str status is $status_str (!=OK)!";
 	}
 
+	my $total_physical_drives = 0;
+	my $failed_physical_drives = 0;
+	$s = '';
+	foreach my $h (@{$r->{'STORAGE'}->{'CONTROLLER'}->{'LOGICAL_DRIVE'}->{'PHYSICAL_DRIVE'}}) {
+		$total_physical_drives++;
+		$status_str = $h->{'STATUS'}{'VALUE'};
+		if ($status_str ne 'OK') {
+			$failed_physical_drives++;
+			$s .= "ERROR: $h->{'LABEL'}{'VALUE'} drive (capacity: $h->{'CAPACITY'}{'VALUE'}, serial number: $h->{'SERIAL_NUMBER'}{'VALUE'}, model: $h->{'MODEL'}{'VALUE'}) at location : $h->{'LOCATION'}{'VALUE'} has status $status_str (!=OK)!";
+		}
+	}
+	if ($failed_physical_drives == 0) {
+		$ok_str .= "OK: All $failed_physical_drives physical drives are OK."
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= "ERROR: $failed_physical_drives / $total_physical_drives physical drives failed!";
+		# add the failed drive list
+		$error_str .= $s;
+	}
 
 	$s = "$error_str $ok_str $info_str";
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
@@ -387,7 +406,14 @@ sub check_hpilo
 	#print STDERR "Temp file :".$hp_input_file->filename ."\n"; 	# or just $hp_input_file 
 	#print STDERR "xml string : ".$hp_xml_str."\n\n";	
 
-	chomp(my @result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`);
+	my @result_str;
+	if ($system_name ne 'sanal08-ue-9') {
+		chomp(@result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`);
+	} else {
+		open(my $file, '<', '/root/hp/sample_scripts/a2_6_disk_cikarildi.xml');
+		@result_str = <$file>;
+		close($file);
+	}
 	my $s;
 	if ($version >= 3) {
 		$s = check_hpilo4_system($expire, @result_str);
