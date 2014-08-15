@@ -250,7 +250,7 @@ sub check_hpilo4_temperature
 
 sub check_hpilo4_raid
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('raid');
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $ok_str = '';
@@ -258,21 +258,13 @@ sub check_hpilo4_raid
 	my $info_str = '';
 	my $s = '';
 
-	my $status_str = trim((split(/"/, (grep(/STORAGE STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'STORAGE'}->{'CONTROLLER'}->{'STATUS'}{'VALUE'};
 	if ($status_str eq 'OK') {
 		$ok_str = " OK: RAID status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str = " ERROR: RAID status is $status_str (!= OK)!";
 	}
-	#print STDERR "\na: ".join(' ', @a)."\n";
-	my $b = (split('GET_EMBEDDED_HEALTH_DATA', join(' ', @a)))[1];
-	$b =~ s/\r|\n//g;
-	$b = '<?xml version="1.0"?><GET_EMBEDDED_HEALTH_DATA'.$b."GET_EMBEDDED_HEALTH_DATA>";
-	#print STDERR "\nB:$b\n";
-	my $x = new XML::Simple;
-	##my $r = $x->XMLin(join(' ',@a));
-	my $r = $x->XMLin($b);
 
 	# check controller status
 	$status_str = $r->{'STORAGE'}->{'CONTROLLER'}->{'CONTROLLER_STATUS'}{'VALUE'};
@@ -338,21 +330,21 @@ sub check_hpilo4_raid
 
 sub check_hpilo4_system
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('system');
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $ok_str = '';
 	my $error_str = '';
 	my $s = '';
 
-	my $status_str = trim((split(/"/, (grep(/BIOS_HARDWARE STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'BIOS_HARDWARE'}{'STATUS'};
 	if ($status_str eq 'OK') {
 		$ok_str = " OK: BIOS hardware status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str = " ERROR: BIOS hardware status is $status_str (!= OK)!";
 	}
-	$status_str = trim((split(/"/, (grep(/NETWORK STATUS/, @a))[0]))[1]);
+	$status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'NETWORK'}{'STATUS'};
 	if ($status_str eq 'OK') {
 		$ok_str .= " OK: Network status is $status_str.";
 	} else {
@@ -360,7 +352,6 @@ sub check_hpilo4_system
 		$error_str .= " ERROR: Network status is $status_str (!= OK)!";
 	}
 	$s = $error_str.$ok_str;
-
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
@@ -406,23 +397,33 @@ sub check_hpilo
 	#print STDERR "Temp file :".$hp_input_file->filename ."\n"; 	# or just $hp_input_file 
 	#print STDERR "xml string : ".$hp_xml_str."\n\n";	
 
-	my @result_str;
-	if ($system_name ne 'sanal08-ue-9') {
-		chomp(@result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`);
-	} else {
-		open(my $file, '<', '/root/hp/sample_scripts/a2_6_disk_cikarildi.xml');
-		@result_str = <$file>;
-		close($file);
-	}
+	chomp(my @result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`);
+
+#	my @result_str;
+#	if ($system_name ne 'sanal08-ue-9') {
+#		chomp(@result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`);
+#	} else {
+#		open(my $file, '<', '/root/hp/sample_scripts/a2_6_disk_cikarildi.xml');
+#		@result_str = <$file>;
+#		close($file);
+#	}
+
+	# parse the result XML
+	my $a = (split('GET_EMBEDDED_HEALTH_DATA', join(' ', @result_str)))[1];
+	$a =~ s/\r|\n//g;
+	$a = '<?xml version="1.0"?><GET_EMBEDDED_HEALTH_DATA'.$a."GET_EMBEDDED_HEALTH_DATA>";
+	my $x = new XML::Simple;
+	my $r = $x->XMLin($a);
+
 	my $s;
 	if ($version >= 3) {
-		$s = check_hpilo4_system($expire, @result_str);
-		$s .= check_hpilo4_raid($expire, @result_str);
-		$s .= check_hpilo4_powersupply($expire, @result_str);
-		$s .= check_hpilo4_fans($expire, @result_str);
-		$s .= check_hpilo4_temperature($expire, @result_str);
-		$s .= check_hpilo4_ram($expire, @result_str);
-		$s .= check_hpilo4_cpu($expire, @result_str);
+		$s = check_hpilo4_system($expire, $r);
+		$s .= check_hpilo4_raid($expire, $r);
+	#	$s .= check_hpilo4_powersupply($expire, @result_str);
+	#	$s .= check_hpilo4_fans($expire, @result_str);
+	#	$s .= check_hpilo4_temperature($expire, @result_str);
+	#	$s .= check_hpilo4_ram($expire, @result_str);
+	#	$s .= check_hpilo4_cpu($expire, @result_str);
 	} else {
 		$s .= check_hpilo2_powersupply($expire, @result_str);
 		$s .= check_hpilo2_fans($expire, @result_str);
