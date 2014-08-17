@@ -29,6 +29,7 @@ use warnings;
 use SisIYA_Config;
 use SisIYA_Remote_Config;
 use XML::Simple;
+use Data::Dumper;
 require File::Temp;
 use File::Temp();
 #use Data::Dumper;
@@ -58,21 +59,21 @@ if (-f $SisIYA_Remote_Config::functions) {
 
 sub check_hpilo2_fans
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('fanspeed');
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $ok_str = '';
 	my $error_str = '';
 	my $s = '';
 	
-	my $status_str = trim((split(/"/, (grep(/FANS STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'FANS'}[0]{'STATUS'};
 	if ($status_str eq 'Ok') {
 		$ok_str = " OK: Fans status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str = " ERROR: Fans status is $status_str (!= Ok)!";
 	}
-	$status_str = trim((split(/"/, (grep(/FANS REDUNDANCY/, @a))[0]))[1]);
+	$status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'FANS'}[1]{'REDUNDANCY'};
 	if ($status_str eq 'Fully Redundant') {
 		$ok_str .= " OK: Fans redundancy is $status_str.";
 	} else {
@@ -87,21 +88,21 @@ sub check_hpilo2_fans
 
 sub check_hpilo4_fans
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('fanspeed');
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $ok_str = '';
 	my $error_str = '';
 	my $s = '';
 	
-	my $status_str = trim((split(/"/, (grep(/FANS STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'FANS'}[0]{'STATUS'};
 	if ($status_str eq 'OK') {
 		$ok_str = " OK: Fans status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str = " ERROR: Fans status is $status_str (!= OK)!";
 	}
-	$status_str = trim((split(/"/, (grep(/FANS REDUNDANCY/, @a))[0]))[1]);
+	$status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'FANS'}[1]{'REDUNDANCY'};
 	if ($status_str eq 'Redundant') {
 		$ok_str .= " OK: Fans redundancy is $status_str.";
 	} else {
@@ -115,21 +116,21 @@ sub check_hpilo4_fans
 
 sub check_hpilo2_powersupply
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('powersupply');
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $ok_str = '';
 	my $error_str = '';
 	my $s = '';
 	
-	my $status_str = trim((split(/"/, (grep(/POWER_SUPPLIES STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'POWER_SUPPLIES'}[0]{'STATUS'};
 	if ($status_str eq 'Ok') {
 		$ok_str = " OK: Power supply status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str = " ERROR: Power supply status is $status_str (!= Ok)!";
 	}
-	$status_str = trim((split(/"/, (grep(/POWER_SUPPLIES REDUNDANCY/, @a))[0]))[1]);
+	$status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'POWER_SUPPLIES'}[1]{'REDUNDANCY'};
 	if ($status_str eq 'Fully Redundant') {
 		$ok_str .= " OK: Power supply redundancy is $status_str.";
 	} else {
@@ -144,40 +145,79 @@ sub check_hpilo2_powersupply
 
 sub check_hpilo4_powersupply
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('powersupply');
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $ok_str = '';
+	my $info_str = '';
 	my $error_str = '';
 	my $s = '';
-	
-	my $status_str = trim((split(/"/, (grep(/POWER_SUPPLIES STATUS/, @a))[0]))[1]);
+
+	# strange, but this is an array
+###############	
+# 'POWER_SUPPLIES' => [
+#                                                      {
+#                                                        'STATUS' => 'OK'
+#                                                      },
+#                                                      {
+#                                                        'REDUNDANCY' => 'Redundant'
+#                                                      }
+#                                                    ],
+###############	
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'POWER_SUPPLIES'}[0]{'STATUS'};
 	if ($status_str eq 'OK') {
-		$ok_str = " OK: Power supply status is $status_str.";
+		$ok_str .= " OK: Power supply status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$error_str = " ERROR: Power supply status is $status_str (!= OK)!";
+		$error_str .= " ERROR: Power supply status is $status_str (!= OK)!";
 	}
-	$status_str = trim((split(/"/, (grep(/POWER_SUPPLIES REDUNDANCY/, @a))[0]))[1]);
+	$status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'POWER_SUPPLIES'}[1]{'REDUNDANCY'};
 	if ($status_str eq 'Redundant') {
 		$ok_str .= " OK: Power supply redundancy is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str .= " ERROR: Power supply redundancy is $status_str (!= Redundndant)!";
 	}
-	$s = $error_str.$ok_str;
+	$info_str = "INFO: Power reading: $r->{'POWER_SUPPLIES'}->{'POWER_SUPPLY_SUMMARY'}->{'PRESENT_POWER_READING'}{'VALUE'}";
+	$info_str .= ", Firmware version: $r->{'POWER_SUPPLIES'}->{'POWER_SUPPLY_SUMMARY'}->{'POWER_MANAGEMENT_CONTROLLER_FIRMWARE_VERSION'}{'VALUE'}";
+	$info_str .= ", High efficiency mode: $r->{'POWER_SUPPLIES'}->{'POWER_SUPPLY_SUMMARY'}->{'HIGH_EFFICIENCY_MODE'}{'VALUE'}";
+	$info_str .= ", HP power discovery services redundancy status: $r->{'POWER_SUPPLIES'}->{'POWER_SUPPLY_SUMMARY'}->{'HP_POWER_DISCOVERY_SERVICES_REDUNDANCY_STATUS'}{'VALUE'}";
+
+	my $total_power_supplies = 0;
+	my $failed_power_supplies = 0;
+	foreach my $h (@{$r->{'POWER_SUPPLIES'}->{'SUPPLY'}}) {
+		if ($h->{'PRESENT'}{'VALUE'} eq 'Yes') {
+			$total_power_supplies++;
+			$s = "capacity: $h->{'CAPACITY'}{'VALUE'}, serial number: $h->{'SERIAL_NUMBER'}{'VALUE'}, hotplugable: $h->{'HOTPLUG_CAPABLE'}{'VALUE'}, model: $h->{'MODEL'}{'VALUE'}, firmware version: $h->{'FIRMWARE_VERSION'}{'VALUE'}, pds: $h->{'PDS'}{'VALUE'}, spare: $h->{'SPARE'}{'VALUE'}";
+			if ($h->{'STATUS'}{'VALUE'} eq 'Good, In Use') {
+				$ok_str .= "OK: Power supply $h->{'LABEL'}{'VALUE'} ($s) status is good and in use.";
+			} else {
+				$failed_power_supplies++;
+				$error_str .= "ERROR: Power supply $h->{'LABEL'}{'VALUE'} ($s) has status $h->{'STATUS'}{'VALUE'} (!Good, In Use)!";
+			}
+		}
+	}
+	if ($failed_power_supplies == 0) {
+		$ok_str .= "OK: All $total_power_supplies power supplies are OK."
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= "ERROR: $failed_power_supplies / $total_power_supplies power supplies failed!";
+		# add the failed drive list
+		$error_str .= $s;
+	}
+	$s = "$error_str $ok_str $info_str";
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
 sub check_hpilo4_ram
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('ram');
 	my $statusid;
 	my $s = '';
 
-	my $status_str = trim((split(/"/, (grep(/MEMORY STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'MEMORY'}{'STATUS'}; 
 	if ($status_str eq 'OK') {
 		$statusid = $SisIYA_Config::statusids{'ok'};
 		$s = " OK: RAM status is $status_str.";
@@ -191,12 +231,12 @@ sub check_hpilo4_ram
 
 sub check_hpilo4_cpu
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('cpu');
 	my $statusid;
 	my $s = '';
 
-	my $status_str = trim((split(/"/, (grep(/PROCESSOR STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'PROCESSOR'}{'STATUS'}; 
 	if ($status_str eq 'OK') {
 		$statusid = $SisIYA_Config::statusids{'ok'};
 		$s = " OK: CPU status is $status_str.";
@@ -210,12 +250,12 @@ sub check_hpilo4_cpu
 
 sub check_hpilo2_temperature
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('temperature');
 	my $statusid;
 	my $s = '';
 
-	my $status_str = trim((split(/"/, (grep(/TEMPERATURE STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'TEMPERATURE'}{'STATUS'}; 
 	if ($status_str eq 'Ok') {
 		$statusid = $SisIYA_Config::statusids{'ok'};
 		$s = " OK: Temperature status is $status_str.";
@@ -230,12 +270,12 @@ sub check_hpilo2_temperature
 
 sub check_hpilo4_temperature
 {
-	my ($expire, @a) = @_;
+	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('temperature');
 	my $statusid;
 	my $s = '';
 
-	my $status_str = trim((split(/"/, (grep(/TEMPERATURE STATUS/, @a))[0]))[1]);
+	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'TEMPERATURE'}{'STATUS'}; 
 	if ($status_str eq 'OK') {
 		$statusid = $SisIYA_Config::statusids{'ok'};
 		$s = " OK: Temperature status is $status_str.";
@@ -315,7 +355,7 @@ sub check_hpilo4_raid
 		}
 	}
 	if ($failed_physical_drives == 0) {
-		$ok_str .= "OK: All $failed_physical_drives physical drives are OK."
+		$ok_str .= "OK: All $total_physical_drives physical drives are OK."
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str .= "ERROR: $failed_physical_drives / $total_physical_drives physical drives failed!";
@@ -414,20 +454,21 @@ sub check_hpilo
 	$a = '<?xml version="1.0"?><GET_EMBEDDED_HEALTH_DATA'.$a."GET_EMBEDDED_HEALTH_DATA>";
 	my $x = new XML::Simple;
 	my $r = $x->XMLin($a);
-
-	my $s;
+	print STDERR Dumper($r);
+	
+	my $s = '';
 	if ($version >= 3) {
 		$s = check_hpilo4_system($expire, $r);
 		$s .= check_hpilo4_raid($expire, $r);
-	#	$s .= check_hpilo4_powersupply($expire, @result_str);
-	#	$s .= check_hpilo4_fans($expire, @result_str);
-	#	$s .= check_hpilo4_temperature($expire, @result_str);
-	#	$s .= check_hpilo4_ram($expire, @result_str);
-	#	$s .= check_hpilo4_cpu($expire, @result_str);
+		$s .= check_hpilo4_powersupply($expire, $r);
+		$s .= check_hpilo4_fans($expire, $r);
+		$s .= check_hpilo4_temperature($expire, $r);
+		$s .= check_hpilo4_ram($expire, $r);
+		$s .= check_hpilo4_cpu($expire, $r);
 	} else {
-		$s .= check_hpilo2_powersupply($expire, @result_str);
-		$s .= check_hpilo2_fans($expire, @result_str);
-		$s .= check_hpilo2_temperature($expire, @result_str);
+		$s .= check_hpilo2_powersupply($expire, $r);
+		$s .= check_hpilo2_fans($expire, $r);
+		$s .= check_hpilo2_temperature($expire, $r);
 	}
 	return "<system><name>$system_name</name>$s</system>";
 }
