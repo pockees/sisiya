@@ -1,0 +1,1163 @@
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+<GET_EMBEDDED_HEALTH_DATA>
+     <FANS>
+          <FAN>
+               <ZONE VALUE = "System"/>
+               <LABEL VALUE = "Fan 1"/>
+               <STATUS VALUE = "OK"/>
+               <SPEED VALUE = "6" UNIT="Percentage"/>
+          </FAN>
+          <FAN>
+               <ZONE VALUE = "System"/>
+               <LABEL VALUE = "Fan 2"/>
+               <STATUS VALUE = "OK"/>
+               <SPEED VALUE = "6" UNIT="Percentage"/>
+          </FAN>
+          <FAN>
+               <ZONE VALUE = "System"/>
+               <LABEL VALUE = "Fan 3"/>
+               <STATUS VALUE = "OK"/>
+               <SPEED VALUE = "6" UNIT="Percentage"/>
+          </FAN>
+          <FAN>
+               <ZONE VALUE = "System"/>
+               <LABEL VALUE = "Fan 4"/>
+               <STATUS VALUE = "OK"/>
+               <SPEED VALUE = "16" UNIT="Percentage"/>
+          </FAN>
+          <FAN>
+               <ZONE VALUE = "System"/>
+               <LABEL VALUE = "Fan 5"/>
+               <STATUS VALUE = "OK"/>
+               <SPEED VALUE = "27" UNIT="Percentage"/>
+          </FAN>
+          <FAN>
+               <ZONE VALUE = "System"/>
+               <LABEL VALUE = "Fan 6"/>
+               <STATUS VALUE = "OK"/>
+               <SPEED VALUE = "27" UNIT="Percentage"/>
+          </FAN>
+     </FANS>
+     <TEMPERATURE>
+          <TEMP>
+               <LABEL VALUE = "01-Inlet Ambient"/>
+               <LOCATION VALUE = "Ambient"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "17" UNIT="Celsius"/>
+               <CAUTION VALUE = "42" UNIT="Celsius"/>
+               <CRITICAL VALUE = "46" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "02-CPU 1"/>
+               <LOCATION VALUE = "CPU"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "40" UNIT="Celsius"/>
+               <CAUTION VALUE = "70" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "03-CPU 2"/>
+               <LOCATION VALUE = "CPU"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "40" UNIT="Celsius"/>
+               <CAUTION VALUE = "70" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "04-P1 DIMM 1-3"/>
+               <LOCATION VALUE = "Memory"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "05-P1 DIMM 4-6"/>
+               <LOCATION VALUE = "Memory"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "06-P1 DIMM 7-9"/>
+               <LOCATION VALUE = "Memory"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "25" UNIT="Celsius"/>
+               <CAUTION VALUE = "87" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "07-P1 DIMM 10-12"/>
+               <LOCATION VALUE = "Memory"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "25" UNIT="Celsius"/>
+               <CAUTION VALUE = "87" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "08-P2 DIMM 1-3"/>
+               <LOCATION VALUE = "Memory"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "09-P2 DIMM 4-6"/>
+               <LOCATION VALUE = "Memory"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "10-P2 DIMM 7-9"/>
+               <LOCATION VALUE = "Memory"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "23" UNIT="Celsius"/>
+               <CAUTION VALUE = "87" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "11-P2 DIMM 10-12"/>
+               <LOCATION VALUE = "Memory"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "24" UNIT="Celsius"/>
+               <CAUTION VALUE = "87" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "12-HD Max"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "35" UNIT="Celsius"/>
+               <CAUTION VALUE = "60" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "13-Chipset"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "44" UNIT="Celsius"/>
+               <CAUTION VALUE = "105" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "14-P/S 1"/>
+               <LOCATION VALUE = "Power Supply"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "25" UNIT="Celsius"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "15-P/S 2"/>
+               <LOCATION VALUE = "Power Supply"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "27" UNIT="Celsius"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "16-P/S 2 Zone"/>
+               <LOCATION VALUE = "Power Supply"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "27" UNIT="Celsius"/>
+               <CAUTION VALUE = "75" UNIT="Celsius"/>
+               <CRITICAL VALUE = "80" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "17-VR P1"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "30" UNIT="Celsius"/>
+               <CAUTION VALUE = "115" UNIT="Celsius"/>
+               <CRITICAL VALUE = "120" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "18-VR P2"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "32" UNIT="Celsius"/>
+               <CAUTION VALUE = "115" UNIT="Celsius"/>
+               <CRITICAL VALUE = "120" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "19-VR P1 Mem"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "28" UNIT="Celsius"/>
+               <CAUTION VALUE = "115" UNIT="Celsius"/>
+               <CRITICAL VALUE = "120" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "20-VR P1 Mem"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "30" UNIT="Celsius"/>
+               <CAUTION VALUE = "115" UNIT="Celsius"/>
+               <CRITICAL VALUE = "120" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "21-VR P2 Mem"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "30" UNIT="Celsius"/>
+               <CAUTION VALUE = "115" UNIT="Celsius"/>
+               <CRITICAL VALUE = "120" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "22-VR P2 Mem"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "31" UNIT="Celsius"/>
+               <CAUTION VALUE = "115" UNIT="Celsius"/>
+               <CRITICAL VALUE = "120" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "23-VR P1Vtt Zone"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "29" UNIT="Celsius"/>
+               <CAUTION VALUE = "90" UNIT="Celsius"/>
+               <CRITICAL VALUE = "95" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "24-VR P2Vtt Zone"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "29" UNIT="Celsius"/>
+               <CAUTION VALUE = "90" UNIT="Celsius"/>
+               <CRITICAL VALUE = "95" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "25-HD Controller"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "65" UNIT="Celsius"/>
+               <CAUTION VALUE = "100" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "26-iLO Zone"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "30" UNIT="Celsius"/>
+               <CAUTION VALUE = "90" UNIT="Celsius"/>
+               <CRITICAL VALUE = "95" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "27-LOM Card"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "28-PCI 1"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "29-PCI 2"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "30-PCI 3"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "31-PCI 4"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "32-PCI 5"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "33-PCI 6"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "34-PCI 1 Zone"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "25" UNIT="Celsius"/>
+               <CAUTION VALUE = "65" UNIT="Celsius"/>
+               <CRITICAL VALUE = "70" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "35-PCI 2 Zone"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "27" UNIT="Celsius"/>
+               <CAUTION VALUE = "66" UNIT="Celsius"/>
+               <CRITICAL VALUE = "71" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "36-PCI 3 Zone"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "27" UNIT="Celsius"/>
+               <CAUTION VALUE = "66" UNIT="Celsius"/>
+               <CRITICAL VALUE = "71" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "37-PCI 4 Zone"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "38-PCI 5 Zone"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "39-PCI 6 Zone"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "40-I/O Board 1"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "30" UNIT="Celsius"/>
+               <CAUTION VALUE = "66" UNIT="Celsius"/>
+               <CRITICAL VALUE = "71" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "41-I/O Board 2"/>
+               <LOCATION VALUE = "I/O Board"/>
+               <STATUS VALUE = "Not Installed"/>
+               <CURRENTREADING VALUE = "N/A"/>
+               <CAUTION VALUE = "N/A"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "42-VR P1 Zone"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "23" UNIT="Celsius"/>
+               <CAUTION VALUE = "95" UNIT="Celsius"/>
+               <CRITICAL VALUE = "100" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "43-BIOS Zone"/>
+               <LOCATION VALUE = "System Board"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "40" UNIT="Celsius"/>
+               <CAUTION VALUE = "90" UNIT="Celsius"/>
+               <CRITICAL VALUE = "95" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "44-System Board"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "29" UNIT="Celsius"/>
+               <CAUTION VALUE = "80" UNIT="Celsius"/>
+               <CRITICAL VALUE = "85" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "45-SuperCap Max"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "20" UNIT="Celsius"/>
+               <CAUTION VALUE = "65" UNIT="Celsius"/>
+               <CRITICAL VALUE = "N/A"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "46-Chipset Zone"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "30" UNIT="Celsius"/>
+               <CAUTION VALUE = "75" UNIT="Celsius"/>
+               <CRITICAL VALUE = "80" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "47-Battery Zone"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "28" UNIT="Celsius"/>
+               <CAUTION VALUE = "75" UNIT="Celsius"/>
+               <CRITICAL VALUE = "80" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "48-I/O Zone"/>
+               <LOCATION VALUE = "System"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "32" UNIT="Celsius"/>
+               <CAUTION VALUE = "75" UNIT="Celsius"/>
+               <CRITICAL VALUE = "80" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "49-Sys Exhaust"/>
+               <LOCATION VALUE = "Chassis"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "29" UNIT="Celsius"/>
+               <CAUTION VALUE = "75" UNIT="Celsius"/>
+               <CRITICAL VALUE = "80" UNIT="Celsius"/>
+          </TEMP>
+          <TEMP>
+               <LABEL VALUE = "50-Sys Exhaust"/>
+               <LOCATION VALUE = "Chassis"/>
+               <STATUS VALUE = "OK"/>
+               <CURRENTREADING VALUE = "29" UNIT="Celsius"/>
+               <CAUTION VALUE = "75" UNIT="Celsius"/>
+               <CRITICAL VALUE = "80" UNIT="Celsius"/>
+          </TEMP>
+     </TEMPERATURE>
+     <POWER_SUPPLIES>
+          <POWER_SUPPLY_SUMMARY>
+                <PRESENT_POWER_READING VALUE = "152 Watts"/>
+                <POWER_MANAGEMENT_CONTROLLER_FIRMWARE_VERSION VALUE = "3.3"/>
+                <POWER_SYSTEM_REDUNDANCY VALUE = "Redundant"/>
+                <HP_POWER_DISCOVERY_SERVICES_REDUNDANCY_STATUS VALUE = "N/A"/>
+                <HIGH_EFFICIENCY_MODE VALUE = "Balanced"/>
+          </POWER_SUPPLY_SUMMARY>
+          <SUPPLY>
+               <LABEL VALUE = "Power Supply 1"/>
+               <PRESENT VALUE = "Yes"/>
+               <STATUS VALUE = "Good, In Use"/>
+               <PDS VALUE = "No"/>
+               <HOTPLUG_CAPABLE VALUE = "Yes"/>
+               <MODEL VALUE = "503296-B21"/>
+               <SPARE VALUE = "511777-001"/>
+               <SERIAL_NUMBER VALUE = "5ANLD0C4D5Z2I1"/>
+               <CAPACITY VALUE = "460 Watts"/>
+               <FIRMWARE_VERSION VALUE = "N/A"/>
+          </SUPPLY>
+          <SUPPLY>
+               <LABEL VALUE = "Power Supply 2"/>
+               <PRESENT VALUE = "Yes"/>
+               <STATUS VALUE = "Good, In Use"/>
+               <PDS VALUE = "No"/>
+               <HOTPLUG_CAPABLE VALUE = "Yes"/>
+               <MODEL VALUE = "503296-B21"/>
+               <SPARE VALUE = "511777-001"/>
+               <SERIAL_NUMBER VALUE = "5ANLE0CLL5Z4X8"/>
+               <CAPACITY VALUE = "460 Watts"/>
+               <FIRMWARE_VERSION VALUE = "N/A"/>
+          </SUPPLY>
+     </POWER_SUPPLIES>
+     <VRM>
+     </VRM>
+     <PROCESSORS>
+          <PROCESSOR>
+               <LABEL VALUE = "Proc 1"/>
+               <NAME VALUE = " Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz       "/>
+               <STATUS VALUE = "OK"/>
+               <SPEED VALUE = "2000 MHz"/>
+               <EXECUTION_TECHNOLOGY VALUE = "6/6 cores; 12 threads"/>
+               <MEMORY_TECHNOLOGY VALUE = "64-bit Capable"/>
+               <INTERNAL_L1_CACHE VALUE = "192 KB"/>
+               <INTERNAL_L2_CACHE VALUE = "1536 KB"/>
+               <INTERNAL_L3_CACHE VALUE = "15360 KB"/>
+          </PROCESSOR>
+          <PROCESSOR>
+               <LABEL VALUE = "Proc 2"/>
+               <NAME VALUE = " Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz       "/>
+               <STATUS VALUE = "OK"/>
+               <SPEED VALUE = "2000 MHz"/>
+               <EXECUTION_TECHNOLOGY VALUE = "6/6 cores; 12 threads"/>
+               <MEMORY_TECHNOLOGY VALUE = "64-bit Capable"/>
+               <INTERNAL_L1_CACHE VALUE = "192 KB"/>
+               <INTERNAL_L2_CACHE VALUE = "1536 KB"/>
+               <INTERNAL_L3_CACHE VALUE = "15360 KB"/>
+          </PROCESSOR>
+     </PROCESSORS>
+     <MEMORY>
+          <ADVANCED_MEMORY_PROTECTION>
+               <AMP_MODE_STATUS VALUE = "Advanced ECC"/>
+               <CONFIGURED_AMP_MODE VALUE = "Advanced ECC"/>
+               <AVAILABLE_AMP_MODES VALUE = "On-line Spare, Advanced ECC"/>
+          </ADVANCED_MEMORY_PROTECTION>
+          <MEMORY_DETAILS_SUMMARY>
+               <CPU_1>
+                    <NUMBER_OF_SOCKETS VALUE = "12"/>
+                    <TOTAL_MEMORY_SIZE VALUE = "32 GB"/>
+                    <OPERATING_FREQUENCY VALUE = "1333 MHz"/>
+                    <OPERATING_VOLTAGE VALUE = "1.35 v"/>
+               </CPU_1>
+               <CPU_2>
+                    <NUMBER_OF_SOCKETS VALUE = "12"/>
+                    <TOTAL_MEMORY_SIZE VALUE = "32 GB"/>
+                    <OPERATING_FREQUENCY VALUE = "1333 MHz"/>
+                    <OPERATING_VOLTAGE VALUE = "1.35 v"/>
+               </CPU_2>
+          </MEMORY_DETAILS_SUMMARY>
+          <MEMORY_DETAILS>
+               <CPU_1>
+                    <SOCKET VALUE = "1"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "2"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "3"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "4"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "5"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "6"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "7"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "8"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "9"/>
+                    <STATUS VALUE = "Good, In Use"/>
+                    <HP_SMART_MEMORY VALUE = "Yes"/>
+                    <PART NUMBER = "647653-081"/>
+                    <TYPE VALUE = "DIMM DDR3"/>
+                    <SIZE VALUE = "16384 MB"/>
+                    <FREQUENCY VALUE = "1333 MHz"/>
+                    <MINIMUM_VOLTAGE VALUE = "1.35 v"/>
+                    <RANKS VALUE = "2"/>
+                    <TECHNOLOGY VALUE = "RDIMM"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "10"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "11"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_1>
+               <CPU_1>
+                    <SOCKET VALUE = "12"/>
+                    <STATUS VALUE = "Good, In Use"/>
+                    <HP_SMART_MEMORY VALUE = "Yes"/>
+                    <PART NUMBER = "647653-081"/>
+                    <TYPE VALUE = "DIMM DDR3"/>
+                    <SIZE VALUE = "16384 MB"/>
+                    <FREQUENCY VALUE = "1333 MHz"/>
+                    <MINIMUM_VOLTAGE VALUE = "1.35 v"/>
+                    <RANKS VALUE = "2"/>
+                    <TECHNOLOGY VALUE = "RDIMM"/>
+               </CPU_1>
+               <CPU_2>
+                    <SOCKET VALUE = "1"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "2"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "3"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "4"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "5"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "6"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "7"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "8"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "9"/>
+                    <STATUS VALUE = "Good, In Use"/>
+                    <HP_SMART_MEMORY VALUE = "Yes"/>
+                    <PART NUMBER = "647653-081"/>
+                    <TYPE VALUE = "DIMM DDR3"/>
+                    <SIZE VALUE = "16384 MB"/>
+                    <FREQUENCY VALUE = "1333 MHz"/>
+                    <MINIMUM_VOLTAGE VALUE = "1.35 v"/>
+                    <RANKS VALUE = "2"/>
+                    <TECHNOLOGY VALUE = "RDIMM"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "10"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "11"/>
+                    <STATUS VALUE = "Not Present"/>
+                    <HP_SMART_MEMORY VALUE = "N/A"/>
+                    <PART NUMBER = "N/A"/>
+                    <TYPE VALUE = "N/A"/>
+                    <SIZE VALUE = "N/A"/>
+                    <FREQUENCY VALUE = "N/A"/>
+                    <MINIMUM_VOLTAGE VALUE = "N/A"/>
+                    <RANKS VALUE = "N/A"/>
+                    <TECHNOLOGY VALUE = "N/A"/>
+               </CPU_2>
+               <CPU_2>
+                    <SOCKET VALUE = "12"/>
+                    <STATUS VALUE = "Good, In Use"/>
+                    <HP_SMART_MEMORY VALUE = "Yes"/>
+                    <PART NUMBER = "647653-081"/>
+                    <TYPE VALUE = "DIMM DDR3"/>
+                    <SIZE VALUE = "16384 MB"/>
+                    <FREQUENCY VALUE = "1333 MHz"/>
+                    <MINIMUM_VOLTAGE VALUE = "1.35 v"/>
+                    <RANKS VALUE = "2"/>
+                    <TECHNOLOGY VALUE = "RDIMM"/>
+               </CPU_2>
+          </MEMORY_DETAILS>
+     </MEMORY>
+     <NIC_INFORMATION>
+          <NIC>
+               <NETWORK_PORT VALUE = "Port 1"/>
+               <PORT_DESCRIPTION VALUE = "HP Ethernet 1Gb 4-port 331FLR Adapter"/>
+               <LOCATION VALUE = "Embedded"/>
+               <MAC_ADDRESS VALUE = "2c:44:fd:95:5b:fc"/>
+               <IP_ADDRESS VALUE = "10.12.1.238"/>
+               <STATUS VALUE = "OK"/>
+          </NIC>
+          <NIC>
+               <NETWORK_PORT VALUE = "Port 2"/>
+               <PORT_DESCRIPTION VALUE = "HP Ethernet 1Gb 4-port 331FLR Adapter"/>
+               <LOCATION VALUE = "Embedded"/>
+               <MAC_ADDRESS VALUE = "2c:44:fd:95:5b:fd"/>
+               <IP_ADDRESS VALUE = "N/A"/>
+               <STATUS VALUE = "OK"/>
+          </NIC>
+          <NIC>
+               <NETWORK_PORT VALUE = "Port 3"/>
+               <PORT_DESCRIPTION VALUE = "HP Ethernet 1Gb 4-port 331FLR Adapter"/>
+               <LOCATION VALUE = "Embedded"/>
+               <MAC_ADDRESS VALUE = "2c:44:fd:95:5b:fe"/>
+               <IP_ADDRESS VALUE = "N/A"/>
+               <STATUS VALUE = "OK"/>
+          </NIC>
+          <NIC>
+               <NETWORK_PORT VALUE = "Port 4"/>
+               <PORT_DESCRIPTION VALUE = "HP Ethernet 1Gb 4-port 331FLR Adapter"/>
+               <LOCATION VALUE = "Embedded"/>
+               <MAC_ADDRESS VALUE = "2c:44:fd:95:5b:ff"/>
+               <IP_ADDRESS VALUE = "N/A"/>
+               <STATUS VALUE = "OK"/>
+          </NIC>
+          <iLO>
+               <NETWORK_PORT VALUE = "iLO Dedicated Network Port"/>
+               <PORT_DESCRIPTION VALUE = "iLO Dedicated Network Port"/>
+               <LOCATION VALUE = "Embedded"/>
+               <MAC_ADDRESS VALUE = "9c:b6:54:0e:03:28"/>
+               <IP_ADDRESS VALUE = "10.12.1.248"/>
+               <STATUS VALUE = "OK"/>
+          </iLO>
+     </NIC_INFORMATION>
+     <STORAGE>
+          <CONTROLLER>
+               <LABEL VALUE = "Controller on System Board"/>
+               <STATUS VALUE = "Degraded"/>
+               <CONTROLLER_STATUS VALUE = "OK"/>
+               <SERIAL_NUMBER VALUE = "001438029E76EF0"/>
+               <MODEL VALUE = "HP Smart Array P420i Controller"/>
+               <FW_VERSION VALUE = "5.42"/>
+               <CACHE_MODULE_STATUS VALUE = "OK"/>
+               <CACHE_MODULE_SERIAL_NUM VALUE = "PBKUC0BRH5Y41E"/>
+               <CACHE_MODULE_MEMORY VALUE = "1048576 KB"/>
+               <DRIVE_ENCLOSURE>
+                    <LABEL VALUE = "Port 1I Box 2"/>
+                    <STATUS VALUE = "OK"/>
+                    <DRIVE_BAY VALUE = "04"/>
+               </DRIVE_ENCLOSURE>
+               <DRIVE_ENCLOSURE>
+                    <LABEL VALUE = "Port 2I Box 2"/>
+                    <STATUS VALUE = "OK"/>
+                    <DRIVE_BAY VALUE = "04"/>
+               </DRIVE_ENCLOSURE>
+               <LOGICAL_DRIVE>
+                    <LABEL VALUE = "01"/>
+                    <STATUS VALUE = "Degraded (Rebuilding)"/>
+                    <CAPACITY VALUE = "3353 GB"/>
+                    <FAULT_TOLERANCE VALUE = "RAID 5"/>
+                    <ENCRYPTION_STATUS VALUE = "Not Encrypted"/>
+                    <PHYSICAL_DRIVE>
+                         <LABEL VALUE = "Port 1I Box 2 Bay 1"/>
+                         <STATUS VALUE = "OK"/>
+                         <SERIAL_NUMBER VALUE = "TPF6000065660000"/>
+                         <MODEL VALUE = "EG0600FBDSR"/>
+                         <CAPACITY VALUE = "558 GB"/>
+                         <LOCATION VALUE = "Port 1I Box 2 Bay 1"/>
+                         <FW_VERSION VALUE = "HPD6"/>
+                         <DRIVE_CONFIGURATION VALUE = "Configured"/>
+                         <ENCRYPTION_STATUS VALUE = "Not Encrypted"/>
+                    </PHYSICAL_DRIVE>
+                    <PHYSICAL_DRIVE>
+                         <LABEL VALUE = "Port 1I Box 2 Bay 2"/>
+                         <STATUS VALUE = "OK"/>
+                         <SERIAL_NUMBER VALUE = "TPF7100019330000"/>
+                         <MODEL VALUE = "EG0600FBDSR"/>
+                         <CAPACITY VALUE = "558 GB"/>
+                         <LOCATION VALUE = "Port 1I Box 2 Bay 2"/>
+                         <FW_VERSION VALUE = "HPD6"/>
+                         <DRIVE_CONFIGURATION VALUE = "Configured"/>
+                         <ENCRYPTION_STATUS VALUE = "Not Encrypted"/>
+                    </PHYSICAL_DRIVE>
+                    <PHYSICAL_DRIVE>
+                         <LABEL VALUE = "Port 1I Box 2 Bay 3"/>
+                         <STATUS VALUE = "OK"/>
+                         <SERIAL_NUMBER VALUE = "Z0M04H120000C444497F"/>
+                         <MODEL VALUE = "EG0600FCVBK"/>
+                         <CAPACITY VALUE = "558 GB"/>
+                         <LOCATION VALUE = "Port 1I Box 2 Bay 3"/>
+                         <FW_VERSION VALUE = "HPD5"/>
+                         <DRIVE_CONFIGURATION VALUE = "Configured"/>
+                         <ENCRYPTION_STATUS VALUE = "Not Encrypted"/>
+                    </PHYSICAL_DRIVE>
+                    <PHYSICAL_DRIVE>
+                         <LABEL VALUE = "Port 1I Box 2 Bay 4"/>
+                         <STATUS VALUE = "OK"/>
+                         <SERIAL_NUMBER VALUE = "TPF7100003200000"/>
+                         <MODEL VALUE = "EG0600FBDSR"/>
+                         <CAPACITY VALUE = "558 GB"/>
+                         <LOCATION VALUE = "Port 1I Box 2 Bay 4"/>
+                         <FW_VERSION VALUE = "HPD6"/>
+                         <DRIVE_CONFIGURATION VALUE = "Configured"/>
+                         <ENCRYPTION_STATUS VALUE = "Not Encrypted"/>
+                    </PHYSICAL_DRIVE>
+                    <PHYSICAL_DRIVE>
+                         <LABEL VALUE = "Port 2I Box 2 Bay 5"/>
+                         <STATUS VALUE = "OK"/>
+                         <SERIAL_NUMBER VALUE = "TPF6000011160000"/>
+                         <MODEL VALUE = "EG0600FBDSR"/>
+                         <CAPACITY VALUE = "558 GB"/>
+                         <LOCATION VALUE = "Port 2I Box 2 Bay 5"/>
+                         <FW_VERSION VALUE = "HPD6"/>
+                         <DRIVE_CONFIGURATION VALUE = "Configured"/>
+                         <ENCRYPTION_STATUS VALUE = "Not Encrypted"/>
+                    </PHYSICAL_DRIVE>
+                    <PHYSICAL_DRIVE>
+                         <LABEL VALUE = "Port 2I Box 2 Bay 6"/>
+                         <STATUS VALUE = "OK"/>
+                         <SERIAL_NUMBER VALUE = "Z0M04L600000C4454867"/>
+                         <MODEL VALUE = "EG0600FCVBK"/>
+                         <CAPACITY VALUE = "558 GB"/>
+                         <LOCATION VALUE = "Port 2I Box 2 Bay 6"/>
+                         <FW_VERSION VALUE = "HPD5"/>
+                         <DRIVE_CONFIGURATION VALUE = "Configured"/>
+                         <ENCRYPTION_STATUS VALUE = "Not Encrypted"/>
+                    </PHYSICAL_DRIVE>
+                    <PHYSICAL_DRIVE>
+                         <LABEL VALUE = "Port 2I Box 2 Bay 7"/>
+                         <STATUS VALUE = "OK"/>
+                         <SERIAL_NUMBER VALUE = "Z0M04GXK0000C4445QWV"/>
+                         <MODEL VALUE = "EG0600FCVBK"/>
+                         <CAPACITY VALUE = "558 GB"/>
+                         <LOCATION VALUE = "Port 2I Box 2 Bay 7"/>
+                         <FW_VERSION VALUE = "HPD5"/>
+                         <DRIVE_CONFIGURATION VALUE = "Configured"/>
+                         <ENCRYPTION_STATUS VALUE = "Not Encrypted"/>
+                    </PHYSICAL_DRIVE>
+               </LOGICAL_DRIVE>
+          </CONTROLLER>
+     </STORAGE>
+     <FIRMWARE_INFORMATION>
+          <INDEX_1>
+               <FIRMWARE_NAME VALUE = "HP ProLiant System ROM"/>
+               <FIRMWARE_VERSION VALUE = "02/10/2014"/>
+          </INDEX_1>
+          <INDEX_2>
+               <FIRMWARE_NAME VALUE = "HP ProLiant System ROM - Backup"/>
+               <FIRMWARE_VERSION VALUE = "12/20/2013"/>
+          </INDEX_2>
+          <INDEX_3>
+               <FIRMWARE_NAME VALUE = "HP ProLiant System ROM Bootblock"/>
+               <FIRMWARE_VERSION VALUE = "03/05/2013"/>
+          </INDEX_3>
+          <INDEX_4>
+               <FIRMWARE_NAME VALUE = "iLO"/>
+               <FIRMWARE_VERSION VALUE = "1.51 Jun 16 2014"/>
+          </INDEX_4>
+          <INDEX_5>
+               <FIRMWARE_NAME VALUE = "Power Management Controller Firmware"/>
+               <FIRMWARE_VERSION VALUE = "3.3"/>
+          </INDEX_5>
+          <INDEX_6>
+               <FIRMWARE_NAME VALUE = "Power Management Controller Firmware Bootloader"/>
+               <FIRMWARE_VERSION VALUE = "2.7"/>
+          </INDEX_6>
+          <INDEX_7>
+               <FIRMWARE_NAME VALUE = "System Programmable Logic Device"/>
+               <FIRMWARE_VERSION VALUE = "Version 0x32"/>
+          </INDEX_7>
+          <INDEX_8>
+               <FIRMWARE_NAME VALUE = "SAS Programmable Logic Device"/>
+               <FIRMWARE_VERSION VALUE = "Version 0x0C"/>
+          </INDEX_8>
+          <INDEX_9>
+               <FIRMWARE_NAME VALUE = "Server Platform Services (SPS) Firmware"/>
+               <FIRMWARE_VERSION VALUE = "2.1.7.E7.4"/>
+          </INDEX_9>
+          <INDEX_10>
+               <FIRMWARE_NAME VALUE = "HP Smart Array P420i Controller"/>
+               <FIRMWARE_VERSION VALUE = "5.42"/>
+          </INDEX_10>
+          <INDEX_11>
+               <FIRMWARE_NAME VALUE = "HP Ethernet 1Gb 4-port 331FLR Adapter"/>
+               <FIRMWARE_VERSION VALUE = "5719-v1.34 NCSI v1.2.19.0"/>
+          </INDEX_11>
+     </FIRMWARE_INFORMATION>
+     <HEALTH_AT_A_GLANCE>
+          <BIOS_HARDWARE STATUS= "OK"/>
+          <FANS STATUS= "OK"/>
+          <FANS REDUNDANCY= "Redundant"/>
+          <TEMPERATURE STATUS= "OK"/>
+          <POWER_SUPPLIES STATUS= "OK"/>
+          <POWER_SUPPLIES REDUNDANCY= "Redundant"/>
+          <PROCESSOR STATUS= "OK"/>
+          <MEMORY STATUS= "OK"/>
+          <NETWORK STATUS= "OK"/>
+          <STORAGE STATUS= "Degraded"/>
+     </HEALTH_AT_A_GLANCE>
+</GET_EMBEDDED_HEALTH_DATA>
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.23">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+

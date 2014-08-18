@@ -80,6 +80,25 @@ sub check_hpilo2_fans
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str .= " ERROR: Fans redundancy is $status_str (!= Fully Redundant)!";
 	}
+	my $total_fans = 0;
+	my $failed_fans = 0;
+	foreach my $h (@{$r->{'FANS'}->{'FAN'}}) {
+		$total_fans++;
+		$s = "speed: $h->{'SPEED'}{'VALUE'} $h->{'SPEED'}{'UNIT'}, zone: $h->{'ZONE'}{'VALUE'}";
+		if ($h->{'STATUS'}{'VALUE'} eq 'Ok') {
+			$ok_str .= "OK: Fan $h->{'LABEL'}{'VALUE'} ($s) status is OK.";
+		} else {
+			$failed_fans++;
+			$error_str .= "ERROR: Fans $h->{'LABEL'}{'VALUE'} ($s) has status $h->{'STATUS'}{'VALUE'} (!Ok)!";
+		}
+	}
+	if ($failed_fans == 0) {
+		$ok_str .= "OK: All $total_fans fans are OK."
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= "ERROR: $failed_fans / $total_fans fans failed!";
+	}
+
 	$s = $error_str.$ok_str;
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
@@ -109,7 +128,26 @@ sub check_hpilo4_fans
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str .= " ERROR: Fans redundancy is $status_str (!= Redundndant)!";
 	}
-	$s = $error_str.$ok_str;
+
+	my $total_fans = 0;
+	my $failed_fans = 0;
+	foreach my $h (@{$r->{'FANS'}->{'FAN'}}) {
+		$total_fans++;
+		$s = "speed: $h->{'SPEED'}{'VALUE'} $h->{'SPEED'}{'UNIT'}, zone: $h->{'ZONE'}{'VALUE'}";
+		if ($h->{'STATUS'}{'VALUE'} eq 'OK') {
+			$ok_str .= "OK: Fan $h->{'LABEL'}{'VALUE'} ($s) status is OK.";
+		} else {
+			$failed_fans++;
+			$error_str .= "ERROR: Fans $h->{'LABEL'}{'VALUE'} ($s) has status $h->{'STATUS'}{'VALUE'} (!OK)!";
+		}
+	}
+	if ($failed_fans == 0) {
+		$ok_str .= "OK: All $total_fans fans are OK."
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= "ERROR: $failed_fans / $total_fans fans failed!";
+	}
+	$s = "$error_str $ok_str";
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
@@ -137,6 +175,28 @@ sub check_hpilo2_powersupply
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str .= " ERROR: Power supply redundancy is $status_str (!= Fully Redundant)!";
 	}
+
+	my $total_power_supplies = 0;
+	my $failed_power_supplies = 0;
+	foreach my $h (@{$r->{'POWER_SUPPLIES'}->{'SUPPLY'}}) {
+		$total_power_supplies++;
+		if ($h->{'STATUS'}{'VALUE'} eq 'Ok') {
+			$ok_str .= "OK: Power supply $h->{'LABEL'}{'VALUE'} status is OK.";
+		} else {
+			$failed_power_supplies++;
+			$error_str .= "ERROR: Power supply $h->{'LABEL'}{'VALUE'} has status $h->{'STATUS'}{'VALUE'} (!Ok)!";
+		}
+	}
+	if ($failed_power_supplies == 0) {
+		$ok_str .= "OK: All $total_power_supplies power supplies are OK."
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= "ERROR: $failed_power_supplies / $total_power_supplies power supplies failed!";
+		# add the failed drive list
+		$error_str .= $s;
+	}
+	$s = "$error_str $ok_str";
+
 	$s = $error_str.$ok_str;
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
@@ -154,16 +214,16 @@ sub check_hpilo4_powersupply
 	my $s = '';
 
 	# strange, but this is an array
-###############	
-# 'POWER_SUPPLIES' => [
-#                                                      {
-#                                                        'STATUS' => 'OK'
-#                                                      },
-#                                                      {
-#                                                        'REDUNDANCY' => 'Redundant'
-#                                                      }
-#                                                    ],
-###############	
+	###############	
+	# 'POWER_SUPPLIES' => [
+	#                    {
+	#                     'STATUS' => 'OK'
+	#                    },
+	#                    {
+	#                     'REDUNDANCY' => 'Redundant'
+	#                    }
+	#                   ],
+	###############	
 	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'POWER_SUPPLIES'}[0]{'STATUS'};
 	if ($status_str eq 'OK') {
 		$ok_str .= " OK: Power supply status is $status_str.";
@@ -202,8 +262,6 @@ sub check_hpilo4_powersupply
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str .= "ERROR: $failed_power_supplies / $total_power_supplies power supplies failed!";
-		# add the failed drive list
-		$error_str .= $s;
 	}
 	$s = "$error_str $ok_str $info_str";
 
@@ -214,17 +272,28 @@ sub check_hpilo4_ram
 {
 	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('ram');
-	my $statusid;
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $ok_str = '';
+	my $info_str = '';
+	my $error_str = '';
 	my $s = '';
 
 	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'MEMORY'}{'STATUS'}; 
 	if ($status_str eq 'OK') {
-		$statusid = $SisIYA_Config::statusids{'ok'};
-		$s = " OK: RAM status is $status_str.";
+		$ok_str = " OK: RAM status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = " ERROR: RAM status is $status_str (!= OK)!";
+		$error_str = " ERROR: RAM status is $status_str (!= OK)!";
 	}
+
+	my $i = 1;
+	my $index_str = 'CPU_'.$i;
+	while (ref($r->{'MEMORY'}->{'MEMORY_DETAILS_SUMMARY'}->{$index_str}) eq 'HASH') {
+		$info_str .= "INFO: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_NAME'}{'VALUE'}: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_VERSION'}{'VALUE'}\n";
+		$i++;
+		$index_str = 'CPU_'.$i;
+	}
+	$s = "$error_str $ok_str";
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
@@ -233,18 +302,40 @@ sub check_hpilo4_cpu
 {
 	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('cpu');
-	my $statusid;
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $ok_str = '';
+	my $error_str = '';
 	my $s = '';
 
 	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'PROCESSOR'}{'STATUS'}; 
 	if ($status_str eq 'OK') {
-		$statusid = $SisIYA_Config::statusids{'ok'};
-		$s = " OK: CPU status is $status_str.";
+		$ok_str = " OK: CPU status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = " ERROR: CPU status is $status_str (!= OK)!";
+		$error_str = " ERROR: CPU status is $status_str (!= OK)!";
 	}
-
+	my $total_cpus = 0;
+	my $failed_cpus = 0;
+	foreach my $h (@{$r->{'PROCESSORS'}->{'PROCESSOR'}}) {
+		$total_cpus++;
+		$status_str = $h->{'STATUS'}{'VALUE'};
+		$s = "$h->{'NAME'}{'VALUE'}, speed: $h->{'SPEED'}{'VALUE'}, execution technology: $h->{'EXECUTION_TECHNOLOGY'}{'VALUE'}, memory technology: $h->{'MEMORY_TECHNOLOGY'}{'VALUE'}";
+		$s .= ", L1 cache: $h->{'INTERNAL_L1_CACHE'}{'VALUE'}, L2 cache: $h->{'INTERNAL_L2_CACHE'}{'VALUE'}, L3 cache: $h->{'INTERNAL_L3_CACHE'}{'VALUE'}";
+		if ($status_str eq 'OK') {
+			$ok_str .= "OK: $h->{'LABEL'}{'VALUE'} ($s) is OK.";
+		} else {
+			$failed_cpus++;
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$error_str .= "ERROR: $h->{'LABEL'}{'VALUE'} ($s) has status $status_str (!=OK)!";
+		}
+	}
+	if ($failed_cpus == 0) {
+		$ok_str .= "OK: All $total_cpus CPUs are OK.";
+	} else {
+		$statusid = $SisIYA_Config::statusids{'error'};
+		$error_str .= "ERROR: $failed_cpus / $total_cpus failed!";
+	}
+	$s = "$error_str $ok_str";
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
@@ -252,38 +343,94 @@ sub check_hpilo2_temperature
 {
 	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('temperature');
-	my $statusid;
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $ok_str = '';
+	my $warning_str = '';
+	my $error_str = '';
 	my $s = '';
 
 	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'TEMPERATURE'}{'STATUS'}; 
 	if ($status_str eq 'Ok') {
-		$statusid = $SisIYA_Config::statusids{'ok'};
-		$s = " OK: Temperature status is $status_str.";
+		$ok_str = " OK: Temperature status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = " ERROR: Temperature status is $status_str (!= Ok)!";
+		$error_str = " ERROR: Temperature status is $status_str (!= Ok)!";
 	}
+	my $i = 0;
+	foreach my $h (@{$r->{'TEMPERATURE'}->{'TEMP'}}) {
+		$i++;
+		$status_str = $h->{'STATUS'}{'VALUE'};
+		if ($status_str eq 'n/a' || $status_str eq 'Not Installed') {
+			next;
+		}
+		$s = "$h->{'LABEL'}{'VALUE'}, location: $h->{'LOCATION'}{'VALUE'}";
+		if ($status_str eq 'Ok') {
+			$ok_str .= "OK: Temperature sensor #$i is OK.";
+		} else {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$error_str .= "ERROR: Temperature sensor #$i has status $status_str (!=Ok)!";
+		}
+		if ($h->{'CRITICAL'}{'VALUE'} ne 'n/a' && int($h->{'CURRENTREADING'}{'VALUE'}) >= int($h->{'CRITICAL'}{'VALUE'})) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$error_str .= "ERROR: Temperature of the #$i sensor is $h->{'CURRENTREADING'}{'VALUE'} >= $h->{'CRITICAL'}{'VALUE'} $h->{'CURRENTREADING'}{'UNIT'}!";
+		} elsif ($h->{'CAUTION'}{'VALUE'} ne 'n/a' && int($h->{'CURRENTREADING'}{'VALUE'}) >= int($h->{'CAUTION'}{'VALUE'})) {
+			if ($statusid < $SisIYA_Config::statusids{'warning'}) {
+				$statusid = $SisIYA_Config::statusids{'warning'};
+			}
+			$warning_str .= "WARNING: Temperature of the #$i sensor is $h->{'CURRENTREADING'}{'VALUE'} >= $h->{'CAUTION'}{'VALUE'} $h->{'CURRENTREADING'}{'UNIT'}!";
+		} else {
+			$ok_str .= "OK: Temperature of the #$i sensor ($s) is $h->{'CURRENTREADING'}{'VALUE'} $h->{'CURRENTREADING'}{'UNIT'}.";
+		}
+	}
+	$s = "$error_str $warning_str $ok_str";
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
-
 
 sub check_hpilo4_temperature
 {
 	my ($expire, $r) = @_;
 	my $serviceid = get_serviceid('temperature');
-	my $statusid;
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+	my $ok_str = '';
+	my $error_str = '';
+	my $warning_str = '';
 	my $s = '';
 
 	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'TEMPERATURE'}{'STATUS'}; 
 	if ($status_str eq 'OK') {
-		$statusid = $SisIYA_Config::statusids{'ok'};
-		$s = " OK: Temperature status is $status_str.";
+		$ok_str = " OK: Temperature status is $status_str.";
 	} else {
 		$statusid = $SisIYA_Config::statusids{'error'};
-		$s = " ERROR: Temperature status is $status_str (!= OK)!";
+		$error_str = " ERROR: Temperature status is $status_str (!= OK)!";
 	}
-
+	my $i = 0;
+	foreach my $h (@{$r->{'TEMPERATURE'}->{'TEMP'}}) {
+		$i++;
+		$status_str = $h->{'STATUS'}{'VALUE'};
+		if ($status_str eq 'N/A' || $status_str eq 'Not Installed') {
+			next;
+		}
+		$s = "$h->{'LABEL'}{'VALUE'}, location: $h->{'LOCATION'}{'VALUE'}";
+		if ($status_str eq 'OK') {
+			$ok_str .= "OK: Temperature sensor #$i is OK.";
+		} else {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$error_str .= "ERROR: Temperature sensor #$i has status $status_str (!=OK)!";
+		}
+		if ($h->{'CRITICAL'}{'VALUE'} ne 'N/A' && int($h->{'CURRENTREADING'}{'VALUE'}) >= int($h->{'CRITICAL'}{'VALUE'})) {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$error_str .= "ERROR: Temperature of the #$i sensor is $h->{'CURRENTREADING'}{'VALUE'} >= $h->{'CRITICAL'}{'VALUE'} $h->{'CURRENTREADING'}{'UNIT'}!";
+		} elsif ($h->{'CAUTION'}{'VALUE'} ne 'N/A' && int($h->{'CURRENTREADING'}{'VALUE'}) >= int($h->{'CAUTION'}{'VALUE'})) {
+			if ($statusid < $SisIYA_Config::statusids{'warning'}) {
+				$statusid = $SisIYA_Config::statusids{'warning'};
+			}
+			$warning_str .= "WARNING: Temperature of the #$i sensor is $h->{'CURRENTREADING'}{'VALUE'} >= $h->{'CAUTION'}{'VALUE'} $h->{'CURRENTREADING'}{'UNIT'}!";
+		} else {
+			$ok_str .= "OK: Temperature of the #$i sensor ($s) is $h->{'CURRENTREADING'}{'VALUE'} $h->{'CURRENTREADING'}{'UNIT'}.";
+		}
+	}
+	$s = "$error_str $warning_str $ok_str";
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
@@ -375,6 +522,7 @@ sub check_hpilo4_system
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 	my $ok_str = '';
 	my $error_str = '';
+	my $info_str = '';
 	my $s = '';
 
 	my $status_str = $r->{'HEALTH_AT_A_GLANCE'}->{'BIOS_HARDWARE'}{'STATUS'};
@@ -391,7 +539,15 @@ sub check_hpilo4_system
 		$statusid = $SisIYA_Config::statusids{'error'};
 		$error_str .= " ERROR: Network status is $status_str (!= OK)!";
 	}
-	$s = $error_str.$ok_str;
+	my $i = 1;
+	my $index_str = 'INDEX_'.$i;
+	while (ref($r->{'FIRMWARE_INFORMATION'}->{$index_str}) eq 'HASH') {
+		$info_str .= "INFO: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_NAME'}{'VALUE'}: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_VERSION'}{'VALUE'}\n";
+		$i++;
+		$index_str = 'INDEX_'.$i;
+	}
+
+	$s = $error_str.$ok_str.$info_str;
 
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }

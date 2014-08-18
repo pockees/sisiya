@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<RIBCL VERSION="2.22">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.22">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.22">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.22">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.22">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+<GET_EMBEDDED_HEALTH_DATA>
+<FANS>
+   <FAN>
+      <LABEL VALUE = "Fan 1"/>
+      <ZONE VALUE = "I/O Board"/>
+      <STATUS VALUE = "Ok"/>
+      <SPEED VALUE = "45" UNIT="Percentage"/>
+   </FAN>
+   <FAN>
+      <LABEL VALUE = "Fan 2"/>
+      <ZONE VALUE = "I/O Board"/>
+      <STATUS VALUE = "Ok"/>
+      <SPEED VALUE = "45" UNIT="Percentage"/>
+   </FAN>
+   <FAN>
+      <LABEL VALUE = "Fan 3"/>
+      <ZONE VALUE = "CPU"/>
+      <STATUS VALUE = "Ok"/>
+      <SPEED VALUE = "41" UNIT="Percentage"/>
+   </FAN>
+   <FAN>
+      <LABEL VALUE = "Fan 4"/>
+      <ZONE VALUE = "CPU"/>
+      <STATUS VALUE = "Ok"/>
+      <SPEED VALUE = "36" UNIT="Percentage"/>
+   </FAN>
+   <FAN>
+      <LABEL VALUE = "Fan 5"/>
+      <ZONE VALUE = "CPU"/>
+      <STATUS VALUE = "Ok"/>
+      <SPEED VALUE = "36" UNIT="Percentage"/>
+   </FAN>
+   <FAN>
+      <LABEL VALUE = "Fan 6"/>
+      <ZONE VALUE = "CPU"/>
+      <STATUS VALUE = "Ok"/>
+      <SPEED VALUE = "36" UNIT="Percentage"/>
+   </FAN>
+</FANS>
+<TEMPERATURE>
+   <TEMP>
+      <LABEL VALUE = "Temp 1"/>
+      <LOCATION VALUE = "I/O Board"/>
+      <STATUS VALUE = "Ok"/>
+      <CURRENTREADING VALUE = "38" UNIT="Celsius"/>
+      <CAUTION VALUE = "70" UNIT="Celsius"/>
+      <CRITICAL VALUE = "75" UNIT="Celsius"/>
+   </TEMP>
+   <TEMP>
+      <LABEL VALUE = "Temp 2"/>
+      <LOCATION VALUE = "Ambient"/>
+      <STATUS VALUE = "Ok"/>
+      <CURRENTREADING VALUE = "16" UNIT="Celsius"/>
+      <CAUTION VALUE = "39" UNIT="Celsius"/>
+      <CRITICAL VALUE = "44" UNIT="Celsius"/>
+   </TEMP>
+   <TEMP>
+      <LABEL VALUE = "Temp 3"/>
+      <LOCATION VALUE = "CPU 1"/>
+      <STATUS VALUE = "Ok"/>
+      <CURRENTREADING VALUE = "30" UNIT="Celsius"/>
+      <CAUTION VALUE = "127" UNIT="Celsius"/>
+      <CRITICAL VALUE = "127" UNIT="Celsius"/>
+   </TEMP>
+   <TEMP>
+      <LABEL VALUE = "Temp 4"/>
+      <LOCATION VALUE = "CPU 1"/>
+      <STATUS VALUE = "Ok"/>
+      <CURRENTREADING VALUE = "30" UNIT="Celsius"/>
+      <CAUTION VALUE = "127" UNIT="Celsius"/>
+      <CRITICAL VALUE = "127" UNIT="Celsius"/>
+   </TEMP>
+   <TEMP>
+      <LABEL VALUE = "Temp 5"/>
+      <LOCATION VALUE = "Power Supply"/>
+      <STATUS VALUE = "Ok"/>
+      <CURRENTREADING VALUE = "34" UNIT="Celsius"/>
+      <CAUTION VALUE = "77" UNIT="Celsius"/>
+      <CRITICAL VALUE = "82" UNIT="Celsius"/>
+   </TEMP>
+   <TEMP>
+      <LABEL VALUE = "Temp 6"/>
+      <LOCATION VALUE = "CPU 2"/>
+      <STATUS VALUE = "n/a"/>
+      <CURRENTREADING VALUE = "n/a" UNIT="n/a"/>
+      <CAUTION VALUE = "127" UNIT="Celsius"/>
+      <CRITICAL VALUE = "127" UNIT="Celsius"/>
+   </TEMP>
+   <TEMP>
+      <LABEL VALUE = "Temp 7"/>
+      <LOCATION VALUE = "CPU 2"/>
+      <STATUS VALUE = "n/a"/>
+      <CURRENTREADING VALUE = "n/a" UNIT="n/a"/>
+      <CAUTION VALUE = "127" UNIT="Celsius"/>
+      <CRITICAL VALUE = "127" UNIT="Celsius"/>
+   </TEMP>
+</TEMPERATURE>
+<VRM>
+   <MODULE>
+      <LABEL VALUE = "VRM 1"/>
+      <STATUS VALUE = "Ok"/>
+   </MODULE>
+   <MODULE>
+      <LABEL VALUE = "VRM 2"/>
+      <STATUS VALUE = "Not Installed"/>
+   </MODULE>
+</VRM>
+<POWER_SUPPLIES>
+   <SUPPLY>
+      <LABEL VALUE = "Power Supply 1"/>
+      <STATUS VALUE = "Ok"/>
+   </SUPPLY>
+   <SUPPLY>
+      <LABEL VALUE = "Power Supply 2"/>
+      <STATUS VALUE = "Ok"/>
+   </SUPPLY>
+</POWER_SUPPLIES>
+<HEALTH_AT_A_GLANCE>
+   <FANS STATUS= "Ok"/>
+   <FANS REDUNDANCY= "Fully Redundant"/>
+   <TEMPERATURE STATUS= "Ok"/>
+   <VRM STATUS= "Ok"/>
+   <POWER_SUPPLIES STATUS= "Ok"/>
+   <POWER_SUPPLIES REDUNDANCY= "Fully Redundant"/>
+</HEALTH_AT_A_GLANCE>
+</GET_EMBEDDED_HEALTH_DATA>
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.22">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.22">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
+<?xml version="1.0"?>
+<RIBCL VERSION="2.22">
+<RESPONSE
+    STATUS="0x0000"
+    MESSAGE='No error'
+     />
+</RIBCL>
+
