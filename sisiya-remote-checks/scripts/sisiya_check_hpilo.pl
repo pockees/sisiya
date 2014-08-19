@@ -287,14 +287,42 @@ sub check_hpilo4_ram
 	}
 
 	my $i = 1;
+	my @a;
 	my $index_str = 'CPU_'.$i;
-	while (ref($r->{'MEMORY'}->{'MEMORY_DETAILS_SUMMARY'}->{$index_str}) eq 'HASH') {
-		$info_str .= "INFO: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_NAME'}{'VALUE'}: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_VERSION'}{'VALUE'}\n";
+	while (ref($r->{'MEMORY'}->{'MEMORY_DETAILS'}->{$index_str}) eq 'ARRAY') {
+		###print STDERR "\nA: $r->{'MEMORY'}->{'MEMORY_DETAILS'}->{$index_str}[0]{'STATUS'}{'VALUE'}\n";
+		@a = @{$r->{'MEMORY'}->{'MEMORY_DETAILS'}->{$index_str}};
+		foreach my $k (@a) {
+			###print STDERR "\n RAM: status: $k->{'STATUS'}{'VALUE'} size: $k->{'SIZE'}{'VALUE'}\n";
+			$status_str = $k->{'STATUS'}{'VALUE'};
+			if ($status_str eq 'Not Present') {
+				next;
+			}
+			$s = "size: $k->{'SIZE'}{'VALUE'}, ranks: $k->{'RANKS'}{'VALUE'}, part: $k->{'PART'}{'NUMBER'}, type: $k->{'TYPE'}{'VALUE'}";
+			$s .= ", frequency: $k->{'FREQUENCY'}{'VALUE'}, technology: $k->{'TECHNOLOGY'}{'VALUE'},  min voltage: $k->{'MINIMUM_VOLTAGE'}{'VALUE'}, HP smart memory: $k->{'HP_SMART_MEMORY'}{'VALUE'}";
+			if ($status_str eq 'Good, In Use') {
+				$ok_str .= "OK: RAM for CPU $i in socket: $k->{'SOCKET'}{'VALUE'} ($s) is OK.";
+			} else {
+				$statusid = $SisIYA_Config::statusids{'error'};
+				$error_str .= "ERROR: RAM for CPU $i in socket: $k->{'SOCKET'}{'VALUE'} ($s) has status $status_str (!=Good, In Use)!";
+			}
+		}
 		$i++;
 		$index_str = 'CPU_'.$i;
 	}
-	$s = "$error_str $ok_str";
-
+	my $h;
+	$i = 1;
+	$index_str = 'CPU_'.$i;
+	while (ref($r->{'MEMORY'}->{'MEMORY_DETAILS_SUMMARY'}->{$index_str}) eq 'HASH') {
+		$h = $r->{'MEMORY'}->{'MEMORY_DETAILS_SUMMARY'}->{$index_str};
+		$info_str .= "INFO: CPU $i total RAM $h->{'TOTAL_MEMORY_SIZE'}{'VALUE'}, operating frequency: $h->{'OPERATING_FREQUENCY'}{'VALUE'}";
+		$info_str .= ", number of sockets: $h->{'NUMBER_OF_SOCKETS'}{'VALUE'}, operating voltage: $h->{'OPERATING_VOLTAGE'}{'VALUE'}.";
+		$i++;
+		$index_str = 'CPU_'.$i;
+	}
+	$h = $r->{'MEMORY'}->{'ADVANCED_MEMORY_PROTECTION'};
+	$info_str .= "INFO: Advanced Memory Protection: configured mode: $h->{'CONFIGURED_AMP_MODE'}{'VALUE'}, available modes: $h->{'AVAILABLE_AMP_MODES'}{'VALUE'}, status: $h->{'AMP_MODE_STATUS'}{'VALUE'}";
+	$s = $error_str.$ok_str.$info_str;
 	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$s</msg><datamsg></datamsg></data></message>";
 }
 
@@ -496,9 +524,13 @@ sub check_hpilo4_raid
 	foreach my $h (@{$r->{'STORAGE'}->{'CONTROLLER'}->{'LOGICAL_DRIVE'}->{'PHYSICAL_DRIVE'}}) {
 		$total_physical_drives++;
 		$status_str = $h->{'STATUS'}{'VALUE'};
-		if ($status_str ne 'OK') {
+		$s = "capacity: $h->{'CAPACITY'}{'VALUE'}, location : $h->{'LOCATION'}{'VALUE'}, serial number: $h->{'SERIAL_NUMBER'}{'VALUE'}, model: $h->{'MODEL'}{'VALUE'}";
+		$s .= ", encryption status: $h->{'ENCRYPTION_STATUS'}{'VALUE'}, firmware version: $h->{'FW_VERSION'}{'VALUE'}, drive configuration: $h->{'DRIVE_CONFIGURATION'}{'VALUE'}";
+		if ($status_str eq 'OK') {
+			$ok_str .= "OK: $h->{'LABEL'}{'VALUE'} drive ($s) is OK.";
+		} else {
 			$failed_physical_drives++;
-			$s .= "ERROR: $h->{'LABEL'}{'VALUE'} drive (capacity: $h->{'CAPACITY'}{'VALUE'}, serial number: $h->{'SERIAL_NUMBER'}{'VALUE'}, model: $h->{'MODEL'}{'VALUE'}) at location : $h->{'LOCATION'}{'VALUE'} has status $status_str (!=OK)!";
+			$error_str .= "ERROR: $h->{'LABEL'}{'VALUE'} drive ($s) has status $status_str (!=OK)!";
 		}
 	}
 	if ($failed_physical_drives == 0) {
@@ -542,7 +574,7 @@ sub check_hpilo4_system
 	my $i = 1;
 	my $index_str = 'INDEX_'.$i;
 	while (ref($r->{'FIRMWARE_INFORMATION'}->{$index_str}) eq 'HASH') {
-		$info_str .= "INFO: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_NAME'}{'VALUE'}: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_VERSION'}{'VALUE'}\n";
+		$info_str .= "INFO: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_NAME'}{'VALUE'}: $r->{'FIRMWARE_INFORMATION'}->{$index_str}->{'FIRMWARE_VERSION'}{'VALUE'}";
 		$i++;
 		$index_str = 'INDEX_'.$i;
 	}
@@ -560,7 +592,7 @@ sub check_hpilo
 		return '';
 	}
 
-	print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] username=[$username] ...\n";
+	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] username=[$username] ...\n";
 	my $statusid = $SisIYA_Config::statusids{'ok'};
 
 	# read the template
@@ -610,7 +642,7 @@ sub check_hpilo
 	$a = '<?xml version="1.0"?><GET_EMBEDDED_HEALTH_DATA'.$a."GET_EMBEDDED_HEALTH_DATA>";
 	my $x = new XML::Simple;
 	my $r = $x->XMLin($a);
-	print STDERR Dumper($r);
+	### print STDERR Dumper($r);
 	
 	my $s = '';
 	if ($version >= 3) {
