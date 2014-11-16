@@ -52,8 +52,80 @@ if(-f $SisIYA_Remote_Config::functions) {
 ###########################################################################################################
 # default values
 our %uptimes = ('error' => 1440, 'warning' => 4320);
+our %mibs = (
+	'system_hd_table'	=> 'SNMPv2-SMI::enterprises.24681.1.2.11',		# 
+	'hd_number'		=> 'SNMPv2-SMI::enterprises.24681.1.2.10.0',		# number of hard disks
+	'hd_index'		=> 'SNMPv2-SMI::enterprises.24681.1.2.11.1.1.',		# add the disk number to get the index for hd_status, hd_model, hd_capacity ...
+	'hd_status'		=> 'SNMPv2-SMI::enterprises.24681.1.2.11.1.4.',		# add the disk number at the end
+	'hd_descr'		=> 'SNMPv2-SMI::enterprises.24681.1.2.11.1.2.',		# add the disk index
+	'hd_capacity'		=> 'SNMPv2-SMI::enterprises.24681.1.2.11.1.6.',		# add the disk index
+	'hd_model'		=> 'SNMPv2-SMI::enterprises.24681.1.2.11.1.5.',		# add the disk index
+	'hd_temperature'	=> 'SNMPv2-SMI::enterprises.24681.1.2.11.1.3.1.',	# add the disk index
+	'hd_smart_info'		=> 'SNMPv2-SMI::enterprises.24681.1.2.11.1.7.',		# add the disk index
+);
+
 # end of default values
 ############################################################################################################
+sub get_snmp_value_from_array
+{
+	my ($search_str, @a) = @_;
+	
+	print STDERR "search str: $search_str\n";
+	return "W";
+}
+
+sub check_qnap_smart
+{
+	my ($expire, $hostname, $snmp_version, $community, $username, $password) = @_;
+	my $error_str = '';
+	my $warning_str = '';
+	my $ok_str = '';
+	my $serviceid = get_serviceid('smart');
+	my $statusid = $SisIYA_Config::statusids{'ok'};
+
+	# get the system hd table in an array
+        #my @a = `$SisIYA_Remote_Config::external_progs{'snmpwalk'} -OvQ -v $snmp_version -c $community $hostname $mibs{'system_hd_table'} 2>&1`;
+        my @a = `$SisIYA_Remote_Config::external_progs{'snmpwalk'} -v $snmp_version -c $community $hostname $mibs{'system_hd_table'} 2>&1`;
+        my $retcode = $? >>=8;
+        if ($retcode != 0) {
+                return '';
+        }
+        #chomp(@a = @a);
+	print STDERR "@a\n";
+	my $s = get_snmp_value_from_array($mibs{'hd_number'}, @a);
+	print STDERR "s=$s\n";
+
+	$s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'hd_number'}, $username, $password);
+	if ($s eq '') {
+		return;
+	}
+	my $hd_number = $s;
+	print STDERR "Number of disks: $hd_number\n";
+	if ($hd_number == 0) {
+		return;
+	}
+	my $index;
+	for (my $i = 1; $i <= $hd_number; $i++) {
+		$s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'hd_index'}.$i, $username, $password);
+		if ($s eq '') {
+			return;
+		}
+		$index = $s;
+		print STDERR "index: $index\n";
+		$s = get_snmp_value('-OvQ', $hostname, $snmp_version, $community, $mibs{'hd_smart_info'}.$index, $username, $password);
+		if ($s eq '') {
+			return;
+		}
+		print STDERR "Disk: $index smart: $s\n";
+		if ($s eq '"GOOD"') {
+			$ok_str .= " OK: Disk $index is OK.";
+		} else {
+			$statusid = $SisIYA_Config::statusids{'error'};
+			$error_str .= " ERROR: Disk $index has status = $s (!= GOOD)!";
+		}
+	}
+	return "<message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>$error_str$warning_str$ok_str</msg><datamsg></datamsg></data></message>";
+}
 
 sub check_qnap
 {
@@ -68,6 +140,7 @@ sub check_qnap
 	if ($s eq '') {
 		return '';
 	}
+	$s .= check_qnap_smart($expire, $hostname, $snmp_version, $community, $username, $password);
 	return "<system><name>$system_name</name>$s</system>";
 }
 
