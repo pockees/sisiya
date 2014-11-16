@@ -50,6 +50,11 @@ make
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 make "DESTDIR=%{buildroot}" install 
+%define sisiyad_service_root_dir /etc/systemd
+%define sisiyad_service_dst_dir /etc/systemd/system
+%define sisiyad_service_src_file sisiyad_systemd
+%define sisiyad_service_dst_file sisiyad.service
+
 %if 0%{?rhel_version}
 %if 0%{?rhel_version} < 700 
 	%define sisiyad_service_root_dir /etc
@@ -57,11 +62,6 @@ make "DESTDIR=%{buildroot}" install
 	%define sisiyad_service_src_file sisiyad_sysvinit
 	%define sisiyad_service_dst_file sisiyad
 %endif
-%else
-	%define sisiyad_service_root_dir /etc/systemd
-	%define sisiyad_service_dst_dir /etc/systemd/system
-	%define sisiyad_service_src_file sisiyad_systemd
-	%define sisiyad_service_dst_file sisiyad.service
 %endif
 mkdir -p %{buildroot}%{sisiyad_service_dst_dir}
 cp etc/%{sisiyad_service_src_file} %{buildroot}%{sisiyad_service_dst_dir}/%{sisiyad_service_dst_file}

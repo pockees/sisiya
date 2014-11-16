@@ -32,7 +32,6 @@ use XML::Simple;
 use Data::Dumper;
 require File::Temp;
 use File::Temp();
-#use Data::Dumper;
 
 my $check_name = 'hpilo';
 
@@ -586,17 +585,17 @@ sub check_hpilo4_system
 
 sub check_hpilo
 {
-	my ($isactive, $serviceid, $expire, $system_name, $hostname, $username, $password, $version) = @_;
+	my ($isactive, $expire, $system_name, $hostname, $username, $password, $version) = @_;
 
 	if ($isactive eq 'f' ) {
 		return '';
 	}
 
-	#print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] username=[$username] ...\n";
-	my $statusid = $SisIYA_Config::statusids{'ok'};
+	print STDERR "Checking system_name=[$system_name] hostname=[$hostname] isactive=[$isactive] username=[$username] ...\n";
 
 	# read the template
-	my $hp_xml_file = $SisIYA_Remote_Config::misc_dir.'/hp_locfg_get_embedded_health.xml';
+	#my $hp_xml_file = $SisIYA_Remote_Config::misc_dir.'/hp_locfg_get_embedded_health.xml';
+
 	my $hp_xml_str = '';
 	if ($version >= 3) {
 		$hp_xml_str = '<RIBCL VERSION="2.22"><LOGIN USER_LOGIN="__USERNAME__" PASSWORD="__PASSWORD__"><SERVER_INFO MODE="read"><GET_EMBEDDED_HEALTH><GET_ALL_FANS/><GET_ALL_TEMPERATURES/><GET_ALL_POWER_SUPPLIES/><GET_ALL_VRM/><GET_ALL_PROCESSORS/><GET_ALL_MEMORY/><GET_ALL_NICS/><GET_ALL_STORAGE/><GET_ALL_HEALTH_STATUS/><GET_ALL_FIRMWARE_VERSIONS/></GET_EMBEDDED_HEALTH></SERVER_INFO></LOGIN></RIBCL>'; 
@@ -625,7 +624,20 @@ sub check_hpilo
 	#print STDERR "Temp file :".$hp_input_file->filename ."\n"; 	# or just $hp_input_file 
 	#print STDERR "xml string : ".$hp_xml_str."\n\n";	
 
-	chomp(my @result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`);
+	my @result_str = `"$SisIYA_Remote_Config::utils_dir/hp_locfg.pl" -s $hostname -f $hp_input_file`;
+	#my $retcode = $? >>=8;
+	my $retcode = $?;
+	#print STDERR "retcode: $?\n";
+	#print STDERR "exit code: ".($? >> 8)."\n";
+	#print STDERR "signal : ".($? & 127)." \n";
+	#print STDERR "dumped core : ".($? & 128)." \n";
+	if ($retcode != 0) {
+		my $serviceid = get_serviceid('system');
+		my $statusid = $SisIYA_Config::statusids{'error'};
+		return "<system><name>$system_name</name><message><serviceid>$serviceid</serviceid><statusid>$statusid</statusid><expire>$expire</expire><data><msg>ERROR: Error executing locfg.pl retcode=$retcode</msg><datamsg></datamsg></data></system>";
+	}
+	chomp(@result_str);
+	#print STDERR "retcode: $retcode\n";
 
 #	my @result_str;
 #	if ($system_name ne 'sanal08-ue-9') {
@@ -666,18 +678,17 @@ if (lock_check($check_name) == 0) {
 	exit 1;
 }
 my ($systems_file, $expire) = @ARGV;
-my $serviceid = get_serviceid('raid');
 my $xml = new XML::Simple;
 my $data = $xml->XMLin($systems_file);
 my $xml_str = '';
 
 if( ref($data->{'record'}) eq 'ARRAY' ) {
 	foreach my $h (@{$data->{'record'}}) {
-		$xml_str .= check_hpilo($h->{'isactive'}, $serviceid, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'username'}, $h->{'password'}, $h->{'version'});
+		$xml_str .= check_hpilo($h->{'isactive'}, $expire, $h->{'system_name'}, $h->{'hostname'}, $h->{'username'}, $h->{'password'}, $h->{'version'});
 	}
 }
 else {
-	$xml_str = check_hpilo($data->{'record'}->{'isactive'}, $serviceid, $expire, $data->{'record'}->{'system_name'}, 
+	$xml_str = check_hpilo($data->{'record'}->{'isactive'}, $expire, $data->{'record'}->{'system_name'}, 
 				$data->{'record'}->{'hostname'}, $data->{'record'}->{'username'}, $data->{'record'}->{'password'}, $data->{'record'}->{'version'});
 }
 

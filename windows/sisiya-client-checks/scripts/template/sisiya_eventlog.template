@@ -44,38 +44,38 @@ $warning_diff_date = New-TimeSpan -Start $warning_date -End $now_date
 $warning_date_str = formatDateTime $warning_diff_date.Days $warning_diff_date.Hours $warning_diff_date.Minutes
 
 ### get event logs
-$eventlogs=Get-EventLog -List
-$i=0
-while($i -lt $eventlogs.Length) {
-	$current_statusid=$statusids.Item("ok")
+$eventlogs = Get-EventLog -List
+$i = 0
+while ($i -lt $eventlogs.Length) {
+	$current_statusid = $statusids.Item("ok")
 	$error_events = Get-EventLog   -LogName $eventlogs[$i].Log 2> $null | where {$error_date   -le $_.TimeWritten -and $_.EntryType -match "Error"}
 	$warning_events = Get-EventLog -LogName $eventlogs[$i].Log 2> $null | where {$warning_date -le $_.TimeWritten -and $_.EntryType -match "Warning"}
 
-	if($error_events.Count -gt 0) {
-		$current_statusid=$statusids.Item("error")
-		$error_message_str=$error_message_str + " ERROR: There are " + $error_events.Count + " errors in the event log for " + $eventlogs[$i].Log + " within " + $error_date_str + "!"
+	if ($error_events.Count -gt 0) {
+		$current_statusid = $statusids.Item("error")
+		$error_message_str += " ERROR: There are " + $error_events.Count + " errors in the event log for " + $eventlogs[$i].Log + " within " + $error_date_str + "!"
 	}
-	if($warning_events.Count -gt 0) {
+	if ($warning_events.Count -gt 0) {
 		if($current_statusid -lt $statusids.Item("warning")) {
-			$current_statusid=$statusids.Item("warning")
+			$current_statusid = $statusids.Item("warning")
 		}
-		$warning_message_str=$message_str + " WARNING: There are " + $warning_events.Count + " warnings in the event log for " + $eventlogs[$i].Log + " within " + $warning_date_str + "!" 
+		$warning_message_str += " WARNING: There are " + $warning_events.Count + " warnings in the event log for " + $eventlogs[$i].Log + " within " + $warning_date_str + "!" 
 	}
-	if($current_statusid -eq $statusids.Item("ok")) {
-		$ok_message_str=$ok_message_str + " OK: No errors " +  " within " + $error_date_str + " or warnings within " + $warning_date_str + " in the event log for " + $eventlogs[$i].Log + "."
+	if ($current_statusid -eq $statusids.Item("ok")) {
+		$ok_message_str += " OK: No errors " +  " within " + $error_date_str + " or warnings within " + $warning_date_str + " in the event log for " + $eventlogs[$i].Log + "."
 	}
-	$i=$i+1
+	$i++ 
 }
 
-$statusid=$statusids.Item("ok")
-if($error_message_str.Length -gt 0) {
-	$statusid=$statusids.Item("error")
+$statusid = $statusids.Item("ok")
+if ($error_message_str.Length -gt 0) {
+	$statusid = $statusids.Item("error")
 }
-elseif($warning_message_str.Length -gt 0) {
-	$statusid=$statusids.Item("warning")
+elseif ($warning_message_str.Length -gt 0) {
+	$statusid = $statusids.Item("warning")
 }
-$error_message_str=$error_message_str.Trim()
-$warning_message_str=$warning_message_str.Trim()
-$ok_message_str=$ok_message_str.Trim()
-$info_message_str=$info_message_str.Trim()
-$message_str=$error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str
+$error_message_str = $error_message_str.Trim()
+$warning_message_str = $warning_message_str.Trim()
+$ok_message_str = $ok_message_str.Trim()
+$info_message_str = $info_message_str.Trim()
+$message_str = $error_message_str + " " + $warning_message_str + " " + $ok_message_str + " " + $info_message_str

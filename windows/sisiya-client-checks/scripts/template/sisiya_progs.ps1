@@ -62,7 +62,7 @@ $data_message_str = ''
 $service_name = "progs"
 ############################################################################################################
 ### the default values
-$prog_list=@("System","svchost")
+$prog_list = @("System", "svchost")
 ### end of the default values
 ############################################################################################################
 ### If there is a module conf file then override these default values
@@ -78,44 +78,42 @@ if([System.IO.File]::Exists($module_conf_file) -eq $True) {
 #	exit
 #}
 ###############################################################################################################################################
-################################
-$message_str=""
-$error_message_str=""
-$ok_message_str=""
-$statusid=$statusids.Item("ok")
+$message_str = ""
+$error_message_str = ""
+$ok_message_str = ""
+$statusid = $statusids.Item("ok")
 
+$data_str = "<entries>"
 ### get processes
-$processes=Get-Process
-foreach($p in $prog_list) {
-	$r=$processes | FindStr $p
+$processes = Get-Process
+foreach ($p in $prog_list) {
+	$r = $processes | FindStr $p
 	if(! $r) {
-		if($error_message_str.Length -eq 0) {
-			$error_message_str=$p 
+		if ($error_message_str.Length -eq 0) {
+			$error_message_str = $p 
+		} else {
+			$error_message_str = $error_message_str + ", " + $p 
 		}
-		else {
-			$error_message_str=$error_message_str + ", " + $p 
-		}
-	}
-	else {
-		if($ok_message_str.Length -eq 0) {
+	} else {
+		if ($ok_message_str.Length -eq 0) {
 			$ok_message_str=$p 
-		}
-		else {
+		} else {
 			$ok_message_str=$ok_message_str + ", " + $p 
 		}
-
 	}
+	#$data_str += '<entry name="' + $progs[$i]{'description'}.'" type="boolean">'.$flag.'</entry>'
 }
+$data_str += "</entries>"
 
-if($error_message_str.Length -gt 0) {
-	$statusid=$statusids.Item("error")
-	$error_message_str="ERROR: "+ $error_message_str + "!"
+if ($error_message_str.Length -gt 0) {
+	$statusid = $statusids.Item("error")
+	$error_message_str = "ERROR: "+ $error_message_str + "!"
 }
-if($ok_message_str.Length -gt 0) {
-	$ok_message_str="OK: "+$ok_message_str + "."
+if ($ok_message_str.Length -gt 0) {
+	$ok_message_str = "OK: "+$ok_message_str + "."
 }
-$message_str=$error_message_str + " " + $ok_message_str
-$message_str=$message_str.Trim()
+$message_str = $error_message_str + " " + $ok_message_str
+$message_str = $message_str.Trim()
 ###############################################################################################################################################
 print_and_exit "$FS" "$service_name" $statusid "$message_str" "$data_str"
 ###############################################################################################################################################
