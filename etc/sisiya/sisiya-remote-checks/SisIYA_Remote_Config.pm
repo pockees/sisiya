@@ -66,6 +66,7 @@ our %checks = (
 		'hpilo'		=> { 'auto' => 1, 'conf' => 'hpilo_systems.xml',	'script' => 'sisiya_check_hpilo.pl' 		},
 		'http'		=> { 'auto' => 1, 'conf' => 'http_systems.xml',		'script' => 'sisiya_check_http.pl' 		},
 		'https'		=> { 'auto' => 1, 'conf' => 'https_systems.xml',	'script' => 'sisiya_check_https.pl' 		},
+		'idrac'		=> { 'auto' => 1, 'conf' => 'idrac_systems.xml',	'script' => 'sisiya_check_idrac.pl' 		},
 		'imap'		=> { 'auto' => 1, 'conf' => 'imap_systems.xml',		'script' => 'sisiya_check_imap.pl' 		},
 		'ping'		=> { 'auto' => 1, 'conf' => 'ping_systems.xml',		'script' => 'sisiya_check_ping.pl' 		},
 		'pop3'		=> { 'auto' => 1, 'conf' => 'pop3_systems.xml',		'script' => 'sisiya_check_pop3.pl' 		},
