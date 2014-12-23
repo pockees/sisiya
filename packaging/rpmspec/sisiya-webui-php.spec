@@ -97,7 +97,7 @@ fi
 
 %files
 %defattr(-,%{www_user},%{www_group})
-%dir			/etc/sisiya
+%attr(0755,root,root)	%dir			/etc/sisiya
 %dir			/etc/sisiya/%{name}
 %dir			%{web_base_dir}
 %dir			%{web_base_dir}/javascript
