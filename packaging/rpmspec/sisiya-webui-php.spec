@@ -96,8 +96,8 @@ fi
 %build
 
 %files
-%defattr(-,%{www_user},%{www_group})
 %attr(0755,root,root)	%dir			/etc/sisiya
+%defattr(-,%{www_user},%{www_group})
 %dir			/etc/sisiya/%{name}
 %dir			%{web_base_dir}
 %dir			%{web_base_dir}/javascript
